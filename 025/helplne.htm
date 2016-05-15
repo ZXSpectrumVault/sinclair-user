@@ -1,0 +1,725 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 25 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX-81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, April 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="utlites.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Utilities"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 25 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson4.gif" width=275 height=290 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1 align="center">ZX equivalents</h1>
+
+<p align="center" class="first"><b><font size="+1">Andrew Hewson explains how you can convert your programs to run on a different machine</font></b></p>
+
+<p class="first">PROBLEMS of converting programs written to run on one machine so that they run correctly on another are the subject of a number of queries. Correspondents who have raised the topic include Shawn Woodhouse, Chris Fowler, and Glen Lewis. Most requests concern the conversion of ZX-81 programs to run on the Spectrum but Fowler in particular asked for details on the conversion of ZX-80 programs.</p>
+
+<p>Sinclair Basic is not upwards-compatible, i.e., it is not necessarily possible to transfer a program written for the ZX-80 on to the ZX-81 or Spectrum. Usually, however, only a relatively small number of alterations is required. The converse is not true, because generally a program written for a more sophisticated machine will use facilities which are not present and cannot be emulated on a predecessor. Thus I have assumed readers are interested either in converting ZX-80 programs to run on the ZX-81 or converting ZX-81 programs to run on the Spectrum.</p>
+
+<p>All the software facilities available on the ZX-80 can be mimicked on the ZX81 but the latter machine is less economical of memory space as a consequence of its greater sophistication. For example:</p>
+
+<p>The ZX-81 uses 85 bytes more in the systems variables area; the ZX-81 requires five bytes to hold the value of a variable, thus permitting the use of non-integer numbers, compared to the two bytes used by the integer-only ZX-80. A calculator stack therefore is required; constants in a ZX-81 program are held both in their character and in their numeric form so that an extra six bytes per constant are required; two bytes per program line are used by the ZX-81 to hold the line length.</p>
+
+<p>There is no equivalent usage by the ZX-80. Hence it will often be necessary to prune a 1K ZX-80 program to load it into a ZX-81.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'Usually only a small number of alterations is required'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>All ZX-80 commands and functions have exact counterparts on the ZX-81 except for the TL$ function, the DIM command, the division operator and the RND function. These are dealt with as follows:</p>
+
+<p>The TL$ function is a special case of the ZX-81 slicing facility and is replaced by (2 TO). For example:</p>
+
+<pre>LET A$= TL$(A$) becomes LET A$=A$(2 TO).</pre>
+
+<p>Array indices start at 0 on the ZX-80 and 1 on the ZX-81 so that</p>
+
+<pre>DIM B(5)
+PRINT B(0)</pre>
+
+<p class="first">is meaningful only on the ZX-80. Hence one is added to every array subscript.</p>
+
+<p>Numbers are converted to integers explicitly on the ZX-81 using the INT function before division. For example:</p>
+
+<pre>LET B=B/5 becomes LET B=INT (B)/5</pre>
+
+<p>The ZX-80 random number function RND (N) generates a random integer between 1 and N inclusive, whereas on the ZX-81 RND generates a random number in the range 0 to 1. Thus, for example:</p>
+
+<pre>LET A=RND(N) becomes LET A=I+INT(N*RND)</pre>
+
+<p>The character codes used by the ZX81 are listed in appendix A of the operating manual. The codes for both letters and numbers in both normal and inverse video are the same as those used by the ZX-80 but the remainder are mostly different. Table one lists the ZX-81 equivalents for the non-alphabetic or numeric codes used by the ZX-80. Reference should be made to the table when converting CHR$ or CODE commands.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<table border=0 cellspacing="0" cellpadding="5">
+<tr align="center">
+<td><b>ZX-80 Code</b></td><td><b>Character</b></td><td><b>ZX-81 Code</b></td><td><b>ZX-80 Code</b></td><td><b>Character</b></td><td><b>ZX-81 Code</b></td>
+</tr>
+<tr align="center">
+<td>0</td><td>space</td><td>0</td><td>148</td><td>inverse *</td><td>151</td>
+</tr>
+<tr align="center">
+<td>1</td><td>space</td><td>11</td><td>149</td><td>inverse /</td><td>152</td>
+</tr>
+<tr align="center">
+<td>2</td><td>graphics</td><td>5</td><td>150</td><td>inverse =</td><td>148</td>
+</tr>
+<tr align="center">
+<td>3</td><td>graphics</td><td>131</td><td>151</td><td>inverse &gt;</td><td>146</td>
+</tr>
+<tr align="center">
+<td>4</td><td>graphics</td><td>1</td><td>152</td><td>inverse &lt;</td><td>147</td>
+</tr>
+<tr align="center">
+<td>5</td><td>graphics</td><td>2</td><td>153</td><td>inverse ;</td><td>153</td>
+</tr>
+<tr align="center">
+<td>6</td><td>graphics</td><td>4</td><td>154</td><td>inverse ,</td><td>154</td>
+</tr>
+<tr align="center">
+<td>7</td><td>graphics</td><td>135</td><td>155</td><td>inverse .</td><td>155</td>
+</tr>
+<tr align="center">
+<td>8</td><td>graphics</td><td>6</td><td>212</td><td>&quot;</td><td>11</td>
+</tr>
+<tr align="center">
+<td>9</td><td>graphics</td><td>8</td><td>213</td><td>THEN</td><td>222</td>
+</tr>
+<tr align="center">
+<td>10</td><td>graphics</td><td>9</td><td>214</td><td>TO</td><td>223</td>
+</tr>
+<tr align="center">
+<td>11</td><td>graphics</td><td>10</td><td>215</td><td>;</td><td>25</td>
+</tr>
+<tr align="center">
+<td>12</td><td>&pound;</td><td>12</td><td>216</td><td>,</td><td>26</td>
+</tr>
+<tr align="center">
+<td>13</td><td>$</td><td>13</td><td>217</td><td>)</td><td>17</td>
+</tr>
+<tr align="center">
+<td>14</td><td>:</td><td>14</td><td>218</td><td>(</td><td>16</td>
+</tr>
+<tr align="center">
+<td>15</td><td>?</td><td>15</td><td>219</td><td>NOT</td><td>215</td>
+</tr>
+<tr align="center">
+<td>16</td><td>(</td><td>16</td><td>220</td><td>-</td><td>22</td>
+</tr>
+<tr align="center">
+<td>17</td><td>)</td><td>17</td><td>221</td><td>+</td><td>21</td>
+</tr>
+<tr align="center">
+<td>18</td><td>-</td><td>22</td><td>222</td><td>*</td><td>23</td>
+</tr>
+<tr align="center">
+<td>19</td><td>+</td><td>21</td><td>223</td><td>/</td><td>24</td>
+</tr>
+<tr align="center">
+<td>20</td><td>*</td><td>23</td><td>224</td><td>AND</td><td>218</td>
+</tr>
+<tr align="center">
+<td>21</td><td>/</td><td>24</td><td>225</td><td>OR</td><td>217</td>
+</tr>
+<tr align="center">
+<td>22</td><td>=</td><td>20</td><td>226</td><td><strong></strong></td><td>216</td>
+</tr>
+<tr align="center">
+<td>23</td><td>&gt;</td><td>18</td><td>227</td><td>=</td><td>20</td>
+</tr>
+<tr align="center">
+<td>24</td><td>&lt;</td><td>19</td><td>228</td><td>&gt;</td><td>18</td>
+</tr>
+<tr align="center">
+<td>25</td><td>;</td><td>25</td><td>229</td><td>&lt;</td><td>19</td>
+</tr>
+<tr align="center">
+<td>26</td><td>,</td><td>26</td><td>230</td><td>LIST</td><td>240</td>
+</tr>
+<tr align="center">
+<td>27</td><td>.</td><td>27</td><td>231</td><td>RETURN</td><td>254</td>
+</tr>
+<tr align="center">
+<td>128</td><td>graphics</td><td>128</td><td>232</td><td>CLS</td><td>251</td>
+</tr>
+<tr align="center">
+<td>129</td><td>inverse &quot;</td><td>139</td><td>233</td><td>DIM</td><td>233</td>
+</tr>
+<tr align="center">
+<td>130</td><td>graphics</td><td>133</td><td>234</td><td>SAVE</td><td>248</td>
+</tr>
+<tr align="center">
+<td>131</td><td>graphics</td><td>3</td><td>235</td><td>FOR</td><td>235</td>
+</tr>
+<tr align="center">
+<td>132</td><td>graphics</td><td>129</td><td>236</td><td>GOTO</td><td>236</td>
+</tr>
+<tr align="center">
+<td>133</td><td>graphics</td><td>130</td><td>237</td><td>POKE</td><td>244</td>
+</tr>
+<tr align="center">
+<td>134</td><td>graphics</td><td>132</td><td>238</td><td>INPUT</td><td>238</td>
+</tr>
+<tr align="center">
+<td>135</td><td>graphics</td><td>7</td><td>239</td><td>RAND</td><td>249</td>
+</tr>
+<tr align="center">
+<td>136</td><td>graphics</td><td>134</td><td>240</td><td>LET</td><td>241</td>
+</tr>
+<tr align="center">
+<td>137</td><td>graphics</td><td>136</td><td>243</td><td>NEXT</td><td>243</td>
+</tr>
+<tr align="center">
+<td>138</td><td>graphics</td><td>137</td><td>244</td><td>PRINT</td><td>245</td>
+</tr>
+<tr align="center">
+<td>139</td><td>graphics</td><td>138</td><td>246</td><td>NEW</td><td>230</td>
+</tr>
+<tr align="center">
+<td>140</td><td>inverse &pound;</td><td>140</td><td>247</td><td>RUN</td><td>247</td>
+</tr>
+<tr align="center">
+<td>141</td><td>inverse $</td><td>141</td><td>248</td><td>STOP</td><td>227</td>
+</tr>
+<tr align="center">
+<td>142</td><td>inverse :</td><td>142</td><td>249</td><td>CONT</td><td>232</td>
+</tr>
+<tr align="center">
+<td>143</td><td>inverse ?</td><td>143</td><td>250</td><td>IF</td><td>250</td>
+</tr>
+<tr align="center">
+<td>144</td><td>inverse (</td><td>144</td><td>251</td><td>GOSUB</td><td>237</td>
+</tr>
+<tr align="center">
+<td>145</td><td>inverse )</td><td>145</td><td>252</td><td>LOAD</td><td>239</td>
+</tr>
+<tr align="center">
+<td>146</td><td>inverse -</td><td>150</td><td>253</td><td>CLEAR</td><td>253</td>
+</tr>
+<tr align="center">
+<td>147</td><td>inverse +</td><td>149</td><td>254</td><td>REM</td><td>234</td>
+</tr>
+<tr align="center">
+<td colspan="6"><b>Table 1. A list of ZX-80 character codes and their ZX-81 equivalents.</b></td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The ZX-80 uses fewer system variables than the ZX-81 and most of them have direct equivalents as listed in table two. Note that the variables area occurs below the display file in the ZX-80 but above it in the ZX-81 and so conversion of a program which manipulates the VARS, D-FILE and DF-CC variables is particularly difficult.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<table border=0 cellspacing="0" cellpadding="5">
+<tr align="center">
+<td><b>ZX-80 address</b></td><td><b>No. of bytes</b></td><td><b>ZX-81 address</b></td><td><b>ZX-81 name</b></td>
+</tr>
+<tr align="center">
+<td>16384</td><td>1</td><td>16384</td><td>ERR-NR</td>
+</tr>
+<tr align="center">
+<td>16385</td><td>1</td><td>&nbsp;</td><td>&nbsp;</td>
+</tr>
+<tr align="center">
+<td>16386</td><td>2</td><td>16391</td><td>PPC</td>
+</tr>
+<tr align="center">
+<td>16388</td><td>2</td><td>&nbsp;</td><td>&nbsp;</td>
+</tr>
+<tr align="center">
+<td>16390</td><td>2</td><td>16394</td><td>E-PPC</td>
+</tr>
+<tr align="center">
+<td>16392</td><td>2</td><td>16400</td><td>VARS</td>
+</tr>
+<tr align="center">
+<td>16394</td><td>2</td><td>16404</td><td>E-LINE</td>
+</tr>
+<tr align="center">
+<td>16396</td><td>2</td><td>16396</td><td>D-FILE</td>
+</tr>
+<tr align="center">
+<td>16398</td><td>2</td><td>16398</td><td>DF-CC</td>
+</tr>
+<tr align="center">
+<td>16400</td><td>2</td><td>16400</td><td>VARS</td>
+</tr>
+<tr align="center">
+<td>16402</td><td>1</td><td>16418</td><td>DF-SZ</td>
+</tr>
+<tr align="center">
+<td>16403</td><td>2</td><td>&nbsp;</td><td>&nbsp;</td>
+</tr>
+<tr align="center">
+<td>16405</td><td>2</td><td>16408</td><td>X-PTR</td>
+</tr>
+<tr align="center">
+<td>16407</td><td>2</td><td>16427</td><td>OLDPPC</td>
+</tr>
+<tr align="center">
+<td>16409</td><td>1</td><td>&nbsp;</td><td>&nbsp;</td>
+</tr>
+<tr align="center">
+<td>16410</td><td>2</td><td>16432</td><td>T-ADDR</td>
+</tr>
+<tr align="center">
+<td>16412</td><td>2</td><td>16434</td><td>SEED</td>
+</tr>
+<tr align="center">
+<td>16414</td><td>2</td><td>16436</td><td>FRAMES</td>
+</tr>
+<tr align="center">
+<td>16416</td><td>2</td><td>&nbsp;</td><td>&nbsp;</td>
+</tr>
+<tr align="center">
+<td>16418</td><td>2</td><td>&nbsp;</td><td>&nbsp;</td>
+</tr>
+<tr align="center">
+<td>16420</td><td>1</td><td>16441</td><td>S-POSN</td>
+</tr>
+<tr align="center">
+<td>16421</td><td>1</td><td>16442</td><td>&nbsp;</td>
+</tr>
+<tr align="center">
+<td>16422</td><td>2</td><td>&nbsp;</td><td>&nbsp;</td>
+</tr>
+<tr align="center">
+<td colspan="4"><b>Table 2. ZX-80 system variables and their ZX-81 equivalents.</b></td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>On the ZX-80 the FRAMES counter is incremented 50 times per second, whereas on the ZX-81 it is decremented, except bit 15, and that difference should be taken into account during program conversion.</p>
+
+<p>Just as the ZX-81 uses more RAM space than the ZX-80, so, in turn, the Spectrum uses more than the ZX-81. The principal reason is the high-resolution Spectrum display which uses 6,912 of the 16,384 bytes in RAM in the 16K Spectrum, compared to 792 bytes used by the 16K ZX-81. So it is unlikely that a full-size 16K ZX-81 program can be adapted to run in a 16K Spectrum.</p>
+
+<p>Table three lists the ZX-81 character codes which have a direct Spectrum equivalent. In a few cases the character is different, although the function is the same, in which case both versions are shown in the table. For example, the exponentiation operator is ** on the ZX-81 - code 216 - and ^ on the Spectrum - code 94.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<table border=0 cellspacing="0" cellpadding="5">
+<tr align="center">
+<td><b>ZX-81 code</b></td><td><b>Character</b></td><td><b>Spectrum code</b></td><td><b>ZX-81 code</b></td><td><b>Character</b></td><td><b>Spectrum code</b></td>
+</tr>
+<tr align="center">
+<td>0</td><td>space</td><td>32 or 128</td><td>118</td><td>NEWLINE/ENTER</td><td>13</td>
+</tr>
+<tr align="center">
+<td>1</td><td>graphics</td><td>130</td><td>119</td><td>RUBOUT/DELETE</td><td>12</td>
+</tr>
+<tr align="center">
+<td>2</td><td>graphics</td><td>129</td><td>126</td><td>number</td><td>14</td>
+</tr>
+<tr align="center">
+<td>3</td><td>graphics</td><td>131</td><td>128</td><td>graphics</td><td>143</td>
+</tr>
+<tr align="center">
+<td>4</td><td>graphics</td><td>136</td><td>129</td><td>graphics</td><td>141</td>
+</tr>
+<tr align="center">
+<td>5</td><td>graphics</td><td>138</td><td>130</td><td>graphics</td><td>142</td>
+</tr>
+<tr align="center">
+<td>6</td><td>graphics</td><td>137</td><td>131</td><td>graphics</td><td>140</td>
+</tr>
+<tr align="center">
+<td>7</td><td>graphics</td><td>139</td><td>132</td><td>graphics</td><td>135</td>
+</tr>
+<tr align="center">
+<td>11</td><td>&quot;</td><td>34</td><td>133</td><td>graphics</td><td>133</td>
+</tr>
+<tr align="center">
+<td>12</td><td>&pound;</td><td>96</td><td>134</td><td>graphics</td><td>134</td>
+</tr>
+<tr align="center">
+<td>13</td><td>$</td><td>36</td><td>135</td><td>graphics</td><td>132</td>
+</tr>
+<tr align="center">
+<td>14</td><td>:</td><td>58</td><td>193</td><td>AT</td><td>172</td>
+</tr>
+<tr align="center">
+<td>15</td><td>?</td><td>63</td><td>194</td><td>TAB</td><td>173</td>
+</tr>
+<tr align="center">
+<td>16</td><td>(</td><td>40</td><td>196</td><td>CODE</td><td>175</td>
+</tr>
+<tr align="center">
+<td>17</td><td>)</td><td>41</td><td>197</td><td>VAL</td><td>176</td>
+</tr>
+<tr align="center">
+<td>18</td><td>&gt;</td><td>62</td><td>198</td><td>LEN</td><td>177</td>
+</tr>
+<tr align="center">
+<td>19</td><td>&lt;</td><td>60</td><td>199</td><td>SIN</td><td>178</td>
+</tr>
+<tr align="center">
+<td>20</td><td>=</td><td>61</td><td>200</td><td>COS</td><td>179</td>
+</tr>
+<tr align="center">
+<td>21</td><td>+</td><td>43</td><td>201</td><td>TAN</td><td>180</td>
+</tr>
+<tr align="center">
+<td>22</td><td>-</td><td>45</td><td>202</td><td>ASN</td><td>181</td>
+</tr>
+<tr align="center">
+<td>23</td><td>*</td><td>42</td><td>203</td><td>ACS</td><td>182</td>
+</tr>
+<tr align="center">
+<td>24</td><td>/</td><td>47</td><td>204</td><td>ATN</td><td>183</td>
+</tr>
+<tr align="center">
+<td>25</td><td>;</td><td>59</td><td>205</td><td>LN</td><td>184</td>
+</tr>
+<tr align="center">
+<td>26</td><td>,</td><td>44</td><td>206</td><td>EXP</td><td>185</td>
+</tr>
+<tr align="center">
+<td>27</td><td>.</td><td>46</td><td>207</td><td>INT</td><td>186</td>
+</tr>
+<tr align="center">
+<td>28</td><td>0</td><td>48</td><td>208</td><td>SQR</td><td>187</td>
+</tr>
+<tr align="center">
+<td>29</td><td>1</td><td>49</td><td>209</td><td>SGN</td><td>188</td>
+</tr>
+<tr align="center">
+<td>30</td><td>2</td><td>50</td><td>210</td><td>ABS</td><td>189</td>
+</tr>
+<tr align="center">
+<td>31</td><td>3</td><td>51</td><td>211</td><td>PEEK</td><td>190</td>
+</tr>
+<tr align="center">
+<td>32</td><td>4</td><td>52</td><td>212</td><td>USR</td><td>192</td>
+</tr>
+<tr align="center">
+<td>33</td><td>5</td><td>53</td><td>213</td><td>STR$</td><td>193</td>
+</tr>
+<tr align="center">
+<td>34</td><td>6</td><td>54</td><td>214</td><td>CHR$</td><td>194</td>
+</tr>
+<tr align="center">
+<td>35</td><td>7</td><td>55</td><td>215</td><td>NOT</td><td>195</td>
+</tr>
+<tr align="center">
+<td>36</td><td>8</td><td>56</td><td>216</td><td>**/^</td><td>94</td>
+</tr>
+<tr align="center">
+<td>37</td><td>9</td><td>57</td><td>217</td><td>OR</td><td>197</td>
+</tr>
+<tr align="center">
+<td>38</td><td>A</td><td>65</td><td>218</td><td>AND</td><td>198</td>
+</tr>
+<tr align="center">
+<td>39</td><td>B</td><td>66</td><td>219</td><td>&lt;=</td><td>199</td>
+</tr>
+<tr align="center">
+<td>40</td><td>C</td><td>67</td><td>220</td><td>&gt;=</td><td>200</td>
+</tr>
+<tr align="center">
+<td>41</td><td>D</td><td>68</td><td>221</td><td>&lt;&gt;</td><td>201</td>
+</tr>
+<tr align="center">
+<td>42</td><td>E</td><td>69</td><td>222</td><td>THEN</td><td>203</td>
+</tr>
+<tr align="center">
+<td>43</td><td>F</td><td>70</td><td>223</td><td>TO</td><td>204</td>
+</tr>
+<tr align="center">
+<td>44</td><td>G</td><td>71</td><td>224</td><td>STEP</td><td>205</td>
+</tr>
+<tr align="center">
+<td>45</td><td>H</td><td>72</td><td>225</td><td>LPRINT</td><td>224</td>
+</tr>
+<tr align="center">
+<td>46</td><td>I</td><td>73</td><td>226</td><td>LLIST</td><td>225</td>
+</tr>
+<tr align="center">
+<td>47</td><td>J</td><td>74</td><td>227</td><td>STOP</td><td>226</td>
+</tr>
+<tr align="center">
+<td>48</td><td>K</td><td>75</td><td>230</td><td>NEW</td><td>230</td>
+</tr>
+<tr align="center">
+<td>49</td><td>L</td><td>76</td><td>232</td><td>CONT/CONTINUE</td><td>232</td>
+</tr>
+<tr align="center">
+<td>50</td><td>M</td><td>77</td><td>233</td><td>DIM</td><td>233</td>
+</tr>
+<tr align="center">
+<td>51</td><td>N</td><td>78</td><td>234</td><td>REM</td><td>234</td>
+</tr>
+<tr align="center">
+<td>52</td><td>O</td><td>79</td><td>235</td><td>FOR</td><td>235</td>
+</tr>
+<tr align="center">
+<td>53</td><td>P</td><td>80</td><td>236</td><td>GOTO/GO TO</td><td>236</td>
+</tr>
+<tr align="center">
+<td>54</td><td>Q</td><td>81</td><td>237</td><td>GOSUB</td><td>237</td>
+</tr>
+<tr align="center">
+<td>55</td><td>R</td><td>82</td><td>238</td><td>INPUT</td><td>238</td>
+</tr>
+<tr align="center">
+<td>56</td><td>S</td><td>83</td><td>239</td><td>LOAD</td><td>239</td>
+</tr>
+<tr align="center">
+<td>57</td><td>T</td><td>84</td><td>240</td><td>LIST</td><td>240</td>
+</tr>
+<tr align="center">
+<td>58</td><td>U</td><td>85</td><td>241</td><td>LET</td><td>241</td>
+</tr>
+<tr align="center">
+<td>59</td><td>V</td><td>86</td><td>242</td><td>PAUSE</td><td>242</td>
+</tr>
+<tr align="center">
+<td>60</td><td>W</td><td>87</td><td>243</td><td>NEXT</td><td>243</td>
+</tr>
+<tr align="center">
+<td>61</td><td>X</td><td>88</td><td>244</td><td>POKE</td><td>244</td>
+</tr>
+<tr align="center">
+<td>62</td><td>Y</td><td>89</td><td>245</td><td>PRINT</td><td>245</td>
+</tr>
+<tr align="center">
+<td>63</td><td>Z</td><td>90</td><td>247</td><td>RUN</td><td>247</td>
+</tr>
+<tr align="center">
+<td>64</td><td>RND</td><td>165</td><td>248</td><td>SAVE</td><td>248</td>
+</tr>
+<tr align="center">
+<td>65</td><td>INKEY$</td><td>166</td><td>249</td><td>RAND/</td><td>&nbsp;</td>
+</tr>
+<tr align="center">
+<td>66</td><td>PI</td><td>167</td><td>&nbsp;</td><td>RANDOMIZE</td><td>249</td>
+</tr>
+<tr align="center">
+<td>112</td><td>cursor up</td><td>11</td><td>250</td><td>IF</td><td>250</td>
+</tr>
+<tr align="center">
+<td>113</td><td>cursor down</td><td>12</td><td>251</td><td>CLS</td><td>251</td>
+</tr>
+<tr align="center">
+<td>114</td><td>cursor left</td><td>8</td><td>253</td><td>CLEAR</td><td>253</td>
+</tr>
+<tr align="center">
+<td>115</td><td>cursor right</td><td>9</td><td>254</td><td>RETURN</td><td>254</td>
+</tr>
+<tr align="center">
+<td>117</td><td>EDIT</td><td>7</td><td>255</td><td>COPY</td><td>255</td>
+</tr>
+<tr align="center">
+<td colspan="6"><b>Table 3. ZX-81 character codes and their Spectrum equivalents.</b></td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>Much of the software which runs the calculator in the Spectrum has been copied straight from the ZX-81 and that is reflected in the manner in which the character codes in the two machines, although dissimilar, march in step. The ZX-81 codes for AT, TAB, CODE through to NOT are all 21 more than the codes for the same characters on the Spectrum. It is intriguing to note that the VAL$ function, which is present on the Spectrum - code 174 - but is not present on the ZX-81 logically would have had a ZX-81 code of 195, a code which is &quot;not used&quot; according to appendix A of the ZX-81 manual.</p>
+
+<p>Bearing in mind that the ZX-81 was designed and built long before the Spectrum, the implication is that Sinclair intended that the ZX-81 should have a VAL$ function but it was omitted at the last minute.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<table border=0 cellspacing="0" cellpadding="5">
+<tr>
+<td align="center"><b>ZX-81 graphics code</b></td><td><b>Spectrum user-defined graphic equivalent</b></td>
+</tr>
+<tr>
+<td align="center">8</td><td>170,85,170,85,170,85,170,85</td>
+</tr>
+<tr>
+<td align="center">9</td><td>0,0,0,0,170,85,170,85</td>
+</tr>
+<tr>
+<td align="center">10</td><td>170,85,170,85,0,0,0,0</td>
+</tr>
+<tr>
+<td align="center">136</td><td>85,170,85,170,85,170,85,170</td>
+</tr>
+<tr>
+<td align="center">137</td><td>255,255,255,255,85,170,85,170</td>
+</tr>
+<tr>
+<td align="center">138</td><td>85,170,85,170,255,255,255,255</td>
+</tr>
+<tr>
+<td colspan="2"><b>Table 4. Definitions of Spectrum UDG characters for ZX-81 graphics<br>
+characters not present in the standard Spectrum character set.</b></td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>Six half-tone graphics characters in the ZX-81 do not appear in the Spectrum character set but it is a straightforward matter to create user-defined characters as required. The data for each of the characters is listed in table four. Five more ZX-81 characters have no Spectrum equivalent:</p>
+
+<ul><li>116 Graphics command</li>
+<li>120 K/L mode toggle</li>
+<li>127 Cursor</li>
+<li>228 SLOW</li>
+<li>229 FAST</li></ul>
+
+<p>It is unlikely that any of the first three would be used explicitly in a program and so no substitute is given. The FAST command turns the ZX-81 display, speeding program execution by a factor of about four and the SLOW command turns it on again. Those commands can almost always be omitted when a program is transferred to the Spectrum, except when the FAST command has been included to prevent the user inspecting the display, in which case CLS can be substituted.</p>
+
+<p>Finally, there are four characters which require special substitutes. They are &quot;&quot; - the paired double quotes character - SCROLL, PLOT and UNPLOT. They are dealt with as follows:</p>
+
+<p>The paired double quotes character, which denotes a string within a string, is replaced by two successive double quotes characters.</p>
+
+<p>The SCROLL command, which moves the display up by one line, is replaced by INPUT;.</p>
+
+<p>PLOT X,Y is replaced by PLOT 4 * X + 2, 4 *Y + 2. The latter is not identical because the Spectrum pixel size is much smaller and the point will appear slightly off=centre but the difference is unlikely to be important.</p>
+
+<p>UNPLOT X,Y is replaced by PLOT INVERSE 1;4*X + 2,4*Y + 2.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'It is essential to understand the function of the code'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>Table five lists the ZX-81 system variables and the Spectrum equivalents. There are several points to be noted:</p>
+
+<p>The ZX-81 system variable D-FILE at 16396 which points to the beginning of the display file has no Spectrum equivalent, because the Spectrum display lies at the bottom of RAM at address 16384.</p>
+
+<p>The FRAMES counter is two bytes long on the ZX-81 - and bits 0 to 14 only are used - and three bytes long on the Spectrum.</p>
+
+<p>The COORDS variables are different, reflecting the difference in the PLOT resolution in the two machines.</p>
+
+<p>The ZX-81 printer buffer, PRBUFF, is 33 bytes long and lies within the system variables area starting at address 16444. The Spectrum printer buffer is 256 bytes long, so that it can hold high-resolution characters, and lies below the systems variables area.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<table border=0 cellspacing="0" cellpadding="5">
+<tr align="center">
+<td><b>ZX-81 address</b></td><td><b>No. of bytes</b></td><td><b>Spectrum address</b></td><td><b>Spectrum name</b></td>
+</tr>
+<tr align="center">
+<td>16384</td><td>1</td><td>23610</td><td>ERR NR</td>
+</tr>
+<tr align="center">
+<td>16386</td><td>2</td><td>23613</td><td>ERR SP</td>
+</tr>
+<tr align="center">
+<td>16388</td><td>2</td><td>23730</td><td>RAMTOP</td>
+</tr>
+<tr align="center">
+<td>16390</td><td>1</td><td>23617</td><td>MODE</td>
+</tr>
+<tr align="center">
+<td>16391</td><td>2</td><td>23621</td><td>PPC</td>
+</tr>
+<tr align="center">
+<td>16394</td><td>2</td><td>23625</td><td>E PPC</td>
+</tr>
+<tr align="center">
+<td>16396</td><td>2</td><td>&nbsp;</td><td>&nbsp;</td>
+</tr>
+<tr align="center">
+<td>16398</td><td>2</td><td>23684</td><td>DF CC</td>
+</tr>
+<tr align="center">
+<td>16400</td><td>2</td><td>23627</td><td>VARS</td>
+</tr>
+<tr align="center">
+<td>16402</td><td>2</td><td>23629</td><td>D EST</td>
+</tr>
+<tr align="center">
+<td>16404</td><td>2</td><td>23641</td><td>E LINE</td>
+</tr>
+<tr align="center">
+<td>16406</td><td>2</td><td>23645</td><td>CH ADD</td>
+</tr>
+<tr align="center">
+<td>16408</td><td>2</td><td>23647</td><td>X PTR</td>
+</tr>
+<tr align="center">
+<td>16410</td><td>2</td><td>23650</td><td>STKBOT</td>
+</tr>
+<tr align="center">
+<td>16412</td><td>2</td><td>23653</td><td>STKEND</td>
+</tr>
+<tr align="center">
+<td>16414</td><td>1</td><td>23655</td><td>BREG</td>
+</tr>
+<tr align="center">
+<td>16415</td><td>2</td><td>23656</td><td>MEM</td>
+</tr>
+<tr align="center">
+<td>16418</td><td>1</td><td>23659</td><td>DF SZ</td>
+</tr>
+<tr align="center">
+<td>16419</td><td>2</td><td>23660</td><td>STOP</td>
+</tr>
+<tr align="center">
+<td>16421</td><td>2</td><td>23560</td><td>LAST K</td>
+</tr>
+<tr align="center">
+<td>16423</td><td>1</td><td>23552</td><td>KSTATE</td>
+</tr>
+<tr align="center">
+<td>16425</td><td>2</td><td>23637</td><td>NXTLIN</td>
+</tr>
+<tr align="center">
+<td>16427</td><td>2</td><td>23662</td><td>OLD PPC</td>
+</tr>
+<tr align="center">
+<td>16430</td><td>2</td><td>23666</td><td>STRLEN</td>
+</tr>
+<tr align="center">
+<td>16432</td><td>2</td><td>23668</td><td>T ADDR</td>
+</tr>
+<tr align="center">
+<td>16434</td><td>2</td><td>23670</td><td>SEED</td>
+</tr>
+<tr align="center">
+<td>16436</td><td>2</td><td>23672</td><td>FRAMES</td>
+</tr>
+<tr align="center">
+<td>16438</td><td>1</td><td>23677</td><td>COORDS</td>
+</tr>
+<tr align="center">
+<td>16439</td><td>1</td><td>23678</td><td>COORDS</td>
+</tr>
+<tr align="center">
+<td>16440</td><td>1</td><td>23680</td><td>PR CC</td>
+</tr>
+<tr align="center">
+<td>16441</td><td>1</td><td>23688</td><td>S POSN (col)</td>
+</tr>
+<tr align="center">
+<td>16442</td><td>1</td><td>23689</td><td>S POSN (lin)</td>
+</tr>
+<tr align="center">
+<td>16444</td><td>22</td><td>23296</td><td>PRBUFF</td>
+</tr>
+<tr align="center">
+<td>16477</td><td>30</td><td>23698</td><td>MEMBOT</td>
+</tr>
+<tr align="center">
+<td colspan="4"><b>Table 5. ZX-81 system variables and their Spectrum equivalents.</b></td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>A word of warning. It is not possible to guarantee that a given program can be transferred from one machine to its successor. If the program author has made use of PEEKs or POKEs, it is essential to understand the function of his code on the original machine before designing the equivalent to run elsewhere. Usually that means entering the code into the first machine and analysing it dynamically.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="utlites.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Utilities"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 25 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>April 1984</h6>
+
+</body>
+</html>

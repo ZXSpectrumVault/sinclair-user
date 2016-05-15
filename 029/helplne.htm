@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 29 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX-81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, August 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="mindgms.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 29 Contents"></a>
+<a href="../030/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 30"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson4.gif" width=295 height=290 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1>The mathematics of music</h1>
+
+<p class="first"><b><font size="+1">Andrew Hewson analyses sound and lists a simple security program</font></b></p>
+
+<p class="first">WHAT IS the formula for calculating the frequency and  duration of a note as needed by the ROM routine at 03B5? asks Richard Hyde, who wants to use a Spectrum to create music.</p>
+
+<p>Before answering the question I shall describe how the Spectrum BEEP command works. Chapter 19 in the manual explains that the command has two parameters which determine the duration and pitch respectively of the note to be produced. The duration is measured in seconds and the pitch is in semitones relative to middle C. Thus the command:</p>
+
+<pre>BEEP 0.5,1</pre>
+
+<p class="first">causes the computer to play C sharp - one semitone above middle C - for half a second.</p>
+
+<p>Three separate ROM routines are used when a note is to be played. The first is the command interpreter which determines that it is the BEEP command which is to be executed, as opposed to PRINT or DIM. It also places the two parameters in floating point form on the calculator stack. It then passes control to the BEEP command routine located at address 03F8.</p>
+
+<p>That routine converts the duration and pitch parameters to two new numbers. The new parameters are passed in the DE and HL register pairs to a third routine located at 0385 which drives the loudspeaker, causing the correct note to be produced.</p>
+
+<p>The third routine drives the loudspeaker by toggling - i.e., switching rapidly on and off - the low voltage supply to the loudspeaker electromagnet. That causes the cone of the loudspeaker to vibrate, thereby generating an audible sound. The two parameters passed to the routine control the number of times the toggling takes place and the rate of repetition.</p>
+
+<p>Thus the answer to Hyde's question is in the BEEP command routine and in particular in the conversion of the pair of parameters but before considering the routine in detail a digression on the mathematics of music is necessary. To assist the non-musical reader some basic terms are defined in table one.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<table border="0" cellpadding="5" cellspacing="5">
+<tr align="left"><th>Term</th><th>Definition</th></tr>
+<tr><td>Middle C</td><td>A note commonly used as a reference point. It lies approximately in the middle of the human range and the piano keyboard. Sinclair assigns it a frequency of 261.63 cycles per second.</td></tr>
+<tr><td>Frequency</td><td>The number of complete oscillations or cycles per second of a note.</td></tr>
+<tr><td>Pitch</td><td>The musical term equivalent to frequency. A female voice usually produces high-pitched notes, i.e., high-frequency notes.</td></tr>
+<tr><td>Octave</td><td>Two notes are said to be an octave apart if the frequency of one is double the frequency of the other.</td></tr>
+ <tr><td>Semitone</td><td>Two notes are said to be a semitone apart if the logarithm of the frequency of one is one-twelfth bigger than the logarithm of the frequency of the other.</td></tr>
+<tr><td colspan="2"><b>Table 1. Some musical definitions.</b></td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>An octave is a &quot;natural&quot; separation between two notes which most people can detect readily. Raising a note by an octave is equivalent to doubling the frequency of the note. For example, while the frequency of middle C is about 262 cycles per second, the frequency of the note an octave higher, called upper C, is about 524 cycles per second. Similarly the frequency of the note an octave higher still is about 1,048 cycles per second.</p>
+
+<p>If all the notes ever played were octaves of middle C, music would be very uninteresting and the average piano keyboard would have about seven notes. Hence to add variety each octave is divided into 12 semitones. Those semitones are approximately evenly spaced in the logarithmic scale of frequency, i.e., the difference of the logarithms of the frequency of adjacent pairs of semitones is approximately the same. Each of those semitones are related octave notes above and below, thus generating the 70-odd notes on the piano keyboard.</p>
+
+<p>It would be possible to create all notes from a single reference frequency, stepping up or down by the required number of semitones by adding or subtracting the logarithmic increment the required number of times. Sinclair has chosen not to do that. Instead, the frequencies of all 12 semitones in a single reference octave are stored in floating point form in ROM at address 046E. Higher notes are obtained by doubling or quadrupling those frequencies, lower notes by halving or quartering.</p>
+
+<p>The frequencies and the names of the notes are listed in table two. The logarithm to base 10 of each frequency is also listed in table two and it is clear that the difference in each adjacent pair of logarithms is about 0.025.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<table border="0" cellpadding="5" cellspacing="0">
+<tr align="left"><th>Note</th><th align="center">Frequency</th><th align="center">Log frequency<br> - to base 10</th></tr>
+<tr><td>Middle C</td><td align="center">261.63</td><td align="center">2.418</td></tr>
+<tr><td>C sharp</td><td align="center">277.18</td><td align="center">2.443</td></tr>
+<tr><td>D</td><td align="center">293.66</td><td align="center">2.468</td></tr>
+<tr><td>D sharp</td><td align="center">311.13</td><td align="center">2.493</td></tr>
+<tr><td>E</td><td align="center">329.63</td><td align="center">2.518</td></tr>
+<tr><td>F</td><td align="center">349.23</td><td align="center">2.543</td></tr>
+<tr><td>F sharp</td><td align="center">369.99</td><td align="center">2.568</td></tr>
+<tr><td>G</td><td align="center">392.00</td><td align="center">2.593</td></tr>
+<tr><td>G sharp</td><td align="center">415.30</td><td align="center">2.618</td></tr>
+<tr><td>A</td><td align="center">440.00</td><td align="center">2.643</td></tr>
+<tr><td>A sharp</td><td align="center">466.16</td><td align="center">2.669</td></tr>
+<tr><td>B</td><td align="center">493.88</td><td align="center">2.694</td></tr>
+<tr><td colspan="3"><b>Table 2. The semitone table used by the Spectrum.</b></td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The BEEP command routine uses the table to calculate the required frequency from the pitch parameter as follows:</p>
+
+<p>The required semitone is determined from the result of the calculation</p>
+
+<p>SEMITONE = 12*INT (PITCH/12)</p>
+
+<p>That gives a value in the range of 0.0 to 11.99. The integer part of that number determines which semitone is selected. The frequency is then adjusted upwards using an approximate calculation to take account of any non-integer remainder.</p>
+
+<p>The required octave is determined from the calculation</p>
+
+<p>OCTAVE = INT(PITCH/12)</p>
+
+<p>The frequency obtained from the first part of the calculation is then doubled or halved the appropriate number of times. For example, it is doubled once if OCTAVE = 1, twice if OCTAVE = 2, halved once if OCTAVE=-1.</p>
+
+<p>To complete the conversion of the first parameter, the frequency obtained, measured in cycles per second, is multiplied by the duration parameter, in seconds, to give the total number of times the loudspeaker supply line must be toggled. The result is passed to the BEEPER routine at 03B5 in the DE register pair.</p>
+
+<p>The second parameter passed to the BEEPER routine controls the interval of time between each toggling of the loudspeaker line. That time interval is not measured in seconds but in the number of &quot;T states&quot; divided by four for which the BEEPER routine is to remain in a delay loop before switching the loudspeaker line on or off again. A T state is the period of time the Z-80 microprocessor takes to execute the fastest instruction. In the Spectrum there are 3,500,000 T states per second. The steps in the calculation are:</p>
+
+<p>Divide 3,500,000 by the frequency of the required note; divide the result by four; subtract 30.125 to take account of overheads at the beginning and end of the delay loop. The result is passed to the BEEPER routine in the HL register pair.</p>
+
+<p>I have written previously that POKEing numbers into RAM is the equivalent of putting a spanner in the works. POKEing causes no permanent harm but you should not be surprised if you cause the Spectrum to crash.</p>
+
+<p>Peter Read stumbled on a useful facility by POKEing at random. He writes: <b>If you enter a clear command and the POKE zero into the next but one and the next but two lower bytes in RAM, the Spectrum will continue to work normally until it reaches the end of the program or the break key is pressed at which point it will crash. Why?</b> It is not necessary to enter the CLEAR command to obtain that effect. CLEAR resets RAMTOP to a new address. RAMTOP in the 48K Spectrum is set initially to 65367 and the short program listed in table three will function normally until it finishes or the break key is pressed, at which point it will crash, as Read describes.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre>10 POKE 65365,0
+20 POKE 65364,0
+30 FOR I=1 TO 1000
+40 PRINT AT 0,0;I
+50 NEXT I
+
+<b>Table 3. A Spectrum program which executes normally
+until the break key is pressed or until it finishes.
+The computer then crashes.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The reason for that effect is that the two locations altered by the POKE commands together contain the address to which the processor jumps when an error occurs. That fact can be demonstrated by examining the ERR SP system variable held at location 23613. In the 48K Spectrum that system variable contains 65364, which is the address of the lower of the two locations which are POKEd in the program. Thus ERR SP points to the address which points in turn to the address to which an error jump is made. The procedure seems complicated but it provides a system with a great deal of flexibility.</p>
+
+<p>The locations normally contain 3 and 19 respectively and so the address to which they point is:</p>
+
+<p>Address = 3 + 256*19 = 4867 = 1303 (hex).</p>
+
+<p class="first">That location is in the middle of the main execution routine. The Spectrum then prints the error number and awaits an input from the keyboard.</p>
+
+<p>The effect of resetting those two addresses to zero is to cause the Spectrum to jump to ROM address zero, the equivalent of pulling out the power supply plug and starting again. Hence that gives a useful way of protecting your programs against unauthorised inspection.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+<p align="center" class="first"><a href="mindgms.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 29 Contents"></a>
+<a href="../030/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 30"></a></p>
+
+<h6 align="center">Sinclair User<br>August 1984</h6>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 49 - Pro Fortran-77</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, QL, Prospero Software">
+<meta name="description" content="A review of Pro Fortran-77 from Sinclair User, April 1986">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#CCCCCC" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="qlink.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="QLink"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 49 Contents"></a>
+<a href="qlpaint.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="QL Paint"></a></p>
+
+<br clear=all>
+
+<table width="100%" border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr align="right"><td bgcolor="#CCCCCC"><img src="../shared/images/qlink3.gif" width=147 height=50 hspace=5 vspace=2 border=0 alt="QLink">
+</td></tr></table>
+</td></tr></table>
+
+<h1><i>Pro Fortran-77</i></h1>
+
+<p class="first">I OWE my interest in computers to a schoolboy infatuation with the Fortran programming language, and a stack of batch-processed punched cards.</p>
+
+<p>At school in the early seventies Fortran was the main language for computer illiterates who fancied themselves as hackers and, although it was replaced by interactive Basic operating on remote terminals, it still remains popular in colleges and scientific establishments.</p>
+
+<p><b>Fortran-77</b>, from Prospero, is a complete implementation of the ANSI X3.9 standard. It has a run-time library and standard Sinclair linker which is used to connect separately compiled Fortran routines.</p>
+
+<p>The two-pass compiler converts source into relocatable binary code. Being relocatable, the machine code can be turned into a job and run anywhere on the user RAM map. Unfortunately, a source editor has not been included so you will need to buy one. I would suggest the one from Metacomco, which is a standard ASCII editor, but you would have to buy one of their languages or utilities to obtain it.</p>
+
+<p>Once you have found a way of entering source the rest is plain sailing. The first input the two-pass compiler requires is the name of your source file - it can take only one file at a time.</p>
+
+<p>The compiled source code is assembled on cartridge using MDV2_ and a report goes to the screen console to inform you of any errors and, if there are none, how much code and data has been assembled. That is useful if you want to run tasks concurrently.</p>
+
+<p>Just because you can compile only one program at a time does not mean that the program cannot be made up of code from different files. Several source files can be linked into one program using the INCLUDE directive which is so popular with C compiler manufacturers. When the compiler encounters INCLUDE the code which it points to is loaded as a routine within the main program and compiled.</p>
+
+<p>There are nine compile-time options which you can select. Those include making a list of source file and error messages and dumping it either to the screen console or MDV_ file, checking the range of variables and compacting code if memory is at a premium.</p>
+
+<p>The compiler is easy to operate and can be made even easier by putting it onto disc and using <b>QL Toolkit</b>, from Sinclair Research, to put the compiler into Batch Mode. Once you've done that a single command can be used in compilation instead of having to invoke the compiler's two passes manually.</p>
+
+<p>Error messages can occur at any time during compilation and consist of a digit from one to four indicating the level of severity, the source line number at which the error occurred and the code of that error.</p>
+
+<p>The error messages are not in English and you will have to refer to an appendix at the back of the manual to translate them. There are 107 error messages covering compile-time, run-time and IO errors.</p>
+
+<p>The comprehensive manual covers most aspects of Fortran but it is no replacement for a book on the language -which any good Websters outlet will stock. Fortran is not as difficult as Pascal to learn, especially if you have done some Basic programming. lt is, after all, a sub-set of Basic with a structure similar to that of Pascal and an extended file-handling capability.</p>
+
+<p><b>Pro Fortran-77</b> will appeal to colleges and other educational establishments, and to home users who want a Basic-type language without the restrictions on random access file handling.</p>
+
+<p>It can also be used to construct mathematical models, handle calculus, equations and geometric functions. Those can be supplemented and made more digestible on screen by the sophisticated graphics commands. At the other end of the scale you can, of course, produce your own graphics adventures - which usually require manipulation of locations with graphics - or adventure games which do not need user-defined graphics. At almost &#163;100 you are unlikely to want to just try it out! However, if you've seen what Fortran can do and have long applications programs to write, <b>Pro Fortran-77</b> is an excellent alternative to all those Basic and Pascal compilers on the market.</p>
+
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellspacing="0" cellpadding="5">
+<tr><td bgcolor="#FFFFFF"><b>Publisher</b> Prospero Software<br>
+<b>Price</b> &#163;99.95<br>
+<font size="+2"><b>*****</b></font>
+</td></tr></table>
+</td></tr></table>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="qlink.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="QLink"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 49 Contents"></a>
+<a href="qlpaint.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="QL Paint"></a></p>
+
+<h6 align="center">Sinclair User<br>April 1986</h6>
+
+</body>
+</html>

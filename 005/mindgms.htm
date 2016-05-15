@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 5 - Mind Games</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="The Mind Games column from Sinclair User, August 1982">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 5 Contents"></a>
+<a href="helplne.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Helpline"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>mind games</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="mindgms.gif" width=158 height=175 hspace=10 vspace=10 border=0 align="left" alt="">
+<p align="center" class="first"><b><font size="+1">Philip Joy looks into his postbag and finds a wide variety of competition entries, new forms of chess and anagram games.</font></b></p>
+
+<h1 align="center">Good response to Nim contest</h1>
+
+<p class="first">P MARSON, from Mansfield, Nottinghamshire has what look like two good programs, <b>HexaPawn</b> and <b>QuadraPawn</b>. He has included 10 pages of details about them but I have not had time to read them.</p>
+
+<p>It makes a change, though, to see that amount of documentation; most people supply very few details. He asks a question about how much memory a program takes but I feel that it would be more useful for him to know how much memory is left, as he will then know how much free space he has, taking account of variables as well.</p>
+
+<table border="0" cellpadding="10" align="right">
+<tr><td align="center">
+
+<table border="1" cellpadding="15">
+<tr><td>
+<pre>1   LET X=VAL &quot;50&quot;
+2   PRINT &quot;NIM&quot;;TAB 1;&quot;MAX.NO.O
+    F MATCHES YOU MAY TAKE =3&quot;
+3   PAUSE 120
+4   CLS
+10  PRINT AT 0,0;&quot;YOUR GO&quot;
+15  PRINT AT 11,5;&quot;NO. OF MATCHE
+    S LEFT=&quot;;X;&quot; &quot;
+20  INPUT A
+25  IF A&gt;3 R A&lt;1 THEN GO TO 20
+30  LET X=X-A
+35  PRINT AT 11,5;&quot;NO. OF MATCHE
+    S LEFT=&quot;;X;&quot; &quot;
+40  IF X=0 THEN PRINT AT 0,0;&quot;YO
+    U WIN&quot;;Q
+45  PRINT AT 0,0;&quot;  MY GO&quot;
+50  LET D=X
+55  GO SUB 100
+60  IF D=X THEN LET X=X-INT(RND
+    * 3)-1
+65  PAUSE 120
+70  IF X=0 THEN PRINT AT 0,0;&quot;I
+    WIN  &quot;;Q
+75  GO TO 10
+100 FOR H=0 TO 12
+105 IF X-1=4*H THEN LET X=X-1
+110 IF X-2=4*H THEN LET X=X-2
+115 IF X-3=4*H THEN LET X=X-3
+120 NEXT H
+125 RETURN</pre>
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+
+<p>He will also know how much his program is taking up, variables and all, by taking away that figure from his memory size. I know of a USR routine in the ROM which will give the amount of free memory. The instructions look like this:</p>
+
+<p>Print USRx.</p>
+
+<p>What I want to know is x, its decimal value; the first person whose letter I open will be sent a copy of my adventure program. Please mark the letter USR competition.</p>
+
+<p>I was delighted to receive a number of versions of both one- and three-pile <b>Nim</b>. I have decided to give copies of my adventure game to J Leaver, London; M Woodruff, Lancs; H Duncan, Cambs; J Williamson, West Lothian; I Stracey, Cambs. If they will send me a SAE with at least a C20, I will copy the adventure on to it for them.</p>
+
+<p>If you send a tape to me and would like it returned, please enclose a SAE.</p>
+
+<p>Some of the versions of Nim fit into 1K and one is listed, while others use machine code or show very high skill. So people have won a copy of my adventure for different reasons. The version listed is a winner, from Hugo Duncan, of Cambs; it fits into 1K of memory.</p>
+
+<p>Duncan says that the number of matches may be changed by changing line 1 and line 100. He says that if it is changed to a multiple of four, the ZX-81 is unbeatable.</p>
+
+<p>Returning to chess, I thank Mr Egdoll of Glasgow for sending some more matches. I will be including those games but they take a long time to check and comment on ready for publishing.</p>
+
+<p>I received a letter from the Electric Pencil Co of North Humberside about chess programs in general. I was asked to compare Chess I-ZX chess - to the Sargon chess program and Chess II to the TRS-80/VG Sargon 2.5 program. I have a Video Genie computer and a copy of the Sargon 2.5 program and I can say that if Chess II plays as well, it must be very powerful.</p>
+
+<p>Two programs were received this month which are different from what has been included so far. They are <b>Anagram</b> and <b>Crossword</b> but were received too late for review this month. At first glance it looks as if they are good.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 5 Contents"></a>
+<a href="helplne.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Helpline"></a></p>
+
+<h6 align="center">Sinclair User<br>August 1982</h6>
+
+</body>
+</html>

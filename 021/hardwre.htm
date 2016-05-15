@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 21 - Hardware World</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Hardware news from Sinclair User, December 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 21 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Hardware World</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1>Sinclair cartridges may be out of step</h1>
+
+<p class="first">SINCLAIR has just announced the Interface Two, which has followed the Interface One within a few weeks. Interface Two provides two joystick sockets, which take standard Atari joysticks and a ROM cartridge slot. The joystick ports are non-standard, as the only software to work with them is from Sinclair or Psion.</p>
+
+<p align="center" class="first"><img src="../shared/images/iface21.jpg" width=400 height=331 border=0 alt="Interface 2 with Planetoids cartridge"></p>
+
+<p>They operate the number keys only and each joystick operates the first or last set of numbers. Despite the advertisements there is no software built into Interface Two - only a ULA to act as a port for the joysticks. The ROM cartridge socket is also a disappointment, as it provides no special switching to page ROMs in and out.</p>
+
+<p>The cartridge has all 16 address lines and eight data lines on it but, because of the way Sinclair designed the Spectrum, none of the internal memory can be switched off, so the only programs which can be provided can be 16K long versions which will replace the Basic ROM.</p>
+
+<p>They are available by turning-off the power, plugging-in the cartridge and turning-on the power. The games then auto-start.</p>
+
+<p>An interesting point is that Sinclair has saved money by having the bare silicon chip wired direct to the PCB instead of mounted inside the normal IC casing.</p>
+
+<p>A printer connection is provided at the back of the unit to run the Sinclair printer only. That is because none of the other connections is connected. It would seem that Sinclair has produced its last peripheral for the Spectrum.</p>
+
+<p>At &#163;19.95 for the Interface Two and &#163;14.95 for each ROM cartridge, they may not be in great demand unless the price is reduced dramatically. The joysticks are also out of step with software manufacturers who program games to work with the Kempston-type joystick interface. Sinclair Research is the only company selling Interface Two.</p>
+
+<h2>Amplifier needs sound knowledge</h2>
+
+<p class="first">ZXM is a sound box from Timedata complete with amplifier. Based on the 8912 three-tone chip which appears on most sound boards, it also provides a joystick socket. The Atari-type joystick socket will not work with commercial software, as it is based on an I/O port from the 8912 chip and has to be programmed to be available first.</p>
+
+<p>The amplifier and loudspeaker are controlled by a volume control situated on the front of the unit.</p>
+
+<p>The unit plugs into the edge connector of the Spectrum and has a PCB edge at the back so that other peripherals can also be plugged-in. The edge connector is only 23 ways wide so it fits both the ZX-81 and Spectrum.</p>
+
+<p>The unit is accompanied by a booklet of programs and a tape. The explanations and use of the unit tend to be over-complicated, requiring a good technical knowledge to understand it.</p>
+
+<p>Timedata also makes a speech unit, ZXS. The unit, plus the software provided, allows you to set up a string (S$) of sounds to make up the words in Basic. A machine code routine will put them out to the speech unit, which also has an I/O-mapped device. Unfortunately you will be unable to hear the speech produced unless the unit is connected to an external amplifier such as the ZXM via its 3.5mm. socket.</p>
+
+<p>The speech can be EDITed and changed using the program but the size of the program may make it difficult to incorporate into your programs.</p>
+
+<p>The ZXM costs &#163;29.95 and the ZXS &#163;24.99 from Timedata, Essex.</p>
+
+<h2>Extra keys help save tired fingers</h2>
+
+<p class="first">ONE OF the main criticisms of the ZX-81 and Spectrum has been the number of key presses required to access certain commands. Stephen Adams has produced a kit which allows you to add extra keys to your add-on keyboard.</p>
+
+<p>Commands or characters which previously required one of the shift keys to be pressed can now be accessed by a single keystroke. The kit contains all the electrical components needed, with instructions, but as each keyboard uses different keys you must supply your own.</p>
+
+<p>The kit is aimed at users with at least a passing knowledge of soldering and those able to follow a simple circuit diagram but considering that the kit costs only &#163;1.25 including postage and packing, it is worth buying to save tired fingers.</p>
+
+<h2>Clear speech from Currah module</h2>
+
+<p class="first">THE CURRAH U Speech module is a black plastic box which plugs into the back of a Spectrum and gives an amazing range of facilities. The unit is approximately 3in. square and &#189;in. high. Once plugged into the Spectrum expansion port, no more expansion is possible unless a motherboard is used, as it lies flat behind the Spectrum.</p>
+
+<p>There are two leads from the unit. One goes into the aerial socket and the other into the MIC socket. The lead to the TV is plugged into the socket on the back of the unit. That must be done before powering-up the Spectrum.</p>
+
+<p>The unit provides its own copyright message at the top of the screen when powered-up and pressing a key will also start the unit into its keyvoice mode. That is where every key used is spoken by the unit. All the keywords except the tilth (~) are spoken - even the direction arrows which come out as CURSOR. The colours, of course, are not spoken or the various modes.</p>
+
+<p>The keyvoice is controlled by a variable called KEYS and can be turned-off by LET KEYS=0. That can be used directly or in the program and the keyvoice can be turned on again by LET KEYS=1. The keyvoice also works for keys pressed in the INPUT or INKEY$ unless disabled.</p>
+
+<p>Another useful feature is that S$ has been allocated as a speech buffer and any LET S$ command makes S$ into a spoken string. Only letters are allowed, which is a pity, since numbers would be useful. Letters can also be used in brackets to give single or double allophones. An allophone is a sound rather than a letter in speech and words must be programmed to sound correct.</p>
+
+<p>Most words will be satisfactory if typed-in directly but Os, As and some others may need a set of allophones instead. In that respect the booklet with the unit is very good, giving clear examples and a list of suitable alternatives. Unfortunately, the variable KEYS does not effect the speaking of S$.</p>
+
+<p>For the technically-minded, the unit contains a ULA which works on a WRITE command from the microprocessor, a ROM containing the keyword speech patterns and SP0256-AL2 speech processor. It also contains a clock for clear speech and an audio modulator to transfer the sound to the TV lead. The sound can be adjusted by using a screwdriver on the screw showing on the top at right-hand side of the box.</p>
+
+<p>The U-Speech allocates itself the top 256 bytes of memory at switch-on and moves down the USR graphics and RAMTOP. More can be allocated to that buffer by the use of CLEAR. That makes it incompatible with some programs which use that space for machine code. Details of the buffer are given at the back of the book for machine code users.</p>
+
+<p>Time must be allowed in all programs for the speech as it is updated only by the keyboard interrupt routine every 50ms. That also means that during SAVE/LOAD/VERIFY/BEEP and dealings with any device connected to interface one - i.e., Microdrive, RS232 or network - no speech should be in progress. That is because the speech will continue as one sound until the operation is finished.</p>
+
+<p>The unit is extremely useful but time has not permitted it to be tested with any other units to see if they clash. What is presented is a very good clear speech box, with a very easy way of programming it and, even more useful, a spoken response to any key input. That might become a more than essential unit for some disabled users.</p>
+
+<p>The Currah U Speech unit costs &#163;29.95. Currah Computer Components is at Hartlepool, Cleveland. The company is intending to make it usable for the ZX-81, BBC and other computers.</p>
+
+<h2>Taking off the heat</h2>
+
+<p class="first">PR ELECTRONICS has produced a small aluminium box which regulates the power supply to a ZX-81 or Spectrum, thus reducing the amount of heat generated inside the computer.</p>
+
+<p>It will help with problems in using the Spectrum with a TV display, as it eliminates most of the dot crawl. It also helps if you use the computer for a long time, as it prevents crashes due to overheating.</p>
+
+<p>The power pack plugs into the socket on the box and a lead from the box plugs into the computer. All the heat is dissipated through the aluminium box and so a label is included. It did not become too hot to touch while being used. It seems to do its job very well, whatever equipment is connected to it.</p>
+
+<p>PR Electronics is at Doncaster, Yorkshire, and the price of the unit is &#163;8.95.</p>
+
+<h2>Interface adds life to ZX-81</h2>
+
+<p class="first">THE DDC Colour Interface allows the ZX-81 user to have a 16-colour display on a TV set. It fits on the back of the ZX-81 and the only internal connection required is to the video lead going into the video modulator.</p>
+
+<p>Control is by turning some of the inverse characters into colour controls. They are in the range from Inverse 4 to Inverse Z and they can no longer be used for graphics. All of the block graphics can still be used. Whatever colour character is printed on the screen it will affect the rest of the line until the end of line or until another colour character is reached. A border around the screen is still maintained in the background colour of red, as when you switch on.</p>
+
+<p>All the colours affect the background colour, as the foreground will normally be black. Inverse graphics will be shown as colour on a black background. The colour character will be shown as a coloured space on the screen. The only difficulty is with editing the lines which contain coloured squares. The normal inverse G, L and K are invisible and there is no way to tell the position of the cursor. You have to watch the blue haze which spreads over the line from the cursor to the end of line and when moving through coloured squares that is extremely difficult. Even when switching-on the computer, the normal inverse &quot;K&quot; cursor is invisible and the only thing the user will see is the blank red screen.</p>
+
+<p>If when switching-on the ZX-81 you get only a blank white screen there is a small resistor inside the unit which can be adjusted to give colour on the screen. That is done easily with a small screwdriver.</p>
+
+<p>The other control inside the box allows you to set shades of colour towards more red or green.</p>
+
+<p>The plastic box is very well made and is fitted like a jigsaw, with no screws, and so can be taken apart and put back together without damage, if with a little difficulty.</p>
+
+<p>The system is very easy to use and fitting it could be much simpler if clips were provided. That would eliminate having to solder wires to fit it on to the video wire going into the modulator.</p>
+
+<p>All the other connections are made by plugging the edge connector of the box into the expansion edge on the back. It can be used with or without a 16K RAM pack but will not work with devices using the upper 32K of memory space. It should certainly put life back into ZX-80s and ZX-81s and is available from ECC Publications, which publishes <i>Sinclair User</i>, for &#163;32.90.</p>
+
+<h2>Motherboard for the serious user</h2>
+
+<img src="hardwre1.jpg" width=296 height=186 hspace=10 vspace=10 border=0 align="right" alt="Microtext keyboard">
+<p class="first">MICROTEXT U.K. has launched a motherboard, power supply, and keyboard unit for serious users of ZX-81s and Spectrums. The keyboard has the normal 40 keys, plus an extra shift key, DELETE key, an extended mode key, a SHIFT LOCK key and joystick-type control pad.</p>
+
+All the keys are approximately &#189;in. square and have very little space between them, which makes it easy to hit two keys at a time.
+
+<p>The keyboard has a case which is an optional extra. The ZX-81 or Spectrum PCB will fit inside it comfortably but you will not be able to use it with the Interface One.</p>
+
+<p>The motherboard connects to the computer via an edge connector connected to a bundle of wires. The motherboard PCB card provides one unbuffered edge for any Sinclair or other equipment, but all the cards are operated through the buffers. A power supply can also be purchased which fits on the back and will supply the computer, as well as supplying +12 and +5 volts at 5 amps each for the extra cards.</p>
+
+<p>The units are expensive and require the user to have considerable technical knowledge. The brief explanations provide a sound base for school and industrial development projects. The keyboard costs &#163;41.95, the case &#163;11.50, the card frame &#163;36.95 and power supply &#163;36.95.</p>
+
+<p>Microtext calls the system Mukbus and it is based on Eurocard-standard 64-way DIN connectors.</p>
+
+<h2>Room for improvement</h2>
+
+<p class="first">THE CPD8300 tape recorder is designed to replace the Ferguson recorder as a standard tape recorder for personal computers. The main difference is that it has been designed as a data recorder - although it can still be used for speech - and has a switch at the back marked Spectrum. It runs from 240-volt mains only, and has a power ON/OFF switch and power-on LED.</p>
+
+<p>It also has a number of extra facilities which should have made it easier to use with the ZX-81 and Spectrum.</p>
+
+<p>There are sockets at the back of the recorder marked REMOTE, SOUND IN and AUX. The AUX socket is designed for high-level inputs to the recorder but unless it was used for the Spectrum it could not record properly.</p>
+
+<p>The powerful amplifier built into the tape recorder - 400mw - is the biggest cause of the problems in using the tape recorder. The volume control and level meter are not accurate enough to allow you to set up the correct SAVEing and LOADing level.</p>
+
+<p>The level should be 7-8 when SAVEing and between 4-8 when LOADing, depending on the computer. The entire range of the level meter appears between two and three on the volume control when LOADing. There are 10 sections on the volume control and it would have been better if a second fine-tuning volume control had been incorporated.</p>
+
+<p>On SAVEing, the Spectrum MIC lead had to be plugged into the AUX socket to register on the meter and the ZX-81 input had to be adjusted at about 5 on the volume control using the SAVE socket.</p>
+
+<p>Once the correct levels had been achieved it was easy enough to SAVE and LOAD but they had to be changed to VERIFY a recording. The level meter is undamped. It is too easy to overload it and when SOUND is used on the speaker switch, the needle shakes violently. At &#163;39.95 the recorder appears overpriced, although W H Smith has promised modifications.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 21 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<h6 align="center">Sinclair User<br>December 1983</h6>
+
+</body>
+</html>
+

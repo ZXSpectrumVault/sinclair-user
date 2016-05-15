@@ -1,0 +1,311 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 38 - Machine Code</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Z80 machine code programming feature from Sinclair User, May 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#CCCCCC" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 38 Contents"></a>
+<a href="zxword.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="ZX Word"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Machine Code</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><img src="mcode1.gif" width=500 height=169 vspace=10 border=0 alt="Brainwaves and Spectrum">
+
+<h1><i>Learning the secret of mind over machine</i></h1>
+
+<p class="first"><b><font size="+1">Bored with Basic? Curious about code? Our new series introduces you to the mysterious language of the Z80. Marcus Jeffery is your interpreter.</font></b></p></center>
+
+<p class="first">Once proficient with Spectrum Basic, many users turn to Z80 machine code as the next language to learn, usually to increase speed and decrease program size.</p>
+
+<p>It is all very well spending hours mapping out new arcade games, but not very useful if they are either too big to fit into memory or too slow to be playable. Unfortunately, Z80 is very different from Basic, and the majority soon become disillusioned with the language. However, with just a little perseverance, Z80 can easily be mastered.</p>
+
+<p>In this series of articles, we hope to teach the main aspects of Z80 machine code. Do not expect to be able to program the world's greatest game immediately, but each article will include an example program, using the techniques learnt, which you will be able to incorporate into your own programs to speed them up.</p>
+
+<p>Z80 programs are usually found in two forms: assembly code and machine code. When writing in machine code all instructions are stored as one or two numbers in the range 0 to 255. That, however, is not very convenient for the machine code programmer, so assembly language uses a program in the computer to convert three- or four- letter codes into the machine code numbers. A few of those codes can be seen in <a href="#fig4">figure four</a> - LD, INC and DEC - and to the right of those are their numerical equivalents.</p>
+
+<p>You'll have noticed that some of those numbers include the letters A to F as well as the digits 0 to 9. That is because the numbers are shown in hexadecimal form - hex - which uses base 16. <a href="#fig1">Figure one</a> shows how those digits are related to the normal decimal system - base 10. To convert a hex number to decimal, carry out the following operations:</p>
+
+<p>Take a pair of hex digits - for instance, B1. Look up the first digit in <a href="#fig1">figure one</a>, and multiply its decimal equivalent by 16. So, B (in hex) is 11 (decimal) and</p>
+
+<pre>  11 x 16 = 176</pre>
+
+<p class="first">Add the decimal equivalent of the second hex digit. Thus,</p>
+
+<pre>  176 + 1 = 177</pre>
+
+<p class="first">to give the answer.</p>
+
+<p>The reverse operation can be carried out by dividing a decimal number by 16 to give the first hex digit, and using the remainder for the second hex digit.</p>
+
+<p>Basic programmers are used to having a fairly sophisticated language with a large number of variables. When using machine code, there are only a limited number of variables, known as 'registers'.</p>
+
+<p>The main Z80 register is the A register, also known as the accumulator. That is eight binary digits - bits - long, so it can only hold a number in the range 0 to 255. Eight bits is known as one byte of information when using the Z80 processor. It is for that reason that hex numbers usually consist of two hex-digits, since that will represent a number in the range 0 to 255.</p>
+
+<p>The Z80 processor has a number of other registers, the most important of which are the ones labelled B, C, D, E, F, H and L, all of which are one byte long, as with the accumulator.</p>
+
+<p>Your Spectrum has either 16K or 48K of memory. K stands for kilobyte, meaning 1000 bytes. In fact, a kilobyte normally refers to 1024 bytes, because that is the maximum range which can be stored as 10 bits of information. A 48K Spectrum has, in fact, 64K of memory, but 16K of that is ROM - Read Only Memory - and is used to instruct the computer what to do when you type in commands and run Basic programs.</p>
+
+<p>Now, 64K is the range 0 to 65535, which is exactly the range of a number containing 16 bits of information. That is two bytes, and usually represented as a sequence of four hex digits. Consequently, all instructions which alter a particular byte in memory must use four hex digits to specify which byte is to be changed.</p>
+
+<p>We are now in a position to understand a simple machine code instruction:</p>
+
+<pre>  LD A,(6000h)</pre>
+
+<p class="first">That is shown in assembly language, but could just as easily be shown in machine code hex numbers:</p>
+
+<pre>  3A 00 60</pre>
+
+<p class="first">The English translation of that would be &quot;Load (LD) the accumulator (A) with the contents of the hex location 6000 (6000h)&quot;. The 'h' at the end of the number means the number is in hex form. The brackets surrounding the number specify that we are interested in the contents of location 6000h, not the number itself. Thus the instruction:</p>
+
+<pre>  LD A,1Fh</pre>
+
+<p class="first">would load the number 1Fh (that is, 31) into the accumulator, but</p>
+
+<pre>  LD A,(1Fh)</pre>
+
+<p class="first">would instead load the contents of the 31st byte of memory into the accumulator.</p>
+
+<p>We already know that the registers can only hold numbers in the range 0 to 255, and that memory locations - addresses - are in the range 0 to 65535. That is most inconvenient, but we can fortunately combine some of the registers together to give the correct range. The registers are paired as B + C, D + E and H + L. So, the two instructions</p>
+
+<pre>  LD HL,6000h
+  LD A,(HL)</pre>
+
+<p class="first">would be exactly the same as our first instruction. The number 6000h is loaded into the combined H and L registers, so that the accumulator is then loaded from the contents of address 6000h.</p>
+
+<p>The difficulty with learning machine code is that it is easy enough to learn the instructions, but knowing what to do with them can be quite a problem. So we will look now at a typical application using some of the instructions we have already learnt. This short machine code routine can then be easily incorporated into your own programs.</p>
+
+<p>First of all, type in and run the Basic program in <a href="#fig2">figure two</a>. The program will fill the screen with random characters, then prompt you for a number. By entering numbers in the range 0 to 255, you can alter the foreground, background, brightness and flashing of the characters on the screen. You can form a number for a specific colour combination as follows.</p>
+
+<p>Take a number from <a href="#fig3">figure three</a> for the foreground colour. Take another number for the background colour, multiply that figure by eight, and add it to the foreground colour number. Then add 64 if your want the character to have brightness turned on. Add 128 if you want the character to be flashing.</p>
+
+<p>Each character cell on the screen has an attribute value, as given above, to define its colour. All attribute values are held in memory, starting at location 22528. Consequently, the Basic program has a loop which fills those values with the number you type in. Unfortunately, you will notice that it takes quite a while to change the screen colour. What we really need is a routine which works almost instantaneously. The assembly code for such a routine is given in <a href="#fig4">figure four</a>.</p>
+
+<p>The first instruction in the listing,</p>
+
+<pre>  LD HL,22528</pre>
+
+<p class="first">loads the first location of the attribute area into the double HL register pair. Remember, the actual value 22528 is used, because we have not used any brackets.</p>
+
+<p>The instruction which follows loads the number 768 into the BC register pair - that is the number of locations which have to be changed. The next instruction is a little different, because we have used brackets. That will load the contents of location 60000 into the combined DE register pair. Now each register can hold a byte of information, so register E is loaded with the byte at location 60000, and register D is loaded with the next byte at location 60001.</p>
+
+<p>In fact, the only byte we are interested in is the one we put into the E register - that will be the number to which all the attributes will be changed. Nevertheless, we have to use the double register instruction, because Z80 doesn't have the instruction</p>
+
+<pre>  LD E,(60000)</pre>
+
+<p class="first">All the load instructions are given in <a href="#fig6">figure six</a>, and we'll look at those in a moment.</p>
+
+<p>On each execution of the main loop of the program, the number in the E register is placed into the contents of the location in the HL register pair. That is the instruction</p>
+
+<pre>  LD (HL),E</pre>
+
+<p class="first">The first time that is executed, it will place a number into the location 22528 - the first byte of the attribute area - and will colour the top left hand character on the screen. On subsequent loops, the HL register pair will be updated using</p>
+
+<pre>  INCrement HL</pre>
+
+<p class="first">so that all characters on the screen are coloured. The last few instructions decide when to stop and the RETurn instruction passes control back to the main Basic program.</p>
+
+<p>To implement this machine code routine, type in and run the Basic program given in <a href="#fig5">figure five</a>. Type in a few numbers - range 0 to 255 - when prompted, and you will see how quickly the screen colour changes. Looking closely at the data statements from line 2000 onwards, you will notice that the strings match the hex numbers in the assembly code listing. Those are decoded and placed into memory, starting at location 60000 - the first data item - by the hex loader routine - lines 1000 to 1180. It would be a good idea to save this to tape, because it will be used again in future articles.</p>
+
+<p>Most of the load instructions supported in Z80 machine code are given in <a href="#fig6">figure six</a>. The ones not given concern other parts of machine code which we will cover in later articles. When using these, 'addr' stands for a two-byte location number (eg 60000); 'A' stands for the accumulator; 'rp' stands for register pair (BC, DE or HL); 'reg' stands for register (A,B,C,D,E,H or L); 'byte' is any number in range 0 to 255; 'word' is any number in the range 0 to 65535 (two-bytes).</p>
+
+<p>So, for example, the instruction</p>
+
+<pre>  LD HL,22528</pre>
+
+<p class="first">used in our colour program is an example of a load instruction of the type</p>
+
+<pre>  LD rp,word</pre>
+
+<p class="first"><a href="../039/mcode.htm">In the next article</a>, we will be using more of these load instructions, and combining them with 'logical' instructions to perform some remarkable and useful screen colour alterations.</p>
+
+<h2><i>Figures</i></h2>
+
+<a name="fig1"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td align="center" bgcolor="#FFFFFF">
+<pre><b>Hex       Dec</b>
+0         0
+1         1
+2         2
+3         3
+4         4
+5         5
+6         6
+7         7
+8         8
+9         9
+A        10
+B        11
+C        12
+D        13
+E        14
+F        15</pre>
+<p class="first"><b>Figure 1. Hexadecimal - decimal conversion</b></p>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig2"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<pre>  30 CLS
+  40 FOR i=1 TO 704
+  50 PRINT CHR$ (25*RND+65);
+  60 NEXT i
+  70 INPUT &quot;Attribute value = &quot;;att
+  90 GO SUB 5000
+ 100 GO TO 70
+ 110 :
+ 120 :
+5000 REM Fill attribute screen
+5010 FOR h=22528 TO 22528+767
+5020 POKE h,att
+5030 NEXT h
+5040 RETURN</pre>
+<p class="first"><b>Figure 2. Basic colour change</b></p>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig3"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<pre><b>Number   Colour</b>
+  0      black
+  1      blue
+  2      red
+  3      magenta (blue + red)
+  4      green
+  5      cyan (blue + green)
+  6      yellow (red + green)
+  7      white (blue + red + green)</pre>
+<p class="first"><b>Figure 3. Spectrum colours</b></p>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig4"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<pre>     : Place the code E into all attribute locations
+
+                     ORG   60002      ;Code starts at
+                     LOAD  60002      ;location 6002
+
+EA62 210058   COLOUR LD    HL,22528   ;HL = Start of attribute file
+EA65 010003          LD    BC,768     ;BC = Number of screen positions
+EA68 ED5B60EA        LD    DE,(60000) ;E = Contents of 60000
+                                      ;  = Value of new attribute byte
+EA6C 73       LOOP   LD    (HL),E     ;Place attribute byte into file area
+EA6D 23              INC   HL         ;HL = Next byte in file area
+EA6E 0B              DEC   BC         ;Count the changed locations
+EA6F 78              LD    A,B
+EA70 B1              OR    C          ;Jump to the label LOOP if BC is
+EA71 20F9            JR    NZ,LOOP    ;still greater than zero
+EA73 C9              RET              ;Return to the BASIC program
+                     END</pre>
+<p class="first"><b>Figure 4. Assembly code colour change</b></p>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig5"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<pre>  10 CLEAR 59999
+  20 GO SUB 1000
+  30 CLS
+  40 FOR i=1 TO 704
+  50 PRINT CHR$ (25*RND+65);
+  60 NEXT i
+  70 INPUT &quot;Attribute value = &quot;;att
+  80 POKE start,att
+  90 RANDOMIZE USR 60002
+ 100 GO TO 70
+ 110:
+ 120:
+1000 REM HEX CODE LOAD ROUTINE
+1010 DEF FN p(x)=CODE h$(x)-48-7*(CODE h$(x)&gt;=65)
+1020 LET byte=0
+1030 RESTORE 2000
+1040 READ start
+1050 READ h$
+1060 IF h$=&quot;*&quot; THEN GO TO 1160
+1070 IF LEN h$&lt;&gt;2*INT (LEN h$/2) THEN PRINT &quot;Odd number of hex digits in: &quot;;h$: STOP
+1080 FOR i=1 TO LEN h$
+1090 IF NOT((h$(i)&gt;=&quot;0&quot; AND h$(i)&lt;=&quot;9&quot;) OR (h$(i)&gt;=&quot;A&quot; AND h$(i)&lt;=&quot;F&quot;)) THEN PRINT &quot;Illegal hex digit: &quot;;h$(i): STOP
+1100 NEXT i
+1110 FOR i=1 TO LEN h$ STEP 2
+1120 POKE start+byte,16*FN p(i)+FN p(i+1)
+1130 LET byte=byte+1
+1140 NEXT i
+1150 GO TO 1050
+1160 PRINT &quot;Code entered&quot;
+1170 PAUSE 150
+1180 RETURN
+2000 DATA 60000,&quot;0000&quot;
+2010 DATA &quot;210058&quot;,&quot;010003&quot;
+2020 DATA &quot;ED5B60EA&quot;,&quot;73&quot;,&quot;23&quot;
+2030 DATA &quot;0B&quot;,&quot;78&quot;,&quot;B1&quot;
+2040 DATA &quot;20F9&quot;,&quot;C9&quot;,&quot;*&quot;</pre>
+<p class="first"><b>Figure 5. Hex loader and colour change routine data</b></p>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig6"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<pre>LD A,(addr)      - load accumulator with contents of address
+LD A,(rp)        - load accumulator with contents of address held in register
+                   pair
+LD reg,reg       - load first register from second register
+LD rp,(addr)     - load register pair with contents of address;
+                   C, E or L = (addr)
+                   B, D or H = (addr+1)
+LD reg,byte      - load given byte into register
+LD rp,word       - load register pair with 2-byte number
+LD reg,(HL)      - load contents of address held in HL register pair into a
+                   register
+LD (addr),A      - load accumulator into contents of address
+LD (addr),rp     - load contents of address with register pair;
+                   (addr)   = C, E or L
+                   (addr+1) = B, D or H
+LD (HL),byte     - load byte into the contents of the address held in the
+                   HL register pair
+LD (HL),reg      - load register into the contents of the address held in the
+                   HL register pair
+LD (rp),A        - load the accumulator into the contents of the address held
+                   in the register pair</pre>
+<p class="first"><b>Figure 6. Some Z80 load codes</b></p>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><p class="first"><a href="../039/mcode.htm"><b>Next article in series (issue 39)</b></a></p></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 38 Contents"></a>
+<a href="zxword.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="ZX Word"></a></p>
+
+<h6 align="center">Sinclair User<br>May 1985</h6>
+<h6 align="center">Another Fine Product transcribed by Jim Grimwood at <a href="http://www.users.globalnet.co.uk/~jimg/">YRUA?</a></h6>
+
+</body>
+</html>

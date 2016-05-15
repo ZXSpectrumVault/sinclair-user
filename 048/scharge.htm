@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 48 - Supercharge</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="A review of the QL Supercharge compiler from Sinclair User, March 1986">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#CCCCCC" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="qlink.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="QLink"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 48 Contents"></a>
+<a href="fiction.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="QL Fictionary"></a></p>
+
+<hr noshade>
+<br clear=all>
+
+<img src="../shared/images/qlink1.gif" width=200 height=68 vspace=10 border=0 alt="QLink" align="right">
+
+<h1><i>Supercharge</i></h1>
+
+<p class="first">SUPER FAST, super compact, and super flexible - that's the <b>Supercharge</b> compiler and Digital Precision is not kidding when it makes those claims.</p>
+
+<p>The compiler supports nearly all SuperBasic instructions and will produce machine code which will run as one or a series of QDOS jobs. Unfortunately you cannot produce resident procedures using it, because of the way those are organised, but even then you should be able to mimic the extension ability using a short routine of your own - which, incidentally, Digital Precision could have supplied.</p>
+
+<p>To compile a program you first merge a set of SuperBasic extensions from <b>Supercharge</b>. Those make the compilation process easier, but first you have to get past the Lenslok security device which so many software companies are using. Next, load in the source program.</p>
+
+<p>The compiler asks for a file name which it will use to store the code on microdrive or - if you specify it floppy disc. Next you must decide if you want a listing and to which device, screen or printer, it should go. lf you choose to have a listing the lines of your SuperBasic program will appear in a window or on paper as it is compiled.</p>
+
+<p>When the compilation process has finished <b>Supercharge</b> either drops back into SuperBasic or displays sentence-length error messages if anything has gone wrong. To run a compiled file you must EXECute it. Several job files can be run together, again using EXEC.</p>
+
+<p>If you want to run jobs concurrently - multi-task them - you will need to know about how QDOS operates. Each job has a priority; the higher it is the more processor time is given to it. SuperBasic has a priority of 32, which puts it as the foremost job. That can be altered and SuperBasic can also be turned off.</p>
+
+<p>One of the <b>Supercharge</b> SuperBasic extensions is a command to find the status of jobs through a particular channel For instance, if you typed LIST_TASKS#0 you would get the display</p>
+
+<center><b>Basic 0,0,32</b></center>
+
+<p class="first">showing that SuperBasic is the only task running. The 0,0 values are the unique job tag. Each job has a tag which the QL sets up. The final value is the priority.</p>
+
+<img src="../shared/images/suclassg.gif" width=200 height=82 hspace=10 vspace=10 border=0 align="right" alt="Sinclair User Classic">
+
+<p><b>Supercharge</b> is powerful because anyone who has a QL can use it. You do not have to know a language such as C or Pascal to write programs in the source code - SuperBasic will do.</p>
+
+<p>The compiler achieves spectacular results which are most notable where graphics and mathematics are concerned. The execution time of a program which, for example, fills the screen with circles - starting at the centre of the screen and increasing the circumference while keeping the original centre - is just over two seconds faster than the SuperBasic version.</p>
+
+<p>The only slow aspect of <b>Supercharge</b> is the compilation process which involves a lot of effort by users who will need to dirty their hands with some understanding of the QL memory in order to multi-task jobs.</p>
+
+<p>Each compiled program contains library routines from <b>Supercharge</b> so that it can be run without the compiler's presence. You should take memory into account when trying to compile a program as the library routines could make your program 11K longer. If your code is longer than 60K you should be careful.</p>
+
+<p>Digital Precision says that programs can be thread compiled - compiled one at a time into a big routine - to maximise memory usage; the company does not say how that is accomplished.</p>
+
+<p>Error messages can also make you run short of memory. Those are stored in RAM and if you have a large program with lots of errors you could end up 'out of memory' before the program has compiled.</p>
+
+<p>The answer is to correct the errors shown before the message and keep trying to compile until you have taken all the errors out of the program. The memory released should be sufficient for most programs. The only problem you could have with this approach is if there is an error in the design of your program. That would just be down to your bad coding.</p>
+
+<p>Despite criticisms that the product arrived late on the market, <b>Supercharge</b> is a superb utility which will make enterprising users interested in writing the applications programs they cannot get off the shelf.</p>
+
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellspacing="0" cellpadding="5">
+<tr><td bgcolor="#FFFFFF"><b>Publisher</b> Digital Precision<br>
+<b>Price</b> &#163;54.95<br>
+<font size="+2"><b>*****</b></font>
+</td></tr></table>
+</td></tr></table>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="qlink.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="QLink"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 48 Contents"></a>
+<a href="fiction.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="QL Fictionary"></a></p>
+
+<h6 align="center">Sinclair User<br>March 1986</h6>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 128 - PAW Tutorial</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="A guide to writing adventures with PAW from Sinclair User, October 1992">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#99FFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="index.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Issue 128 Contents"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 128 Contents"></a>
+<a href="../129/index.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Issue 129 Contents"></a></p>
+
+<img src="../shared/images/suguide.gif" width=350 height=96 vspace=10 border=0 alt="The SU Guide To">
+
+<center><h1><b><i><font color="#008000">PLAYING AND WRITING ADVENTURE GAMES</font></i></b></h1></center>
+
+<br clear=all>
+
+<img src="pawtut1.gif" width=150 height=82 hspace=10 vspace=10 border=0 align="right" alt="Part One">
+
+<p class="first"><b>First of all, what are adventure games? If you've never played one (you sad person), adventures are games that require the player to use a lot of thought, logic and reasoning to solve the puzzles programmed into the game by the author. The manual dexterity and fast reflexes required of most arcade games are completely redundant in adventure games.</b></p>
+
+<p>This is one reason why these sort of games are so popular with adults, who make up the majority of adventure players. However, if you've got an inquiring mind and some time to spend anyone, even you, can play adventures and join the growing number of enthusiasts in Britain.</p>
+
+<p>Although some adventures have graphics of some sort most are text-only and these are the ones we'll deal with for this feature. On screen you will see, in the top half, a description of the 'room' or 'location' you are currently in. This will include the 'exits' through which you can move to another location, given usually as compass directions, objects which form part of the location and other objects lying around that you can pick up and manipulate.</p>
+
+<p>As you move in one of the directions described, eg. North, the location description will change, either by scrolling up the screen or, as in most adventures these days, by the new location description appearing in the text 'window'.</p>
+
+<p>The idea of an adventure game is to solve the problems, puzzles and situations posed by the game as you progress through the adventure to the eventual goal. Hopefully these puzzles will range in difficulty from easy to hard, providing the player with plenty of mental stimulation, which is what adventure playing is all about.</p>
+
+<p>Adventure games can be set in all sorts of different scenarios, but the two most popular are fantasy (eg. Dungeons and Dragons) and Science-Fiction (eg. our own Starship Quest). The majority of Spectrum adventures are 48K and only have one part, but there are also lots of multi-part adventures available in 48K and 128K-only versions.</p>
+
+<h2>MAP PROCEDURES</h2>
+
+<p class="first">Before you sit down in front of your Speccy to play an adventure, equip yourself with a pencil, eraser and plenty of paper. This so that you may draw a 'map' of the adventure as you move around. A typical adventure map is illustrated below. This is actually a map of the mini-adventure I will be instructing you how to write in this very article.</p>
+
+<center><img src="../shared/images/pawmap.gif" width=528 height=343 vspace=10 border=0 alt="Figure 1 - The first few locations of a typical adventure map"></center>
+
+<p>When drawing a map you should make squares as small as you can, according to how small you can actually write. A lot of adventure players even draw themselves a sheet of squares which they photocopy over and over to provide mapping paper. I myself do this using 10mm squares separated by 5mm gaps. As you move around the adventure, write in the boxes a short location name and any objects or characters you see there. Where there is an exit via a door that is locked, I draw a 'bar' across the exit line in a different colour to indicate a locked door, but you will certainly develop your own ways of indicating such features on your own maps.</p>
+
+<h2>MANIPULATE YOUR SURROUNDINGS</h2>
+
+<p class="first">In all adventure games, you play by entering commands to manipulate objects and interact with characters, etc. You move around the locations by typing in compass directions, eg. N, E, S, W, NW, SE, etc. although in a very few games - eg. my own adventures &quot;Magnetic Moon&quot; and &quot;Starship Quest&quot; - nautical terms are used in parts of the game. (Starboard, Port etc.)</p>
+
+<p>Most adventures accept VERB-NOUN inputs, eg. GET SWORD or WEAR HELMET, but the modern, highly sophisticated adventure writing utilities allow full English sentences to be input and understood by the computer, eg. GET HELMET AND WEAR IT THEN DROP SWORD AND GO NORTH. They also give the programmer the option to require the player to input multi-word commands that include adverbs, adjectives and prepositions! An example of such an input would be PUT THE BLUE BALL CAREFULLY INTO THE YELLOW BOX.</p>
+
+<p>Three important verbs that are used in nearly all adventure games are EXAMINE, SEARCH and LOOK (the latter often used with a direction eg. NORTH, or a preposition eg. IN, AROUND or UNDER). When you have found an object and have picked it up, the first thing any adventurer will do is EXAMINE it to find out if there is anything unusual about it.</p>
+
+<p>Some objects described in the location texts will be static, eg. a wardrobe or a bed, which you would not normally be able to pick up. This means that they have been put there for a purpose. You would normally SEARCH WARDROBE (often after first OPENIng it if closed) to see if there is anything useful inside. You would LOOK UNDER BED to see if there is anything hidden beneath it, and so on. It just takes a little thought to work these things out as they are basically common sense actions.</p>
+
+<h2>CHARACTERISTIC CHARACTERS</h2>
+
+<p class="first">Most adventures will have characters in them, either static ones who stay in the same location all the time, or PSI's - PSeudo Intelligent characters. These move from location to location, often independently of the player's inputs and actions. You can usually converse with these characters using the verbs TALK, SAY, ASK or TELL, and you will have to GIVE them objects or perform tasks for them. When conversing with characters, it is often necessary to put the speech in quotes, eg. SAY TO KING &quot;HELLO&quot;, if you want the program to understand what you are inputting.</p>
+
+<p>Some adventures are written with beginners in mind, others for the more experienced adventurer. The most basic of all puzzles is the locked door, where you have to find the key to unlock the door and thus open it to allow you to proceed into new locations. This key will be hidden somewhere and you may have to perform all sorts of tasks before you obtain it. Many puzzles will involve situations where you have to perform a task within a certain number of moves.</p>
+
+<p>Death comes in all shapes and forms in adventure games, but, unlike most arcade games where you would have to restart from scratch, adventure games allow the player to SAVE their current game position to tape or disk at any stage and reload it after the player is 'killed' as well as at the start of the next playing session. Most adventures these days also have a RAMSAVE facility, whereby the player's position is saved to memory. This is particularly useful when you think that going in a certain direction or performing a particular action will result in the 'death' of the character.</p>
+
+<h2>STIMULATING INDEED</h2>
+
+<p class="first">A good adventure game should stimulate your mind and make you want to go back to it time after time to try to solve it. As mentioned above, you can save your game position to tape or disk at any point during the game, and this is very handy when you have become 'stuck' at a certain point in the adventure. I have found that turning the computer off and doing something else while thinking about the problem you are trying to solve is more productive than sitting and staring at the monitor screen.</p>
+
+<p>You do, however, tend to get very odd looks when, having had a brainwave and realized the solution to a perplexing problem, you exclaim &quot;Ah! THAT'S how you stop the dragon eating the fairy princess!!&quot; out loud on a crowded bus whilst on your way to work! Believe me, I've actually done it!</p>
+
+<p>There can't be many adventure players who have not, at some stage, expressed the wish to write their own adventure game. Up to a few years ago, the only adventure games you could buy were produced, like arcade games, by big commercial software houses. Then came the advent of the 16-bit computer and, at around the same time, Role-Playing Games, or RPG's, started to really take off.</p>
+
+<p>The traditional text-only or text-graphic adventure games became fewer and fewer as the commercial adventure software houses all abandoned 8-bit computing and switched to 16-bit hardware and RPG software. Luckily, at around the same time as this was happening, two software companies released adventure-writing utilities that would enable anyone with the desire to actually produce their very own adventure game. These utilities were &quot;THE QUILL&quot; by Gilsoft and the &quot;GRAPHIC ADVENTURE CREATOR&quot; (or &quot;GAC&quot;) by Incentive.</p>
+
+<h2>HOMEGROWN ADVENTURES</h2>
+
+<p class="first">These utilities opened the way for ordinary adventure players to write their own adventures - and write them they did! The 'home-grown' adventure market has kept 8-bit adventuring alive, especially on the Spectrum, and there are literally hundreds of titles available for an average price of around &#163;2.50 each.</p>
+
+<img src="pawtut2.gif" width=250 height=232 hspace=10 vspace=10 border=0 align="right" alt="Axe Of Kolt">
+
+<p>Home-grown adventure games are available only through mail order, and the 'companies' that sell them are usually only one-person (or family) operations working from their homes, eg. Compass Software (run by Jon Lemmon), River Software (Jack Lockerby), Delbert the Hamster Software (Scott Denyer), my own Fantasy and Sci-Fi Adventures (FSF), The Guild (Tony Collins) and the daddy-of-'em-all, Zenobi Software, run by John Wilson.</p>
+
+<p>These days, Zenobi specializes in publishing adventures written by amateur authors who don't want the hassle of selling their adventures. They currently have over 100 adventures on their lists.</p>
+
+<p>GAC is no longer available commercially, and The Quill has been superseded by the &quot;PROFESSIONAL ADVENTURE WRITING SYSTEM&quot;, which is know as PAW. This excellent utility is still available from Gilsoft and details are given below. I myself use PAW to write my adventures and I have found over the past three or four years that many potential adventure authors have been put off writing an adventure using this utility by the apparent complexity of the instruction manual.</p>
+
+<p>While I myself, having started adventure writing on the BBC using The Quill, had no trouble understanding the PAW manual, I do believe that it tries to teach you too much, too soon. The mini-adventure it contains instructions for contains two PSI's and also gives details for producing a graphic picture to illustrate one of the locations.</p>
+
+<p>I will state at this point that I think that graphics, specifically location graphics, are a waste of time for this type of adventure and I will not be referring to them at all in this series. Over the next few months I will be giving instructions on how to write a small adventure of just eight locations, but including some techniques not mentioned in the PAW tutorial game which I think are more appropriate and useful to the beginner.</p>
+
+<p>First of all, however, you must get yourself a copy of PAW. You can obtain an original copy of PAW from Gilsoft, South Glamorgan. The tape version of the utility is available in a starter pack, costing &#163;9.95, which consists of the PAW tape, the Tutorial Manual and the Quick Reference Guide (listing all the &quot;conducts&quot; the program uses). This contains all you need to produce a basic adventure. Disk versions of PAW are available on 3&quot; disk for the +3 (and on 3.5&quot; disk for +D Interface owners) at &#163;20.95, but this includes the PAW &quot;PTM&quot; user overlays which are available on tape in the PAW Technical Pack at &#163;8.95. If you already have a tape version of PAW, and wish to upgrade to a disk version, you should return the CASSETTE ONLY to Gilsoft with a cheque/PO for &#163;5.50 for a +3 version or &#163;4.49 for a 3.5&quot; +D version. All prices quoted include P&amp;P.</p>
+
+<p>You can, of course, buy a second hand copy of PAW, but if you do ensure that all the manuals are present, especially if it includes the PTM User Overlays and that the version you are purchasing is one of the later versions, ie. A14 onwards. The earlier versions are lacking in certain features.</p>
+
+<p>Next month we'll be starting on the adventure writing side of things, so until then, b-bye...!</p>
+
+<p align="right" class="first"><b><i>By Larry Horsfield</i></b></p>
+<br clear=all>
+
+<center><p class="first"><a href="../129/pawtut.htm"><b>Next article in series (issue 129)</b></a></p></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="index.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Issue 128 Contents"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 128 Contents"></a>
+<a href="../129/index.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Issue 129 Contents"></a></p>
+
+<h6 align="center">Sinclair User<br>October 1992</h6>
+
+</body>
+</html>

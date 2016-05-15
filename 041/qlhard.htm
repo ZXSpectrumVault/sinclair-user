@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 41 - QL Hardware World</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="QL Hardware reviews from Sinclair User, July 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="qlsoft.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="QL Software Scene"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 41 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>QL Hardware World</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1>Insider information</h1>
+
+<p class="first">Potential disc users with a QL are about to be deluged with a range of interfaces for their machines. At least five new ones are planned between now and September.</p>
+
+<img src="qlhard1.jpg" width=150 height=125 hspace=10 vspace=10 border=0 align="left" alt="Insider interface">
+<p>The first of those is the Insider, marketed by Silicon Express. Having looked at the Quest and MicroPeripheral systems, it is a refreshing change.</p>
+
+<p>It works faultlessly with an odd collection of 3&#189; and 5&#188;in, 40- and 80- track drives - it can also handle 3in drives - and, as it uses the device name FLP, you can swop discs between it and a CST system.</p>
+
+<p>The Insider is, in many respects, a budget system. The interface PCB fits into the port on the left of the computer leaving the disc connector sticking out. The advantage is that it does not add much to the overall length of the machine but, unlike the CST interface, there is no plastic cover so dust can get in.</p>
+
+<p>One good feature of the interface is that when you press F1 or F2 after resetting it looks to the disc for a BOOT file and, if there is no disc present, it looks at MDV1. Unfortunately, it forgets to turn the disc drive motor off when that occurs and you have to put a disc in to stop it.</p>
+
+<p>The ROM in the interface adds only one extra command to SuperBasic, FLP_USE. With that you can enter FLP_USE MDV and the disc drives will respond to the device name MDV.</p>
+
+<p>The only problem you might have is when running the version 1.00 Psion software from a single drive as the programs look for a second drive. Silicon Express has included a SuperBasic program listing in the instructions which converts all occurances of MDV2 to MDV1, plus the instruction to go away for two to three hours while it runs.</p>
+
+<p>For users with the Tony Tebby Toolkit the interface has all the machine level hooks to implement a sector read/write - Put and Get etc - plus all the other filing. As with many other disc interfaces the ROM was written by Tony Tebby.</p>
+
+<p>The system is plain, simple and likeable. Unfortunately, in the last month the price of &#163;113.85 has been overshadowed by price reductions of other interfaces. Only the combined interface/drive package, &#163;249.00, remains competitive.</p>
+
+<p>Silicon Express Ltd, Leicester.</p>
+
+<h2>Board with all the memories</h2>
+
+<p class="first">QL Plus has increased its range of add-on memory for the QL to include a new 512K board. Like its other boards, 64K, 128K and 256K, the 512K board fits completely inside the QL and takes its power from the computer.</p>
+
+<img src="qlhard2.jpg" width=150 height=125 border=0 alt="512K board" hspace=10 vspace=10 align="right">
+<p>As with all extra memory, programs which use it, such as the Psion suite, run much faster. That is due to the processor being able to use the memory while the TV picture is being sent out.</p>
+
+<p>Unlike QL Plus's other boards, the 512K has two problems. They are likely to affect any 512K board and are the fault of the QL rather than the board.</p>
+
+<p>The board needs a fair amount of power to drive it and the power available from the QL is limited. If your power supply is low, fitting the board can degrade the display. Of the two QLs tried, one running on a TV suffered degradation while the other, running on a monitor, was unaffected. A two-way adaptor will be needed if you want to plug in both RAM and, for example, a disc interface.</p>
+
+<p>The other problem is in the way QDOS handles extra memory. For some unknown reason it treats 512K add-ons differently from other sizes. That is more a problem for software writers but one victim is QL Chess, which will not run with the board fitted.</p>
+
+<p>If you need the memory then the QL Plus board at &#163;316.25 is the cheapest at the moment. Its other boards, 64K - &#163;86.25, 128K - &#163;132.25 and 256K - &#163;172.50 are also worth considering.</p>
+
+QL Plus will shortly be bringing out a second version of its 256K board which will have a ROM on the board. The ROM will contain a large portion of the Tony Tebby Toolkit including a RAM disc facility and will be only &#163;10.00 - &#163;15.00 more expensive.
+
+<p>For further information contact PCML Ltd, Surrey.</p>
+
+<img src="qlhard3.jpg" width=150 height=185 hspace=10 vspace=10 border=0 align="right" alt="RS232/Centronics converter">
+<h2>The return of Centronics</h2>
+
+<p class="first">SMC has recently joined the ranks of QL add-on suppliers and its first product is that old faithful, the RS232 to Centronics converter.</p>
+
+<p>As with nearly all the others, it fits between the SER1 port and a Centronics printer and operates at the QL default setting of 9600 baud. As the baud rate is not switchable it could be a problem if you want to use SER2 at the same time, for example with a modem.</p>
+
+<p>Despite having the advantage of being guaranteed for 12 months, the price of &#163;39.95 is well above that charged for the same sort of product from other companies - so shop around before buying.</p>
+
+<p>SMC Supplies, Hertfordshire.</p>
+
+<h2>Delta in a sea of discs</h2>
+
+<p class="first">TECHNOLOGY Research, which is well known to Spectrum users for its popular Beta disc interface, has now turned its attention to the QL and released the Delta interface. That looks to be as popular; it has a well thought out disc interface and parallel printer port, RAM disc software built in and space onboard for up to 128K extra memory.</p>
+
+<img src="qlhard4.jpg" width=150 height=116 hspace=10 vspace=10 border=0 align="left" alt="Delta interface">
+<p>Like most other disc interfaces it is capable of supporting 3in, 3&#189;in and 5&#188;in drives in either 40- or 80-track format. As it uses the FLP device name, discs from other systems, such as CST and Silicon Express, can be used with it.</p>
+
+<p>Unlike other interfaces, it has two very useful additional features. If you put a 40-track disc in an 80-track drive the system will automatically double step the head so that you can read and write to it. If you have a double-sided drive there is the facility to force the system to Format a disc as single-sided. These features mean that, within reason, you can swop discs between different systems and drives.</p>
+
+<p>As with the Silicon Express interface, Delta adds FLP_USE to SuperBasic plus all the various machine level hooks - the software was written by Tony Tebby. There is also RAM_USE for the RAM discs. Up to eight separate RAM discs can be set up.</p>
+
+<p>Like the Silicon Express, it first looks to the disc for a boot program, then the microdrive. But unlike Silicon Express it remembers to turn the drive off.</p>
+
+<p>The unit is quite small, not much bigger than the CST interface, and is housed in a plastic cover. The onboard memory takes its power from the QL and does not require an extra power supply.</p>
+
+<p>The Delta interface is priced at a very competitive &#163;129.50 including VAT; with 64K &#163;199.50 or 128K &#163;249.50. It does not have the range of Toolkit commands that the CST interface has but those can be purchased separately members of IQLUG can get them for only &#163;1.00. It is good value and could knock CST from the top spot.</p>
+
+<p>Technology Research Ltd, Middlesex.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="qlsoft.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="QL Software Scene"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 41 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<h6 align="center">Sinclair User<br>August 1985</h6>
+
+</body>
+</html>
+

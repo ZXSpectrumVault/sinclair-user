@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 25 - Letters</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Letters page from Sinclair User, April 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="ssimon.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Sinclair Simon"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 25 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>letters</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><table width="75%"><tr><td>
+
+<center><img src="../shared/images/letters1.gif" width=400 height=185 border=0 alt=""></center>
+
+<h1>Poor service from Sinclair</h1>
+
+<p class="first">JOHN KERRIGAN'S article in the January issue is the nearest I have seen to a reasonable explanation of what the Spectrum ROM does with the display file but would it not be better to demonstrate the way in which the file handles pixels? The article assumes the reader to have a reasonable knowledge of Basic so that it can be used to show scans in a very easy-to-follow way, as I hope the following short programs will demonstrate. It means that you should ignore the advice in the Sinclair manual, page 164, not to POKE into the display file.</p>
+
+<p>All the programs are variations on the same theme. They are best RUN in the order shown. The PAUSEs are simply to slow the action. The only explanation needed is that POKEing 255 into a display file address inserts eight pixels per character position/scan - one for each bit position - and 129 places a pixel in the MSBit and LSBit of a byte.</p>
+
+<pre>10 FOR r=0 TO 6143
+20 POKE 16384+r,255
+30 PAUSE 2
+40 NEXT r
+
+10 FOR r=0 TO 6143 STEP 32
+20 POKE 16390+r,129
+30 NEXT r
+
+10 FOR r=0 To 6143 STEP 32
+20 POKE 16390+r,255
+30 PAUSE 5: CLS
+40 NEXT r
+
+10 FOR r=0 TO 6143
+20 POKE 16384+r,129
+40 NEXT r
+
+10 FOR r=0 TO 6143 STEP 32
+20 POKE 16390+r,129
+30 PAUSE 10
+40 NEXT r</pre>
+
+<p class="first">Now for a complaint about the continuing poor service offered by the Sinclair organisation. I do not buy games software, nor do I buy any software which I can easily develop myself. The exception was the cassette being offered by Sinclair mail order explaining the latest microchip technology. As I used to dabble in electronics some years ago and possess some reasonable test equipment, I thought that the cassette would offer a useful update of knowledge. Accordingly I ordered the cassette in November. A card arrived postmarked December 5 saying my order was being processed.</p>
+
+<p>Later my Barclaycard statement showed that I had been charged for the cassette and as I was in credit with the company it meant that I had already paid for an item which had not been delivered. When I telephoned Sinclair I was told to call back in a week if the item had still not arrived. Is it any wonder that the Japanese make inroads rapidly into the British market? In case there is complacency about the rest of Europe, let me warn the industry that the French are already catching up and have their own cheap micro on sale.</p>
+
+<p class="first"><b>R G Urquhart</b></p>
+
+<h2>Special offer delayed</h2>
+
+<p class="first">WE APOLOGISE to all customers who suffered delays in despatch of half-price ZX-81 software following our advertisements in the January and February issues of <i>Sinclair User</i>.</p>
+
+<p>Due to phenomenal response, stocks were exhausted very quickly. We hope that all respondents have now had their goods delivered. Watch out for our next special offer.</p>
+
+<p class="first"><b>The Software Workshop</b></p>
+
+<a name="cockbill"></a>
+<h2>Past the post on Atic Atac</h2>
+
+<p class="first">ON MONDAY, January 16 at 4.58pm, history was made. I, the first person ever to do so unless someone already has but is too lazy to write, finished Atic Atac. I have compiled a list of cryptic clues to aid all Attikers in their quest:</p>
+
+<p>The key handle is the ULTIMATE piece; knights in shining armour win the day; the key to success is white; journey's end is near in the room with the impassable door; tread warily; beware of mobile trapdoors; barrels make useful staircases; a mapped-out adventure is easy to solve; to get Frankie, go for his bolt.</p>
+
+<p class="first"><b>John Cockbill, aged 15</b></p>
+
+<h2>Plot greater than graphics</h2>
+
+<p class="first">IT SEEMS to me that more and more companies are putting all their effort into producing super, smooth, mindboggling graphics at the expense of anything you could call a plot.</p>
+
+<p>Companies must start designing new games which people will be still playing in a year's time. Only one company to my knowledge does so and that is Lothlorien with its war game series.</p>
+
+<p class="first"><b>Steve Turner</b></p>
+
+<h2>Covers with a touch of class</h2>
+
+<p class="first">WHAT an original publication <i>Sinclair User</i> is. The cover photographs alone are proof of it. Some computer magazines feature scantily clad dolly-birds in the hope of boosting sales. Other covers have endless and monotonous close-ups of computer keyboards but <i>Sinclair User</i> stands alone and has real class.</p>
+
+<p>Uncrumpled <i>Sinclair User</i> covers could well be worth more than that prized stamp collection in a few years. Preserve your February issue with care. Whoever masterminded your devastatingly funny Wally of the Month series of cover photographs deserves a sales department medal. I cannot wait to buy the next issue.</p>
+
+<p class="first"><b>Ian Russell</b></p>
+
+<h2>Corridors lack the third dimension</h2>
+
+<p class="first">I BOUGHT a copy of Corridors of Genon, acting on <a href="../021/softwre.htm#genon">the review in the December issue</a> and on the Gilbert Factor of 9 awarded to it in Cassette Round-up.</p>
+
+<p>I am astounded by your high regard for the program and that John Gilbert should consider it the equal of Halls of the Things. Where Halls is unquestionably challenging and addictive, Corridors is dull and aversive.</p>
+
+<p>The claim that the program is 3D is rubbish. It uses a 2D projection with perspective. The term 3D should be reserved, as it is in the video world, for genuine stereoscopic 3D, be it by means of polarised glasses, lenticular grid, holography or whatever. To my knowledge, no program is yet 3D. To misuse the term 3D in this way can only bring confusion to the field of micro graphics and lower people's regard for it.</p>
+
+<p class="first"><b>Peter Gardner</b></p>
+
+<p class="first"><i>The term 3D was not applied as a scientific definition but rather as a description of the graphical representation on a computer screen. Admittedly the term was used loosely but it was used to describe a type of graphics generally referred to by the computer games industry as 3D.</i></p>
+
+<h2>In search of Logo tapes</h2>
+
+<p class="first">I OWN a 48K Spectrum. I heard that the child-orientated Logo language is available for the Spectrum but, unfortunately, no computer shop which I visited here in Israel seems to be aware of it.</p>
+
+<p>Could you please let me know if Logo is available in cassette form for the Spectrum and how could I purchase it?</p>
+
+<p class="first"><b>Victor Harnik</b></p>
+
+<p class="first"><i>A limited version of Logo is available from CP Software. Sinclair Research will soon have Turtle Logo available for the 48K Spectrum which should conform to MIT standards. It will also use the Edinburgh Turtle.</i></p>
+
+<h2>Singled-out for praise</h2>
+
+<p class="first">I FEEL I must write to you in praise of two software houses. The first is Hilton Computer Services Ltd, whose Personal Banking System I have used for some time. Recently I have contacted the company on a number of occasions and each time I have received courteous and prompt attention.</p>
+
+<p>The second company is Flowchart Ltd. Recently I purchased a copy of its Home Budget program. On running it I found it not entirely suitable for my needs. I wrote to Flowchart explaining the problem. By return I received an upgraded program and a spare data tape. Special service, indeed.</p>
+
+<p class="first"><b>John Hadley</b></p>
+
+<h2>Preventative system crash</h2>
+
+<p class="first">RECENTLY there has been printed frequently a method of stopping programs from auto-running on a ZX-81 using RAND USR 836 in fast mode. I am writing to tell you of a way of defeating this.</p>
+
+<p>It works on the simple idea that when someone breaks into your program, the screen is displayed, and if you have pre-set system variable 16397, the system will crash:</p>
+
+<pre>9994 FAST
+9995 LET X=PEEK 16397
+9996 POKE 16397,0
+9997 SAVE &quot;.....&quot;
+9998 POKE 16397, X
+9999 RAND USR &quot;.....&quot; OR GO TO .....</pre>
+
+<p class="first">When someone tries to stop the program auto-running, it will make the computer display the screen before it reaches line 9998, so the system will crash.</p>
+
+<p class="first"><b>Paul Taylor, aged 13</b></p>
+
+<h2>Suitable graph paper found</h2>
+
+<p class="first">IN REPLY to <a href="../022/letters.htm#horgan">Michael Horgan's request for information</a> - <i>Sinclair User</i>, January - on suitable graph paper for the Spectrum, I mention two products for less than &#163;5 of which I know. Pixel-Pad is available from Computer Agencies Ltd and costs &#163;4.99 for 50 sheets of A3 size paper.</p>
+
+<p>ZX Spectrum Graphics Sheet is available from Keyboard Word Processing &amp; Advanced Office Systems and costs &#163;4.25 for 50 sheets of A4 paper.</p>
+
+<p>Refill pads for the Keyboard graph pad kits are available for &#163;3.50 for a 50-sheet pad and can be obtained from Intelligence (G.B.) Ltd.</p>
+
+<p class="first"><b>P Dobson, Pitman Publishing Ltd</b></p>
+
+<h2>Perfect for beginners</h2>
+
+<p class="first">THE BASIC problem of a displayed variable being different from the value of that variable held in the computer memory, as referred to in the Sinclair User Club article in issue No. 23, is easily overcome with the line LET N=VAL(STR$(N)). That changes the stored value, as follows:</p>
+
+<pre>10 LET N = 10**2
+20 PRINT &quot;N is  &quot;;N
+30 PRINT &quot;But 100 - N is  &quot;, ;100 - N
+40 PRINT &quot;N will now be changed using VAL(STR$(N)).&quot;
+50 LET N = VAL(STR$(N))
+60 PRINT &quot;N is still displayed as  &quot;;N
+70 PRINT &quot;But now 100 - N is  &quot;;100 - N</pre>
+
+<p class="first">While writing I would like to defend the ZX-81 against some of the recently published comments of unreliability. I have installed eight ZX-81 s at my school and they have worked perfectly for 18 months with daily use. The only difficulty has been the wearing out of the keyboards but replacements have been purchased and fitted easily.</p>
+
+<p>I consider the ZX-81 an ideal beginners' computer and the latest 16K RAM pack designs seem to have overcome the infamous wobble problem.</p>
+
+<p>We have linked all our ZX-81s to one tape recorder, so that one program may loaded into them all simultaneously. That is a great advantage when using the computers as teaching aids.</p>
+
+<p>All that is needed is a length of screened cable and sockets which are used instead of the EAR socket of the computer recorder. Note that the use of sockets avoids having to disturb the plugs into the ZX-81; tape recorder sockets seem much more resistant to repeated plugging and unplugging than those on the ZX-81.</p>
+
+<p class="first"><b>Christopher Cox</b></p>
+
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="ssimon.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Sinclair Simon"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 23 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<h6 align="center">Sinclair User<br>April 1984</h6>
+
+</body>
+</html>

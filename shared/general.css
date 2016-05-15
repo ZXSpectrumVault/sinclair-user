@@ -1,0 +1,30 @@
+p { text-indent : 1em }
+
+p.first { text-indent : 0em }
+
+hr{	color: Black }
+
+.halfspace { line-height: 1.2em }
+
+.greyback
+{
+	background-color: CCCCCC;
+	padding : 5px;
+	width : 66%;
+	}
+
+.blackback
+{
+	background-color: 000000;
+	padding : 0.2em;
+	color : White;
+	font-weight : bolder;
+	}
+
+.classic {
+	background-color: Red;
+	color : Yellow;
+	font-variant : small-caps;
+	padding : 0.1em;
+	font-weight : bolder;
+}

@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 37 - Hardware World</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Hardware news from Sinclair User, April 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="qlhard.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="QL Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 37 Contents"></a>
+<a href="zxword.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Crossword"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Hardware World</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1>Timex disc drives arrive</h1>
+
+<p class="first">THE latest in the growing number of disc systems for the Spectrum has been launched recently by Timex (Portugal) Ltd.</p>
+
+<p>It offers the use of up to four drives, each of which can access up to 140K; only uses two bytes of Spectrum memory - unused ones in the system variables; has a very versatile filing system; features two, independent, RS232C ports and could, in theory, be used to run CP/M programs. It uses Hitachi 3in drives and the figures given relate to those, but 5&#188; and 3&#189;in can also be used. On paper, at least, Timex is on to a winner.</p>
+
+<img src="hardwre1.jpg" width=225 height=328 hspace=10 vspace=10 border=0 align="right" alt="Timex disk interface">
+<p>The hardware is supplied in a number of separate, stackable, units. An interface, complete with a handy reset switch, plugs in the back of the Spectrum and is connected, via a cable, to the controller at the base of the stack. Onto that are placed the drives, and on top goes the mains power supply. Although the controller can handle four drives the power supply can only handle two, and so with a full complement of drives you will need two power supplies.</p>
+
+<p>When formatted each disc has 160K of space per side and as the drives are single-sided the disc has to be turned over to access the other side. Of that 160K, 16K is taken up by the operating system and a further 4K by the directory leaving just 140K. On power up the operating system is transferred to memory in the controller leaving the Spectrum memory free.</p>
+
+<p>One of the features rarely mentioned in these pages is the manual which accompanies most items of hardware. Some are good and some are not so good. The Timex manual is very bad.</p>
+
+<p>The writer assumes a great deal of background knowledge about the system and therefore tells you what keys to press but not why you are pressing them.</p>
+
+<p>To use the system all the normal load, save and merge commands are used, in the usual manner, including MERGE not auto-running.</p>
+
+<p>The microdrive keywords are also used so CAT * will display the current directory; current in that you can have eight levels and up to 15 directories. Similar files can be kept in separate directories and directories can be kept in other directories.</p>
+
+<p>The whole thing is arranged in the form of a tree. At the base, or root, are the two RS232 channels and the names of all the discs in the drives. Each disc name can hold a number of different directories and files, each directory can hold further files and directories, and so on up the tree.</p>
+
+<p>As can be seen the directory structure is rather complex, possibly unnecessarily so on such a small machine with limited disc space. You can use just one level of directory which may make life easier.</p>
+
+<p>The filing system offers two sorts of files. Both use the microdrive OPEN # and CLOSE # with the type defined using DIM. With the first sort strings are PRINTed to the file and can then be subsequently INPUT back into strings in the same sequence. The second sort is based on a record. That is a string of fixed length, up to 256 characters, which is PRINTed to the file as before. Up to a maximum of 65535 of such records can be sent to the file.</p>
+
+<p>The system is supplied with a demo disc which contains, in addition to some simple Basic programs, utilities to make backup copies of discs, set an RS232 port to use LPRINT and LLIST, transmit and receive over the RS232 lines and dump a file to a printer in Hex.</p>
+
+<p>The demo highlighted one of the problems with the system; because of the odd directory system it takes quite a time to discover how to load most of the programs. Once that is done it can be timed using the program:</p>
+
+<pre>10 for n=1 TO 30
+20 SAVE *&quot;test&quot;+STR$ n CODE 32000,200
+30 NEXT n</pre>
+
+<p>SAVEing was a little slow at 1.16 minutes while loading and erasing were slightly better than average at 19 seconds and 23 seconds respectively.</p>
+
+<p>All in all, Timex has produced a good system which is capable of doing most of the things you need from a disc. All it needs to do now is produce a manual which tells you how to use it.</p>
+
+<p>Due to its complexities the price is high - &#163;269 inc - but, in theory, if you change computer all you would need to change would be the interface, which should be quite cheap. The ability to run CP/M may also be useful but Timex will have to supply programs converted for the system.</p>
+
+<p>The 3in discs used by the system are gaining popularity with home computer users but, with the drop in microdrive cartridge price, they are expensive at &#163;4 - &#163;5. For further information on prices of add-on drives - expected to be around &#163;100 - and power supplies contact Micro Interface.</p>
+
+<h2>Colourful reset switch</h2>
+
+<p class="first">FOLLOWING last month when we looked at two reset switches for the Spectrum, this month, for a change, we only looked at one. It is from Rainbow Electronics and if, like me, you are one of the - unlucky? - ones without a Spectrum Plus, and are too lazy to make your own switch, it is nicely made and a useful addition.</p>
+
+<p>It consists of a little black box into which the lead from the power supply is plugged. On top is an on/off switch and LED and from the side a lead goes to the power socket of the Spectrum. While it is not a substitute for a mains on/off switch it can save a lot of wear and tear on the socket. Details from Rainbow Electronics, Oxfordshire. The switch is priced &#163;4.95 inc.</p>
+
+<img src="hardwre2.jpg" width=300 height=171 hspace=10 vspace=10 border=0 align="left" alt="WS2000 modem">
+<h2>Miraculous modem</h2>
+
+<p class="first">THE WS2000 modem from Miracle Technology has been a popular addition for the BBC for some time. Recently, however, it has received the coveted British Telecom approval so it can now be legally connected to the telephone lines. I wonder what users did with them before.</p>
+
+<p>Spectrum users are now catered for as well with the aptly named ZX Interface and software which connects the computer to the modem. Unlike the VTX5000 the WS2000 offers a complete range of transmission and reception rates so it can be used to access other modems around the world.</p>
+
+<p>Those rates are the standard 1200/75, used to access Prestel and Micronet 800, 75/1200 so you can pretend to be your own Prestel, 1200/1200 or 600/600 half and 300/300 full duplex.</p>
+
+<p>As transmission standards vary it is normally set to CCITT V21, as used in Britain. Because of the BT regulations the CCITT V23 setting should only be used off-line to test equipment and the BELL 103/113/108 and BELL 202 settings can be used only if you remove a small pin.</p>
+
+<p>The WS2000 can also have auto-dial and autoanswer boards fitted but neither the ZX interface nor the software support them at the moment.</p>
+
+<p>The interface plugs into the Spectrum user port and joins the modem via a cable. It has six switches on the back which are used to set the transmit and receive baud rates, which can be 75, 300 or 1200.</p>
+
+<p>The software is remarkably easy to use. Once loaded from tape you are given seven options. The first is to enter your personal ID number; one of the other options is to make a back-up copy of the software and that would automatically save the ID with it. That SAVE is the one annoying feature of the software; it will only save to tape, although you can subsequently transfer it by hand to microdrive.</p>
+
+<p>The other options are Viewdata mode, as used on Prestel; Teletype mode, as used on the 300/300 bulletin boards; the ability to change the transmission format from a wide selection; a frame processor and a Mailbox Editor.</p>
+
+<p>Overall it is an impressive piece of software; it offers enough facilities for most applications, and could be easily used by someone with little, or no, experience. It is also remarkably short considering it contains the complete Prestel character set. The manual is helpful too, the only omission being a list of the Prestel characters.</p>
+
+<p>The snag with all this is the price. The modem costs a whacking &#163;149.44 and the ZX Interface a further &#163;45.94. While this is possibly the only modem you will ever have to buy, considering the recent price reduction of the VTX5000, it is nevertheless too high.</p>
+
+<p>If you want more information contact Miracle Technology (UK) Ltd, Ipswich.</p>
+
+<h2>Sound and television</h2>
+
+<p class="first">CHEETAH Marketing has solved the problem for those of you who have trouble hearing the Spectrum BEEP. Its latest product, Mega-Sound, simply amplifies it through the TV.</p>
+
+<p>All you have to do is plug the unit into the back of the Spectrum - or Plus - and a lead into the MIC socket. Turn up the volume on the TV and you can deafen the neighbours. There is a small potentiometer inside which you can adjust - they even provide a screwdriver - to tune the unit to the TV and a through port on the back for other add-ons.</p>
+
+<p>Unfortunately, MegaSound will only work if you have an Issue 3, or later Spectrum as it uses lines which on the earlier models were not taken to the edge connector. Also it can cause a slight degradation of the display, but the Spectrum display tends to be so bad that this is barely noticeable.</p>
+
+<p>It is obtainable in retail shops, priced &#163;10.95. Cheetah Marketing Ltd, London.</p>
+
+<h2>Part of the furniture</h2>
+
+<img src="hardwre3.jpg" width=300 height=132 hspace=10 vspace=10 border=0 align="right" alt="Computable">
+<p class="first">TO MANY people the idea of a computer table will seem unnecessary.</p>
+
+<p>The Computable from Dixonmyne is available in a number of finishes - mahogany, teak or, to order, yew, walnut or burr elm. The frame, legs and top are solid wood while the sides are veneered chipboard. As supplied all you have to do is screw the legs on.</p>
+
+<p>The overall sizes are height 19in, width 34&#190;in and depth 19&#189;in. For Spectrum owners a matching wooden load/save on/off switch box is also available.</p>
+
+<p>In use the table is surprisingly handy. It is just the right height for you to sit in the armchair in front of the TV. All the wiring can be stored inside and when others insist that everything be put away you can just pop everything out of sight in the drawer.</p>
+
+<p>The price, &#163;105 plus &#163;6.00 p&amp;p, seems high but for a solid table it is reasonable. The load/save switch is an extra &#163;12 and a mains adaptor &#163;8.00. Longer legs can also be supplied.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="qlhard.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="QL Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 37 Contents"></a>
+<a href="zxword.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Crossword"></a></p>
+
+<h6 align="center">Sinclair User<br>April 1985</h6>
+
+</body>
+</html>

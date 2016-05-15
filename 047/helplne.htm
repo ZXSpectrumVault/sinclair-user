@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 47 - Hewson's Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Hewson's Helpline from Sinclair User, February 1986">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="top30.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Top 30"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 47 Contents"></a>
+<a href="ccrazy.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Computer Crazy"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Hewson's Helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson7.jpg" width=156 height=300 hspace=10 vspace=10 border=0 align="right" alt="Mr Hewson">
+
+<h1><i>Communication breakdown?</i></h1>
+
+<p class="first"><b><i><font size="+1">Andrew Hewson has a butchers at buffers and tackles some teasers</font></i></b></p>
+
+<p class="first">REMEMBER THE ZX80? Those were the days, when a computer was unable to execute a program and display it on the screen simultaneously. While a program was running,the screen went blank. My, oh my.</p>
+
+<p>The Spectrum, on the other hand, stops whatever it is doing 50 times a second in order to transmit information from the display file on to the TV screen. This happens so quickly that you're not even aware it's taking place. The display file is a good example of a buffering action, and this month we're going to look at another buffer, and how it can be used.</p>
+
+<p>This is prompted by an anguished plea from Ulrich Munch, of Copenhagen.</p>
+
+<p><b>You keep putting routines into the printer buffer at address 23296, but you have never explained what the printer buffer is.</b></p>
+
+<p>Well, a good point, Ulrich. The printer buffer is the area of RAM from address 23296 to 23551 inclusive, which is used by the Spectrum to store characters which are due to be LPRINTed on a printer.</p>
+
+<p>Before explaining the printer system, I shall tackle the word 'buffer' because it is a jargon word which has developed a particular meaning in the world of computing.</p>
+
+<p>Very often a complete computer system consists of devices connected together and which pass information to and from one another. Typical devices might include the computer itself, discs and disc drives for storing data, tapes and tape drives, a primer, a link to another computer, and a display screen or screens. Communication between any pair of devices may be either one way or, more generally, two way.</p>
+
+<p>That communication is more difficult than it might appear because most devices are only capable of doing one job at a time. A printer which prints out character by character, for example, can be either printing the current character or waiting for the next.</p>
+
+<p>While it is printing the current character it is not 'listening' for the next one, so that the device which is sending the characters to the printer - such as the computer - has to wait until the printer is ready. The printer has to have a way of saying to the computer 'Wait, I'm busy' when it is printing a character or 'OK, go ahead, I'm free' when it is ready for the next.</p>
+
+<p>The problem with the character-by-character approach is that the device which is the faster of the pair - usually the computer spends most of its time waiting for the other device to give the go-ahead. It is as if a memo dictated by a busy executive were typed letter-by-letter by a secretary as it was spoken instead of being scribbled down in shorthand for subsequent typing as a complete memo.</p>
+
+<p>The role of a 'buffer' in computing is similar to the role of the shorthand pad in the office. It is an area of memory which is used as temporary storage for information that is on its way to another device.</p>
+
+<p>In the case of our computer-to-printer example a buffer might consist of a 2K or RAM enough for over 2,000 characters, or about a page of typescript. If that amount of typescript were to be printed the computer could fill the buffer very quickly, probably in less than a second. Provided that there was some extra hardware which then doled out the characters one at a time to the printer, the computer could get on with some other task while the typescript was being printed, which might take a minute or so. Clearly it is much more efficient to have the computer free for another task than to have it tied up merely because a slow printer is in use.</p>
+
+<table border="0" cellspacing="15" cellpadding="0" align="left"><tr align="left" valign="top">
+<td width="10" bgcolor="#000000"><br></td>
+<td><p class="first"><b><font size="+1">'The role of a<br>
+buffer is<br>
+similar to<br>
+the role of a<br>
+shorthand pad<br>
+in an office'</font></b></p>
+</td></tr></table>
+
+<p>This then is the role of a buffer as a temporary storage area. In the case of the Spectrum printer, a buffer is required not so much to speed the communication process from computer to printer, but more because Sinclair Basic is an interpreted language which has no way of 'knowing' what is coming next. That leads to complications when a line-by-line printer is used.</p>
+
+<p>The following pair of Basic lines, for example, is perfectly legal:</p>
+
+<pre>10 LPRINT &quot;Print all this&quot;;
+20 LPRINT &quot;on one line&quot;</pre>
+
+<p>The original ZX printer, which was designed to operate with the Spectrum, prints a complete line at a time and then winds the paper forward ready for the next line. The Spectrum supports that approach by assembling all the characters which make up the line to be printed in the printer buffer. Only when the entire line is complete does it transmit the whole lot from the buffer to the printer.</p>
+
+<p>In the case of the two line Basic example, the semi-colon at the end of line 10 prevents the transmission of the contents of the buffer. Instead, the items in line 20 are also put into the buffer and then transmission occurs.</p>
+
+<p>A line on the Spectrum printer consists of 32 characters, just as a line on the TV display consists of 32 characters. You'll notice that the printer buffer consists of 256 bytes of RAM - eight bytes per character just as a single line of characters on the screen requires 256 bytes of RAM. You can have some fun LPRINTing to the printer buffer and then using the PEEK command to pick up the data and POKE it to the screen, but remember to take account of the complicated interlacing procedure of the Spectrum screen.</p>
+
+<p class="first"><i>Please address problems and queries to Andrew Hewson, Helpline, Oxfordshire.</i></p>
+
+<center><hr width="50%" noshade></center>
+<br clear=all>
+
+<center><table width="75%" border="0" cellspacing="0" cellpadding="25"><tr><td bgcolor="#CCCCCC">
+
+<center><table width="100%" border="0" cellspacing="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<h2>Bilingual Basic</h2>
+
+<p class="first">WHO SAID Sinclair Users are ordinary? My postbag each month never fails to supply news of at least one novel software application of a Sinclair computer. Take James O'Connell of County Roscommon in Eire. He tells me that he trains young missionaries in the use of Basic with the aid of a Spectrum. He writes: Can you provide me with a rough idea of how to write a program for translating words from English into French?</p>
+
+<p>James supplied a flow diagram of the sort of program he requires which he claims to have obtained from Bug-Byte four years ago. The program listed in figure one is a simple version of his requirement.</p>
+
+<pre>10 DATA 3
+20 DATA &quot;HORSE&quot;,&quot;LE CHEVAL&quot;, &quot;FACE&quot;,&quot;LE VISAGE&quot;,&quot;HOUSE&quot;,&quot;LA MAISON&quot;
+30 READ N
+40 LET I=1+INT(RND*N)
+50 FOR J=1 TO I
+60 READ X$,Y$
+70 NEXT J
+80 PRINT &quot;PLEASE TRANSLATE THE WORD &quot;
+90 PRINT X$
+100 INPUT A$
+110 IF A$ = Y$ THEN GO TO 200
+120 PRINT &quot;SORRY, YOU ARE
+WRONG.&quot;,&quot;THE CORRECT TRANSLATION OF&quot;
+130 PRINT X$:
+140 PRINT &quot; IS &quot;
+150 PRINT Y$
+160 STOP
+200 PRINT &quot;CORRECT&quot;
+210 STOP</pre>
+</td></tr></table></center>
+
+</td></tr></table></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+<br clear=all>
+
+<h2><i>The System Variables</i></h2>
+
+<p class="first">IN SEVERAL respects the Spectrum Plus is superior to its predecessor. There is less fumbling with multiple keystrokes and the sound is a little better. In one significant area Sinclair threw the baby out with the bath water. The company replaced the original ZX Spectrum Basic Programming manual with a less detailed and less informative version.</p>
+
+<p>The original manual was not a model of clarity and in trying to provide useful information for both absolute beginners and experienced programmers it was attempting the impossible. Nonetheless, it did contain some useful information which is noticeably absent from its replacement. In particular it described the System Variables in reasonable detail.</p>
+
+<p>Hence I have decided to devote a part of this column each month to the more interesting of the system variables. By 'more interesting' I mean those which can be POKEd in Basic to create an immediate effect. As I am always open to useful suggestions from readers, the order in which I shall tackle the variables will depend on readers' requests. So if you want to hear about anything in particular, please write in.</p>
+
+<p>So what are system variables? The term refers to the area in the Spectrum RAM from 23552 through to 23733 inclusive. You might note that this is just after the printer buffer, described elsewhere this month, which ends at address 23551.</p>
+
+<p>The system variables area is used to store all sorts of useful bits and pieces of information, such as the character of the last key pressed, the current PRINTing position on the screen, the current Basic line number and the current border colour. Each piece of information has its own storage location in the system variables area so the ROM - and the owner of the original Spectrum manual - always knows where to look.</p>
+
+<p>To start we'll have a look at three easy ones - REPDEL at address 23561, REPPER at address 23562 and PIP at address 23609. The funny names are the six-letter mnemonics assigned to them by the programmers who wrote the code in the Spectrum ROM.</p>
+
+<p>REPDEL is the time, in fiftieths of a second, which a key must be held down before it repeats. If you have a look at the value of REPDEL using the following</p>
+
+<pre>PRINT PEEK 23561</pre>
+
+<p>you will find that it is set to 35. Hence the first repeat of a key occurs 35/50ths, or 7/10ths of a second after it is first pressed.</p>
+
+<p>Check that by pressing and holding any key. The appropriate character appears over and over again. The short delay is 7/10ths of a second and the length of the delay is determined by the value of REPDEL as stored at address 23561.</p>
+
+<p>Now POKE in a much larger value - although not larger than 255. Try 200, for example:</p>
+
+<pre>POKE 23561,200</pre>
+
+<p>The delay will now last for 200/50, or four seconds. Check this by pressing and holding any key again. Notice how the delay is very much longer before the repeat occurs?</p>
+
+<p>Did you notice also that once the first repeat occurs, second and subsequent repeats come in rapid succession, just as before? The time between second and subsequent repeats is controlled by the REPPER system variable stored at address 23562. The initial value is five, as you can discover by entering</p>
+
+<pre>PRINT PEEK 23562</pre>
+
+<p>Repeats thus ought to occur every 5/50ths, or every tenth of a second. In fact, the time taken is significantly longer than that because the computer takes longer than a tenth of a second to process the keyboard entry.</p>
+
+<p>To increase the delay between second and subsequent repeats, POKE in a new value such as 100;</p>
+
+<pre>POKE 23562,100</pre>
+
+<p>Now when you press a key the response will be well and truly pedestrian.</p>
+
+<p>The final system variable, PIP at address 23609, also controls the keyboard reading system but this time it affects the sound made when a key press is registered. Try POKEing a variety of values between 0 and 255 inclusive to hear the range of effects. I prefer a value of about 100.</p>
+
+<center><hr width="50%" noshade></center>
+<br clear=all>
+
+<center><table width="75%" border="0" cellspacing="0" cellpadding="25"><tr><td bgcolor="#CCCCCC">
+
+<center><table width="100%" border="0" cellspacing="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<h2>Climatic interference</h2>
+
+<p class="first"><b>In my house, when I press Load, Save, Merge or Verify small coloured squares begin to spread quickly over the screen from left to right and the computer sometimes resets to the copyright message. Even the Sinclair workshop could not believe this. My house is on the sea where humidity reaches 100 per cent. About 20 metres away there is a big electricity room which contains convertors and a distribution system.</b></p>
+
+<p align="right" class="first"><b>Adel Fathy el Sayed</b></p>
+
+<p>I don't think humidity will have much effect although I have no experience of using a computer in such conditions.</p>
+
+<p>Interference from an electricity sub-station sounds all too familiar a source of problems. It can affect a computer by causing variations in the power supply and the only answer is to obtain a specially stabilised power source. From the description, however, I don't think that is the problem in this case.</p>
+
+<p>My guess would be that the leads between computer and tape recorder are picking up radiated interference, in much the same way that a passing motorbike can interfere with a radio. The solution is to wrap the leads in a conducting material - aluminium foil will do if you can't find anything more conventional - and to earth this protective screen which you have created, by running a wire from it to an earthed object, even a copper water supply pipe will do.</p>
+
+<p>Has anyone else abroad experienced similar problems?</p>
+</td></tr></table></center>
+
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="top30.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Top 30"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 47 Contents"></a>
+<a href="ccrazy.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Computer Crazy"></a></p>
+
+<h6 align="center">Sinclair User<br>February 1986</h6>
+
+</body>
+</html>
+

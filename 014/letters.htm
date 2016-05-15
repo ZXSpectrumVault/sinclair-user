@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 14 - Letters</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Letters page from Sinclair User, May 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="news.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="News"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 14 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>letters</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><table width="75%"><tr><td>
+
+<center><img src="../shared/images/letters1.gif" width=400 height=185 border=0 alt=""></center>
+
+<h1>Discrepancy in routine</h1>
+
+<p class="first">WE MANUFACTURE computing hardware and accessories and are investigating the usefulness of the Spectrum for an application which we are considering. We have found some discrepancy in the non-maskable interrupt routine which may be accidental or intentional. We give the details:</p>
+
+<pre>NMI Routine
+$66 push af
+$67 push hL
+$68 ld hl,(NN)
+$6B ld a,h
+$6C or 1
+$6F jp(le)  Jump
+$70 pop hl
+$6D jr nz,1 should be jr z,l
+$71 pop af</pre>
+
+<p class="first">The non-maskable interrupt routine takes the values located at 23728 and 23729 for the interrupt jump. The way in which Sinclair has written the routine it happens only if the contents of the locations is zero, i.e., it will jump to reset only at location $0000. If the instruction at $6D had been a jrz, D1S (jump on zero) instead of jr nz, D1S (jump on non-zero) then the NMI would jump to any address pointed to by the values at 23728 and 23729, except if that value were zero, when it would be ignored.</p>
+
+<p>We would appreciate your comments and would like to know whether Sinclair intends to correct the problem. Will it mean that all the Spectrums supplied to date will have to be recalled for a ROM change?</p>
+
+<p class="first"><b>S T Currah, Currah Computer Components Ltd</b></p>
+
+<p class="first"><i>According to Sinclair Research the observations you make are correct. As it is not an advertised feature of the Spectrum the company has no plans to correct the ROM until a suitable opportunity arises.</i></p>
+
+<h2>Competition suggestion</h2>
+
+<p class="first">WHILE VISITING computer shops and watching very young children enjoying using computers, I am often amazed how clever many of them are at programming.</p>
+
+<p>We have national and international competitions for chess, snooker, darts and sports but nothing yet in the computer area. Can I suggest you consider a national and perhaps later an international computer competition for different age groups? I am sure it would arouse interest.</p>
+
+<p class="first"><b>Chris Leslie</b></p>
+
+<h2>Minotaur problem</h2>
+
+<p class="first">I WOULD like to point out that an error has occurred when my Minotaur program was re-typed for listing in the March edition. In lines 90 and 100 a space was inserted instead of an inverse space. That results in failure to form the vertical borders of the maze and when the program is run the Minotaur promptly walks off the edge of the display, causing a crash. The lines should read:</p>
+
+<pre> 90 LET M$(M+1,1)=&quot;inverse space&quot;
+100 LET M$(M+1,31)=&quot;inverse space&quot;</pre>
+
+<p class="first"><b>Kevin Tutte</b></p>
+
+<a name="powell"></a>
+<h2>Avoiding bad habits</h2>
+
+<p class="first">YOUR ARTICLE on Memory-saving techniques by David Anderson spells disaster to inexperienced programmers. It encourages the misuse of the Basic language.</p>
+
+<p>Those techniques allow for more complex programs to be run when the amount of memory is limited. The programmer is forced to write incomprehensible code. He may continue to write such code when it is not needed and bad habits may set in. The only way to break such habits is by retraining the programmer in the correct use of Basic.</p>
+
+<p>A more acceptable way to deal with a 1K ZX-81 is to expand the memory. It is cheap and easy to do. Alternatively, replace it with a Spectrum which is well worth the extra cost. John Gilbert's programming course is an excellent aid for developing good techniques.</p>
+
+<p class="first"><b>Chris Powell</b></p>
+
+<h2>Maze escape blocked</h2>
+
+<p class="first">I WOULD like to reply to <a href="../013/letters.htm#montarby">the letter from Perceval de Montarby</a> in the April edition concerning 3D Monster Maze. From my understanding of the letter, the description violates some of the rules by which mazes are generated. During its writing, 18 months ago, more than 3,000 mazes were mapped. Each complied fully with all those rules. Subsequently, on one occasion, a &quot;great open space in the maze&quot; was consistently but randomly generated.</p>
+
+<p>That was traced to a spurious bit being added to the code, causing the checks to be bypassed. As most ZX-81 owners are aware, it is possible to have an apparently correct load with spurious bits added. On that occasion reloading at a lower level solved the problems.</p>
+
+<p>The information concerning the whereabouts of T Rex has always been consistent with his relative position and the twists in the maze.</p>
+
+<p>My new company, New Generation Software, has just taken over marketing of the game and my two other games for the ZX-81. I shall be looking closely at the marketing of the products. I would like to point out, however, that a software house can only recommend a retail price and cannot enforce it.</p>
+
+<p class="first"><b>Malcolm Evans, New Generation Software</b></p>
+
+<h2>Helping on the farm</h2>
+
+<p class="first">READERS may be interested in our experience of using Sinclair computers which refutes the suggestion often heard that they are not suitable for serious use in small businesses. We have been doing the book-keeping for our farm for more than two years on a ZX-80 and are about to transfer to a Spectrum.</p>
+
+<p>We have also written and used successfully Cash-Flow and Crops programs for the ZX-81. Thanks to the East London Robotics Slowloader - announced in your November edition - we have transferred both programs and their data to the Spectrum; the only difficulty was that some of the numerical data was stored in string arrays, to save bytes, using the CHR$ and CODE functions, but since the ZX-81 and Spectrum character codes are different we had some very strange data at first. When the Microdrive is available we hope to integrate all the programs into a single package costing far less than the systems available at present to farmers.</p>
+
+<p>Both our Spectrums produce a defective print on our printer when the &lt;LIST statement is used. The lowest (6th), line of the printed pixels of each character is printed one or two pixels before it should be. It does not do it on COPY. Has anyone else experienced this? Is the fault in our printer or our computers?</p>
+
+<p class="first"><b>P Banks, Crows Hall Farms</b></p>
+
+<h2>Microfair crush</h2>
+
+<p class="first">REGARDING the sixth ZX Microfair, is it not about time that the organisers considered a more spacious venue? The New Horticultural Hall is far too small for such a popular event; in fact, conditions could be better at a local church jumble sale.</p>
+
+<p>After spending about two hours trying to push through a mass of heaving bodies, I gave it up as a bad job. It was very difficult to see what the exhibitors were trying to display and at times the side aisles were practically impassible.</p>
+
+<p class="first"><b>D R Franklin</b></p>
+
+<p class="first"><i>The organiser says that it is difficult to estimate the numbers likely to attend the fairs. He could limit numbers by increasing admission prices and to choose another, bigger hall would also increase costs. He does not wish to do either, because that would limit the numbers of people and the goods which they were able to see.</i></p>
+
+<h2>Balancing the model demands</h2>
+
+<p class="first">I HAVE been reading <i>Sinclair User</i> for several months now and considered it excellent value for money - until the March issue.</p>
+
+<p>The front cover states <i>Sinclair User</i>, incorporating <i>Spectrum User</i>. From the articles inside it would appear to be Spectrum User - incorporating occasional articles for ZX-81 users. That may seem harsh but Software Scene contained eight reviews, all for the Spectrum; Mind Games was devoted entirely to a Spectrum adventure which is not available for the ZX-81.</p>
+
+<p>I know more and more people now own Spectrums but there are still thousands of ZX-81 owners who buy the magazine. So please give us equal rights; we do not want to feel like second-class citizens.</p>
+
+<p class="first"><b>S J Rhodes</b></p>
+
+<p class="first"><i>We appreciate the difficulties of catering for two very popular machines. The problem with Software Scene in recent months has been the result of the small amount of new software being produced for the ZX-81. We have reviewed more programs for the machine in this issue and intend to give priority to new ZX-81 software in future.</i></p>
+
+<p class="first">I AM writing to complain about the lack of 16K ZX-81 programs in your magazine. I know that you have had complaints about the lack of Spectrum programs but that does not mean you have to omit the 16K ZX-81 programs. Perhaps in future you could publish an equal amount of programs for the Spectrum AND 16K ZX-81?</p>
+
+<p class="first"><b>D Windsor-Martin</b></p>
+
+<p class="first">AFTER buying the February issue I felt compelled to write to ask you why the cover price has risen by 15 pence.</p>
+
+<p>I would like to ask you if it is possible to include more 1K ZX-81 games programs.</p>
+
+<p class="first"><b>Martin Betts</b></p>
+
+<p class="first"><i>With a limited amount of space it is impossible to keep everyone happy but we are always aware of the situation and will attempt as fair a balance as possible.</i></p>
+
+<h2>Spectrum issue clues</h2>
+
+<p class="first">COULD you tell me how to determine whether my 16K Spectrum is an Issue 1 or Issue 2 computer? I wish to update to 48K in the near future and all the advertisements in your magazine indicate that one must specify whether the Spectrum is either Issue 1 or 2.</p>
+
+<p>I have read your magazine since its July issue and have been greatly impressed with the ever-improving quality of your program pages. Well done and thank you very much.</p>
+
+<p class="first"><b>Mark Staniford</b></p>
+
+<p class="first"><i>A resistor has been omitted from the new issue two board. Also the circuitry on the PCB is all on the board and there are no protruding wires as there were on issue one. If you look through the back slot of the Spectrum and everything is reasonably flat on the PCB you have a model two. If, however, you can see wires leading from the board you have a model one.</i></p>
+
+<h2>Amplifying sound</h2>
+
+<p class="first">I OWN a Spectrum but I find one of its main flaws very irritating. I have discovered how to amplify the sound through the cassette recorder.</p>
+
+<p>The EAR and MIC plugs should be plugged into their places on the computer. The other EAR socket should be plugged into the MIC socket of the cassette recorder. The cassette recorder should then be set to PLAY then paused via a PAUSE button. If the cassette recorder has a PA system the sound can be amplified to unbelievable heights.</p>
+
+<p>One sound I have no wish to amplify is the one made by the AC adaptor when plugged in. Do other Spectrum owners have this constant buzzing which is audible over the low buzzing of the Spectrum? Or is there something wrong with my AC adaptor?</p>
+
+<p class="first"><b>Sarbjit Gidda</b></p>
+
+<h2>Bridge record</h2>
+
+<p class="first">AFTER I had seen <b>London Bridge</b> in the December issue, I programmed it and played it many times. In the February issue I read that Owen Nurse had scored a total of 2,050 on the game. That made me determined to improve on that score and I reached 500 more, i.e., 2,550 with three bricks remaining. I am nine, one year older than Owen.</p>
+
+<p class="first"><b>Paul Murray</b></p>
+
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="news.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="News"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 14 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<h6 align="center">Sinclair User<br>May 1983</h6>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 13 - Memic 81</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="The Memic 81 RAM pack featured in Sinclair User, April 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="insinc.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Inside Sinclair"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 13 Contents"></a>
+<a href="helplne.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Helpline"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Memic '81</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><p class="first"><img src="memic1.jpg" width=450 height=362 hspace=10 vspace=10 border=0 alt="The Memic 81"></p>
+
+<p class="first"><b><font size="+1">Battery-backed RAM for micros is here at last.<br>
+Stephen Adams finds it cheap at the price.</font></b></p>
+
+<h1>Permanent memory from the magic Memic</h1></center>
+
+<p class="first">WITH RECENT developments in battery and memory technology it is possible to keep the memory of a computer intact without having to store it on disc or tape. The Memic 81 is one such system which keeps the memory supplied with sufficient power to preserve its data, even when the power to the computer is turned off. That allows you to have the ease of use of RAM with the permanency of ROM.</p>
+
+<p>The Memic 81-2 contains one or two 2K RAM chips - 6116 CMOS RAM types. That memory is addressed into the ROM reflection area from 8K-16K on the ZX-81 memory map. The address at which each chip appears can be adjusted to any 2K section within that area by two plugs inside the unit.</p>
+
+<p>The RAM chips are made in CMOS and take a very small amount of power when not being addressed or passing data. Being a static memory it also requires no refreshing of the chip every few milliseconds like the dynamic chips used in the Sinclair 16K RAM pack.</p>
+
+<p>It is those two factors which go a long way to making it a non-volatile memory, i.e., it does not lose its data when the power is switched off. The chips still require power to preserve the data, although it is very small.</p>
+
+<p>There is a lithium battery included in the unit which provides a back-up power supply of 3.5V while the power to the computer is switched off. When the computer power is switched on that takes over from the battery, but does not recharge it, and the RAM can be used to input and output data. While it is under battery operation that cannot be done, as the supply voltage is too low.</p>
+
+<p>Until now battery-backed memory has been very expensive and available only for mainframes or minicomputers. Cambridge Microelectronics is the first to provide battery-backed systems for microcomputers. The Memic 81-2 is in a small black plastic box 4<sup>2/3</sup>in. x 2<sup>2/3</sup>in. x 1<sup>2/3</sup>in. and it plugs into the edge connector before a 16K RAM pack and after the printer. There is a switch on the front of the box which must not be touched until there is power on the computer, as it transfers control from battery to computer-powered operation.</p>
+
+<p>To use the data stored in the RAM pack the switch must be moved up when you seethe cursor on the screen. To keep the data intact when switching off the system, push down the switch before pulling out the plug. If you have to reset the computer at any time, push down the switch first.</p>
+
+<p>When the switch is down the unit effectively is isolated from the computer and other devices can be used in its place. The edge connector is a fairly stiff fit and so no RAM pack wobble should be experienced with the Memic; as the edge connector for the 16K RAM pack or other extension is inside the case, it also looks very neat.</p>
+
+<p>The case has four large slotted screws which allows you to get inside the unit to adjust the address plugs - which can be done when the power is off without affecting the data held in the RAM - to replace the battery. The battery is a long yellow tube which is held securely by two clips and a sticky strip. That, according to Cambridge Electronics, will last approximately 10 years, so you will not need to do it often.</p>
+
+<p>The Memic arrives well-packed and with a detailed description of how to use it, plus listings of programs which are included inside the RAM pack. Inside the RAM pack are two programs, one a machine code loader to transfer the Basic program into a 16K RAM pack and the other - a demonstration program which will do the matrix calculations necessary to cost coloured labels.</p>
+
+<p>All that is required into throw up the switch after seeing the cursor and write PRINT USR 8334 and the program is loaded automatically into the Basic program area, complete with variables if necessary. The machine code routine which does that is listed and explained in the instructions and consists of only 12 bytes. Another 12 bytes of machine code routine is provided so that the RAM pack may be loaded with up to 4K of program, assuming you have 4K in the Memic, or data.</p>
+
+<p>Both routines can be altered to save any part of memory in the RAM pack. The RAM pack can be switched off at any time to protect the program or data from being corrupted or it can be used to store machine code routines for running via the USR command. Being in RAM and not EPROM means that they can be altered and edited by PEEKing and POKEing bytes into the RAM.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'Its price puts it well within the reach of the personal and business user'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>The time taken to load even a 4K program into memory from the pack takes less than a second and is certainly faster than any tape or disc. It would have been pleasant to see a write-protect switch on the RAM pack, as it would have meant that if you were running a machine code routine in the RAM that it could not be corrupted by crashing the computer.</p>
+
+<p>If more memory than 4K is required, Cambridge does a 16K battery-backed RAM pack which is software-switchable, or you could stack together several Memics and switch them on one at a time.</p>
+
+<p>Using this type of RAM pack it can give you portable software, as it can be transferred from one machine to another if the power is turned off before connecting or disconnecting the RAM pack. You can then take the program contained in the RAM pack ready to run and fit it to a friend's machine. Transferring data from the ZX-81 to the Spectrum using this method will work. You must, of course, use a Spectrum adaptor between the RAM pack and the Spectrum.</p>
+
+<p>The unit is very simple and easy to use. Uses for the RAM pack are a quick way of loading a program, storing frequently used data and frequently used routines - machine code or Basic - which can be included in your programs.</p>
+
+<p>The life of the battery predicted by Cambridge is fantastic, as it should outlive the ZX-81, and its price puts it well within the reach of the personal and business user of microcomputers.</p>
+
+<p>The Memic 81 with 2K of RAM costs &#163;28.70 and the 4K version &#163;34.45; both prices include the battery and VAT. Cambridge Microelectronics also does other battery-backed RAM for other computers.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="insinc.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Inside Sinclair"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 13 Contents"></a>
+<a href="helplne.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Helpline"></a></p>
+
+<h6 align="center">Sinclair User<br>April 1983</h6>
+
+</body>
+</html>
+

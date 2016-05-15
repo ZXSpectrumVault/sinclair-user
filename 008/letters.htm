@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 8 - Letters</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Letters page from Sinclair User, November 1982">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="news.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="News"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 8 Contents"></a>
+<a href="futrlgy.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Futurology"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>letters</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><table width="75%"><tr><td>
+
+<center><img src="../shared/images/letters1.gif" width=400 height=185 border=0 alt=""></center>
+
+<h1>Poor printing frustrates</h1>
+
+<p class="first">I BOUGHT my first copy of <i>Sinclair User</i> - <a href="../006/index.htm">September issue</a> - and enjoyed it very much, especially the education articles.</p>
+
+<p>I was, however, frustrated to find that I could use none of the programs listed in Program Printout because of the poor quality print, which meant that every one had at least one indecipherable line.</p>
+
+<p>Why must you print the programs using this pseudo printout style which, because of the way the letters seem to bend when printed, make them difficult to read?</p>
+
+<p class="first"><b>Kenneth Watson</b></p>
+
+<p class="first"><i>The reason for using what you refer to as the pseudo printout style is that by using printouts direct from the computer we find that we can reduce the number of errors which con easily creep into the printing of listings. We test all programs before we publish them and then attempt to use printouts which are as clear as possible, giving additional guidance in the accompanying material. There are occasions when mistakes occur but we try to keep them to a minimum.</i></p>
+
+<h2>Bleeper points expanded</h2>
+
+<p class="first">I READ with interest <a href="../005/hardwre.htm#fulcrum">your review of our Fulcrum Bleep</a> in the August issue and would like to correct one or two points. The new improved Keyboard Bleeper is slim enough to fit under the ZX-81 PCB. I know of at least two customers who managed to do so. The latest version was designed with that possibility in mind.</p>
+
+<p>The new Keyboard Bleeper was intended to replace the original version which gave a bleep for 198 characters. We presume everyone wants all 210 characters to bleep, especially as it costs the same.</p>
+
+<p class="first"><b>Fulcrum Products, West Sussex</b></p>
+
+<h2>New use for old statements</h2>
+
+<p class="first">HERE IS a way you can use the NEW and OLD statements on the 16K ZX-81 in a similar way to the BBC computer:</p>
+
+<p>Load or type-in a program on your ZX-81.</p>
+
+<p>To NEW the program, type POKE 16509,100. This, seemingly, will NEW the program.</p>
+
+<p>To retrieve the program, POKE 16509,0. This may be useful if you are playing a game or writing a program and you have to interrupt it to write a small program - to total your shopping list, for example.</p>
+
+<p>It is important to delete your shopping list program or whatever without using NEW before attempting to retrieve the original program.</p>
+
+<p>Finally, try this with 16K:</p>
+
+<pre>10 POKE 16437,255
+20 RUN USR 1</pre>
+
+<p class="first"><b>Donald Grose</b></p>
+
+<h2>Simpletons' corner</h2>
+
+<p class="first">I WOULD like to comment on <a href="../005/letters.htm#morris">a letter in your August issue</a> from P Morris. He complained about the complicated competition dealing with producing an EPROM blower, whatever that is? Can we not have an easier competition for us simpletons? A children's page would not be amiss.</p>
+
+<p class="first"><b>S Dodson</b></p>
+
+<p class="first"><i>Thank you for the ideas, which we are considering. On the subject of the competitions, we set them to be a challenge to our readers, whom we do not believe to be simpletons.</i></p>
+
+<h2>Stopping the wobbles</h2>
+
+<p class="first">I HAVE found a very easy method for stopping the 16K ZX RAM pack wobbling troubles, which invariably result in loss of memory. I find that if the ZX-81 plus RAM is placed inside the polystyrene box in which it arrives there will be no further trouble - it fits securely.</p>
+
+<p class="first"><b>Jonathan Cheal</b></p>
+
+<h2>Door stops solution</h2>
+
+<p class="first">THE POWER UNIT supplied by Sinclair with the printer certainly becomes very hot but that does not cause many malfunctions of the printer or ZX-81.</p>
+
+<p><a href="../006/letters.htm#stubbs">Marion Stubbs' problem</a> is caused by covering the only air entry on the ZX-81, i.e., on the base. When integrated chips become hot they consume more current until thermal runaway occurs. That can cause irreparable damage to the ICs.</p>
+
+<p>My answer to the heat problem is to glue 1in. door stops to the bottom of the ZX-81. A wide rubber band round the ZX-81 and 16K RAM pack prevents any wobble.</p>
+
+<p class="first"><b>V Dawson</b></p>
+
+<h2>Kakutani 'corrected'</h2>
+
+<p class="first">Ian Stewart is really in Argentina with his Kakutani problem. It should be:</p>
+
+<pre>  10 INPUT N
+  20 LET C=0
+  25 SCROLL
+  30 PRINT N
+  40 SCROLL
+  50 LET C=C+1
+  60 IF N=1 THE GO TO 2000
+  70 IF N=2*INT (N/2) THEN GO TO 1000
+  80 LET N=N*3+1
+  90 GO TO 30
+1000 LET N=N/2
+1010 GO TO 30
+2000 PRINT AT 21,0;         &quot;
+HIT LOOP IN     &#164;&quot;;C;&quot;#164;STEPS&#164;=BLANK</pre>
+
+<p class="first"><b>G A Jeffery</b></p>
+
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="news.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="News"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 8 Contents"></a>
+<a href="futrlgy.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Futurology"></a></p>
+
+<h6 align="center">Sinclair User<br>November 1982</h6>
+
+</body>
+</html>

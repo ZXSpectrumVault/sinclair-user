@@ -1,0 +1,293 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 45 - Machine Code</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Z80 machine code programming feature from Sinclair User, December 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#CCCCCC" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 45 Contents"></a>
+<a href="htsquad.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Machine Code</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><img src="mcode1.jpg" width=550 height=225 vspace=10 border=0 alt="A fistful of registers">
+
+<h2><i>The register set has a shadow which<br>
+streamlines the code. Marcus Jeffery explains</i></h2></center>
+
+<p class="first">This month, we are going to look at a number of previously unmentioned registers. Those are the index registers and the alternative register set.</p>
+
+<p>Although they can be very useful at times, there is nothing they can do which is not equally possible with the registers we have been using in previous articles. Consequently, rather than giving an example program using the new instructions, we will look at a few other useful tricks.</p>
+
+<p>Let's consider the index registers of which there are two, labelled IX and IY. They are both 16-bit registers similar to the BC, DE and HL register pairs, but unlike the latter, they cannot be split into individual byte sizes. The most common form of the index register is:</p>
+
+<pre>  (IX + disp)</pre>
+
+<p class="first">where disp is an eight-bit signed integer. That means that with lists, arrays and other table data, an index register can point to, say, a row of items, then: (IX+0) is the first item (IX+1) is the second item, (IX+2) is the third item, and so
+on. The main limitation is the size of the displacement value. Being only eight bits, it can only contain numbers in the range -128 to +127.</p>
+
+<p><a href="#fig5">Figure five</a> shows all the new instructions available using those registers. In general, the index registers are not used very frequently because of the extra time and memory required when using them. That is because an extra byte is required in each instruction simply to tell the computer that an index register is being used.</p>
+
+<p>During the past few months, I have included a number of machine code routines which require a parameter to be passed to them. For instance, the first article - May 1985 - had a routine which would set all the screen attribute bytes to a particular value. To do that, we had to tell the machine what value to use and then POKE the value into location 60000, then read it into register E.</p>
+
+<p>That method has a number of disadvantages. To begin with it makes the Basic program less readable, with seemingly random POKEs scattered here and there. More importantly, it makes the code position dependent. In other words, if we were to move the code further down in memory to make way for some other data, then not only will the Basic POKE location have to change, but the machine code instruction which loads location 60000 into the E register will also have to be changed, then the assembly code reassembled at the new location.</p>
+
+<p>Fortunately, using one of the hidden secrets of the Spectrum, we can devise a more satisfactory method of passing parameters to machine code. Our new method makes use of the normal parameter organisation in Basic function calls. Imagine you had a Basic function defined as:</p>
+
+<pre>  DEF FN a(x) = 5*x</pre>
+
+<p>When you call that function, you have to supply a value for the argument x. Naturally, the computer has to keep a record of the value, so that it can use it to calculate 5*x in the function. That is where the Spectrum manual comes to the rescue.</p>
+
+<p>Look at the section on system variables where you will find reference to a couple of bytes with the mnemonic DEFADD, which point to the &quot;address of arguments of user-defined function if one is being evaluated; otherwise zero&quot;. That means if we get the contents of the two bytes 23563 and 23564, they will tell us exactly where the computer has stored the values passed to the function we have just called. It is all rather convenient, and can be used to pass values to position independent machine code.</p>
+
+<p>The only other item of information we need is how to decipher floating point numbers, which is how the Spectrum will hold those values. That can be complicated, but we will only ever be dealing with numbers in the range 0 to 65535, since that is the maximum value which can be stored in a register pair. Having limited ourselves to that range, floating point numbers will always be of the five-byte form:</p>
+
+<pre>  00 00 LL HH 00</pre>
+
+<p class="first">where LL is the low-byte and HH is the high-byte to give the two-byte number HHLL.</p>
+
+<p>In addition, there will be two bytes preceding that value, giving the ASCII code of the single character variable name, followed by the value 14 (0E in hex). There will also be a single byte after the number containing the ASCII code for a
+comma, unless it is the last argument of the function, in which case it will be the closing bracket.</p>
+
+<p>That is all we need in order to write a function which will call a machine code routine and set values to all our registers simultaneously. The Basic function will look something like:</p>
+
+<pre>  DEF FN        a(A,B,C,D,E,H,L) = USR location</pre>
+
+<p class="first">where location is the start location of our machine code routine. <a href="#fig1">Figure one</a> shows the assembly code to set the appropriate variables, and <a href="#fig2">figure two</a> shows the format of the numerical arguments, explaining the displacements from IX in the assembly code.</p>
+
+<p>We are now in a position to rewrite our first ever machine code program. The assembly code is given in <a href="#fig3">figure three</a>. The major change is that IX is set to the contents of DEFADD, and the E register is then loaded with the function argument value, rather than from location 60000 as previously.</p>
+
+<p>If we want to change the location of the machine code routine, all we need to do is move our machine code, then change the function definition in the Basic program, making it truly relocatable. Just to prove that all this really works, <a href="#fig4">figure four</a> gives a Basic loader with the appropriate function.</p>
+
+<p>Before looking at the alternate register pairs, it is worth pointing out that the value of IY will be initially set to 23552 - 5C00 in hex - which just happens to be the start of the Spectrum's system variables. Those locations are important to many Spectrum routines, and it uses displacements from IY frequently. Consequently, if you are using the IY index register and also calling Spectrum ROM routines, then it is a good idea not to change its value.</p>
+
+<p>There is nothing to stop you using displacements from IY to change system variables, and you can achieve some very interesting effects.</p>
+
+<p>Now for the alternate registers. Those are simply a second set of the registers A, B, C, D, E, F, H and L. There is no way in which you can mix both the normal registers and the alternate registers, but you can easily access them independently. There are a number of advantages in doing that, concerned mainly with both speed and time. Imagine you want to save the values of some of the registers for use at a later date, say whilst calling another routine. The most common method of doing that is to stack the register pairs, then unstack them at the end of the CALL.</p>
+
+<p>That method requires 11 bytes - one for each PUSH/POP and three for the CALL - and will take 101 clock cycles to execute - 11 for each PUSH, 10 for each POP, and 17 for the CALL. Now let's consider the same problem, saving the register values by exchanging to the alternate registers:</p>
+
+<pre>  EX        AF,AF'
+  EXX
+  CALL      routine
+  EX        AF,AF'
+  EXX</pre>
+
+<p>That now uses only seven bytes and takes only 33 clock cycles to complete.</p>
+
+<p>Finally, a word of warning for anybody using the alternate registers and calling machine code from Basic. To call any machine code routine from Spectrum Basic, the USR instruction is used, either as part of a PRINT, or RANDOMIZE.</p>
+
+<p>The problem is that the Spectrum ROM handles this line interpretation as an arithmetic calculation, and calls its calculating routines. On return to Basic, the routine to deal with the end of the calculation is called, and one of the things that does is to reset the IY index register to the start of the system variables.</p>
+
+<p>Unfortunately, the very important value of the HL' alternate register pair is not reset to the hexadecimal number 2758 to allow a correct return to Basic. So, by all means use those registers but, if you have called the routine from Basic, make sure that the value 2758H is placed back into HL' before returning.</p>
+
+<h2><i>Figures</i></h2>
+
+<a name="fig1"></a>
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 1. Assigning parameters in machine code</b></p>
+<pre>                     ORG   60000
+                     LOAD  60000
+
+EA60 DD2A0B5C SETREG LD    IX,(23563) ;IX = contents of DEFADD
+EA64 DD7E04          LD    A,(IX+4)
+EA67 DD460C          LD    B,(IX+12)
+EA6A DD4E14          LD    C,(IX+20)
+EA6D DD561C          LD    D,(IX+28)
+EA70 DD5E24          LD    E,(IX+36)
+EA73 DD662C          LD    H,(IX+44)
+EA76 DD6E34          LD    L,(IX+52)
+                    :CALL ROUTINE HERE
+EA79 C9              RET
+                     END</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig2"></a>
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 2. Function arguments</b></p>
+<img src="mcode2.gif" width=400 height=424 hspace=10 vspace=10 border=0 alt="">
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig3"></a>
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 3. Assembly code colour change</b></p>
+<pre>                     ORG   60000
+                     LOAD  60000
+EA60 DD2A0B5C COLOUR LD    IX,(23563) ;IX = contents of DEFADD
+EA64 DD5E04          LD    E,(IX+4)   ;E = value of new attribute byte
+EA67 210058          LD    HL,22528   ;HL = start of attribute file
+EA6A 010003          LD    BC,768     ;BC = number of screen positions
+EA6D 73       LOOP   LD    (HL),E     ;Place attr. byte into file area
+EA6E 23              INC   HL         ;HL = next byte in file area
+EA6F 0B              DEC   BC         ;Count the changed locations
+EA70 78              LD    A,B
+EA71 B1              OR    C          ;Jump to LOOP if BC is
+EA72 20F9            JR    NZ,LOOP    ;    still greater than zero
+EA74 C9              RET
+                     END</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig4"></a>
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 4. Basic program</b></p>
+<pre>   5 DEF FN a(e)=USR 60000
+  10 CLEAR 59999
+  20 GO SUB 1000
+  30 CLS
+  40 FOR i=1 TO 704
+  50 PRINT CHR$ (25*RND+65);
+  60 NEXT i
+  70 INPUT &quot;Attribute value = &quot;;att
+  80 LET att=FN a(att)
+  90 GO TO 70
+ 100 STOP
+ 110:
+ 120:
+1000 REM HEX LOAD ROUTINE
+1010 DEF FN p(x)=CODE h$(x)-48-7*(CODE h$(x)&gt;=65)
+1020 LET byte=0
+1030 RESTORE 2000
+1040 READ start
+1050 READ h$
+1060 IF h$=&quot;*&quot; THEN GO TO 1160
+1070 IF LEN h$&lt;&gt;2*INT (LEN h$/2) THEN PRINT &quot;Odd number of hex digits in: &quot;;h$: STOP
+1080 FOR i=1 TO LEN h$
+1090 IF NOT((h$(i)&gt;=&quot;0&quot; AND h$(i)&lt;=&quot;9&quot;) OR (h$(i)&gt;=&quot;A&quot; AND h$(i)&lt;=&quot;F&quot;)) THEN PRINT &quot;Illegal hex digit: &quot;;h$(i): STOP
+1100 NEXT i
+1110 FOR i=1 TO LEN h$ STEP 2
+1120 POKE start+byte,16*FN p(i)+FN p(i+1)
+1130 LET byte=byte+1
+1140 NEXT i
+1150 GO TO 1050
+1160 PRINT &quot;Code entered&quot;
+1170 PAUSE 150
+1180 RETURN
+2000 DATA 60000,&quot;DD2A0B5C&quot;
+2010 DATA &quot;DD5E04&quot;,&quot;210058&quot;
+2020 DATA &quot;010003&quot;,&quot;73&quot;,&quot;23&quot;
+2030 DATA &quot;0B&quot;,&quot;78&quot;,&quot;B1&quot;
+2040 DATA &quot;20F9&quot;,&quot;C9&quot;,&quot;*&quot;</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig5"></a>
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 5. New Z80 instruction codes</b></p>
+<pre>ADC      A,(i+d)     - Add the contents of location (i+d) and the carry flag
+                       to the accumulator.
+ADD      A,(i+d)     - Add the contents of location (i+d) to the accumulator.
+ADD      i,rp        - Add register pair (BC, DE or HL) to the index register.
+ADD      i,i         - Add the specified index register to itself. It is not
+                       possible to add one index register to another.
+AND      A,(i+d)     - AND contents of the location (i+d) with the accumulator.
+BIT      b,(i+d)     - Test bit 'b' of location (i+d). Set the Zero flag if
+                       this bit is zero.
+CP       (i+d)       - Compare - by temporarily subtracting - the contents of
+                       location (i+d) with the accumulator.
+DEC      i           - Decrement the index register by one.
+DEC      (i+d)       - Decrement the contents of location (i+d) by one.
+EX       (SP),i      - Exchange the contents of the top of the stack with the
+                       contents of the specified index register.
+INC      i           - Increment the index register by one.
+INC      (i+d)       - Increment the contents of location (i+d) by one.
+JP       (i)         - Jump to the address specified by the contents of the index register.
+LD       i,(addr)    - Load the contents of the location 'addr' - low-byte -
+                       and 'addr+1' - high-byte - into the index register.
+LD       i,word      - Load the 16-bit word into the specified index register.
+LD       reg,(i+d)   - Load the contents of location (i+d) into the specified
+                       register.
+LD       SP,i        - Set the Stack Pointer to the contents of the index
+                       register.
+LD       (addr),i    - Place the contents of the index register into locations
+                       'addr' and 'addr+1' - low-byte first.
+LD       (i+d),byte  - Place the byte value into the location (i+d).
+LD       (i+d),reg   - Place the contents of the specified register into the
+                       location (i+d).
+OR       (i+d)       - OR the contents of the location (i+d) with the
+                       accumulator.
+POP      i           - Remove the top two bytes from the stack, placing the
+                       contents into the index register.
+PUSH     i           - Place the 16-bit index register value on the top of the
+                       stack.
+RES      b,(i+d)     - Reset bit 'b' of location (i+d).
+RL       (i+d)       - Rotate the contents of location (i+d) left by one bit,
+                       through the carry flag.
+RLC      (i+d)       - Rotate the contents of location (i+d) left by one bit
+                       circular.
+RR       (i+d)       - Rotate the contents of location (i+d) right by one bit,
+                       through the carry flag.
+RRC      (i+d)       - Rotate the contents of location (i+d) right by one bit
+                       circular.
+SBC      A,(i+d)     - Subtract the contents of location (i+d) from the
+                       accumulator with carry.
+SET      b,(i+d)     - Set bit 'b' of location (i+d).
+SLA      (i+d)       - Shift the contents of location (i+d) left by one bit.
+SRA      (i+d)       - Arithmetic Shift the contents of location (i+d) right
+                       by one bit.
+SRL      (i+d)       - Logical Shift the contents of location (i+d) right
+                       by one bit.
+SUB      (i+d)       - Subtract the contents of location (i+d) from the
+                       accumulator.
+XOR      (i+d)       - Exclusive-OR the contents of location (i+d) with the
+                       accumulator.
+EX       AF,AF'      - Exchange the A and F registers with the alternate A'
+                       and F' registers.
+EXX                  - Exchange the B, C, D, E, H and L registers with their
+                       corresponding alternative registers.
+
+where:
+i - represents either IX or IY
+d - represents an 8-bit signed displacement</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><p class="first"><a href="../044/mcode.htm"><b>Previous article in series (issue 44)</b></a><br>
+<a href="../046/mcode.htm"><b>Next article in series (issue 46)</b></a></p></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 45 Contents"></a>
+<a href="htsquad.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a></p>
+
+<h6 align="center">Sinclair User<br>December 1985</h6>
+<h6 align="center">Another Fine Product transcribed by Jim Grimwood at <a href="http://www.users.globalnet.co.uk/~jimg/">YRUA?</a></h6>
+
+</body>
+</html>

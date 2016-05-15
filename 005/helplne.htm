@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 5 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, August 1982">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="mindgms.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 5 Contents"></a>
+<a href="insinc.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Inside Sinclair"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<table width="320" border="0" cellpadding="10" align="right">
+<tr align="center"><td><img src="../shared/images/hewson2.gif" width=300 height=288 border=0 alt="">
+<br>
+<p class="first"><b><font size="-1">Andrew Hewson</font></b></p>
+</td></tr>
+</table>
+
+<h1>File problems on display in ZX-81</h1>
+
+<p class="first">YOUR LETTERS are arriving thick and fast and I am having difficulty keeping pace with them. I make a conscientious effort either to answer letters individually, via this column or by referring to other answers in the column or elsewhere.</p>
+
+<p>All the questions this month concern the ZX-81 display file in one form or another. Before tackling the first, let me review some fundamental ideas. The display file is the area in RAM which holds the items which are currently displayed on the TV screen. During the program development, for example, part of the program listing is generally displayed and it is the job of the LIST routine to copy the appropriate part of the program area into the display file so that it appears on the TV screen.</p>
+
+<p>The address of the beginning of the display file varies with the length of the program and so it is held in the D-FILE system variable and can be PRINTed by entering:</p>
+
+<pre>PRINT PEEK 16396+256*PEEK 16397</pre>
+
+<p>Similarly, the address of the end of the display is held in VARS - or more correctly is one less than the value in VARS - and can be PRINTed by entering:</p>
+
+<pre>PRINT PEEK 16400+256*PEEK 16401-1</pre>
+
+<p>Each line displayed on the screen is terminated by a byte containing decimal 118 and there is one more byte at the beginning of the file also containing 118. As there are 24 lines in the display, there are 25 bytes containing 118 and it is essential to the correct functioning of the display software that all 25 bytes are present. If one or more is absent the ZX-81 will almost certainly crash.</p>
+
+<p>With an unexpanded ZX-81 the display file consists of those 25 bytes and no more unless a LIST, PRINT or PLOT command has been executed since the last CLS or RUN command. That is a device to keep the display file as small as possible, thereby saving valuable space in RAM. With a memory expansion pack of 4K or more the ZX-81 pads out the display file with 32 bytes per line each containing zero - i.e., blanks. That mechanism creates an immediate problem for users without extra memory, as Michael Wordruff has discovered. He writes: <b>&quot;I am having problems with programs which POKE the display because my ZX-81 crashes every time. For instance</b></p>
+
+<pre><b>5  LET Z=1+PEEK 16396+256*POKE 16397
+10 POKE Z,128</b></pre>
+
+<p class="first"><b>is a disaster. What is happening?&quot;</b></p>
+
+<p>Wordruff's routine is attempting to POKE an inverse space into the first PRINT position and it will work well on a ZX-81 with at least 4K of RAM because the display will be padded out with 32 blanks per line. Without the extra memory, no such padding occurs and so the routine will overwrite the second of the 25 bytes containing 118, thus causing the program to crash.</p>
+
+<p>The solution to the problem and to all similar ones is to create some space at the appropriate position in the display file by PRINTing one or more blank characters. In that case one space is required at the beginning of the first line and so the answer is to add the line:</p>
+
+<pre>2 PRINT &quot;b&quot;</pre>
+
+<p class="first">where b represents the space character.</p>
+
+<p><b>&quot;I would like to give a print instruction conditional on whether or not there is anything already printed at the same position. I solved the corresponding problem by using PEEK 16438 and PEEK 16439 but the use of PEEK 16441 and PEEK 16442 does not work. Can you help?&quot;</b> asks Brian O'Donnell.</p>
+
+<p>Page 179 of the ZX-81 Basic Programming Manual shows that addresses 16438 and 16439 in the system variables area hold the x and y co-ordinates of the last point to be PLOTed, as O'Donnell has discovered. Unfortunately the equivalent information for PRINT is not stored. Instead the position at which the next item will be PRINTED is held in 16441 and 16442. There is a further complication; the horizontal PRINT position is counted from right to left and the vertical position from the bottom upwards. Thus the routine</p>
+
+<pre>10 PRINT &quot;HELP-LINE&quot;
+20 LET A=PEEK 16441
+30 LET B=PEEK 16442
+40 PRINT A, B</pre>
+
+<p class="first">will print the values 33 23. The first value, 33, indicates that the PRINT position is at the beginning of a line, i.e., 33 characters counting from right to left from the beginning of of the subsequent line. The second value, 23, indicates that the line is the 23rd from the bottom of the screen because one line has been used to PRINT &quot;HELP-LINE&quot;. If line 10 is changed to</p>
+
+<pre>10 PRINT &quot;HELP-LINE&quot;;</pre>
+
+<p class="first">the values PRINTed are 24 24, because the semi-colon prevents skipping to the next line.</p>
+
+<p>The following rather artificial program PRINTs a new character over the top of the last character PRINTed:</p>
+
+<pre>10 PRINT AT 20,0;&quot;ENTER VALUES FOR&quot;&quot;PRINT AT&quot;&quot;&quot;
+20 INPUT A
+30 INPUT B
+40 PRINT AT 20,0;&quot;ENTER A CHARACTER TO PRINT&quot;
+50 INPUT Z$
+60 PRINT AT A,B;Z$;
+70 LET B=32-PEEK 16441
+80 LET A=24-PEEK 16442
+90 GO TO 40</pre>
+
+<p>The semi-colon at the end of line 60 is vital. If it is omitted the information as to the position along the line cannot be recovered from 16441.</p>
+
+<center><img src="../shared/images/helplne2.gif" width=500 height=199 vspace=10 border=0 alt="Sinclair printout"></center>
+
+<p>Ken Hustwitt is worried about any adverse effects his ZX-81 might have on his TV. He writes: <b>&quot;I note that my TV insurance cover contains a clause excluding damage caused by the use of TV games. Can you advise if my ZX-81 can damage my set?&quot;</b></p>
+
+<p>Television screens are designed to reproduce as faithfully as possible a picture of varying intensity. The ZX-81 produces a more or less static image of uniform intensity. The only way in which damage is likely to occur is if you leave the same image on the screen for along period with the brightness and/or contrast turned up.</p>
+
+<p>In this situation it is possible that the brightest parts of the image become burned into the screen, although with the normal black-on-white display your eyes are likely to feel uncomfortable long before the screen shows any ill-effects; hence while it is possible that the ZX-81 may damage the screen, damage is very unlikely if you keep the brightness and contrast at reasonable levels.</p>
+
+<p><b>&quot;I would like to know if all the 16K RAM packs on the market memory map the video screen&quot;</b>, writes Neil Davies. The answer is yes; all 16K RAMs work in the same fashion so far as the user is concerned. The area between the D-File and VA RS addresses is mapped to the TV screen.</p>
+
+<p>The most interesting letter this month is from Michael Sims. I wrote in a previous column that it is not possible to have a Basic program longer than about 15K, even if more than 16K of RAM is available, because the display file will not function correctly above address 32767 and the ZX-81 will crash. Not so, writes Sims.</p>
+
+<p><b>&quot;No crash occurs if the display file is entirely below 32767 or entirely above 32768 but a crash will occur if the display file straddles the two addresses and is then displayed.</b></p>
+
+<p><b>&quot;The cure is simply to ensure that when the display file nears 32767 - check the VARS system variable - you enter a huge line like:</b></p>
+
+<pre><b>XXXX LET ZERO=0+0+0+0+0+ .....</b></pre>
+
+<p><b>&quot;With about 100 repetitions of 0, such a line takes up more memory than the display file when in the program area but lists in less. When NEWLINE is pressed display ceases while room is made below the display for the program line to be inserted, pushing the display file entirely above 32768 before display resumes.&quot;</b></p>
+
+<p>I tried it and it worked. In case I was the only ZX-81 user who did not know the trick, I contacted Bob Branton, the software expert at Memotech Ltd, which manufactures a 64K RAM for the ZX-81. It was news to him, too, which made me feel better. In fact, Branton was se pleased with the idea that he has sent the new Memotech high-resolution graphics pack to Sims to thank him for a neat idea.</p>
+
+<p>The reason Sims' &quot;huge line&quot; takes so much space in the program area is because each 0 is followed by six hidden bytes, the first one containing 126 and the remainder holding the numerical representation of zero. I have described the arrangement in previous columns. The six hidden bytes are omitted from program LISTings.</p>
+
+<center><p>&copy; Copyright Hewson Consultants 1982</p></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="mindgms.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 5 Contents"></a>
+<a href="insinc.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Inside Sinclair"></a></p>
+
+<h6 align="center">Sinclair User<br>August 1982</h6>
+
+</body>
+</html>
+

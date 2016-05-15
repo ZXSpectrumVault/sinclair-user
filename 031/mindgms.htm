@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 31 - Mind Games</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="The Mind Games column from Sinclair User, October 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="helplne.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Helpline"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 31 Contents"></a>
+<a href="../032/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 32"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>mind games</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1>Hero needed - must conform</h1>
+
+<p class="first"><b><font size="+1">Quentin Heath examines his attributes and explains how to develop real character</font></b></p>
+
+<p class="first">IN <a href="../029/mindgms.htm">THE AUGUST issue</a> of <i>Sinclair User</i> I explained the techniques used by computers which enable them to react intelligently when playing strategy games.</p>
+
+<p>The rules of play outlined in that issue are almost the same when applied to adventure gaming but the ways in which they are applied are substantially different. Most strategy games rely on objects which have a strict relationship with the positions which they occupy and those of the enemy pieces. In adventure games the programming problem is just as complex but the extra factor of characterisation has also to be introduced. Those new factors create several complications for adventure programmers which are:</p>
+
+<ol type="1">
+	<li>Interaction between character and object;</li>
+	<li>Interaction between objects;</li>
+	<li>Interaction between characters.</li>
+</ol>
+
+<p>It is possible to treat characters as objects so that they are just moved around the adventure world but if you want to include the third factor, interaction between characters, within an adventure then you need some code which stimulates emotions, intellect, and action for each character. The simplest way to do that is to create a character matrix in which a numeric representation of a character can be built.</p>
+
+<p class="first"><center><table width="50%" border="0">
+<tr><td><table width="100%" border="1">
+<tr align="center"><th colspan="2">SLAYMOR</th></tr>
+<tr><td>Endurance</td><td align="center">+3</td></tr>
+<tr><td>Strength</td><td align="center">+1</td></tr>
+<tr><td>Lawful</td><td align="center">+6</td></tr>
+<tr><td>Intelligent</td><td align="center">+6</td></tr>
+</table></td></tr>
+<tr><td><b>Figure 1a.</b></td></tr>
+</table></center></p>
+
+<p>Most of the planning of such a matrix is done on paper. A list of the characteristics is compiled. It includes the normal role-playing devices, such as strength and endurance, but also includes personality traits such as how 'lawful' or 'unlawful' a character can be, whether they can accept defeat easily, how intelligent they are and in which areas they can appear in the adventure. The final criteria, dealing with habitat, is important as you do not want a monster such as a giant fish to appear flying through the air or finning its way through the desert.</p>
+
+<p>The list of traits does not have to be long and you could probably produce some interesting characters with those listed above. The complex part of the operation involves programming the computer to make characters react in a believable way to the situations in which they are placed.</p>
+
+<p>For instance, if the programmer measures the character attributes on a scale of (-10) to (+10) the computer might assign traits for characters such as those in figure one. At the bottom end of the scale (-10) the character lacks or has the reverse of a stated trait. At the other end of the scale (+10) the character will exhibit an extreme manifestation of the trait in certain situations.</p>
+
+<p>Figure 1a shows Slaymor, who is a law-abiding peasant from the Dark Vale and figure 1b shows Stab, an evil stoat from Iminsane. In the current game location, a blasted heath where King Lear would have been at home, the two characters meet. Stab has just had a bout at the local inn and has run out somewhat the worse for wear. As a result his endurance score is down but his strength remains at a good level, (+3). As he is the character controlled by the computer the program must decide whether a fight should take place.</p>
+
+<p>When the two characters meet the computer examines the Lawful traits of each and finds that Stab is evil because he has (-4). A plus and a minus never mix so a fight is likely to occur. The computer then takes Endurance and Strength into account. Stab's Endurance is low but his Strength is high. A further decision is needed and consequently the computer looks to see just how much Good Sense Stab has. Unfortunately, he was born with little brains; a fight is now inevitable because of the results obtained from the character matrices. A human player might believe that Stab is reacting intelligently but the computer is merely examining numbers in order to arrive at a decision.</p>
+
+<p>Interaction with objects is dealt with similarly. If you want another character to pick up a dangerous object for you he might decline either because the object is too heavy or because that character possesses enough sense not to touch an object which might endanger life. The Good Sense trait is brought into play here. If it is low, as it is for Stab in figure 1b, the character would pick up the object perhaps for no other reason than greed if the Lawful trait is not dominant.</p>
+
+<p>The technique is simple but very powerful when applied and it is also easy to code into a program. All that is required is to put the matrices into the equivalent of arrays, or data tables in machine code, and then use decision-making statements, such as IF ... THEN in Sinclair Basic.</p>
+
+<p class="first"><center><table width="50%" border="0">
+<tr><td><table width="100%" border="1">
+<tr align="center"><th colspan="2">STAB</th></tr>
+<tr><td>Endurance</td><td align="center">-1</td></tr>
+<tr><td>Strength</td><td align="center">+3</td></tr>
+<tr><td>Lawful</td><td align="center">-4</td></tr>
+<tr><td>Intelligent</td><td align="center">-3</td></tr>
+</table></td></tr>
+<tr><td><b>Figure 1b.</b></td></tr>
+</table></center></p>
+
+<p>The power of the technique is in its simplicity and the only hard work which is necessary is in covering all possible areas in which all characters will require intelligence during an adventure. That will depend upon the plot and the incidents which are experienced. It is not a case of discovering how each character will react when confronted by another but more a case of looking at an individual's traits and how you would like them to behave as a character. The computer will do the rest when encounters occur.</p>
+
+<p>Some characters will be more developed than others at the start of the adventure but there is no reason why that should not change and the weak become strong. A powerful enemy can be realistically reduced to a gibbering idiot when the character matrix rules are followed. In the same way an ignorant peasant, such as Slaymor, can gain strength in all traits and become powerful. The programmer might also note that the more powerful Slaymor becomes the greater the possibility that he uses those powers for corrupt ends.</p>
+
+<p>It is possible, therefore, to use simple techniques as decision making with a matrix and turn a mundane adventure into something approaching <b>The Hobbit</b> and with a great deal more potential.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="helplne.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Helpline"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 31 Contents"></a>
+<a href="../032/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 32"></a></p>
+
+<h6 align="center">Sinclair User<br>October 1984</h6>
+
+</body>
+</html>
+

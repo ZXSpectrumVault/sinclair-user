@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 42 - Hit Squad</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Torus programming interview from Sinclair User, September 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#CCFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="rights.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Know Your Rights"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 42 Contents"></a>
+<a href="mcode.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Machine Code"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Hit Squad</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1><i>GYRANT</i></h1>
+
+<p class="first"><b><font size="+1">Gyron was not just a load of spheres. Chris Bourne visits the elite programmers who raise software are to a classic art form</font></b></p>
+
+<table width="500" border="0" cellpadding="10" align="right">
+<tr><td><img src="htsquad1.jpg" width=480 height=410 border=0 alt="">
+<br>
+<p align="right" class="first"><b><font size="-1">The ball's in their court: Dominic, Ricardo, Mark and Phil.</font></b></p>
+</td></tr>
+</table>
+
+<p class="first">QUESTION: Who takes over a year to write a hit game these days? Answer: Torus does.</p>
+
+<p>Torus is one of those creative teams, like Denton Designs, which writes programs for other companies, either on spec or according to commission. The advantage is security - you don't get involved with advertising rates and all the overheads of a marketing operation. The disadvantage is you don't see anything like as much loot if your game hits big.</p>
+
+<p>The game which took more than a year was <b>Gyron</b>, a <i>Sinclair User Classic</i>, and one of the most original and baffling productions of 1985. You have to travel through the mazes of the Atrium and Necropolis, avoiding huge blue balls that roll along the corridors. Towers overhang your progress, and impede it - shoot them and they turn, producing new complex patterns in the maze, and affecting your strategy for success.</p>
+
+<p>The programming is extraordinarily fine - too good, if anything, as you don't necessarily appreciate it all when you play. This is the tale of Ricardo and his gigantic rolling balls.</p>
+
+<p>Ricardo Pinto and Dominic Prior began it together. They were both mathematicians with degrees from Dundee and Oxford respectively. Ricardo is also something of an artist. The Torus office has his pen and ink drawings on the wall, a heady cross between Japanese art and the sensual, obscene caricatures of Aubrey Beardsley. Ricardo sees games as a potential art form. Dominic, he says &quot;is fixated on the equipment.&quot;</p>
+
+<p>What seems to have spurred Ricardo and Dominic to the first steps was simple hatred of the games they saw on the market. Ricardo is particularly venomous about Ultimate and Imagine. &quot;We saw <b>Pssst</b>, and <b>Ah Diddums</b>. I said, that is absolute rubbish, I can do better.&quot; In London they met the shadowy figure of John Dixon. Dixon wanted to make money.</p>
+
+<p>Dixon was a 50-year-old semi-American of distinct bohemian tastes, who claimed to have managed various pop groups in the past. He reckoned he could take Ricardo and Dominic to the top in software.</p>
+
+<p>&quot;We started working in January of last year,&quot; says Ricardo, &quot;in a flat in Chelsea. Lots of things we asked the machine to do were ridiculous. 'Why can't we do this?' I cried, shouting and stamping my foot in a tantrum.&quot; Theatrical lad, our Ricardo.</p>
+
+<p>The group expanded to include two other programmers, Philip Machan, the games freak, and Mark Whigton. Philip studies computer design at Edinburgh University, and Mark studies artificial intelligence.</p>
+
+<p>&quot;Complicated abstract networks and rotating objects,&quot; is what Dominic says was the concept behind <b>Gyron</b>. &quot;The potential for graphics on the Spectrum is amazing.&quot;</p>
+
+<p>If you rewrite the ROM, that is. Torus did. The ROM draw routine in the Spectrum is ten times slower than that used in <b>Gyron</b>. &quot;We are totally disgusted by sprites,&quot; says Ricardo. &quot;The balls in the trenches range from two pixels to 512 in diameter. There's no way you could do that with sprites. We modelled a 3D world and then created two windows onto it. There are billions of possible views, even without the spheres.&quot;</p>
+
+<p>Once they're off on the glories of their programming there's no stopping them. Oddly enough, they don't sound immodest about it. They speak with such impatient joy in the elegance of programming that it's more like listening to a charismatic preacher than a self-important bore.</p>
+
+<p>&quot;There are eight different line draw routines,&quot; says Dominic. Ricardo clarifies. &quot;We removed as much superfluous coding as we could. The Spectrum draws a circle in 1040 milliseconds. We do it in 14. A solid sphere takes 20 milliseconds.&quot;</p>
+
+<p>It appears that Sinclair Research uses SIN and COS functions to work out the circle. Impressive? Not on your life. &quot;Our circles are rounder than theirs,&quot; says Ricardo, proudly. &quot;You <i>never</i> use Trig. Our most complicated function is a division. There is a division somewhere, isn't there, Dominic?&quot;</p>
+
+<p>As if speeding up the drawing routines wasn't enough, the <b>Gyron</b> team decided they needed a spare screen. One wasn't enough. &quot;Using a spare screen takes only 23 milliseconds to redraw the frame,&quot; says Dominic, who thinks in such units.</p>
+
+<p>What you see, therefore, are intermittent frames, one from the normal display file and the other from an alternative display. The objects might be on one frame and the maze on another. That enables Torus to use more than two colours on the screen without getting the attributes in a mess.</p>
+
+<p>The spheres are drawn using the machine stack, thus disabling all interrupts. Interrupt two is used for the icosahedron, which spins impressively in the corner. Don't ask me how. Ricardo says it's a fossil from an earlier age, and Dominic reckons it's all to do with block dumps.</p>
+
+<p>That was all done with a few Spectrums and televisions and tape decks. &quot;With batteries,&quot; says Ricardo. &quot;We spent whole days getting the tape decks to work. John was continually hassling us. We were really enjoying it but it was very hard work. It took three months to write the program to do the spheres.&quot;</p>
+
+<p>Originally the game was to be set in a straight trench, but then the lads had the idea of getting it to turn round corners. Ricardo wasn't too keen on the idea of a standard trench game with trap doors and monsters. The spheres were Ricardo's idea of an impervious chunk of wall which moved around. He wanted a game with balls. &quot;All this time John kept coming along and sabotaging our thoughts. I was hysterically keen on the balls. I came in one morning to find John had persuaded everybody otherwise.&quot;</p>
+
+<p>The towers took a long time coming. Originally they dangled from the walls of the maze and shot at you.</p>
+
+<p>Eventually the towers became blocks in the maze which could be turned. They affect each other, and the system becomes 'closed' as Ricardo puts it. In spite of all the industrious programming, the maze was only finally designed in January of this year and the towers were not even certain then. Some months earlier Mark and Phil had joined.</p>
+
+<p>&quot;Phil was manic. It was good for us,&quot; says Ricardo. &quot;We tended to be too aesthetic and esoteric.&quot;</p>
+
+<p>By now Dixon was hot on the track of a deal, but his prot&eacute;g&eacute;es were becoming increasingly disenchanted with their fairy godfather. &quot;Thorn EMI offered us a derisory deal,&quot; says Ricardo. &quot;We went to Firebird and showed it to Tony Rainbird who loved it.&quot;</p>
+
+<p>Finally, and fortunately, the deal was struck. &quot;Twelve months to write the game and another two of litigation to get rid of John,&quot; says Ricardo. &quot;We haven't made any money out of it. We work incredibly hard and we're very thorough and conscientious and all that sort of rubbish ...&quot;</p>
+
+<p>The project currently occupying the fevered brains of Torus is the long-awaited Spectrum conversion of <b>Elite</b>, the best-selling BBC space game. It's a massive space trading game, with wireframe graphics and shoot-em-up sequences, docking manoeuvres and the like. It bears a superficial resemblance to Melbourne House's <b>Starion</b>, via the graphics, but its obvious ancestor is the science fiction answer to <i>Dungeons and Dragons</i>, the roleplaying game <i>Traveller</i>.</p>
+
+<center><table width="520" border="0" cellpadding="5">
+<tr align="center"><td><img src="htsquad2.gif" width=500 height=295 border=0 alt="Gyron map">
+<br>
+<b><font size="-1">MAZE SHOWS POSITION OF SPHERES AND TOWERS AT TIME OF ZERO</font></b>
+</td></tr>
+<tr><td><font size="-1">The orientation of the Towers' destructive energy field is indicated in the game in the Radar Scan. They can be attacked by laser from behind; but they interact with each other. An attack on a Tower may cause it to turn, vanish, reappear elsewhere, or to re-orientate another Tower. A blind spot to an energy field exists against the trench wall below the Tower.</font></td></tr>
+</table></center>
+
+<p>Firebird bought the rights, against stiff competition, for Commodore and Spectrum versions, and the game should be released in September.</p>
+
+<p>&quot;Originally we decided to take it on for the money,&quot; says Ricardo. &quot;It's an interesting experience,&quot; says Phil, finally getting in on the act as Ricardo pauses to wonder what has changed about his motives for doing the job. &quot;We'd prefer to be doing our own design,&quot; he says, eventually. &quot;But in spite of that we're doing the best job we can on <b>Elite</b>. We want to make the previous one look silly.&quot;</p>
+
+<p>&quot;There's plenty of room to do that,&quot; says Phil, ironically.</p>
+
+<p>Later, Ricardo is more enthusiastic. &quot;We've put a lot of careful thought into it,&quot; he says. &quot;I suppose we'd always want to do our own designs, but we have made a few little improvements to it. It will be much better than the Commodore version, anyway, with smoother graphics. As good, if not better, than the original BBC game.&quot;</p>
+
+<p>Ricardo and Phil's hesitancy is because <b>Elite</b> wasn't their concept, and they themselves are not generally impressed by games based on earlier concepts. Their own ideas hover somewhere in the stratosphere of raw imagination.</p>
+
+<p>Dominic finally hustles the interview towards a Spectrum as the conversation turns to the future. He has been twitching to get at it all afternoon. &quot;Look,&quot; he says, showing a screen from <b>Gyron</b>, &quot;that's what you get by pointing your camera out of the front end of a car.&quot; It's a standard, 3D perspective image. &quot;We'd like to do different things, <i>Alice through the Looking Glass</i> type things.&quot;</p>
+
+<p>&quot;Graphics through a fish-eye lens,&quot; interjects Ricardo. &quot;<b>Gyron</b> is rather like a sculpture, a mobile thing. What annoys us is the market does not seem to have responded to it. British Telecom - who own Firebird - tell us it's the time of the year.&quot;</p>
+
+<p>It is difficult to get into <b>Gyron</b>, for sure - it takes a good hour of play before the game begins to open up. &quot;It was geared to an older audience,&quot; says Ricardo. &quot;Not 6-11 year olds. The Necropolis is too difficult, some playtesters were not able to play it all.&quot;</p>
+
+<p>And it is complex, there's no doubt about it. The routes the balls take are predetermined, but at six frames a second it would take 15 billion years to work through all the possible permutations. &quot;You could measure the history of the universe with it,&quot; says Ricardo, dreamily. &quot;You could use it as a tool for divination. All sorts of ridiculous ideas ...&quot;</p>
+
+<p>What if people don't want games which measure the history of the universe? What if they just want to fall off Clumsy Colin's <b>Action Bike</b> all day long?</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b><i>&quot;We didn't write Gyron to make money. It was a very sincere thing&quot;</i></b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>&quot;We should cultivate them,&quot; says Dominic. &quot;Get the public to appreciate a decent game.&quot; They all look - or is it paranoia - as if they expect <i>Sinclair User</i> to do something about it.</p>
+
+<p>&quot;We didn't write <b>Gyron</b> to make money,&quot; says Ricardo. &quot;It was a very sincere thing.&quot; He laughs, sincerely. &quot;It's not like distributors saying 'we want three green things bouncing around the screen'. When we see that sort of game we reach for the paper sick bags.&quot;</p>
+
+<p>They really want to believe in the future of computer-art-game-theory, You can see them psyching each other up to it.</p>
+
+<p>&quot;As more people come along who are not sprite cowboys ... you'll get people who found writing books wasn't good enough, who found writing music wasn't good enough. Opera is supposed to be the ultimate in art drama and music together. With computers, instead of sitting there with 2000 people watching a woman screaming, you could actually do things. You could be the king for real.</p>
+
+<p>&quot;There is no way this is going to stay the province of 12 year olds.&quot;</p>
+
+<p>Are there no games that win the approval of Torus? Nothing at all?</p>
+
+<p>&quot;<b>3D Ant Attack</b>,&quot; says Phil. &quot;We thought that was amazing. After that nothing happened. <b>Jet Set Willy</b>? <b>TLL</b> was hysterical. I suppose <b>Shadowfire</b> is interesting.&quot;</p>
+
+<p>&quot;Most games are loathsome,&quot; says Ricardo. &quot;<b>Jet Set Willy</b> was amusing, but there's nothing much I can think of. <b>Elite</b> is quite impressive - we have heard people say there's no point in buying <b>Elite</b> because of other games around. We've looked at other programs, and found their claims quite stupid.&quot;</p>
+
+<p>It all boils down to originality and imagination. &quot;That's why <b>Starion</b> is junk and <b>Elite</b> is bearable.&quot;</p>
+
+<p>You know, if Ricardo and Dominic and Phil and Mark do succeed in transforming games into grand opera, and take us all to the stars, they will be on a level with the guy who invented chess. And if they fail, we will snigger, and say, 'what a bunch of prats.' That's the way it goes with genius.</p>
+
+<p>They all live in Edinburgh now, in much quieter and prettier surroundings to that flat in Chelsea. Whatever you think of their theories, keep an eye out for their next game. And polish up your singing voice ...</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="rights.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Know Your Rights"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 42 Contents"></a>
+<a href="mcode.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Machine Code"></a></p>
+
+<h6 align="center">Sinclair User<br>September 1985</h6>
+
+</body>
+</html>

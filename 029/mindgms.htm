@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 29 - Mind Games</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="The Mind Games column from Sinclair User, August 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="usermth.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="User of the Month"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 29 Contents"></a>
+<a href="helplne.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Helpline"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>mind games</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1>Positional play</h1>
+
+<p class="first"><b><font size="+1">Quentin Heath makes an intelligent move and shows how to program for strategy</font></b></p>
+
+<p class="first">TO PLAY traditional games such as chess, and adventures like <b>The Hobbit</b>, a computer must not only have some idea of the conditions or rules of play but it must also be able to evaluate its moves depending on the way in which its human opponent reacts.</p>
+
+<p>To make a computer play against a human, the programmer must get away from the machine and look at the ways in which humans play games.</p>
+
+<p>The task is made all the more difficult as the human mind performs evaluation tasks, such as choosing almost automatically which piece to move next on a chess board by looking at the patterns set up on the board and the relationships between the pieces.</p>
+
+<p>A computer cannot perform in the same way as a human brain, as it cannot think in terms of concepts, mental pictures, or even words. It also has no way to evaluate situations about which it has not been told by one of its programs or, directly, by a programmer.</p>
+
+<p>To circumvent that difficulty programmers have had to limit the power of programs which play games such as chess and find ways of representing play patterns in a form which can be read by the computer. The most obvious, and primitive, way is to give a numeric representation to situations and objects which the computer can then hold in its memory.</p>
+
+<table width="276" border="0" cellpadding="10" align="right">
+<tr><td align="right"><img src="mindgms.gif" width=250 height=247 border=0 alt="">
+<br>
+<p align="right" class="first"><b><font size="-1">Figure 1. Knight threatens King</font></b></p>
+</td></tr>
+</table>
+
+<p>The way in which the patterns are held and used to represent events in a program depends on the type of game being played. The two main categories are strategy, which I will look at now, and adventure, which I will discuss in the next article.</p>
+
+<p>The strategy type of game can be sub-divided further into games such as <b>Stonkers</b> - which depend on events and positioning to win - and games such as chess which depend on the pattern of relationships between playing pieces. Those differences may be subtle but it is easy to see them if you look at how a computer plays chess.</p>
+
+<p>In a game such as chess the pieces are given numbers to signify the rank they hold. For instance, pawns might each be given the value one - on a scale of one to 10 - and the Queen might be given the value nine. The reason is that pawns can move across only one or two squares at a time, whereas Queens can move any number of squares, either vertically, horizontally or diagonally.</p>
+
+<p>That is not sufficient, though, as the positions which the pieces may take in a game need to be evaluated. During the opening, therefore, the squares on the board are given values which correspond approximately to their importance during the first few moves. At that time the important central squares of the board might be given the value of 10 and the wing squares, used by pawns and rooks, might be given two, since they are not so important.</p>
+
+<p>The values of the squares will start to change as the computer takes account of which enemy pieces are threatening the squares and which pieces are on them.</p>
+
+<p>The mechanics of looking at squares opposite a position are simple but repetitive to perform. For instance, if the board was held in a two-dimensional Basic array - figure one - the computer would take account of the pieces in the array - Rook, Knight and Queen - which are near the position of the white King from which the computer is scanning.</p>
+
+<p>By finding the 'rank' numbers of the pieces which are in opposition to the white King and the numerical importance of the squares on which they are sited the computer will then be able to tell which pieces, if any, are a threat. In figure one the Knight would be the overt threat.</p>
+
+<p>The fundamentals of numeric analysis are not the only factors which are important to the computer during play. It also needs a game strategy, a set of rules which it follows continually in conjunction with its number play.</p>
+
+<p>Most chess programs look first to see whether they can force a checkmate. If not, they will then look to see if any allied pieces are in danger and their value and importance. That done, it will see if it can take any other pieces, using the numeric representation of pieces and playing squares to determine the best moves. That process continues until the first option, checkmate, is fulfilled or it is mated itself.</p>
+
+<p>The same kind of tactics can be applied to strategy games such as Stonkers from Imagine Software which, I am told, uses sophisticated artificial intelligence algorithms.</p>
+
+<p>For instance, the game could be set in the countryside where two armies are fighting. The lay of the land can be split into sectors using a grid and each of the sectors can be given a value depending on their importance.</p>
+
+<p>An example of a typical war game scenario is:</p>
+
+<center><table border="0">
+<tr align="center"><th colspan="2">PIECES</th></tr>
+<tr><td>Tank</td><td>&nbsp;9 points</td></tr>
+<tr><td>Artillery</td><td>&nbsp;4 points</td></tr>
+<tr align="center"><th colspan="2">PLACES</th></tr>
+<tr><td>Trees</td><td>&nbsp;1 point</td></tr>
+<tr><td>Lakes</td><td>-1 point</td></tr>
+<tr><td>Flat</td><td>&nbsp;5 points</td></tr>
+<tr><td>Hill</td><td>&nbsp;9 points</td></tr></table></center>
+
+<p>To obtain a position rating you must add the piece points to those of the place on which that piece stands in the scenario.</p>
+
+<p>From the points list it is obvious that artillery which is shooting on flat ground - 4+5=9 - would have no chance against a tank on a hill - 9+9=18. A massacre would result and the computer could predict it using the numeric tables stored in its memory.</p>
+
+<p>In a professional war game the programmer has much more to think about than the values of positions and pieces. The weather also has to be taken into consideration, as well as the pace at which armies can march.</p>
+
+<p>All those aspects can be represented in numeric terms on a scale of one to 10 or even one to 100. The manner in which it is done is the prerogative of the programmer.</p>
+
+<p>The area of strategy gaming is one in which it is easy to see that a programmer has to do more than write computer code. Most of the work is performed away from the computer and usually involves compiling a version of reality into a file of numbers which can be fed into a computer.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="usermth.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="User of the Month"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 29 Contents"></a>
+<a href="helplne.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Helpline"></a></p>
+
+<h6 align="center">Sinclair User<br>August 1984</h6>
+
+</body>
+</html>
+

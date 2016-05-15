@@ -1,0 +1,77 @@
+<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 49 - Laser Basic/Laser Compiler</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair Spectrum 128, Laser Basic, Laser Compiler, Ocean Software">
+<meta name="description" content="Laser Basic/Compiler review from Sinclair User, April 1986">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#CCFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="animatr.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Animator1"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 49 Contents"></a>
+<a href="qlink.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="QLink"></a></p>
+
+<hr>
+<br clear=all>
+<br>
+
+<h1><i>Laser Basic/Laser Compiler</i></h1>
+
+<p class="first">LASER BASIC is all about sprites.</p>
+
+<p>What is a sprite? Well, it's an object which can move across the screen - a monster or a bus or a space invader - independently of other objects or the background. The dream command in Basic would be something like LET SPRITE(1)=LEFT+1 which would move sprite number one a square to the left.</p>
+
+<p>Alas, you can't do that sort of thing on the Spectrum without writing a lot of routines which make the whole operation extremely slow, especially if you've got lots of sprites on the screen at a time. <b>Laser Basic</b> is designed to provide a comprehensive set of extra commands which you can use to manipulate sprites.</p>
+
+<img src="laser.gif" width=258 height=194 hspace=10 vspace=10 border=0 align="right" alt="Sprite creation screen">
+
+<p>What you get is a set of programs, including a demonstration game of 3D Noughts and Crosses, which, between them, provide the various necessary facilities. <b>Laser Basic</b> itself occupies about 8K of memory at the top end of the RAM, but the amount of extra space used to store the sprite data obviously depends on how many sprites you define for use. Two sets of sprites - 109 in all, ranging from small spacecraft to large steam trains - are thoughtfully provided.</p>
+
+<p>There are 138 commands added to Basic, which fall into various categories. The toolkit provides a renumber facility and a monitor command, which runs a program line by line so you can follow it through. A set of graphics variables contains information about the position and nature of different sprites.</p>
+
+<p>A set of commands puts the contents of a graphics variable into an ordinary Basic variable where it can then be changed under normal functions.</p>
+
+<p>Further sets of commands scroll the screen, or attributes, a number of pixels left or right, up or down. You can choose whether to have your sprites wrap around the edges of the screen or simply disappear. Another group of commands is concerned with dropping sprites into the screen or taking data from the screen and turning it into a sprite. A final set gives inverse, mirror and rotate functions on pre-defined sprites and their attributes.</p>
+
+<p>If you are beginning to get confused by all this technical stuff, be warned - <b>Laser Basic</b> is immensely powerful but does not welcome the novice. That is not because the program is badly implemented - far from it - but because the very nature of the programming is complicated. If you don't understand how ordinary Basic Spectrum graphics work, you will be completely at sea with <b>Laser Basic</b>.</p>
+
+<p>For those who do understand the ins and outs of graphics programming, however, it's an excellent utility. The separate sprite designer program allows you to create all the sprites you need by using methods similar to those of UDG generators except in this case you are not limited to a single character square but can work on a grid of up to 15x15 squares - larger if you tailor the size to your needs first. The resulting data is then saved as a sprites file to be used with <b>Laser Basic</b> itself.</p>
+
+<p>The one drawback to the whole thing is that you can't run your program without <b>Laser Basic</b> present in the memory - obviously the Spectrum can't interpret those new commands by itself. Ocean IQ has therefore produced the <b>Laser Compiler</b>, which allows you to compile your programs into machine code which will then run on its own. lt's simple enough to use, runs very fast, and occupies less memory than the <b>Laser Basic</b> program, thus ensuring that anything you write will be short enough to compile.</p>
+
+<p>The booklet suggests that the Compiler can improve ordinary Basic by a speed factor of two, whereas it's much better with <b>Laser Basic</b> programs. We found virtually no difference at all on test programs in Basic involving arithmetic, looping, and graphics. Nor was there a marked improvement on the speed of <b>Laser Basic</b>, though scrolling functions were definitely smoother.</p>
+
+<p>This is not surprising - the compiler is very small, only makes one pass and clearly does not optimise the code in the way programs like <b>Blast!</b> attempt to do. You should not buy the compiler on its own if you expect major savings in the speed of your programs - it's simply not worth it. As a tool for persuading your <b>Laser Basic</b> efforts to run on their own, it is essential.</p>
+
+<p>Also essential are microdrives, if you want to get anywhere without winding up knee deep in cassette tape.</p>
+
+<p>While the 75-page manual is daunting, it's full of example programs and routines to illustrate all the a commands. The sprite selections provided are well-drawn and cover most of the usual objects and monsters.</p>
+
+<p>The programmers were responsible for <b>White Lightning</b>, the classic games writing utility, and have kept up the standard with <b>Laser Basic</b>. While it is likely to have a rather limited market, it is certainly a highly satisfactory package for the budding games programmer.</p>
+
+<table width="100%" border="0"><tr><td>
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellspacing="0" cellpadding="5">
+<tr><td bgcolor="#CCFFFF"><b>Laser Basic<br>
+Publisher</b> Ocean IQ<br>
+<b>Price</b> &#163;14.95 <b>Memory</b> 48K<br>
+<font size="+2"><b>*****</b></font></td></tr>
+<tr><td bgcolor="#CCFFFF"><b>Laser Compiler<br>
+Publisher</b> Ocean IQ<br>
+<b>Price</b> &#163;9.95 <b>Memory</b> 48K<br>
+<font size="+2"><b>***</b></font></td></tr></table>
+</td></tr></table></td><td align="right" valign="top"><b><i>Chris Bourne</i></b></td></tr></table>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="animatr.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Animator1"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 49 Contents"></a>
+<a href="qlink.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="QLink"></a></p>
+
+<h6 align="center">Sinclair User<br>April 1986</h6>
+
+</body>
+</html>

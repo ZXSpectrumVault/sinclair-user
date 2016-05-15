@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 28 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX-81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, July 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="mindgms.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 28 Contents"></a>
+<a href="../029/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 29"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson4.gif" width=285 height=290 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1>A splash of Spectrum ink</h1>
+
+<p class="first"><b><font size="+1">Andrew Hewson fills in the gaps</font></b></p>
+
+<p class="first">TACKLING a problem I have not attempted previously, I aim to describe how to &quot;paint in&quot; an area on the screen.</p>
+
+<p>Consider the rather crude picture of the dog called Spike illustrated in figure one. Spike consists of 45 numbered points and we can imagine that each point is a pixel on the Spectrum screen. Spike's outline is determined by the asterisk characters. Suppose we have a program which will PLOT Spike's shape, i.e., one which will PLOT a pixel at points equivalent to the positions of the asterisks. Our problem is to write a program which will fill in all the internal points by PLOTting a pixel at each of the 4 5 internal points.</p>
+
+<p>The solution must be general enough to work for any shape, no matter how convoluted, and for any starting-point in the shape. In practice, that means the painting program must keep track of the status of the pixels adjacent to the one which it is painting.</p>
+
+<p>Suppose, for example, the program starts on Spike at position 0 and moves to the right, painting as it goes. It must look and remember that position 5 to the left of position 0 also needs to be painted in when it has completed the current line. The program listed in table one will paint Spike in the order of the numbers on the diagram using the look-and-remember principle.</p>
+
+<p>The program is written so that its subroutines can be MERGEd into the user's program and the region-fill can thus be invoked with a GOSUB. It must be borne in mind that the inherent slowness of Basic is very apparent in this application, so it will normally be necessary to use a machine code routine.</p>
+
+<p>The program remembers unpainted pixels by storing their location and other pertinent information on a pseudo-stack held in the two-dimensional character array S$. A stack is a very useful device for storing information in many circumstances, as it works on a last in, first out principle. The Z-80 makes use of a stack to keep track of the return addresses of its current routines and Sinclair has copied the principle in the Spectrum for holding the line numbers to which RETURNS are made.</p>
+
+<p>Thus whenever the program completes the task of painting a line of pixels it looks to the stack for a new location at which to start painting again. The act of storing information is called, in Z-80 jargon, PUSHing, and retrieving information is called POPping.</p>
+
+<p>The program also uses a recursive technique of which readers may not have heard previously. A recursive routine is one which is able to call itself and returns to itself when it has finished. At first sight that may seem to be impossible but with careful programming and the use of a stack it is a compact and efficient technique.</p>
+
+<p>The easiest way to understand recursion is to follow the logic of a program which uses it, as explained, but the reader who has never encountered it might like to bear in mind the old joke about the entry in a dictionary of computing under the word recursion which read: Recursion - see recursion.</p>
+
+<p>The program in table one consists of a test routine of a circle in a square and a call to the subroutine at line 1000 which executes the task. In the following explanation, however, the reader should refer to Spike the dog in figure one. The E11 routine is invoked by a GOSUB 1000, with x and y containing the x and y ordinates of any point inside the region to be filled.</p>
+
+<p>At line 1000, a check is made to ensure that (x,y) is within the Spectrum screen and at 1010 a check is made to see if the point is PAPER or INK. If (x, y) is OUT OF SCREEN or is INK i.e., on the border of the region - an immediate RETURN is made. Otherwise the local variables - that is to say the ones used in this module only and not needed elsewhere are cleared to zero.</p>
+
+<p>Line 1200 is where the work starts. The two formal parameters, x and y, are saved on stack along with the local variables left, right and here. Note that since screen co-ordinates lie in the range 0 to 255, the values can be saved as a single byte in a byte array as opposed to five bytes as in a floating point array, thus saving 20 bytes per level of the stack.</p>
+
+<p>At lines 1245-1250,asecond check is made for (x, y) being out of screen or ink. Those checks are required a second time because the subroutine re-enters itself recursively at line 1200, thus missing the checks at line 1000. If the conditions are met, GOTO 1340 causes the removal of the most recently saved set of local variables from the stack prior to RETURNING, so that the number of PUSHes and POPs balance.</p>
+
+<p>Next, the positions of the right-most and left-most PAPER pixels which occur before any kind of obstruction are found. Those SCANs are made INK, and right and left are given the values of their respective x-ordinates. In the case of Spike the dog, starting at point 0 - 1, 2, 3 and 4 are filled; right becomes 4; then 5, 6, 7 are filled and left becomes 7. A11 those operations are carried out by calling the subroutine at 1500.</p>
+
+<p>The region-fill routine contains several subroutines. The Basic subroutine called SCAN is listed in lines 15001550. It starts at the point (x, y), and scans rightwards along a row of pixels, making each one INK until an INK pixel is reached. The x-ordinate of the of the right-most PAPER pixel is put into right. It then scans leftwards from (x, y), INKing as before, putting the left-most PAPER pixel's x-ordinate into left.</p>
+
+<p>The plotting is performed by the subroutine at line 2000 which is called twice, once for moves to the right and once for moves to the left. It knows in which direction to scan from the value of dir because dir is added to the x-ordinate of the next pixel to be INKed, and so a value of +1 will cause a move right and -1 will cause a move left.</p>
+
+<p>SCAN is called from line 1270. On return, here takes on the value of left, the left-most pixel in the current (y) line. Line 1300 causes the search for left and right ends to restart from the line above.</p>
+
+<p>Lines 1290-1325 are the most difficult part of the routine to understand. What they say, for Spike, is 'Move up to point 8 (y=CODE s$(sp,z)+1). Then call myself, recursively, from line 1300 to scan points 9-16 then 17 and 18 in the same way as I did 1-4 and 5-7. At line 1300 again, point 18, move up one line and scan right then left. As there is only one point, left and right both become 19. Do the same again, producing point 20. Then, on the next GOSUB 1200 from line 1300, line 1250 will sense that point 20 is already INK, so an immediate POP/RETURN takes place. I execute line 1310 to scan one line downwards and again, at 1250, an INK pixel is found - so I POP/ RETURN. I am now at line 1320, with here being point 18. I increment here and loop back to line 1300 where the procedure recurses for point 17.</p>
+
+<p>As the pixels above and below point 17 are both INK, I loop back to line 1300 and try again for point 8. That goes on until I reach point 15, where I find that the pixel above is still PAPER. I fill this, scan right and left recursively, but I have INK on all four sides. Here is thus incremented to point to point 16 and I try up and down again. That fails, so here is incremented to point to the right of point 16, so here ceases to be less than or equal to right and I go onto POP/RETURN at line 1340.</p>
+
+<p>Having returned from my original GO SUB 1200 at line 1300, I can execute line 1310. That causes me to scan down one line and begin the right-left movement from point 22. I scan right, left, up, down repeatedly until all PAPER pixels become INK. Eventually I am back at point 4 and line 1320. I increment here, the test at line 1325 fails, and I POP. Then the RETURN picks up the return address from the main body of the program where I GO SUB 1000 '0, and I have finished.</p>
+
+<p>It can be seen that once scanning is started on the line below point 7, all the upward scans are redundant, since the higher points are all INK. There is a similar redundancy when points 8, 9, 10 .. are being scanned to 'find' point 21. Those redundant statements must still be performed for recursion to work properly, as they will cease eventually to be redundant - e.g., at point 15. The routine appears to stop for a time on its way downwards while the redundant cads are being performed and then the return addresses are being pulled off the stack. That is a feature of recursion.</p>
+
+<p>To show the extent of stack usage, the demonstration program fills the area of a square with an inner circle, avoiding the inside of the circle. Lines 1205 and 2025 are test lines to display the stack pointer and x and y parameters on each successive call. They show how stack space is gobbled up.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>   1 DIM s$(200,5)
+  10 REM Variables names used by the fill routine:
+  12 REM x,y = Co-ordinates to staff filling from
+  14 REM left, right = positions of left &amp; right
+  16 REM here = x-ordinate from which tests begin
+  18 REM s$(xx,5) = 5 stacks, used to save local variables
+  20 REM sp = Stack Pointer (see below)
+  22 REM Local variables are as follows on the stack
+  24 REM s$(sp,l) = x, s$(sp,2) = y
+  26 REM s$(sp,3) = left, s$(sp,4) = right
+  28 REM s$(sp,5) = here
+  30 REM next = x-ordinate of next pixel to be tested
+  32 REM dir = +1 to text right of 'here', -1 to test left
+  50 REM Draw a circle within a square as a test shape.
+  55 REM Then set x &amp; y to point to a position inside the
+  60 REM square but not inside the circle, and call the
+  65 REM region fill routine at line 1000.
+  70 REM An immediate RETURN is made if (x,y) is off the screen
+  75 REM or is an INK point (i.e. on the region's border).
+ 100 PLOT 150,60
+ 110 DRAW 50,0: DRAW 0,50: DRAW -50,0: DRAW 0,-50
+ 120 CIRCLE 175,85,20
+ 140 LET x = 175: LET y = 62
+ 150 GO SUB 1000
+ 170 STOP 
+1000 IF x&lt;0 OR x&gt;255 OR y&lt;0 OR y&gt;175 THEN RETURN 
+1010 IF POINT (x,y) THEN RETURN 
+1024 REM Clear variables
+1025 LET sp = 0
+1030 LET left = 0: LET right = 0: LET here = 0
+1099 REM Beginning of recursive routine 'push' variables
+1200 LET sp = sp + 1
+1205 PRINT AT 0,0;sp;&quot; &quot;
+1208 REM Note the assignment to s$(sp,2)
+1209 REM which stops y becoming negative and confusing CHR$..
+1210 LET s$(sp,1) = CHR$ x: LET s$(sp,2) = CHR$ ((y&gt;0)*y)
+1220 LET s$(sp,3) = CHR$ left: LET s$(sp,4) = CHR$ right
+1230 LET s$(sp,5) = CHR$ here
+1244 REM If (x,y) is OUT OF SCREEN or is INK, exit the routine
+1245 IF x&lt;0 OR x&gt;255 OR y&lt;0 OR y&gt;175 THEN GO TO 1340
+1250 IF POINT (x,y) THEN GO TO 1340
+1268 REM Find out the positions of the extreme left &amp; right
+1269 REM of the current line of pixels
+1270 GO SUB 1500
+1286 REM Beginning at the left-hand end of the current line,
+1287 REM check the lines above and below for obstructions
+1288 REM Note that 'y' has to be loaded from its saved value
+1289 REM on the stack, since the recursion alters it
+1290 LET here = left
+1300 LET x = here: LET y = CODE s$(sp,2) + 1: GO SUB 1200
+1310 LET x = here: LET y = CODE s$(sp,2) - 1: GO SUB 1200
+1320 LET here = here + 1
+1323 REM Do the above repeatedly until the right-hand end of
+1324 REM the line is reached
+1325 IF here &lt;= right THEN GO TO 1300
+1339 REM Pop the previous values of the variables, then exit
+1340 LET x = CODE s$(sp,1): LET y = CODE s$(sp,2)
+1350 LET left = CODE s$(sp,3): LET right = CODE s$(sp,4)
+1360 LET here = CODE s$(sp,5)
+1370 LET sp = sp - 1
+1380 RETURN 
+1498 REM Get ready to check the line for obstructions
+1499 REM by clearing 'next'
+1500 LET  next = 0
+1518 REM Check right then left, load 'right' and 'left'
+1519 REM with the positions of the last PAPER pixels found
+1520 LET dir = +1: GO SUB 2000: LET right = next - 1
+1530 LET dir = -1: GO SUB 2000: LET left = next + 1
+1550 RETURN 
+1598 REM This routine returns with 'next' as the x-ordinate
+1599 REM of the border to fill up to on the current line
+2000 LET next = x
+2010 PLOT next,y
+2020 PLOT next,y
+2025 PRINT AT 1,0;next,y;&quot; &quot;
+2030 LET next = next + dir
+2035 IF next &lt; 0 OR next &gt; 255 THEN RETURN 
+2040 IF NOT POINT (next,y) THEN GO TO 2020
+2060 RETURN 
+
+<b>Table 1. A Spectrum program to demonstrate the principles of
+region filling.</b></pre>
+</td></tr>
+
+<tr align="center"><td bgcolor="#CCCCCC">
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table width="100%" border="0" cellpadding="10"><tr><td bgcolor="#CCCCCC">
+<table><tr align="center"><td><img src="../shared/images/specicon.gif" width=32 height=32 border=0 alt="paint.sna"></td><td align="center"><img src="../shared/images/specicon.gif" width=32 height=32 border=0 alt="paint.z80"></td></tr>
+<tr align="center"><td><a href="paint.sna">SNA</a></td><td><a href="paint.z80">Z80</a></td></tr>
+<tr align="center"><td colspan="2"><b>Paint routine snapshots</b></td></tr>
+</table>
+
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+<p align="center" class="first"><a href="mindgms.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 28 Contents"></a>
+<a href="../029/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 29"></a></p>
+
+<h6 align="center">Sinclair User<br>July 1984</h6>
+
+</body>
+</html>

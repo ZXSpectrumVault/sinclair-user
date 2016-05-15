@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 41 - QL Software Scene</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="QL software reviews from Sinclair User, August 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#CCCCCC" text="#000000" link="#00FFFF" alink="#FF0000" vlink="#FF66FF">
+
+<p align="center" class="first"><a href="sftwreb.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Spectrum Software Scene 2"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 41 Contents"></a>
+<a href="qlhard.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="QL Hardware World"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>QL Software Scene</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table width="100%" border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC"><font size="+2"><b><i>MicroAPL</i></b></font></td></tr></table>
+</td></tr></table>
+
+<p class="first">MICROAPL is a powerful subset of APL, a language developed in the 1960s but which, because of its specialised symbols and use of memory, has only recently been translated to microcomputers.</p>
+
+<p>The language is similar to Forth. It allows the user to define functions which act as stand-alone programs or which can be used in other functions. <b>MicroAPL</b> is, however, easier to use than Forth. You can create variables in a similar way to SuperBasic and without the hindrance of a stack structure.</p>
+
+<p>Arrays are not allowed within the language but you do not need them. One variable can contain a matrix, or list, of strings or numbers, each separated by a space. For instance</p> 
+
+<pre>A is 1 2 3 4</pre>
+
+<p class="first">would put those values into variable A. To access just one of the numbers you have to use a language construct similar to the one which selects a character or number from a SuperBasic string or array. For instance,</p>
+
+<pre>A (1)</pre>
+
+<p class="first">would print '1' on the screen as it is the first number in the A variable created above.</p>
+
+<p>It is possible to automatically set up ranges of numbers within variables using an index command.</p>
+
+<p>It is also possible to manipulate those numbers using <b>MicroAPL</b>'s extraordinarily powerful numeric operators.</p>
+
+<p>If you want to perform an operation on a whole range of numbers it can be done with just one command.</p>
+
+<p>A is 10 + 5 7 9 12 will add 10, the number before the + operator to 5, 7, 9 and 12 and so they become 15, 17, 19, 22. Those matrix operations are performed at great speed even when hundreds of values are involved.</p>
+
+<p>The package is also equipped with graphics and sound commands, although you may have to set up your own functions to make them easier to handle.</p>
+
+<p><b>MicroAPL</b> is an impressive package and a pleasure to use. It is ideal mainly for use in education and research which requires the solution of complex formulae but it could be used in business to calculate profits and tax.</p>
+
+<p><b>MicroAPL</b> has done a fine conversion job for the QL. More power to its programming language.</p>
+<br clear=all>
+
+<table width="100%" border="0"><tr><td>
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellspacing="0" cellpadding="5">
+<tr><td bgcolor="#CCCCCC"><b>Publisher</b> MicroAPL <b>Price</b> &#163;99.95<br>
+<font size="+2"><b>*****</b></font></td></tr></table>
+</td></tr></table></td><td align="right" valign="top"><b><i>John Gilbert</i></b></td></tr></table>
+
+</td></tr></table>
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table width="100%" border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC"><font size="+2"><b><i>QC Compiler</i></b></font></td></tr></table>
+</td></tr></table>
+
+<p class="first">THE <b>QC Compiler</b> from GST does not provide a full implementation but a hacked-down version called Rat C with the addition of logical, unary and assignment operators and comma expressions.</p>
+
+<p>Two microdrive cartridges are included within the package. The first contains the compiler, an assembler, the Sinclair Linker, a SuperBasic program to boot the compiler and a clone. The second cartridge includes the library routines, an I/O header file and an example of C source file.</p>
+
+<p>One serious omission from the package is a screen editor. The instruction booklet states that you will have to get one from another source, such as Tony Tebby's <b>QL Toolkit</b>.</p>
+
+<p>The compilation process is not as friendly as it could be. After typing the C source code listing into a file editor you must save it and load it back into the C compiler which generates 68000 source from the C listing.</p>
+
+<p>You must then save that source and load it into an assembler - any assembler - which will complete the translation into 68000 code.</p>
+
+<p>There are no grumbles about the documentation. The company has done its usual better-than-average job. The manual is comprehensive but, for some odd reason, includes more than it should. A few of the example programs contain a C instruction which cannot be used within the Rat C environment.</p>
+
+<p>The package is disappointing. GST is a company which is highly regarded by other manufacturers, including Sinclair Research, and it should know that a good user interface which helps beginner and expert alike is important. The core of the product has been well put together but a little more time could have been spent on window dressing.</p>
+<br clear=all>
+
+<table width="100%" border="0"><tr><td>
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellspacing="0" cellpadding="5">
+<tr><td bgcolor="#CCCCCC"><b>Publisher</b> GST <b>Price</b> &#163;59.95<br>
+<font size="+2"><b>***</b></font></td></tr></table>
+</td></tr></table></td><td align="right" valign="top"><b><i>John Gilbert</i></b></td></tr></table>
+
+</td></tr></table>
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table width="100%" border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC"><font size="+2"><b><i>Blackjack</i></b></font></td></tr></table>
+</td></tr></table>
+
+<p class="first">CARRYING on the tradition of 'bring out the rubbish first and promise to bring out the good stuff later', Quest has launched <b>Blackjack</b>.</p>
+
+<p>The evergreen game, probably that colour because of the mould it has attracted as it festered in the vaults of software companies, is a simulation of casino Blackjack in which you and the banker battle it out to get the highest value hand or 21 - a Blackjack. That is the claim but it is just not true.</p>
+
+<p>There are certain aspects of the game which do not tally with our expert understanding of it. For instance, when the values of your hand and that of the computer are equal the game gives you your bet back. In the version of the game which we know - and love - you lose your money unless you have an outright win.</p>
+
+<p>The only selling point for <b>Blackjack</b> is the better than average graphics. They include a display of the cards and the number of chips you have on the table. The LOADing screen, put up two minutes into the game load, shows cards and a straight whisky.</p>
+
+<p>You will probably need the whisky if you have just parted with the &#163;20 needed to purchase the game. There is no logical reason for putting the price so high. Quest is taking no gamble.</p>
+<br clear=all>
+
+<table width="100%" border="0"><tr><td>
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellspacing="0" cellpadding="5">
+<tr><td bgcolor="#CCCCCC"><b>Publisher</b> Quest <b>Price</b> &#163;19.95<br>
+<font size="+2"><b>*</b></font></td></tr></table>
+</td></tr></table></td><td align="right" valign="top"><b><i>John Gilbert</i></b></td></tr></table>
+
+</td></tr></table>
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table width="100%" border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC"><font size="+2"><b><i>MonQL</i></b></font></td></tr></table>
+</td></tr></table>
+
+<p class="first">WE HAVE received assemblers by the bucketful but we have been waiting for a good monitor/disassembler to arrive. HiSoft has, at last, plugged the gap in the market with <b>MonQL</b>, by Andrew Pennel.</p>
+
+<p>Once called from microdrive one, using a boot routine, it can either be loaded into what HiSoft regards as the usual space for machine code programs or into the resident procedure area. In most cases the latter is more protected than the former.</p>
+
+<p>It is possible to drop out of the monitor and back into SuperBasic by using CTRL+Q and from there to re-enter the program by typing MONQL as a procedure named.</p>
+
+<p>When it has been loaded <b>MonQL</b> displays information about how it was entered and gives the Job ID which is usually 0 when execution starts from SuperBasic.</p>
+
+<p>A front panel window is set up near the middle of the screen. It is split into two sections. The first contains information on the state of some 68008 registers. The values contained within the Program Counter and Status register are shown.</p>
+
+<p>The flags which have been set within the Status Register are also displayed. As usual T means Trace bit set, U means that the processor is in User mode and S means that Supervisor mode is in operation.</p>
+
+<p>Control commands are entered using keywords, in a similar way to the Spectrum. For instance, J means job Control and Display while Q invokes a Quick Disassembly.</p>
+
+<p>Other monitor functions include memory block copy, set Memory Pointer, register modify, base conversion, insert breakpoints, and a series of search facilities which can be done using byte, word, or long words. The function keys have also been set up to change the size and position of the front panel window. One criticism is that the sizes have been set by the author. You cannot use cursors to extend the window.</p>
+
+<p><b>MonQL</b> continues the high standard which we have come to expect from HiSoft, but the same cannot be said about the documentation. The manual gives brief details of monitor operations and multi-tasking but could have been expanded to include more examples for beginners.</p>
+
+<p>Despite that <b>MonQL</b> is a useful product and one of the best disassemblers on the market.</p>
+<br clear=all>
+
+<table width="100%" border="0"><tr><td>
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellspacing="0" cellpadding="5">
+<tr bgcolor="#CCCCCC"><td><b>Publisher</b> HiSoft <b>Price</b> &#163;19.95<br>
+<font size="+2"><b>****</b></font></td></tr></table>
+</td></tr></table></td><td align="right" valign="top"><b><i>John Gilbert</i></b></td></tr></table>
+
+</td></tr></table>
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table width="100%" border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC"><font size="+2"><b><i>Land of Havoc</i></b></font></td></tr></table>
+</td></tr></table>
+
+<p class="first">THE BOX looks great. A lizard man fires a gun at a giant scorpion. Inside, there are nine glossy postcards with maps on them. Even the instruction booklet looks like it was done by Ultimate. But no ... instead we've got a maze game from Microdeal.</p>
+
+<p>If that sounds cruel let this be fair warning: we intend to be nasty about QL software until the quality catches up with the price. <b>Land of Havoc</b> is a gigantic game, to be sure - 2000 screens - but the graphics do not exactly stretch the machine.</p>
+
+<p>You have to run around a maze collecting various objects on a lengthy quest. The first maze has nine sections, including a desert, village, forest and graveyard. To begin with you must seek a book in the village, then you will be directed to other areas for more objects. The postcards fit together to form a large map, changed each game. After the first stage, you move underground, where the maps cannot help you.</p>
+
+<p>The graphics are very large and chunky, a sort of magnified <b>Sabre Wulf</b> but wholly lacking in the riotous colour and variety of foes of that classic maze game.</p>
+
+<p>It is expensive, which reflects the cost of overheads against a small QL market, but such excuses mean little to the customer. If you require arcade action on your QL, then buy it by all means, but don't expect miracles of programming.</p>
+<br clear=all>
+
+<table width="100%" border="0"><tr><td>
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellspacing="0" cellpadding="5">
+<tr><td bgcolor="#CCCCCC"><b>Publisher</b> Microdeal <b>Price</b> &#163;19.95<br>
+<font size="+2"><b>***</b></font></td></tr></table>
+</td></tr></table></td><td align="right" valign="top"><b><i>Chris Bourne</i></b></td></tr></table>
+
+</td></tr></table>
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table width="100%" border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC"><font size="+2"><b><i>QL Gardener</i></b></font></td></tr></table>
+</td></tr></table>
+
+<p class="first">PLAN YOUR English country garden with the latest really useful gem from Sinclair Research.</p>
+
+<p>To be fair the program provides extensive plant and tree databases, but how many people in the still small QL user base also have green fingers and are willing to buy a piece of software when books do just as well? At least you can easily take a book into the garden or to the horticultural centre.</p>
+
+<p>The master program is a database controller into which you can load one of the plant libraries supplied with the package or one you have ordered from an address given in the instructions.</p>
+
+<p>The plant libraries can be accessed to perform a variety of functions. They can be used in general garden design, to choose specific types of plant or for teaching and learning purposes. The two libraries included in the package are Bushes and Trees, and Garden Flowers. Each is capable of storing 600 plant names and details.</p>
+
+<p>The categorisation of plants includes type, hardiness, size, growth speed, foliage, scent and soil conditions. You may want to find a plant which flowers in summer, will flourish in rocky ground and has a purple bloom. The program provides a series of menus which, hopefully, will lead to several plants of the variety you require.</p>
+
+<p>Although the instruction booklet is well written it treats the reader as an imbecile. A large amount of space is filled with the technicalities of using the QL. Much of the information is repeated within the program.</p>
+
+<p>It is hard to understand why Sinclair, which boasts of the power of the QL, has launched a product which could have run equally well on an 8-bit micro.</p>
+<br clear=all>
+
+<table width="100%" border="0"><tr><td>
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellspacing="0" cellpadding="5">
+<tr><td bgcolor="#CCCCCC"><b>Publisher</b> Sinclair Research <b>Price</b> &#163;24.95<br>
+<font size="+2"><b>**</b></font></td></tr></table>
+</td></tr></table></td><td align="right" valign="top"><b><i>John Gilbert</i></b></td></tr></table>
+
+</td></tr></table>
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="sftwreb.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Spectrum Software Scene 2"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 41 Contents"></a>
+<a href="qlhard.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="QL Hardware World"></a></p>
+
+<h6 align="center">Sinclair User<br>August 1985</h6>
+
+</body>
+</html>

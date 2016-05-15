@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 20 - Hardware World</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Hardware news from Sinclair User, November 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 20 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Hardware World</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1>Easy-to-use double Spectrum interface</h1>
+
+<img src="hardwre1.jpg" width=300 height=190 hspace=10 vspace=10 border=0 align="right" alt="Morex interface">
+<p class="first">MOREX has produced a Centronics and a proper RS232 interface for the Spectrum. Both are contained in a small black box which plugs into the back of the Spectrum. Only 850 bytes of machine code are required to operate the interface and it is located below the USR-definable graphics section of the 16K or 48K RAM - both versions are supplied on the same tape.</p>
+
+<p>Both interfaces will operate via the LLIST and LPRINT commands once a call to the machine code has been made via the USR command. The RS232 will also allow INKEY$ from an RS232 device. The code sent can either be all codes from 0 to 255 or they can be sent as TEXT which would normally appear on the screen.</p>
+
+<p>Various speeds can be set on the RS232 to a maximum of 600 baud on a 16K machine - it can be set higher but the manual warns it can be unreliable - or 4,800 baud on the 48K. The baud rate cannot be split, to work Prestel for instance, at 1,200 one way and 75 the other.</p>
+
+<p>The RS232 has the same handshaking as most professional devices - CTS, RTS and TX, RX data - on a 7-pin DIN socket. No plug is supplied.</p>
+
+<p>The only difficulty was finding some device with which to try it. It will not work with non-standard devices as it requires a negative voltage to register as the LOW condition. With a BBC Micro Model B it worked very well; as the BBC allows the RS232 to act as the keyboard, the whole machine could be controlled from the Spectrum, which should be very useful for schools.</p>
+
+<p>The RS232 is also a both-way device, so PRINT statements and programs can be fed into the Spectrum as well. It is simple to use and very well-documented in the manual supplied, including a list of system variables for machine code users.</p>
+
+<p>The Centronics interface has a 26-way IDC connector - the same type as the BBC - so there should be no difficulty in obtaining a printer cable. A graphics tape is also included for Seikosha, NEC or Epson printers to permit a screen COPY to be done in two sizes - but not using the COPY command.</p>
+
+<p>The edge connector is also extended through to the back for any other add-ons and the port addresses used are 254 and 127.</p>
+
+<p>The Morex interface costs &#163;45.95 from Morex Peripherals Ltd. An RS232 lead to a 25 D-plug costs &#163;13.45. It will also work with a version of Tasword-2, the Spectrum word processor.</p>
+
+<h2>Fuller puts all its eggs in one basket</h2>
+
+<p class="first">THE FULLER BOX is an extension which looks natural to the back of a Spectrum. It contains a sound board, amplifier, joystick port and separate cassette EAR and MIC sockets.</p>
+
+<p>The sound board contains the AY-3-8912 sound chip used in many computers and has three programmable pitch tone supplies, plus a noise generator. It also has envelope control to give rising or falling pitched sounds.</p>
+
+<p>The sound board works on port numbers 63 and 95, while the joystick works on port 127. The joystick socket is the standard Atari one and besides the demonstration cassette some commercial software will also work with it, as it is similar to the Kempston joystick.</p>
+
+<p>It costs &#163;30.75 for the basic unit - called the Fuller Box - and the master unit costs &#163;55.75, which includes the speech chip. You can if you wish upgrade to the speech chip at a later date.</p>
+
+<h2>Unit cuts loading errors</h2>
+
+<p class="first">THE ELINCA ZX Tapeloader is a box which contains all the elements to clean doubtful tapes and to ensure perfect SAVEing and LOADing of programs. The black box contains a small meter with which to set the level of the input from the tape recorder, a three-position switch for selecting SAVE and LOAD, and two tape filters. It also has a red LED to indicate what mode it is in.</p>
+
+<p>The LOAD amplifier keeps the signal constant and filters-out noise caused by the pening (sic) the signal. The SAVE filter is a passive - nonpowered - one which eliminates noise.</p>
+
+<p>The unit has two jack sockets in one side and two leads from the other to plug into the EAR and MIC sockets of the computer. It is not necessary to keep unplugging the leads with the unit on SAVEing and LOADing. The unit is powered by a PP3 battery which has to be fitted inside the unit by the user - it is not supplied. It works very well and having a meter on it makes it easy to set up.</p>
+
+<p>The unit is guaranteed for one year and may be returned within seven days for a refund if you are not satisfied.</p>
+
+<p>Elinca Products Ltd, Sheffield, priced at &#163;14.99.</p>
+
+<h2>Simple link with the outside world</h2>
+
+<p class="first">AMBIT has produced a modem to go with its ZX-81 RS232 interface.</p>
+
+<p>The 300 baud modem is acoustic-coupled to the telephone line by pushing the standard telephone handset into two foam blocks containing a microphone and loudspeaker on top of the modem.</p>
+
+<p>That makes the unit usable on a normal telephone and it does not have to be wired-in and does not require British Telecom to provide a special plug.</p>
+
+<p>The modem is easy to construct but a few points need to be emphasised which are not in the notes.</p>
+
+<p>One is that the kit does not include a power supply for +12V/+5V/-12V required to run the modem. You will have to design and build one on Veroboard, as the company does not market a suitable one. The circuit relies on through-the-board connections made by soldering the component wires on both sides of the board, so check them carefully.</p>
+
+<p>No mention was made of how to connect the piezoelectric devices used as loudspeaker and microphone.</p>
+
+<p>The microphone has three connections and was found to work correctly only when the outer two were used.</p>
+
+<p>It is recommended that you also buy the hardware kit, as it makes a portable box as well as containing all the electronics in the bottom.</p>
+
+Tried with several databases, including the Ambit Rewtel, it worked extremely well.
+<p>
+The ZX-81 interface costs &#163;32.40, the modem &#163;22.94, and the hardware kit for the modem &#163;13.80, plus a flat charge of 60 pence for postage.</p>
+
+<p>The interface to the modem is TX data, RX data and Carrier - RS232 standard. You will also need a motherboard of some size with the interface, as the program to run it needs more than 1K and the interface is not supplied with an edge connector.</p>
+
+<h2>Interesting addition</h2>
+
+<p class="first">KELWOOD COMPUTER Cases has produced a powerful amplifier for the Spectrum to amplify games and keyboard beeps. It is contained in a plastic box only 4&#189;  x 2&#189;  x 1&#190; in. and contains a one-chip amplifier based on the LM380 chip.</p>
+
+<p>It has a power ON/OFF switch, volume control and loudspeaker built-in and it runs off a single 9V PP3-type battery, which is included in the price.</p>
+
+<p>It should improve most graphics games which have sound and make them more interesting.</p>
+
+<p>A version of the amplifier can also be obtained built into the company's power base module - a metal sloping stand with power ON/ OFF and tape LOAD-SAVE switch. It is called the Sound Power Base. It requires no battery as it is driven from the Spectrum power supply.</p>
+
+<p>The Supersound Spec-amp costs &#163;7 and the Sound Power Base &#163;19.95 or &#163;17.70 from Kelwood Computer Cases, Rotherham.</p>
+
+<h2>Low-cost briefcase</h2>
+
+<p class="first">A HARD green plastic briefcase which can be used for a Spectrum costs only &#163;3.99 at WH Smith. It is intended for children going to school and is approximately 15x11x3&#188;in. Although it contains no foam or other fixings to hold down a Spectrum, they can be put in by a user easily to his design.</p>
+
+<p>The only thing to watch is the hinges on the front clasps as they are thin and will snap after prolonged use. They should be strengthened with carpet tape or flexible plastic sheet should be stuck over them. The cases are available in four colours.</p>
+
+<img src="hardwre2.jpg" width=250 height=182 hspace=10 vspace=10 border=0 align="left" alt="Sweet Talker">
+<h2>Natural sounds by Cheetah</h2>
+
+<p class="first">CHEETAH MARKETING has produced a speech output device called the Sweet Talker. It is complete in a black plastic box the same size as the 32K RAM pack for the Spectrum. The unit contains a very powerful amplifier and the tape with it not only autoruns to introduce itself but also shows some very good programming practice.</p>
+
+<p>The instructions are very simple and the unit should not clash with any joysticks or other items, as it uses I/O port address 7. That may clash with some Sinclair peripherals - the Microdrive, for instance - as Sinclair tends to use only one bit of an address going low to operate equipment and using port 7 takes all the bits from B7 to B3 low. Cheetah is looking into that and may modify the address.</p>
+
+<p>Programming is done by using phonetic sounds which allow you to produce the sounds necessary to make up a full word. They are put out as numbers to Sweet Talker in sequence from a DATA statement when you want words spoken. Silences can be included to stop the words or to provide pauses between words - of up to 200ms. The Sweet Talker seems to be about eight to 10 times as slow as others available, which makes it sound more natural. There are ZX-81 and Spectrum versions.</p>
+
+<p>Sweet Talker is available from Cheetah Marketing, London. John Menzies and Boots also stock it. The cost is &#163;34.95.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 20 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<h6 align="center">Sinclair User<br>November 1983</h6>
+
+</body>
+</html>
+

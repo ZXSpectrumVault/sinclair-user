@@ -1,0 +1,368 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 44 - Machine Code</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Z80 machine code programming feature from Sinclair User, November 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#CCCCCC" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="qlhard.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="QL Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 44 Contents"></a>
+<a href="mud.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Multi-User Dungeon"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Machine Code</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><img src="mcode1.jpg" width=550 height=252 vspace=10 border=0 alt="Mission for area control">
+
+<h2><i>Create a Scramble type display in machine code<br>
+with Marcus Jeffrey to interpret the scroll</i></h2></center>
+
+<p class="first">There are a few instructions which place the Z80 in a class of its own amongst the 8-bit chips. Those are the block data transfer and search instructions.</p>
+
+<p>A single assembly language instruction can do an enormous amount of work, as shown by this month's program, which moves large areas of the screen to produce a <b>Scramble</b>-like display.</p>
+
+<p>We have already used one or two of those in past programs, but never explained how they work. If we look back to the programs which used the alternative screen, we will find they have the following sort of structure:</p>
+
+<pre>  LD HL,  from_screen_start_address
+  LD DE,  to_screen_start_address
+  LD BC,  number_of_screen_bytes
+  LDIR</pre>
+
+<p class="first">Simple logic tells us that, for the routine to work, the LDIR instruction must cleverly copy all the bytes of the 'from_screen' to the 'to_screen', but how does it do that? The slightly simpler LDI instruction copies the data from the location addressed by the HL register pair to the location addressed by the DE register pair. It then increments both the DE and HL registers, and decrements the BC register pair. So, if we were to execute the following code,</p>
+
+<pre>  LD BC,5432l
+  LD DE,12345
+  LD HL,23456
+  LD (HL),99
+  LDI</pre>
+
+<p class="first">the registers and locations would have the values</p>
+
+<pre>  BC = 54320
+  DE = 12346
+  HL = 23457
+  (23456) = 99
+  (12345) = 99</pre>
+
+<p class="first">That is an interesting instruction but its use tends to be limited.</p>
+
+<p>The LDIR instruction, on the other hand, is very useful. It performs the same operation as LDI, but will continue to transfer data items - incrementing DE and HL each time - until the BC register pair reaches zero. You should now be able to see how the screen copier works.</p>
+
+<p>There are many other uses for LDIR. Suppose that you had a machine code program in memory at location 60000, and found that you had run out of room at the top of memory. An easy solution would be to CLEAR 49999, then execute the following routine</p>
+
+<pre>  LD HL,60000
+  LD DE,50000
+  LD BC,number_bytes
+  LDIR</pre>
+
+<p>The only remaining job is to modify any absolute locations in the code. Alternatively, you may want to set a number of bytes in memory to the same value. That could be used to set a number of screen bytes to a particular pattern, or to initialise a table of bytes prior to processing. The easy answer is to use the following piece of code:</p>
+
+<pre>  LD HL,start_location
+  LD D,H  ;
+  LD E,L  ;DE=HL+1
+  INC DE  ;
+  LD BC,no_bytes-1
+  LD (HL),pattern_byte
+  LDIR</pre>
+
+<p class="first">That works by copying the initial pattern_byte value into the next location, then updating the HL register so that it equals the previous DE register pair, which has also been incremented, ready to copy the same value again.</p>
+
+<p>There are two similar instructions to LDI and LDIR, known as LDD and LDDR. Those perform a similar operation, but instead of incrementing the DE and HL register pairs, they are decremented - BC is always decremented.</p>
+
+<p>Those can be very useful in order to avoid overwriting relevant locations. For example, if we wanted to copy 2000 memory locations from location 50000 to location 51000, we would have a problem. Using the LDIR instruction, we would probably write something like</p>
+
+<pre>  LD HL,50000
+  LD DE,51000
+  LD BC,2000
+  LDIR</pre>
+
+<p class="first">However, the first 1000 iterations of the loop will overwrite locations 51000 to 51999 before they are copied. We can avoid the problem by using LDDR:</p>
+
+<pre>  LD HL,51999
+  LD DE,52999
+  LD BC,2000
+  LDDR</pre>
+
+<p class="first">That will still overwrite the same locations, but only after they have been copied. If you look at the assembly code in <a href="#fig1">figure one</a>, you will notice that the same method has been used to avoid overwriting when scrolling the screen to the left or right.</p>
+
+<p>In addition to those transfer instructions, there is a corresponding set of search operations. Those have the mnemonics CPD, CPDR, CPI and CPIR. The CPD instruction will compare the value in the accumulator with the value held in the location addressed by the HL register pair, just like the CP (HL) instruction. However, the CPD instruction will also decrement both the BC and HL register pairs.</p>
+
+<p>That may not seem of much use, but the repeated version is far more powerful. The CPDR operation will repeat the CPD instruction, stopping when either the accumulator equals the current memory location addressed by the HL register pair, or if the BC register pair reaches zero.</p>
+
+<p>That form of the instruction can have hundreds of uses, especially when operating with tables which may have a variable length. When handling databases, you can set HL to the start of the data, and BC to the maximum number of items. You can then easily search the table for a specific item, without running over the end. With variable length records, just use a dummy value - an impossible data value - to distinguish the end of the table. You can then search for that value in the accumulator, using the BC register pair to count the number of items.</p>
+
+<p>The CPI and CPIR instructions are very similar to CPD and CPDR, but instead of decrementing the HL register pair after each comparison, HL is incremented. All of those instructions are summarised in <a href="#fig5">figure five</a>.</p>
+
+<p>This month's example program implements two of the most useful of those instructions, LDIR and LDDR, to scroll parts of the display screen. The assembly code for the routines is shown in <a href="#fig1">figure one</a>, and the usual Basic loader and application programs are given in <a href="#fig2">figure two</a>. Just type that in and run it, taking care with the graphics characters in line 150.</p>
+
+<p>There are two main routines, shown as LEFT and RIGHT in <a href="#fig1">figure one</a>. Those scroll the screen to the left and right respectively. <a href="#fig3">Figure three</a> shows how that is done for any particular line of pixels. When moving screen information to the left, it is important not to overwrite a byte before copying it, so the LDIR instruction is used. Conversely, the right scroll routine uses the LDDR instruction.</p>
+
+<p>That still leaves the problems of overwriting the leftmost or rightmost byte. To avoid that the contents of the location addressed by the DE register pair are placed in the accumulator - which is unaffected by LDDR and LDIR - before shifting each pixel line. When the shift is complete, that value is placed back at the opposite end of the screen, giving a wraparound effect.</p>
+
+<p>The DJNZ loop at the end of each routine uses the B register to loop around for all the pixel lines. If B were set to the total number of lines on the screen, then the whole screen would scroll. However, to make things a little more interesting, the routines have been modified to scroll only one third of the screen.</p>
+
+<p><a href="#fig4">Figure four</a> shows how the Spectrum screen locations are naturally divided into three areas. When calling the routines, the accumulator should be set to</p>
+
+<pre>  1 - scroll top of screen.
+  2 - scroll middle of screen.
+  3 - scroll bottom of screen.</pre>
+
+<p class="first">You can modify the routines easily to scroll as many or as few lines as you choose. When doing that bear in mind the Spectrum screen layout. The routines, at present, add 32 to the HL register pair to move to the next line. That means the top pixel line of eight character lines will scroll first, followed by the second pixel line of the same eight character lines, and so on. To scroll a single character line, it is only necessary to increment the most significant byte of the register pairs. So, to scroll the top line of the display to the left, you would use a routine like that in <a href="#fig6">figure six</a>.</p>
+
+<p>Using a generalised version of that sort of routine, you could have alternate lines easily scrolling in opposite directions. That would be handy for such games as <b>Frogger</b>.</p>
+
+<p><a href="../045/mcode.htm">Next month</a> we will look at a number of hidden registers, and a new type of addressing mode which can be used with common instructions.</p>
+
+<h2><i>Figures</i></h2>
+
+<a name="fig1"></a>
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 1.</b></p>
+<pre>                     ORG   60000
+                     LOAD  60000
+
+EA60 3E01     SCROLL LD    A,1        ;Scroll top third of screen
+EA62 CD70EA          CALL  LEFT       ;    one character left
+EA65 3E02            LD    A,2        ;Scroll middle of screen
+EA67 CD9DEA          CALL  RIGHT      ;    one character right
+EA6A 3E03            LD    A,3        ;Scroll bottom of screen
+EA6C CD70EA          CALL  LEFT       ;    one character left
+EA6F C9              RET
+
+EA70 FE01     LEFT   CP    1          ;If A = 1, then set HL
+EA72 2005            JR    NZ,LNOTOP  ;    for top of screen
+EA74 21E13F          LD    HL,3FE1H
+EA77 180F            JR    LTSCR
+EA79 FE02     LNOTOP CP    2          ;If A = 2, then set HL
+EA7B 2005            JR    NZ,LNOMID  ;    for middle of screen
+EA7D 21E147          LD    HL,47E1H
+EA80 1806            JR    LTSCR
+EA82 FE03     LNOMID CP    3          ;If A = 3, then set HL
+EA84 C0              RET   NZ         ;    for bottom of screen
+EA85 21E14F          LD    HL,4FE1H
+EA88 0640     LTSCR  LD    B,64       ;B = 64 pixel lines
+EA8A C5       LLOOP  PUSH  BC
+EA8B 012000          LD    BC,32      ;BC = 32 bytes per line
+EA8E 09              ADD   HL,BC
+EA8F 0D              DEC   C          ;BC = 31 LDIR loops
+EA90 54              LD    D,H
+EA91 5D              LD    E,L
+EA92 1D              DEC   E          ;DE = HL - 1
+EA93 E5              PUSH  HL
+EA94 1A              LD    A,(DE)     ;A = leftmost byte
+EA95 EDB0            LDIR             ;Shift pixel line
+EA97 12              LD    (DE),A     ;Rightmost byte = A
+EA98 E1              POP   HL
+EA99 C1              POP   BC
+EA9A 10EE            DJNZ  LLOOP      ;Repeat for 1/3 screen
+EA9C C9              RET
+
+EA9D FE01     RIGHT  CP    1          ;If A = 1, then set HL
+EA9F 2005            JR    NZ,RNOTOP  ;    for top of screen
+EAA1 21FE3F          LD    HL,3FFEH
+EAA4 180F            JR    RTSCR
+EAA6 FE02     RNOTOP CP    2          ;If A = 2, then set HL
+EAA8 2005            JR    NZ,RNOMID  ;    for middle of screen
+EAAA 21FE47          LD    HL,47FEH
+EAAD 1806            JR    RTSCR
+EAAF FE03     RNOMID CP    3          ;If A = 3, then set HL
+EAB1 C0              RET   NZ         ;    for bottom of screen
+EAB2 21FE4F          LD    HL,4FFEH
+EAB5 0640     RTSCR  LD    B,64       ;B = 64 pixel lines
+EAB7 C5       RLOOP  PUSH  BC
+EAB8 012000          LD    BC,32      ;BC = 32 bytes per line
+EABB 09              ADD   HL,BC
+EABC 0D              DEC   C          ;BC = 31 LDDR loops
+EABD 54              LD    D,H
+EABE 5D              LD    E,L
+EABF 1C              INC   E          ;DE = HL + 1
+EAC0 E5              PUSH  HL
+EAC1 1A              LD    A,(DE)     ;A = rightmost byte
+EAC2 EDB8            LDDR             ;Shift pixel line
+EAC4 12              LD    (DE),A     ;Leftmost byte = A
+EAC5 E1              POP   HL
+EAC6 C1              POP   BC
+EAC7 10EE            DJNZ  RLOOP      ;Repeat for 1/3 screen
+EAC9 C9              RET
+
+                     END
+
+Workarea - A717 to A8B9
+ORG  end - EACA
+LOAD end - EACA</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig2"></a>
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 2.</b></p>
+<pre>  10 CLEAR 59999
+  20 GO SUB 1000
+  30 RESTORE
+  40 FOR i=USR &quot;a&quot; TO USR &quot;b&quot;+7
+  50 READ j
+  60 POKE i,j
+  70 NEXT i
+  80 CLS
+  90 PRINT AT 0,5;&quot;Scramble-like display&quot;
+ 100 LET yy=0: PLOT 0,147
+ 110 FOR x=1 TO 15: LET y=INT (40*RND)-20-yy: DRAW 16,y: LET yy=yy+y: NEXT x
+ 120 DRAW 15,-yy: LET yy=0: PLOT 0,23
+ 130 FOR x=1 TO 15: LET y=INT (47*RND)-23-yy: DRAW 16,y: LET yy=yy+y: NEXT x
+ 140 DRAW 15,-yy
+ 150 PRINT AT 12,3;&quot;AB&quot;: REM UDGs A &amp; B
+ 160 RANDOMIZE USR 60000
+ 170 GO TO 160
+ 180 STOP
+ 190 DATA 96,248,255,127,127,63
+ 200 DATA 31,15,0,0,0,248,196
+ 210 DATA 255,252,240
+ 999 STOP
+1000 REM HEX LOAD ROUTINE
+1010 DEF FN p(x)=CODE h$(x)-48-7*(CODE h$(x)&gt;=65)
+1020 LET byte=0
+1030 RESTORE 2000
+1040 READ start
+1050 READ h$
+1060 IF h$=&quot;*&quot; THEN GO TO 1160
+1070 IF LEN h$&lt;&gt;2*INT (LEN h$/2) THEN PRINT &quot;Odd number of hex digits in: &quot;;h$: STOP
+1080 FOR i=1 TO LEN h$
+1090 IF NOT((h$(i)&gt;=&quot;0&quot; AND h$(i)&lt;=&quot;9&quot;) OR (h$(i)&gt;=&quot;A&quot; AND h$(i)&lt;=&quot;F&quot;)) THEN PRINT &quot;Illegal hex digit: &quot;;h$(i): STOP
+1100 NEXT i
+1110 FOR i=1 TO LEN h$ STEP 2
+1120 POKE start+byte,16*FN p(i)+FN p(i+1)
+1130 LET byte=byte+1
+1140 NEXT i
+1150 GO TO 1050
+1160 PRINT &quot;Code entered&quot;
+1170 PAUSE 150
+1180 RETURN
+2000 DATA 60000,&quot;3E01&quot;,&quot;CD70EA&quot;
+2010 DATA &quot;3E02&quot;,&quot;CD9DEA&quot;,&quot;3E03&quot;
+2020 DATA &quot;CD70EA&quot;,&quot;C9&quot;
+2030 DATA &quot;FE01&quot;,&quot;2005&quot;,&quot;21E13F&quot;
+2040 DATA &quot;180F&quot;,&quot;FE02&quot;,&quot;2005&quot;
+2050 DATA &quot;21E147&quot;,&quot;1806&quot;,&quot;FE03&quot;
+2060 DATA &quot;C0&quot;,&quot;21E14F&quot;,&quot;0640&quot;
+2070 DATA &quot;C5&quot;,&quot;012000&quot;,&quot;09&quot;
+2080 DATA &quot;0D&quot;,&quot;54&quot;,&quot;5D&quot;,&quot;1D&quot;
+2090 DATA &quot;E5&quot;,&quot;1A&quot;,&quot;EDB0&quot;,&quot;12&quot;
+2100 DATA &quot;E1&quot;,&quot;C1&quot;,&quot;10EE&quot;,&quot;C9&quot;
+2110 DATA &quot;FE01&quot;,&quot;2005&quot;,&quot;21FE3F&quot;
+2120 DATA &quot;180F&quot;,&quot;FE02&quot;,&quot;2005&quot;
+2130 DATA &quot;21FE47&quot;,&quot;1806&quot;,&quot;FE03&quot;
+2140 DATA &quot;C0&quot;,&quot;21FE4F&quot;,&quot;0640&quot;
+2150 DATA &quot;C5&quot;,&quot;012000&quot;,&quot;09&quot;
+2160 DATA &quot;0D&quot;,&quot;54&quot;,&quot;5D&quot;,&quot;1C&quot;
+2170 DATA &quot;E5&quot;,&quot;1A&quot;,&quot;EDB8&quot;,&quot;12&quot;
+2180 DATA &quot;E1&quot;,&quot;C1&quot;,&quot;10EE&quot;,&quot;C9&quot;
+2190 DATA &quot;*&quot;</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig3"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 3.</b></p>
+<img src="mcode2.gif" width=289 height=299 hspace=10 vspace=10 border=0 alt="">
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig4"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 4. Spectrum screen layout</b></p>
+<img src="mcode3.gif" width=261 height=146 hspace=10 vspace=10 border=0 alt="">
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig5"></a>
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 5. New Z80 instruction codes</b></p>
+<pre>CPD      - Compare the accumulator with the contents of the location addressed
+           by the HL register pair. Set the zero flag accordingly, and decrement
+           the HL and BC register pairs.
+CPDR     - Repeat CPD instruction until either the comparison is true
+           (ie. accumulator equals memory) or the BC register pair is zero.
+CPI      - Compare the accumulator with the contents of the location addressed
+           by the HL register pair. Set the zero flag accordingly, decrement
+           the BC register pair and increment the HL register pair.
+CPIR     - Repeat CPI instruction until either the comparison is true
+           (ie. accumulator equals memory) or the BC register pair is zero.
+LDD      - Copy the contents of the location addressed by the HL register pair
+           to the location addressed by the DE register pair. Decrement the BC,
+           DE and HL register pairs.
+LDDR     - Repeat LDD instruction until the BC register pair is zero.
+LDI      - Copy the contents of the location addressed by the HL register pair
+           to the location addressed by the DE register pair. Decrement the BC
+           and increment the DE and HL register pairs.
+LDIR     - Repeat LDI instruction until the BC register pair is zero.</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig6"></a>
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 6.</b></p>
+<pre>       LD    B,8        ;Eight pixel lines
+       LD    DE,4000H   ;First byte of screen
+       LD    HL,4001H   ;Second byte of screen
+LOOP   PUSH  BC
+       LD    BC,31      ;Number of bytes to scroll
+       PUSH  DE
+       PUSH  HL
+       LD    A,(DE)     ;Store leftmost byte
+       LDIR             ;Shift pixel line
+       LD    (DE),A     ;Restore as rightmost byte
+       POP   HL
+       INC   H          ;HL = HL + 256
+       POP   DE
+       INC   D          ;DE = DE + 256
+       POP   BC
+       DJNZ  LOOP       ;Repeat for eight lines
+       RET</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><p class="first"><a href="../043/mcode.htm"><b>Previous article in series (issue 43)</b></a><br>
+<a href="../045/mcode.htm"><b>Next article in series (issue 45)</b></a></p></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="qlhard.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="QL Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 44 Contents"></a>
+<a href="mud.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Multi-User Dungeon"></a></p>
+
+<h6 align="center">Sinclair User<br>November 1985</h6>
+<h6 align="center">Another Fine Product transcribed by Jim Grimwood at <a href="http://www.users.globalnet.co.uk/~jimg/">YRUA?</a></h6>
+
+</body>
+</html>

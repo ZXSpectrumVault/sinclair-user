@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 34 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX-81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, January 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="insinc.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Inside Sinclair"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 34 Contents"></a>
+<a href="../035/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 35"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson5.jpg" width=275 height=407 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1>Headers examined</h1>
+
+<p class="first"><b><font size="+1">Andrew Hewson examines headerless files and block line deletion</font></b></p>
+
+<p class="first">IT SOMETIMES happens that an item in this column rings a bell with many readers and triggers a flood of letters on the subject. My piece in Sinclair User November 1984 had that effect because it included a short section on SAVEing and LOADing headerless files on the Spectrum which interested a number of correspondents. I shall expand on the theme this month.</p>
+
+<p>First, though, I must correct an error that crept in and was brought to my attention by Martin Carte, amongst others. It occurred in a table included in the piece which listed two machine code routines for SAVEing and LOADing the screen in a headerless file. The routines had been written as if the Spectrum display file and attributes file were together 6192 bytes long whereas they are in fact 6912 bytes. As a result the routines omitted to SAVE or LOAD the latter part of the attributes file. Apologies to all those who were led astray. The correct version of the routines is given in Table 1.</p>
+
+<p>Repeating the routines gives the opportunity to answer Warren Milburn who asks: &quot;Please could you tell me how to alter the start address and bytes length in your routines for saving and loading headerless files?&quot;</p>
+
+<p>The start address is passed to the routines in the ix register pair and the length is passed in the de register pair and so to adapt the routines to your own purposes you must alter the values passed. Assuming you know the start address and number of bytes that you wish to SAVE or LOAD and that the routines are stored consecutively in the printer buffer, then the procedure for LOADing is as follows:</p>
+
+<pre>POKE 23301, START - 256*INT (START / 256)
+POKE 23302, INT (START / 256)
+POKE 23304, LENGTH - 256*INT (LENGTH / 256)
+POKE 23305, INT (LENGTH / 256)</pre>
+
+<p class="first">To modify the SAVE routine POKE the same values into 23311, 23312, 23314 and 23315 respectively.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre><b>Decimal                 Assembler                Comment</b>
+167                     AND A                    Clear carry
+62 255                  LD A,255                 Load A with 255
+221 33 0 64             LD IX,16384              SAVE from 16384
+17 0 27                 LD DE,6192               Length 6912
+205 194 4               CALL 1218                Call SAVE routine
+201                     RET                      Return
+55                      SCF                      Set carry
+62 255                  LD A,255                 Load A with 255
+221 33 0 64             LD IX,16384              LOAD 16384
+17 0 27                 LD DE,6912               Length 6912
+205 86 5                CALL 1366                Call LOAD routine
+201                     RET                      Return
+
+<b>Table 1. Two Spectrum routines to SAVE and LOAD the screen display
+to and from a headerless file.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The routine will be of use to Mike Hughes who writes: &quot;<b>I have written a cataloguing program which requires me to SAVE three character arrays but it is a nuisance waiting for each one to SAVE in turn and then pressing a key before the next SAVE. Is there any way of by-passing the 'start tape then press any key' message?</b>&quot;</p>
+
+<p>The best way of tackling the problem would seem at first sight to be to SAVE the contents of the variables area as a CODE file. It is quite easy to calculate the starting address and length parameters required for the SAVE &quot;&quot; CODE command - the starting address would be the value held in the VARS system variable and the length would be the difference between VARS and the E_LINE system variable.</p>
+
+<p>The method would work well for SAVEing all variables but problems would occur on reLOADing because the starting address, length or arrangement of the variables area might have changed in between the two events. The starting address would have changed, for example, if a microdrive had been brought into use so that the microdrive maps occupied more space lower down in memory thereby causing the Basic program, variables and other items to be shuffled further up in RAM.</p>
+
+<p>The length of the variables area would change if a new variable were brought into use or if a pre-existing array were reDIMensioned. The arrangement of the variables area would have changed if new data were written into a pre-existing string because the Spectrum handles this task by creating the string afresh at the top of the variables area before deleting the old version, which is generally lower down in memory.</p>
+
+<p>Thus the reLOADed CODE file would often end up incorrectly placed in the Spectrum memory or in the correct place overwriting the wrong things.</p>
+
+<p>The safest solution, which although not ideal ensures that the data that is reLOADed does not corrupt the program, is to SAVE the variables area using a short machine code routine as a headerless file. On reLOADing g use another machine code routine to execute the following steps: 1 - delete all the current Basic variables using the ROM routine for recovering redundant memory; 2 - create a new variables area large enough to hold the incoming data using the ROM routine for creating space in memory; 3 - reLOAD the variables using the routine for LOADing headerless files.</p>
+
+<p>Two routines to perform the tasks are listed in Tables 2 and 3 and as usual the decimal codes are listed so that readers without an assembler to hand can load the routines into the printer buffer using the decimal loader in Table 4.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre><b>Decimal                 Assembler                Comment</b>
+42 89 92                ld hl, (23641)           E_LINE to hl
+43                      dec hl                   Backspace to byte containing 128
+237 91 75 92            ld de,(23627)            VARS to de
+167                     and a                    Clear carry flag
+237 82                  sbc hl,de                Calculate length of variables area
+235                     ex de,hl                 Transfer length to de
+66                      ld b,d                   Copy length to bc
+75                      ld c,e
+197                     push bc                  Save bc on the stack
+221 42 75 92            ld ix,(23627)            VARS (ie address to SAVE from) to ix
+62 255                  ld a,255                 Signal cassette main file
+205 194 4               call 1218                Call ROM SAVE routine
+193                     pop bc                   Retrieve length from stack
+237 67 0 91             ld (23296),bc            Start length at beginning of buffer
+201                     ret                      Return
+
+<b>Table 2. A Spectrum routine to SAVE the variables area as a headerless file.</b></pre>
+</td></tr>
+<tr><td bgcolor="#CCCCCC"><center><hr width="50%" noshade></center>
+</td></tr>
+<tr><td bgcolor="#CCCCCC">
+<pre><b>Decimal                 Assembler                Comment</b>
+42 89 92                ld hl, (23641)           E_LINE to hl
+43                      dec hl                   Backspace to byte containing 128
+237 91 75 92            ld de, (23627)           VARS to de
+205 229 25              call 6629                Call ROM routine to delete all variables
+42 75 92                ld hl, (23627)           VARS to hl
+237 75 0 91             ld bc, (23296)           New size for variables area to bc
+205 85 22               call 5717                Call ROM routine to create space
+55                      scf                      Set carry flag
+62 255                  ld a,255                 Signal cassette main file
+221 42 75 92            ld ix, (23627)           VARS to ix
+237 91 0 91             ld de, (23296)           Length to de
+205 86 5                call 1366                Call ROM routine to LOAD variables
+201                     ret                      Return
+
+<b>Table 3. A Spectrum routine to delete all current variables and replace them with data
+from cassette.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The first routine is an adaptation of the SAVE routine in Table 1. Notice that the length of the variables area is saved in the printer buffer at address 23296 so that the load routine can reference the value when it is required. The user can also PRINT the value by invoking the routine using the PRINT USR command - because it is left in the be register pair at the completion of the routine - so that the value can be noted for future reference.</p>
+
+<p>The second routine makes two ROM calls. The first recovers the space lying between the addresses pointed to by the dep and hl register pairs thereby deleting all current variables. The second routine creates a space of length be at the address pointed to by hl thereby creating room for the new variables. Those two ROM routines are very useful because they look after all the relevant system variable pointers no matter whereabouts in memory that the space is to be deleted or created.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>10 FOR I=23298 TO 23551
+20 INPUT J
+30 PRINT I,J
+40 POKE I,J
+50 NEXT I
+
+<b>Table 4. A simple decimal loader for
+POKEing machine code into the printer
+buffer starting at address 23298.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The delete routine can be used to deal with a problem raised by Jeff Sims. He writes: &quot;<b>I sometimes wish to delete large chunks of an existing program in order to create a new version which shares some of the original subroutines. Is there a way of doing so which is more convenient than deleting each line?</b>&quot;</p>
+
+<p>I have described a technique previously in this column for deleting large chunks of a Basic program by manipulating the hidden pointer which the machine places after each line number to tell it the length of the line. It is comparatively straightforward to POKE a new value into the pointer in the first line of the chunk to be deleted so that the machine thinks it is dealing with one monster line. The monster line can then be deleted in the conventional way by entering the line number.</p>
+
+<p>The routine listed in Table 5 achieves the same end in a rather more elegant fashion. The user POKES the first and last line numbers of the section he wishes to delete into the first four bytes of the printer buffer as follows:</p>
+
+<pre>POKE 23296, LINE1 - 256*INT (LINE1 / 256)
+POKE 23297, INT (LINE1 / 256)
+POKE 23298, LINE2 - 256*INT (LINE2 / 256)
+POKE 23299, INT (LINE2 / 256)</pre>
+
+<p class="first">The routine checks each number in turn to ensure that it is non-zero and then calls the ROM routine at 6510 which returns, in the hl register, the address of the first of the two lines in RAM. It calls the same routine a second time to obtain the address of the byte following the end of the second line. The difference between the two addresses is checked to make sure that it is positive and if so the ROM routine at 6629 is called to recover the space thereby deleting the lines.</p>
+
+<b>Finally I have been taken to task by Alex King who writes:<b> Why do you persist in using decimal in your machine code listings when almost all other sources use hexadecimal?</b></b>
+
+<p>It is true that hexadecimal is the most common means of identifying numbers in assembly language programs but I feel that the majority of readers are not familiar with hex. Those who prefer hex are probably adept at conversions whereas the converse is not true those who dislike hex probably find conversion confusing. Decimal is a compromise.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre><b>Decimal                 Assembler                Comment</b>
+42 0 91                 ld hl, (23296)           Fetch first line number
+124                     ld a,h                   Return if both h
+181                     or l                     and l registers
+200                     ret z                    are zero
+237 91 2 91             ld de, (23298)           Fetch second line number
+122                     ld a,d                   Return if both d
+179                     or e                     and e registers
+200                     ret z                    are zero
+213                     push de                  Save de on the stack
+205 110 25              call 6510                Fetch address of first line into hl
+227                     ex (sp),hl               Store hl and recover de
+35                      inc hl                   Increment number of second line
+205 110 25              call 6510                Fetch address of end of second line
+209                     pop de                   Recover first address
+167                     and a                    Clear carry flag
+237 82                  sbc hl,de                Calculate length to he recovered
+200                     ret z                    Return if zero
+216                     ret c                    Return if negative
+25                      add hl,de                Rebuild address
+205 229 25              call 6629                Recover space
+201                     ret                      Return
+
+<b>Table 5. A Spectrum routine to delete all Basic lines lying between two line numbers
+passed to the routine in the printer buffer.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="insinc.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Inside Sinclair"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 34 Contents"></a>
+<a href="../035/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 35"></a></p>
+
+<h6 align="center">Sinclair User<br>January 1985</h6>
+
+</body>
+</html>

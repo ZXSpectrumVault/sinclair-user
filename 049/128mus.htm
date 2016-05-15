@@ -1,0 +1,144 @@
+<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 49 - 128 Music</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair Spectrum 128">
+<meta name="description" content="An article on programming music on the Spectrum 128 from Sinclair User, April 1986">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFCC66" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="3weeks.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Three Weeks In Paradise"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 49 Contents"></a>
+<a href="adventh.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Adventure Helpline"></a></p>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr bgcolor="#000000"><td align="right">
+<font size="+1" color="#FFFFFF"><b>128 Music&nbsp;</b></font></td><td width="106"><img src="../shared/images/chevron1.gif" width=96 height=30 hspace=5 vspace=5 border=0 alt=""></td></tr></table>
+
+<br clear=all>
+<br>
+
+<table width="420" border="0" cellspacing="5" cellpadding="5" align="right"><tr><td>
+<h1><i><font color="#CC9900">Bach to the Future</font></i></h1>
+
+<b><i><font size="+1">Making music on the 128. Chris Bourne lets rip on the new sound chip</font></i></b>
+</td></tr>
+
+<tr><td align="center"><img src="128mus1.jpg" width=400 height=253 border=0 alt=""></td></tr></table>
+
+<p class="first">POOR SOUND has always been a cross Sinclair users have had to bear, right from the early days.</p>
+
+<p>The ZX80 and ZX81 had none at all, while the Spectrum has that godawful Beep, pathetically inadequate for most games and difficult to program. The QL does rather better on noise levels but has one of the most awkward Beeps known to computing man, with masses of numbers after each command to define the sound.</p>
+
+<p>The 128 heralds a new era in the history of Sinclair beeping. For the first time there's a decent sound chip - the same one as is used by Amstrad. Not only does it provide three sound channels through the television speaker, but it's easy to program as well.</p>
+
+<p>This article is designed to take you through programming a simple piece of music on the 128 and on the way demonstrates some of the facilities available. We're going to use a prelude by Bach, who usually sounds quite good on electronic instruments.</p>
+
+<p>First things first, though. How is the sound going to be stored? The 128 uses three strings - a$, b$ and c$ for storing the three separate channels, or voices. A new Basic keyword, Play, produces the sound. The program is therefore going to look like this:</p>
+
+<pre>10 LET a$= &quot;some music&quot;
+20 LET b$=&quot;some more music&quot;
+30 LET c$ =&quot;other bits of music&quot;
+40 PLAY a$, b$, c$</pre>
+
+<p>For musicians, figure one shows the first three bars of the music we're going to program. To make things simple, we'll start with c$, which is going to hold the lowest notes in the piece.</p>
+
+<center><table width="570" border="0" cellpadding="10"><tr align="center"><td>
+<img src="128mus2.gif" width=550 height=138 border=0 alt=""><br><br>
+
+<b><font size="-1">Figure 1. The first three bars of a Bach prelude</font></b></td></tr></table></center>
+
+<p>The first note is middle C, and is represented by the letter C. But how does the computer know which C to play - the middle one, or an octave higher, or what? There are nine ranges allowed, which overlap and span two octaves each. The bottom half of one range is the upper half of the next, so there are two ranges containing any one note. We want a range with middle C in the middle - octave 4. So the first line in the string is O4C. From now on any notes will be taken from that range - capital letters indicate the upper half and lower case letters the lower half.</p>
+
+<p>So far so good, but this note is in fact a whole minim long - two full beats. If you don't specify the length the computer will play crotchets - half what we want. So we give it the value 7, which means minim: &quot;O4N7C&quot;. The N is used to separate two numbers.</p>
+
+<p>The next note is also a minim, so we can write &quot;O4N7CC&quot; without repeating the 7, as all notes will now be minims until that is changed. The next four notes in c$ are also minims - two Cs and two Bs. &quot;O4N7CCCCbb&quot;. The small letters for B indicated that we are now in the lower range of octave 4.</p>
+
+<center><table width="570" border="0" cellpadding="10"><tr align="center"><td>
+<img src="128mus3.gif" width=550 height=138 border=0 alt=""><br><br>
+
+<b><font size="-1">The three note ranges used in the program. Notice how A in octave 3 is the same note as a in octave 4. Middle C is in the centre of octave 4</font></b></td></tr></table></center>
+
+<p>That's c$ for the first three bars; b$ holds the notes in the middle - those are more complicated. They're all close to the c$ notes, so we can still use octave 4, but they start with a rest - a piece of silence. The sign for a rest is &amp;. This rest is a semiquaver long - one quarter beat which has the number one, and consequently we get &quot;O4N1&amp;&quot;.</p>
+
+<p>After that there's a longer note - a dotted quaver plus a crotchet tied together as one note. That's 1&#190; beats, and there's no number for that. But a dotted quaver is four and a crotchet five so &quot;4_5E&quot; means tie the two together on note E, giving us &quot;O4N1&amp;4_5E&quot;.</p>
+
+<p>The next note is exactly the same - 13/a beats on E with a rest in front. You don't have to write it all out again, though. Putting a pair of brackets round the bit to be repeated will do the job. &quot;O4(1&amp;4_5E)&quot;. Because we've a bracket now between the 4 and 1 at the beginning, we don't need the N to separate the two. The other b$ notes are very similar, giving &quot;O4(1&amp;4_5E)(1&amp;4_5 D)(1&amp;4_5D)&quot;. You can't use double brackets here to repeat three or more times, as two brackets means repeat for ever, and we don't want that.</p>
+
+<table width="320" border="0" cellpadding="10" align="right">
+<tr><td><img src="128mus4.gif" width=300 height=114 border=0 alt="">
+<br>
+<p align="right" class="first"><b><i><font size="-1">
+The five basic note values - semibreve, minim, crotchet, quaver and semiquaver. A dotted note would have the same value and half as much again</font></i></b></p>
+</td></tr>
+</table>
+
+<p>The final voice is a$, which starts with a quaver rest followed by six semiquavers. The pattern is repeated throughout, so, just as in b$ we can save space with brackets.</p>
+
+<p class="first">&quot;O5(3&amp;1gCEgCE)(3&amp;1aDFaDF)<br>
+(3&amp;1gDFgDF)&quot;</p>
+
+<p>Notice that we started with octave 5 to give a higher range for these upper notes, and the way it switches from lower to upper case letters as the mid-point of the range is passed.</p>
+
+<p>Although a$ is now much longer than b$ it takes the same time to play because the notes are shorter. But how quickly does the computer play the music? If you don't specify a time, you get 120 beats per minute, but you can see an instruction on the music for 108 beats. The command for that is T108. That only needs to be put in a$ - the other channels will keep time with it. So, at the beginning, we get &quot;T108O4(3&amp;1...&quot;</p>
+
+<p>A full listing for the piece, Prelude 1 of the famous 48 Preludes and Fugues by Bach, is given in figure two.</p>
+
+<p>You'll notice a couple of extra symbols have crept into the full listing. Flats and sharps are denoted by $ and # respectively. They apply to the note following.</p>
+
+<p>The letter U turns on various volume effects. There are eight in all, and the listing uses W0, which fades the note out for the duration of X. That gives a sort of old-fashioned piano sound to the notes as they swiftly die away after they have been 'struck'. The other channels are left as they are - like an organ accompaniment.</p>
+
+<p>V15 at the very end of a$ is a simple volume setting. You can go from 0 to 15, 0 being silent. All music is played at the highest volume if V is not set, but here I've used it to cancel the previous effect to keep the final note sounding until the end.</p>
+
+<p>Other sound effects given by U and then W allow the sound to build over the period of X, decay and hold, build and hold, and also to have repeated mixtures of the two. With the right choice of duration, you can get all sorts of sound, ranging from plunkety-plunk piano to noises sounding suspiciously like mouth-organs and mandolins. By combining the effects across all three channels, you can get even weirder sounds.</p>
+
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 2. The complete listing</b></p>
+<pre>  10 LET a$=&quot;UX2000W0T108O5(3&amp;1g
+CEgCE)(3&amp;1aDFaDF)(3&amp;1gDFgDF)(3&amp;1
+gCEgCE)(3&amp;1aEAaEA)(3&amp;1#faD#faD)(
+3&amp;1gDGgDG)(3&amp;1egCegC)(3&amp;1egCegC)
+(3&amp;1d#fCd#fC)(3&amp;1dgbdgb)(3&amp;1eg#C
+eg#C)(3&amp;1daDdaD)(1&amp;dfbdfb)(3&amp;1c
+gCcgC)O4(3&amp;1aCFaCF)(3&amp;1aCFaCF)(3
+&amp;1gbFgbF)(1&amp;1gCEgCE)(3&amp;1$bCE4bCE
+)(3&amp;1aCEaCE)(3&amp;1aC$EaC$E)(3&amp;1bCD
+bCD)(3&amp;1gbDgbD)(3&amp;1gCEgCE)(3&amp;1gC
+FgCF)(3&amp;1gbFgbF)(3&amp;1aC#FaC#F)(3&amp;
+1gCGgCG)(3&amp;1gCFgCF)(3&amp;1gbFgbF)(3
+&amp;1g$bEg$bE)3&amp;1faCFCaCafafdfdO5N3
+&amp;1gbDFDbDbfbdfedV15N9C&quot;
+  20 LET b$=&quot;O4(1&amp;4_5E)(1&amp;4_5D)(
+1&amp;4_5D)(1&amp;4_5E)(1&amp;4_5E)(1&amp;4_5D)(
+1&amp;4_5D)(1&amp;4_5C)(1&amp;4_5C)(1&amp;4_5a)(
+1&amp;4_5b)(1&amp;4_5$b)(1&amp;4_5a)(1&amp;4_5$a
+)(1&amp;4_5g)(1&amp;4_5f)(1&amp;4_5f)(1&amp;4_5d
+)(1&amp;4_5e)(1&amp;4_5g)(1&amp;4_5f)(1&amp;4_5c
+)(1&amp;4_5f)(1&amp;4_5f)(1&amp;4_5e)(1&amp;4_5d
+)(1&amp;4_5d)(1&amp;4_5$e)(1&amp;4_5e)(1&amp;4_5
+d)(1&amp;4_5d)(1&amp;4_5c)1&amp;4_5_7c1&amp;4_5_
+7$c9E&quot;
+  30 LET c$=&quot;)4N7CCCCbbCCCCCCbbb
+baaddggggffffeeeeddO3ggCCCCff#f#
+f$a$aggggggggggggggggcc9c9c9c&quot;
+  40 PLAY a$,b$,c$
+</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="3weeks.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Three Weeks In Paradise"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 49 Contents"></a>
+<a href="adventh.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Adventure Helpline"></a></p>
+
+<h6 align="center">Sinclair User<br>April 1986</h6>
+
+</body>
+</html>

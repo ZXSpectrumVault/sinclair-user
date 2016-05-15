@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 33 - Mass Storage</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Comparison of the Challenge Sprint, Microdrive and Wafadrive from Sinclair User, December 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="htsquad.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 33 Contents"></a>
+<a href="books.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Books"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Mass Storage</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="massstr1.jpg" width=200 height=504 hspace=10 vspace=10 border=0 align="left" alt="Sprint, Microdrive &amp; Wafadrive">
+
+<h1><i>Racing to the tape</i></h1>
+
+<p class="first"><b><font size="+1">Speed, economy or reliability? We take three of the fastest systems out on the track for a test drive.</font></b></p>
+
+<p class="first">IT IS NOW just over a year since the introduction of the microdrive, and in that time it has done more to inhibit the serious use of the Spectrum than any other add-on. Before you put pen to paper and write to us, an explanation is perhaps in order.</p>
+
+<p>Users of the BBC, Commodore and other home computers expect to be able to add a fast storage medium - disc, hobbit and so on - to their computer and to be able to buy software in that format. There is an accepted format for both interfaces and recording medium and therefore software houses can develop programs knowing that they will be able to sell them.</p>
+
+<p>The announcement of the microdrive, roughly a year before it actually saw the light of day, inhibited manufacturers from developing a standard, as Kempston had done with its joystick interface. The stories of unreliability, unfounded or not, also inhibited software houses as they could not ensure that any programs sold on cartridge would always work.</p>
+
+<p>Finally, the price, scarcity and difficulty of duplicating microdrive cartridges gave few writers the confidence to market programs on cartridge. At the time of writing the number of programs available on cartridge can be counted on one hand, with a few more that are 'microdrive compatible', and none which were specially written for it other than copiers.</p>
+
+<p>Despite that the microdrive is undoubtedly a remarkable device. It makes available a form of fast storage which many people would otherwise be unable to afford and, within limits, provides a usable system. It is only recently that it has been readily available and so perhaps now it will be accepted.</p>
+
+<p>Because of those problems and delays, other manufacturers felt that they could do better and so there are now many other fast storage devices available, with more due to be released. While some are undoubtedly better, and more expensive, than the microdrive they all share one common problem, and that is that because there are so many different systems it is largely left to the user to convert software to run on them. With the ever present spectre of software piracy, few software houses make their programs open to inspection and, due to the fact that most of the systems take up valuable memory space, some programs can not be converted even if you are able to break into them.</p>
+
+<p>Your own programs, however, should be easily convertible; you are unlikely to write Basic programs in excess of 35-40K, and if you are able to write in machine code then you should be able to move it to an unused part of memory. The problem with commercial tapes is that the usual format is to have a Basic loader program which lowers RAMTOP and then loads a screen display followed by some machine code. It is the lowering of RAMTOP which causes the problems.</p>
+
+<p>A BASIC program unusually starts at address 23755 - chapter 24 of the Spectrum manual suggests that you enter CLEAR 23800 (i.e. lower RAMTOP to that address) to see what happens when the computer runs out of memory. In order to be able to enter a short line of Basic you will need about 100-200 bytes of memory, so the minimum address to which you can usefully CLEAR is 24000, giving approximately 100 spare bytes. With the more popular commercial games it is quite common to CLEAR to 24000-25000 and so you can see that there is not much space left. With a program written for the 16K machine it is not uncommon to clear down to 23900. The simple answer is that the less memory the system takes the more programs you will be able to convert.</p>
+
+<p>A good indication of that is the sector size. With microdrive and disc the data is held in blocks known as sectors. Those blocks are loaded into memory by the system one at a time and then moved to where they are required. For example, with microdrive the sectors are 512 bytes long, so you will need the operating system of about 100 bytes plus 512 for the sector and 83 to hold the additional channel information - say, 700 bytes spare or a minimum clear of 24700, more if you want to use two drives.</p>
+
+<p>Another problem may be that of speed. Almost anything is quicker than cassette, a commercial 48K game takes about five minutes to load, but the method of storage will affect the speed. A microdrive uses a continuous loop of tape and so if the sector you want is next on the tape it will be very quick. If it has just passed that sector then the microdrive will have to go all the way round the tape, and so take longer.</p>
+
+<p>A disc, however, normally stores the data in a number of concentric circles, known as tracks, and each track is divided into sectors. As the disc is spun very quickly those sectors are readily available. Overall, the time it takes to find a sector is largely determined by the time it takes to move from track to track. This can be as little as 3ms, 3/1000ths of a second.</p>
+
+<p>There is, finally, the problem of reliability. If you are writing your own programs or using the Spectrum for business then the system must be 100 percent reliable. That can only be judged with time and any comment on a new system can therefore only be an educated guess.</p>
+
+<center><img src="massstr2.jpg" width=450 height=263 vspace=10 border=0 alt="Challenge Sprint"></center>
+
+<p>The first system looked at was the Challenge Sprint. That is a fairly new system and also the most straightforward. It is, simply, a normal cassette mechanism which has been converted to run the tape at four times the normal speed of 15/16 ips, (inches per second).</p>
+
+<p>A flexible lead plugs into the back of the Spectrum and, on the back of the cassette, there is an extension port. It takes its power from the Spectrum. The Sprint recognises all the normal tape commands, whether used from Basic or code, and therefore is very simple to operate. To load a tape you use the usual LOAD &quot;&quot; command and press play.</p>
+
+<p>The advantage of the system is that you do not have to convert any of your programs. The only programs which it would unable to load would be those which use their own, non-standard, loading routine such as <b>Halls of the Things</b>, or those where the time between the sections of program is very important.</p>
+
+<p>The reduction in loading time is good; <b>Scrabble</b>, by Psion, which normally takes four minutes and 48 seconds to load, now takes only 1.16 minutes. Saving a straight 64K block took 1.15 minutes.</p>
+
+<p>To have a means of measuring the speed of the different systems the following program has been used:</p>
+
+<pre>10 FOR n=1 TO 30
+20 SAVE (&quot;test&quot;+STR$ n) CODE 32000,200
+30 NEXT n</pre>
+
+<p>with line 20 changed as required. When saving with the Sprint it takes 2.36 minutes, and on loading 2.37 minutes.</p>
+
+<p>The disadvantages of the system are largely the same as those at a normal cassette. You cannot control the cassette motor from software and so you cannot load selected programs without correctly positioning the tape by hand, or running through the whole tape. A note must be kept of the tape counter in order to find a program and, due to the speed, that must be very precise.</p>
+
+<p>The cassette does not have any volume or tone controls and so when loading your own programs it is a case of all or nothing - if a program does not load then it is not going to. You cannot then try to load it using a normal cassette recorder without disconnecting the Sprint as it expects all tape commands to relate to itself. All the commercial tapes which were tested, however, loaded without problems.</p>
+
+<p>The only other possible problem is the speed itself. Cassettes are not designed to be played at the speed at which the unit operates and so, despite having a good system which accelerates the tape to playing speed, when using Stop, Fast Forward or Rewind sudden speed changes occur and the tape is liable to stretching. The only way round that would be to only use those commands when you are certain that there is nothing on the tape at that point. It will Autostop from Play at the end of a tape.</p>
+
+<p>Surprisingly, some people want to use the Sprint with their microdrives. Early versions were not compatible but that is now being corrected. When ordering it would be best to state if you intend to use it with a drive or not.</p>
+
+<p>If all you want to do is load commercial tapes faster than normal and you do not want to worry about converting then this is the system for you. It is easy to use and provided the above points are remembered it should prove reliable.</p>
+
+<center><img src="massstr3.jpg" width=450 height=257 vspace=10 border=0 alt="Microdrive"></center>
+
+<p>The Sinclair microdrive has a number of good and bad points but it is the least expensive way of adding a fast storage/random access device to the Spectrum. Sinclair is selling currently a package of Interface 1, microdrive and four software packages for &#163;99.95. The software is <b>Tasword II</b> and <b>Masterfile</b>, both of which are easily convertible anyway, and <b>Ant Attack</b> and <b>Games Designer</b> from Quicksilva. An introductory program and spare cartridge are also included.</p>
+
+<p>The amount of space taken up by the operating system, and the increased length of the commands, have caused some users to experience difficulties in converting tape-based programs to run on it. Some games, such as <b>Jet Set Willy</b>, are easily convertible while others, such as <b>Sabre Wulf</b> or <b>Scrabble</b> present difficulties. In some cases it should be possible to modify the Basic loader program, either by standard memory saving techniques - such as using VAL or PI/PI to cut down the number of bytes used by numbers - or by loading the Basic in more than one part. If you are able to write your own machine code routines then a system of using the screen as a buffer, moving the Stack Pointer and then a block move will work in most cases.</p>
+
+<p>Each of the cartridges can hold a minimum of 85K of data. That can sometimes be increased by repeatedly formatting it, each Format command taking 24 seconds.</p>
+
+<p>Using the test program given above the microdrive takes 3.42 minutes to save and only 14 seconds to load. If, however, line 10 is changed to:</p>
+
+<pre>10 FOR n=30 TO 1 STEP -1</pre>
+
+<p>so that the sectors are not loaded in sequence, it takes 3.15 minutes. Erasing also takes quite a long time as a number of checks are made by the system when that is done. Using the test program with line 20 set to Erase it takes 3.46 minutes. Simpler commands are much quicker, a 64K block is saved in 18 seconds and CAT performs in only 7.5 seconds.</p>
+
+<p>As well as the usual tape based commands for BASIC, CODE and DATA it is also possible to open files to the drive and send information to it. That can be very useful but it presents two problems. Every channel which is opened takes up memory and the data can only be accessed serially, so if you want the last piece of information on the file you have to Read all the way through it. That can be time consuming.</p>
+
+<p>To run a microdrive you also need Interface 1. That gives you a RS232 port, useful for running a modem or printer and a network facility. Both are very useful additions but unfortunately most low-cost printers use Centronics rather than RS232 and the add-on kit for an Epson printer, for example, is in the region of &#163;70. Moreover, while Spectrums can be networked there is some confusion as to whether or not the system will work with a QL, and if not that will mean additional software, on top of the 276 bytes used by the system.</p>
+
+<p>Whether you love or hate the microdrive it cannot be ignored. If your pocket will not stretch any further then it is worth consideration, but bear in mind that it cannot he used on any other computer and so when you upgrade your system it will no longer be of any use. The manual supplied with it is not up to the usual high Sinclair standard, so you would do well to get one of the many books published about it. <i>Mastering Your ZX Microdrive</i>, by Andrew Pennel, Sunshine Books, or <i>Spectrum Microdrive Book</i> by Dr Ian Logan, Melbourne House, can both be recommended. The former contains many useful programs and a list of ROM bugs, the latter was written by the co-author of the ROM and contains a wealth of information.</p>
+
+<center><img src="massstr4.jpg" width=450 height=291 vspace=10 border=0 alt="Wafadrive"></center>
+
+<p>The newest addition to the range of fast storage devices is the Wafadrive from Rotronics. That is an unashamed attempt to beat the microdrive in terms of the facilities it offers. For the price of &#163;129.99 it offers two drives, Centronics and RS232 ports and, as an introductory offer, a word processing package, <b>Spectral Writer</b> by Softek, which in many ways rivals Tasword II.</p>
+
+<p>On power up the Spectrum behaves as usual until the Wafadrive Operating System (WOS) is called. That is done by entering NEW *, at which point a copyright message is displayed and the system is ready to run. The syntax of the WOS has been well thought out, the normal Spectrum commands are used with the addition of the * to indicate the wafadrive rather than tape in the form:</p>
+
+<pre>SAVE *&quot;test&quot;</pre>
+
+<p>That applies to all the normal tape commands except DATA. CODE can be made to autorun with the addition of a third parameter. The save name is converted to upper case by the system.</p>
+
+<p>A system of defaults is used so the above line would save to the default drive; if that was the A drive and you wanted to save to the B drive the command:</p>
+
+<pre>SAVE *&quot;b:test&quot;</pre>
+
+<p>would be used. The default drive can be easily changed using CAT # &quot;b:&quot;.</p>
+
+<p>Other useful features are LOAD *, which loads the first program on the wafer, ERASE *&quot;te&quot; which will erase all programs starting with te and SAVE #&quot;test&quot; which will overwrite an existing program called test. That is useful when developing a program as usually any attempt to save using an existing name will cause an error to protect your programs from accidental erasure. CLS* will reset the ink, paper and border colours to the start up black and white.</p>
+
+<p>It is not possible to save DATA in the usual way. A system of channels and streams, as used on the microdrive, are used with information being PRINTed to it and INPUT back. INKEY$ can also be used. MOVE is used to copy programs from one drive to the other. That will not work with programs which have been protected. FORMAT is used to format a new wafer and also to set the baud rate of the RS232 channel.</p>
+
+<p>When the WOS is initialised it sets aside an area of memory for its own use. That contains a directory of both drives, a 1K buffer into which the sectors of data are loaded and space for the variables used by the system. That takes up 2292 bytes, each additional channel opened takes 1044 bytes and the Centronics interface a further 11 bytes. With so much space taken up, the number of commercial programs which can be easily converted is very small. Fortunately, Rotronics are working on filing and spreadsheet programs for business users and hope to he able to release games in the near future.</p>
+
+<p>Wafers are available in three sizes -16K, 64K and 128K - and the smaller the capacity the quicker the system will work. Each wafer contains a continuous loop of tape and is designed so that a metal tab protects the tape when the wafer is removed from the drive.</p>
+
+<p>When testing the system for speed a 64K wafer was used, being middle of the range and most useful to 48K Spectrum owners. Formatting the wafer takes 2.10 minutes; 73 sectors are found, one used for the directory leaving 72K available for storage. A maximum of 32 files can be kept on a wafer due to the design of the directory.</p>
+
+<p>Using the test program it takes 14.55 minutes to save, due to the tape doing one complete revolution per save. It also gives an out-of-screen error after 22 saves as the drive prints what it is saving on screen. Loading in sequence takes 14.30 minutes and 14.08 when using a STEP of -1; when erasing it also takes 14.08 minutes. If the wild-card facility is used, i.e. ERASE *&quot;*&quot; it only takes 29 seconds because the tape only has to make one revolution. It would therefore seem that with a 64K water the minimum LOAD/SAVE time is about 30 seconds; a 64K block takes 40 seconds to save.</p>
+
+<p>The manual supplied with the drive is well laid out and informative about the drives but lacking in respect of the ports. Apart from setting the baud rate it does not explain how to alter any parameters when printing. It appears that codes below 32 are not sent, other than 13 and/or 10 except by using CHR$, codes 32 to 164 are sent as normal and all tokens, codes 165 and above, are expanded. That is adequate for most simple printing but some modems require parity and stop bits to be set (or not) on RS232 signals and printers can use differing line feed settings.</p>
+
+<p>Overall the system has much to offer, proving more reliable than microdrive due to the design of the wafers, but the memory usage is very high and its speed slow compared to other available systems. It will probably be popular with business users where reliability is paramount and the Spectral Writer program is a good indication of what can be achieved. It is very similar to Tasword II in operation, whose text files can be loaded directly, with additional features such as page headings and numbers. It is rather quicker although some of the features are not so convenient, it tends to work on the text file globally rather than by paragraphs and so when justifying the file you cannot do so selectively. It can give odd results, as is found when there are two words on a line at the end of a paragraph and the file is justified. The words are moved to the far left and right rather than both to the left margin.</p>
+
+<p>Provided you do not want to convert your own programs or can use the machine code method of using the screen, and you are not worried by the lack of speed then the two drives and ports are very useful. If you use the MOVE command to make back-up copies of wafers be prepared though to take a long coffee break.</p>
+
+<p><a href="../034/massstr.htm">Next month</a> we look at some of the floppy disc systems available for the Spectrum. Both 3in and 5&#188;in systems are now available including one which we shall be revealing exclusively and which will raise a few eyebrows. We will also include a table detailing the performance of all the drives now available.</p>
+
+<br clear=all>
+<p class="first"><center><table border="0" cellpadding="10" cellspacing="0" bgcolor="#CCCCCC">
+<tr><td><b>Challenge Sprint</b>, &#163;69.95 from Challenge Research Ltd, Hertfordshire.<br>
+<b>Sinclair Microdrive Expansion Pack</b>, &#163;99.95 from Sinclair Research, Surrey.<br>
+<b>Wafadrive</b>, &#163;129.99 from Rotronics, Buckinghamshire.</td></tr>
+</table></center></p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="htsquad.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 33 Contents"></a>
+<a href="books.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Books"></a></p>
+
+<h6 align="center">Sinclair User<br>December 1984</h6>
+
+</body>
+</html>
+

@@ -1,0 +1,233 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 19 - Hardware World</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL, Microdrive">
+<meta name="description" content="Hardware news from Sinclair User, October 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 19 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Hardware World</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1>Spectrum receives its biggest improvement</h1>
+
+<p class="first"><b><font size="+1">In this special section Stephen Adams reviews the microdrive</font></b></p>
+
+<p class="first">THE MICRODRIVE with the Interface 1 module has produced the biggest improvement to the Spectrum yet. It cannot do everything a disc drive can do but it is much cheaper and the interface contains three modules for the price of one.</p>
+
+<p>The interface unit controls the Microdrives and RS232 communications/printer interface and a network which allows you to talk to another 63 Spectrum users. The unit fits underneath the Spectrum and an edge connector under its hood pushes on to the back of the Spectrum.</p>
+
+<p>The unit is provided with two screws which replace two of the original screws in the case of the Spectrum to hold it tight and prevent wobble. It also raises the Spectrum 20 degrees to a comfortable typing angle. That system also applies to the Microdrive which has a plastic plate underneath each drive. That can be re-positioned to screw together two adjacent Microdrives underneath the interconnecting socket to strengthen it.</p>
+
+<p>On the back of the unit are three sockets and a duplicate of the expansion connector, so other devices can be plugged in. Another interface by Sinclair called the Interface 2 will plug in there to give access to ROM cartridges and a joystick interface soon. There is a socket on the back of the unit which looks like an Atari joystick interface but do not plug your joystick into it - it is the RS232 interface and you could damage it.</p>
+
+<p>The RS232 interface is a standard way of connecting printers and other devices like modems which use only one wire to pass data across. Each byte is broken into eight binary bits - see the BIN function in the Spectrum manual - and sent down one bit at a time. That method of swapping information is called serial access and is used on all the Interface 1 devices, including the Microdrive.</p>
+
+<p>That involves timing the length of each bit and so the speed of the RS232 can be set to match the speed of the device from which you are sending or receiving data. Speeds up to 19,200 bits per second - the baud rate - can be set easily by POKEing a number into two new system variables listed in the new manual provided with the interface. Those system variables take up another 58 bytes after the ones listed in the original manual.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'It is assumed that if you want to connect an RS232 device you will know how to use it'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>The RS232 allows you to feed data in and out over the two data lines TX data and RX data but it also has two other control wires to keep an eye on things. They are called DTR and CTS. They are used to tell the Spectrum when information is ready from the device to which it is connected by using the DATA TERMINAL READY (DTR) input. The CLEAR TO SEND (CTS) output does the same but tells the device the Spectrum wants to send data.</p>
+
+<p>None of that appears in the manual and it is assumed that if you want to connect an RS232 device you will know how to use it. Tips are given such as for setting-up the printer to work the Spectrum but they are all about programming. The socket is not a standard socket, so Sinclair will provide a conversion cable at a cost of &#163;14.95 to a full size 25-way 'D' plug.</p>
+
+<p>The RS232 can be sent two types of data, eight-bit binary codes and seven-bit text-only information which omits all control signals and graphics and expands the Basic keywords to full words. The channel is set to &quot;b&quot; or &quot;t&quot; by the FORMAT &quot;t or b&quot;; baud rate command.</p>
+
+<p>The &quot;b&quot; mode usually is used for sending data which controls the RS232 device and therefore should not be printed. The &quot;t&quot; mode is for all the information which normally would appear on the screen. Programs and data can be sent over the RS232 interface easily using the command LOAD* and SAVE*. Those and other asterisk commands indicate to the Spectrum that the new 8K ROM installed in the interface is required and switches it in to the ROM area.</p>
+
+<p>It also means that you could use it to write your own Basic commands as any errors, like the asterisk after LOAD, jump to a location in RAM which holds the place of the next machine code instruction. By POKEing that number with the location of your own machine code routine, any errors can be checked for new commands and if a program is running could cause the new command to be done.</p>
+
+<p>Sinclair has made Basic the operating system of all the devices connected to the interface and so you will have to learn to use the channels and streams information contained in the new manual along with the various extensions to Basic provided by the new ROM.</p>
+
+<p>Streams are OPENed by using OPEN# number of stream (from 4-16); &quot;n&quot; (or &quot;m&quot; or &quot;b&quot; or &quot;t&quot;); followed by a &quot;name&quot; for Microdrive files, a station number for the network or nothing for the RS232. The n stands for network, the m for Microdrive and the b or t as described for the RS232. They make the device available for reading or writing to the device, but not both. The stream acts as a tunnel or passage to the device - or channel - for a particular purpose; more than one stream may be OPENed to a channel and the screen, keyboard and Sinclair printer can also be used this way.</p>
+
+<p>A data file existing on a Microdrive, for instance, can only be read. If you wish to put in more data or change the contents you will have to transfer the whole file from one stream to another, creating a different file and making the changes as you go. Programs, however, must be loaded into memory and then SAVEd back on to the device - if possible - in full, using the entire 48K or 16K of memory; it is not possible to INPUT parts of a program.</p>
+
+<p>The &quot;if possible&quot; occurs because the designer of the program would have to let you return to Basic to SAVE it. Cassette recorders can still he used as normal using SAVE, LOAD and MERGE.</p>
+
+<p>All the devices use RAM to store the data in buffers - 595 bytes for Microdrives and 276 bytes for networks - which take up more RAM. They are allocated space after the system variables so that the start of the Basic program varies depending on how many channels are being used at a time.</p>
+
+<p>OPEN# creates a new buffer and CLOSE# closes the file by writing the whole buffer to the device and then removing the buffer from the memory, freeing the RAM for something else. So using a number of streams means having a smaller program, as up to 595 bytes is needed for each stream. That means that all machine code must be stored above RAMTOP and not in the program - in a REM statement - otherwise the address of the routine will vary depending on what part of the program you are in. Apart from streams the extra commands are MOVE, ERASE, FORMAT and CAT. MOVE transfers a file of information - not a program - from one device to another.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'You will have to learn how to use the channels and streams information in the new manual'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>A good example might be a Spectrum on the network wanting to access information on the Microdrive. CAT provides an alphabetical list of files on a Microdrive showing their names and the amount of free space in kilobytes. Files can be protected from CAT by including CHR$(0) as the first letter in the name. As with cassette files there is no foolproof way of protecting anything on a computer.</p>
+
+<p>ERASE allows you to clear out the file named on the Microdrive and FORMAT allows you to set up the network, Microdrive or RS232 device so that it can be used. Blank Microdrive cartridges must be FORMATed to give it a name and set a catalogue. The network must be given a station number, which can be changed at any time, and the RS232 must he set to the correct speed - only one speed is allowed - as well as indicating whether it is a text (&quot;t&quot;) or byte (&quot;b&quot;) channel.</p>
+
+<p>INPUT, PRINT, LOAD, SAVE and VERIFY have all been extended to work with streams using an asterisk after the command. MERGE* cannot be used, however, on data files or on any program having saved with a SAVE*...LINE command, thus providing some software protection in the short term.</p>
+
+<p>The network provides connection for up to 64 Spectrums, via a two-metre-long, two-wire audio lead with 3.5mm. jack plugs on, at 100K baud per second. Anything attached to a stream may use it to transfer programs, data or just INPUT and PRINT statements to one particular station or to broadcast it to every station listening on the network.</p>
+
+<p>INKEY$* may also be used to get individual bytes. The allocation of a station name is spread orally to the various users on the net and more than one station can be allocated the same station number, so you can &quot;listen-in&quot; so long as you know the station number.</p>
+
+<p>The station-to-station contact is by &quot;pooling&quot; and requires a response from the receiving Spectrum before the information is sent. If no reply is received the sending Spectrum will lock up and the border will be black. The BREAK key, however, still works.</p>
+
+<p>Broadcasting information does not do this as it is sent only once -and is then forgotten; no response is required. It has not been possible to test that, apart from seeing demonstrations, as we could obtain only one interface but the demonstration was impressive, as it transferred a screenful of data in three seconds - a rate of 2K per second.</p>
+
+<p align="center" class="first"><img src="hardwre1.jpg" width=450 height=404 border=0 alt="Microdrive without case"></p>
+
+<p>The Microdrive is a very simple device. It has only two moving parts - three if you include the write-protect switch. The motor and a ratchet which stops the motor reversing are the only moving parts. The tape-head is fixed and two springs either side, which bring the tape to the head and not the other way round, eliminate the need for alignment of the head.</p>
+
+<p>It acts like a very fast continuous loop tape recorder running past the head at 30 inches per second - 16 times as fast as the normal cassette recorder. When the drive is running a red warning LED shows at the front of the drive; the cartridge should not be removed while the LED is on.</p>
+
+<p>The tape-head has two tracks and is switched by software at the end of one track to the other, giving a continuous loop of 40 feet of tape track. The tape can be protected by pulling off a tab of plastic with a screwdriver which then means it cannot be over-written.</p>
+
+<p>The tape is made of 1.9mm. wide 23-micron thick video tape, which is slightly thicker than domestic home video tape. Sinclair claims that more than 5,000 operations can be done on the tape before it wears out. The tape format is in blocks of 512 bytes called sectors and if a block is faulty it is marked so that it is not used.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'The microdrive is a very simple device. It has only two moving parts'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>All cartridges have at least 85K of space but the amount varies depending on the number of sectors damaged by the manufacturing process. With up to eight Microdrives connected to one Spectrum, 860K can be connected at one time.</p>
+
+<p>The drives are very reliable and I had no failures at all using the demonstration cartridge supplied. The cassettes are in thick plastic jackets to protect them from dust and they have to be removed to fit them into the Microdrive. The tape-head is not protected, which is surprising. The cartridge cannot be put in the wrong way round and Sinclair provides two labels for each cartridge, one for the top approx &#190;in square and a smaller one for the end of the cartridge which can be seen when it is in the drive or its case.</p>
+
+<p>All the equipment tested worked very well and is a remarkable achievement for such a low cost.</p>
+
+<p>There have been no restrictions on hardware add-ons which were not already known and the fact that ROM errors can be intercepted by software will open a new field for software companies. New commands and INPUT protection can be built into any program, machine code or Basic very easily.</p>
+
+<p>Networking should be very useful for schools. A printer server Basic program is included in the manual. It should also be possible to connect other machines to the net such as the ZX-81 and the Jupiter Ace through their cassette ports.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'New commands and INPUT protection can be built into any program'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>The RS232 will allow access to printers and modems, as well as allowing you to transfer programs between other computers - such as the BBC - which have an RS232 interface.</p>
+
+<p>The offer is at the moment limited to registered Spectrum users at a cost of &#163;49.95 for each Microdrive, &#163;4.95 for each cartridge and &#163;29.95 for the Interface 1. If you want to buy only the Interface 1 it will cost &#163;49.95 and &#163;4.95 postage on top of that must be included in any order. The Microdrive cannot be used without the Interface 1.</p>
+
+<p class="first"><hr align="CENTER" width="66%" noshade></p>
+
+<h1>Limited distribution may cause software shortage</h1>
+
+<p class="first"><b><font size="+1">The Microdrive could cause software houses some problems because of the dearth of copying facilities. Mike Johnston reports</font></b></p>
+
+<p class="first">THE RECENT announcement that the ZX Microdrive will shortly become available, if only in limited supplies, was music to the ears of many patient Spectrum owners but could cause some headaches to software houses.</p>
+
+<p>The advantages of this new mass storage system are readily apparent. It will mean an end to plugging and unplugging leads, switching tape recorders manually and so on, as the whole process is under software control. Programs may be saved and loaded from the keyboard with no more effort than inserting a cartridge and pressing two keys. In addition the transfer of information is greatly increased. Programs will load in seconds, rather than minutes, which makes the machine much more flexible and useful. At last it makes sense to catalogue books, records, club membership and so on on the computer because the space is available on the Microdrive for a great deal of data and the information can be retrieved quickly.</p>
+
+<p>Problems begin to arise with the cartridges which are mini cassettes, smaller than matchbox size specially designed for the Microdrive. They are a little expensive at &#163;5. Floppy discs, for example, are typically less than half that price and can hold considerably more data. A minimum of 85K may seem a good deal if you graduated recently from a 1K ZX-81 but it is worth remembering that it might be difficult to get two programs the size of The Hobbit on a single cartridge. In practice it is essential to keep back-up copies of important programs and the number of cartridges needed tends to multiply.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'Cartridges at &#163;5 are a little expensive. Floppy discs are less than half that'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>The cost may be relatively high because production runs are being kept short until the demand becomes clearer. Alternatively Sinclair may be discouraging sales until stocks can be built up. In either case the price might be expected to fall within a few months. If it does not, then the customers will have to pay considerably more for software on the Microdrive than they do at present for a cassette. The profit margin for software houses would also be less.</p>
+
+<p>The second difficulty is one of availability. It is early yet but at present Sinclair is the only source for the cartridges and the fine tape which is used. There has been no indication that they will be made available in bulk to allow software suppliers to sell their own programs on cartridge, although Sinclair may offer to market programs for other companies. Again that problem may be overcome if Microdrives become very popular and cartridges are produced by several manufacturers. It would be a great pity, however, if Sinclair restricted the cartridges to its own programs or a limited selection from other software houses.</p>
+
+<p align="center" class="first"><img src="hardwre2.jpg" width=450 height=217 border=0 alt="Interface 1 without case"></p>
+
+<p>The success of the Sinclair machines lies to a large extent in their intrinsic merit but their popularity has been aided by the very large volume and variety of software produced for them by independent software houses.</p>
+
+<p>Another problem is that of duplication. Not too long ago much commercial software was produced by the same process as ordinary Sinclair users employ to copy their own programs. Nowadays most software is not copied directly on to individual cassettes. The tape duplicating companies have rather more sophisticated equipment which puts many copies of a program, at high speed, on to a long spool of tape which is then cut into shorter lengths and spliced into individual cassettes.</p>
+
+<p>The first indications are that Microdrive cartridges could not use that process, at least not at high speed and certainly not without specialised equipment. The only copying machine of any kind there is at present is owned by Sinclair Research.</p>
+
+<p>The alternative, and one which many of the smaller companies are likely to take, is to continue to produce software on ordinary cassette tape and allow users to copy the programs on to Microdrive cartridges. Without some means of limiting the number of copies which could be made, however, software companies would find themselves in the same position of vulnerability to piracy they have spent much time and effort trying to avoid.</p>
+
+<p>Those problems are not immediate, as it seems unlikely that there will be a big demand for Microdrive software before the early part of next year, when the devices begin to become generally available. What seems clear is that it is in the long-term interest of all groups, including users, that sufficient technical information is made available to enable good software to be produced for this exciting new development.</p>
+
+<p class="first"><hr align="CENTER" width="66%" noshade></p>
+
+<h1>Manual workers take the step-by-step approach</h1>
+
+<p class="first"><b><font size="+1">All new extensions of home computing need careful advice to show how they can best be used. Rebecca Ferguson reports.</font></b></p>
+
+<p class="first">AFTER THE YEAR of publicity I somehow expected something bigger than the chubby, RAM pack-sized Microdrive and the tiny information-holding cartridge which resembles nothing more than an after-dinner mint. Like the Spectrum, however, and unlike the ZX printer, the Microdrive seems firm, reliable, and disinclined to fall to pieces at the slightest provocation.</p>
+
+<p>Chapter one of the manual is concerned with the Interface. Clear instructions and diagrams show how to fit it firmly to the base of a Spectrum. Two screws must be removed from the base of the computer and, despite unnerving moments when approaching that piece of machinery with a screwdriver, they were removed easily enough and the interface screwed in quickly.</p>
+
+<p>I proceeded to chapter two, which deals with setting-up the Microdrive. It connects to the interface with a ribbon cable - again very easily. The moment of truth was when I loaded the demonstration cartridge which acts, as the Horizons tape did, as an introduction to this new Sinclair product. As instructed I entered NEW and RUN and encountered my first error code of the day, &quot;Microdrive not connected&quot;. It seemed to be but I unplugged everything, started again, and was rewarded with the screen display &quot;Welcome to the ZX Microdrive&quot;.</p>
+
+<p>I went on to break into the introductory program to examine the Basic listing. Trying to return from the listing to the program, though, produced another error code, and once again I had to start from the beginning.</p>
+
+<p>Reading about the interface and Microdrive before their launch I gathered that they offered four major advantages - rapid information storage and retrieval, memory extension, the ability to link my Spectrum to one or many others, and the opportunity to link many other pieces of equipment to my computer through the RS232 interface. The demonstration tape elaborated on that information.</p>
+
+<p>Section one gave information about The Net Game. That involves linking two Spectrums for their owners to play a simple game. It was then that I realised that it was impracticable. None of my friends has an interface or Microdrive and are unlikely to have during the next year - until they become freely available and probably cheaper. One advantage of my new equipment therefore was shelved for a year.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'I found the information contained in the cartridge to be sketchy. Compared to the Horizons tape, which supplies Spectrum owners with programs and a large amount of information, I found that it was disappointing.'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>Section two was likewise shelved. It was concerned with making a Spectrum with a printer connected to its RS232 interface print-out files for any other Spectrum linked to it. Section three, which deals with the demonstration program, and chapter four, which covered the initial screen display, which I had seen, could be looked at quickly, and I moved to the next section, which demonstrated the use of a large file.</p>
+
+<p>The program which could be RUN at that point provided an index to the extensions to Basic which are used by the Microdrive. The information was stored on cartridge and I had only to type-in an appropriate keyword for its definition to be called from the data store. I examined several definitions before typing-in a keyword not specified on the index. An error code resulted and attempting to re-load the entire program produced the puzzling report &quot;Microdrive not connected&quot;.</p>
+
+<p>Returning at length to the menu I moved to the next section. Loading the program proves that your Spectrum can READ from the Microdrive; the section tests that it can also WRITE to it by SAVEing, VERIFYing and ERASEing the demonstration program. Those three tasks took 35 seconds. The normal yellow/blue, blue/red lines of a recording Spectrum were replaced by flashing yellow and black.</p>
+
+<p>The last section of the demonstration program dealt with errors which might result from the use of a Microdrive. I expected some detailed analysis of report codes and was disappointed to see only two screens of simply-written description. Apparently errors in READing affect LOADing time and are known as Soft errors, while mistakes made in WRITEing, due to such things as a mistreated cartridge, are known as Hard errors. Thus I was given names for my mistakes but no suggestions as to how they could be corrected.</p>
+
+<p>In all, I found the information contained in the cartridge to be sketchy. Compared to the Horizons tape which supplies Spectrum owners with several programs and some useful routines, as well as a large amount of information, I felt that it was disappointing.</p>
+
+<p>I returned to the manual, to find a useful fact about this type of information storage. By entering CAT 1 it is possible to bring up on screen a catalogue of all the programs and files on your cartridge. The name of each is displayed, together with the total amount of memory used, rounded-up to the nearest K. Names are stored in alphabetical order. That is a facility which I have often wanted on cassettes as I have spent 10 minutes playing an entire tape, looking for a lost program. It also takes only a few seconds so that a program can be found and LOADed within a minute.</p>
+
+<p>I followed the instructions and succeeded in LOADing a short program on to cartridge and retrieving it. I ERASEd it and SAVEd it once again and then tried with a 5K program of my own which I had recorded previously on cassette. To LOAD it from cassette took 40 seconds. Recording it on the Microdrive took 10 seconds and re-LOADing it only six seconds.</p>
+
+<p>All blank cartridges must be FORMATed before they can be used. That allows you to name them and the computer to identify any areas which cannot be written to or read from. It is also a quick way of deleting all information on a cartridge. Typing CAT at once reveals the memory capacity of the cartridge. The manual claims that capacity never falls below 85K and mine was well above that figure, at 90K.</p>
+
+<p>So far I had found all the information given directly applicable. Chapter five of the manual deals with data, channels and streams, and I was not sure what use I would be able to make of them. The general information at the beginning was clear. To summarise - data can come from and be sent to CHANNELS. They include printers, Microdrives and the keyboard. The routes along it are called STREAMS and the Spectrum has 16 of them, four of which are already in use and 12 which are free.</p>
+
+<p>Information in a cartridge is stored in a file. That must be OPENed before the information is entered and CLOSEd afterwards. The manual gives two short programs for doing it. Open the file, store the numbers 1 to 10 with their squares, close the file, and then RUN another program which prints &quot;The square of is &nbsp;&nbsp;&nbsp;&quot;. The blanks should then be filled with information stored in a file and attached to a specified stream.</p>
+
+<p>I tried the exercise three times to no avail. I asked a friend to check my entries and tried again. I changed sections of it around and produced several error codes at the bottom of the screen which I had never seen previously. I gave up and went to bed.</p>
+
+<p>The next morning things were clearer. I realised that I had made an error on my first attempt and then from that point, whenever I had opened the file the computer had read faulty information from it instead of writing new information. I deleted the entire file, tried again, and it worked.</p>
+
+<p>A simple error I had made had left me floundering for well over an hour and for the first time I wished that the simple, straightforward manual was more detailed and that it suggested possible errors and how to correct them.</p>
+
+<p>Having managed to enter the example in the book I was inspired to enter my own data and my own program to read from it. Half an hour later the computer printed &quot;1&quot; on screen which was the answer I had been looking for and simultaneously produced another new error code &quot;Invalid Stream Number&quot;. As with the previous error code &quot;Microdrive Not Connected&quot;, which had appeared periodically the day before, that error code seemed to be unfounded. I decided to move to the next chapter.</p>
+
+<p>The Local Area Network was introduced in chapter seven. It appeared to be very useful. Up to 64 computers can be linked. Programs can be transferred from one to another, meaning that only one person on the network has to type in a program. It is invaluable for use at user clubs or schools, provided your computers are no more than a yard apart. Useful though it seemed, it was at that time useless because I knew no-one else with an interface.</p>
+
+<p>Chapter eight dealt with connecting equipment to the RS232 interface. I had no equipment to attach and moved on. Sharing a printer among users on a network was similarly passed over, taking me to appendix one - the Net Game specified on the demonstration program. Following appendices give the system variables used, the Microdrive channel, the network, RS232 connections, error codes, and the extension to Basic used.</p>
+
+<p>There seems to be little point in Spectrum owners who use their machines primarily for writing short programs of their own and RUNning professional software buying the Microdrive. The large memory storage available seems to be aimed primarily at skilled programmers and those who are using their Spectrums for business purposes. The fast LOADing and SAVEing is good but will make little significant difference on any but the longest programs.</p>
+
+<p>On a professional game the time saved would be appreciable but that would involve the difficult and dubious task of copying copyright material from cassette to cartridge. In any case, the price of almost &#163;100 for Microdrive, interface, postage and packing is too much to spend if all you can do with it is SAVE a few seconds here and there.</p>
+
+<p>It is better to wait a year until Microdrives are freely available, together with compatible hardware and software. A network of computers opens a wide range of possibilities, allowing programmers to work together, to co-operate and to learn from each other, while avoiding time wasted on typing-in programs LOADing, and SAVEing them.</p>
+
+<p>Software will presumably appear making full use of the Microdrive capabilities. None of that can happen, though, while only a few thousand people scattered across the country have Microdrives. So do not be too despondent if your name is not on the magic Sinclair list. Unless your friend's name, your neighbour's name or the name of someone you can contact is on that list as well, you could save your money.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 19 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<h6 align="center">Sinclair User<br>October 1983</h6>
+
+</body>
+</html>
+

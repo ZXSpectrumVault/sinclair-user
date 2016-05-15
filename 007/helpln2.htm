@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 7 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, October 1982">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="helpln1.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Spectrum Helpline"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 7 Contents"></a>
+<a href="company.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Company Profile"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<table width="320" border="0" cellpadding="10" align="right">
+<tr align="center"><td><img src="../shared/images/hewson2.gif" width=300 height=288 border=0 alt="">
+<br>
+<p class="first"><b><font size="-1">Andrew Hewson</font></b></p>
+</td></tr>
+</table>
+
+<h1>How ZX-81 sorts out different variables</h1>
+
+<p class="first">I HAVE selected just two letters this month and answered them in detail because I feel they will be of interest to everyone.</p>
+
+<p><b>&quot;I wish to transfer the whole of what is on the display area to a different area in memory, say at 30000, and then recall it. How can I do so?&quot;</b> asks Kevin Kwantes.</p>
+
+<p>The first job is to move RAMTOP down from 32768 to 30000 so that the copy of the display will not interfere with the functioning of the ZX-81. To do this enter:</p>
+
+<pre>POKE 16388,48
+POKE 16389,117
+CLS</pre>
+
+<p>A full display normally consists of 33 x 24 x 1 = 793 characters, 33 of which are the Newline character (code 118). Hence a Basic routine which transfers 793 bytes from D-FILE onwards to 30,000 will save the display. For example:</p>
+
+<pre>9010 LET D=PEEK 16396+256*PEEK 16397
+9020 FOR I=0 TO 792
+9030 POKE 30000+I,PEEK(D + I)
+9040 NEXT I</pre>
+
+<p>When recovering a previous display a little more care must be taken because if the screen has been SCROLLed the display file will be less than the full size and so it is essential to clear the screen and hence ensure that a full-size display exists before recovering the previous display. The following routine can be used:</p>
+
+<pre>9100 CLS
+9110 LET D=PEEK 16396+256*PEEK 16397
+9120 FOR I=0 TO 792
+9130 POKE D+I,PEEK(30000+I)
+9140 NEXT I</pre>
+
+<p>Both these routines are slow but there is a machine code instruction called LDIR which is designed for moving blocks of data from one part of RAM to another. To use LDIR, the address to which the item is to be moved is put in the HL register pair. Then the address to which the item is to be moved is put into the DE register pair. Finally the number of bytes to be moved is put into the BC register pair and the LDIR instruction is invoked.</p>
+
+<p>The following routine uses LDIR to save the display file:</p>
+
+<pre><b>Decimal          Hex           Op Code</b>
+42 12 64         2A 0C 40      LD HL, (D-FILE)
+17 48 117        11 30 75      LD DE, 30000
+1 25 3           01 19 03      LD BC, 793
+237 176          ED B0         LDIR
+201              C9            RET</pre>
+
+<p>With RAMTOP set at 30000 there is plenty of room to put the routine above RAMTOP, at say 32000, by POKEing the decimal codes into each location in turn as follows:</p>
+
+<pre>POKE 32000,42
+POKE 32001,12
+POKE 32002,64
+POKE 32003,17
+etc.</pre>
+
+<p>To execute the routine enter:</p>
+
+<pre>RAND USR 32000</pre>
+
+<p>To recover the display file use this routine:</p>
+
+<pre><b>Decimal            Hex            Op Code</b>
+205 42 10          CD 2A 0A       CALL CLS
+33 48 117          21 30 75       LD HL, 30000
+237 91 12 64       ED 5B 0C 40    LD DE, (D-FILE)
+1 25 3             01 19 03       LD BC, 793
+237 176            ED B0          LDIR
+201                C9             RET</pre>
+
+<p>Notice that a call is made to the ROM routine which clears the screen. The routine can be loaded immediately after the save routine at 32012.</p>
+
+<center><img src="../shared/images/helplne2.gif" width=500 height=199 vspace=10 border=0 alt="Sinclair printout"></center>
+
+<p>Keith Francis raises an interesting question. He asks: <b>&quot;If the ZX-81 uses two bytes to store line numbers, why is 9999 the largest line number permitted?&quot;</b></p>
+
+<p>The question is very sensible. Each byte contains eight bits and each bit can take two values giving 2<sup>16</sup> = 65536 arrangements of the 16 bits in the two bytes. Hence the two bytes could be used to represent any positive integer between 0 and 65535 inclusive. Why limit line numbers to 9999?</p>
+
+<p>The reason is that by limiting in this way and by manipulating the numeric codes for variables the ZX-81 has a device for distinguishing lines in the program area from variables in the variables area.</p>
+
+<p>To understand the mechanism at work, consider the representation of 9999. Line numbers are held with their most significant byte first, contrary to the usual Z-80 convention, so that line number 9999 is held as a byte containing 39 followed by a byte containing 15 because 39*256+15=9999. The bit pattern of the first byte, obtained by converting 39 to binary, is 00100111. Notice that the three most significant bits - bit numbers 7, 6 and 5 are set to 0, 0 and 1 for this, the largest permitted line number. Hence bit numbers 7,6 and 5 of the first byte of all permitted line numbers will be set to 0, 0 and 1, or in the case of line numbers less than 8192, they will be set to 0, 0, 0.</p>
+
+<p>Now look at pages 172 to 174 of the ZX-81 Basic Programming manual and you will see illustrations of the different types of variables as they are represented in the variables area. In each case the first byte contains a numeric code related to the code of the letter; in the case of a number whose name is longer than one letter, the first letter, which identifies the variable. The largest possible letter code is 63, the code for Z, which is 00111111 in binary, and the smallest is 38, the code for A, which is 00100110 in binary. Clearly, bits 7 and 6 are not needed when distinguishing between letter codes and bit 5 is always set to one, so the ZX-81 uses them to distinguish between the different types of variable, subtracting 20h, or 32 in decimal, from the letter code in three of the six cases.</p>
+
+<p>Three bits can be set in 2<sup>3</sup>, or 8, different ways. The table lists the eight ways and their interpretation.</p>
+
+<table><tr align="left"><th width="33%">Bit pattern</th><th width="66%">Interpretation</th></tr>
+<tr><td>000</td><td>Line number less than 8192</td></tr>
+<tr><td>001</td><td>Line number between 8192 and 9999</td></tr>
+<tr><td>010</td><td>String</td></tr>
+<tr><td>011</td><td>Number with single character name</td></tr>
+<tr><td>100</td><td>Array of numbers</td></tr>
+<tr><td>101</td><td>Number with multiple character name</td></tr>
+<tr><td>110</td><td>Character array</td></tr>
+<tr><td>111</td><td>Control variable for a FOR-NEXT loop</td></tr></table>
+
+<p>I do not know why Sinclair should take such elaborate precautions to distinguish a line number from a variable because the same purpose could be served by comparing the address of the byte in question to the D-FILE or VARS pointers. It allows the ZX-81 to use the same routine, at 2546 to 2576, to step through memory to the &quot;next&quot; line or the &quot;next&quot; variable but that seems a small advantage.</p>
+
+<p>Perhaps it is merely a hangover from the ZX-80, because in that machine the variables area follows immediately after the program area and so a device which &quot;knows&quot; from the contents of the byte that the end of the program has been reached serves some purpose. If any reader has a more credible explanation, I should be interested to hear it.</p>
+
+<p>It is worth noting that while the ZX-81 prevents you entering line numbers greater than 9999 from the keyboard, if you manipulate the line numbers by POKEing the appropriate locations your program will still run, provided the line numbers do not exceed 16383 as the following routine demonstrates:</p>
+
+<pre>  10 LET I=10000
+  20 SCROLL
+  30 PRINT I
+  40 POKE 16634,INT(I/256)
+  50 POKE 16635,I-256*INT (I/256)
+  60 LET I=I+1
+9999 GO TO 20</pre>
+
+<p>Line numbers 40 and 50 POKE the current value of I into the locations originally occupied by 9999. If you run the program for a few cycles and then BREAK it you will see that 9999 has been updated to, say, A029 for I=10029. Clearly the ZX-81 does not decode line numbers greater than 9999 correctly but the result is comprehensible if you remember A follows 9 in the sequence of character codes.</p>
+
+<p>If you leave the program running for long enough it will stop when I=16384 and a LISTing will then omit the final line because the LIST command does not recognise it as a line. You can use this quirk to make programs &quot;disappear&quot; by POKE 16509,64. Such &quot;invisible&quot; programs can be SAVEd and LOADed as usual and will RUN if 16509 is reset to its original value.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="helpln1.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Spectrum Helpline"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 7 Contents"></a>
+<a href="company.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Company Profile"></a></p>
+
+<h6 align="center">Sinclair User<br>October 1982</h6>
+
+</body>
+</html>
+

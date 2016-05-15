@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 19 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, October 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="softwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 19 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson4.gif" width=275 height=290 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1>Numbers are followed by information not in listings</h1>
+
+<p class="first"><b><font size="+1">Andrew Hewson returns to the program area of memory in RAM to find six bytes which are hidden in the program-following figures</font></b></p>
+
+<p class="first">LAST MONTH I explained how line numbers are held in both the ZX-81 and the Spectrum and showed how they could be studied using a short routine which investigated the program area in RAM. This month I shall study again the program area but for a different purpose.</p>
+
+<p>I am doing so in response to the following question from Alan Sheldon. He asks: <b>It would appear that numbers in the program area of memory are followed by additional information which does not appear in listings. Is that so and if so why?</b></p>
+
+<p>Sheldon is correct as can be seen by entering the Spectrum program listed in table one. The program will also work on the ZX-81 if line 15 is altered to read:</p>
+
+<pre>15 LET S=16509</pre>
+
+<p>Line 5 is a dummy line, the purpose of which is to allow the user to study the appearance of numbers in programs. When the program is RUN it looks at the contents of the first 21 bytes in the program area as I explained last month and displays them on the screen. The results for the Spectrum and the ZX-81 are shown in tables two and three respectively.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre> 5 LET A=1
+10 PRINT "BYTE";TAB 6;"CONTENTS";TAB16;"CHARACTER"
+15 LET S=PEEK 23635+256*PEEK 23636
+20 FOR I=S TO S+20
+25 PRINT I;TAB8;PEEK I;TAB 20;CHR$ PEEK I
+30 NEXT I
+
+<b>Table 1. A Spectrum program which looks at the first
+21 bytes of the program area.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+<br>
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>Byte        Contents        Character
+23755       0               ?
+23756       5               ?
+23757       11              ?
+23758       0               ?
+23759       241             LET
+23760       65              A
+23761       61              =
+23762       49              1
+23763       14              ?
+23764       0               ?
+23765       0               ?
+23766       1               ?
+23767       0               ?
+23768       0               ?
+23769       13
+
+<b>Table 2. The first 15 lines of the screen
+display produced when the Spectrum program in
+table 1 is executed.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The first two bytes contain the line number (5) and the next two bytes specify the length of the remainder of the line (11 bytes). The next four bytes hold the character codes for the first line of the program:</p>
+
+<pre>LET A=1</pre>
+
+<p>The character codes vary slightly between the two machines. For example, the code for the letter 'A' is 65 on the Spectrum and 38 on the ZX-81 although the code for the 'LET' is 241 on both machines. The full list of character codes is given in appendix A of the manual supplied with each computer.</p>
+
+<p>On the Spectrum the next byte contains 14. That is not the code for the end of a line, as might be expected, but instead it is described in appendix A of the manual as "number". In fact, the byte acts as a signal to the LIST and other commands to ignore the byte and the contents of the five locations which follow it. Hence there is no indication in listings of the program that those additional locations are used. The line is terminated by the next byte which contains 13 - the ENTER character.</p>
+
+<p>On the ZX-81 the character codes are different but the effect is the same. The location containing the code for '1' is followed by six "hidden" bytes, which do not appear in program listings.</p>
+
+<p>Some clue as to the purpose of those hidden bytes can be gained by replacing line 5, the dummy line, by another line. Try, for example, RUNning the program with</p>
+
+<pre>5 LET A=2.7</pre>
+
+<p class="first">as the dummy line. The characters for the number "2.7 " occupy three bytes, not one as for the number "1", but again the number is followed by six hidden bytes. A few minutes' experimentation will show that whenever a number appears within a program six hidden bytes follow.</p>
+
+<p>The reason for the use of the hidden bytes is that the ZX-81 and the Spectrum do not store and manipulate numbers in the character form in which they are displayed. They are converted into a "calculation" format and all additions, multiplications and so on are undertaken on the numbers in this format. When the result of a calculation is PRINTed it must be converted into characters for display on the screen. Similarly, the character form of a number entered by the user must be converted to the calculation format before a calculation can be executed.</p>
+
+<p>All such conversions take time. To accelerate the execution of programs the conversion to calculation format is undertaken immediately a number in a program line is entered from the keyboard. The resulting five-byte form is stored in the hidden bytes. The use of this technique enables a considerable saving to be made in the time taken to execute a program, particularly if numbers are included within FOR loops, in which case the same conversion would otherwise be undertaken many times. Of course, the time taken to deal with a program line entered from the keyboard is lengthened but not to an unacceptable extent.</p>
+
+<p>The next question, from Hugo Cassidy, follows from the previous one. He asks: <b>Can you explain the method of encoding numbers on the Spectrum?</b></p>
+
+<p>Before explaining the form of encoding used it is useful to explain why it is necessary to encode numbers. The decimal system of counting has become universally established for everyday purposes because people have 10 fingers and thumbs so we can conveniently count in tens, hundreds, thousands and higher powers of 10. Digital computers, however, count using bits which can be in one of only two states. It is as if they had many hands but each hand had only two fingers. Therefore they can count conveniently in twos, fours, eights, sixteens and higher powers of two. The primary reason for encoding is to convert decimal numbers to binary.</p>
+
+<p>Unfortunately binary, written as a string of zeros and ones, is cumbersome for mere human beings to handle because large numbers of digits are often required. The number 1,000, for example, occupies nine digits when converted to binary. In the ZX-81 and the Spectrum the bits are grouped in bytes containing eight bits each so that the computers can hold a single positive integer number in the range 0 to 255 decimal in each memory location.</p>
+
+<p>Hence it is usually convenient to consider bytes to be the fundamental unit of memory and ignore the constituent bits. Hexadecimal notation - numbers written in base sixteen - are used conveniently to represent bytes because two hexadecimal digits only are required. I think that most readers have enough trouble understanding decimal-to-binary conversions without introducing a further complication. I shall therefore continue to use the decimal version.</p>
+
+<p>Given that it is necessary to convert numbers from decimal to binary, it is logical to use a binary format which is efficient and therefore fast for the computer to use. Two separate formats are used on the Spectrum, a special format for integers, or whole numbers, lying in the range -65535 to 65535 and a floating point format for all other numbers. The ZX-81 uses the floating point format only.</p>
+
+<p>The integer format is the simplest to understand and so I shall explain it first. A suitable number, N, is converted to the five-byte form by setting the first and fifth bytes to zero and using the second byte to indicate the sign of the number, 0 for positive, 255 for negative. If the number is positive the value is stored in the third and fourth byte as:</p>
+
+<pre>Third byte = N-256*INT (N/256)
+
+Fourth byte = INT (N/256)</pre>
+
+<p class="first">If N is negative the two bytes contain:</p>
+
+<pre>Third byte = 65536-N-256*INT ((65536-N)/256)
+
+Fourth byte= INT ((65536-N)/256</pre>
+
+<p>The principal advantage of the use of integer format is that for positive integers the third and fourth bytes are in the form the Z-80A microprocessor uses when addressing locations in memory. Commands such as PEEK and POKE are executed much faster than they would otherwise be if the more complex floating point form were used to store the addresses to which they refer. The format also enables the calculator routines in the ROM to execute much more quickly when calculations involving integers only are performed.</p>
+
+<p>The program in table one can be used to inspect the positive integer form by varying the first line. For example, entering:</p>
+
+<pre>5 LET A =47</pre>
+
+<p class="first">will show that 47 is held as 0,0,4 7,0,0. The negative version cannot be inspected using this program because all numbers are stored in their positive form in the hidden bytes. If a number of preceded by a negative sign it is negated when the line is executed.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'The floating point form is designed to provide the computer with a systematic method of retaining as much accuracy as possible in any given calculation'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>The program in table four gives the five-byte form of any number, positive or negative, entered from the keyboard. The program PRINTs the contents of the first item in the variables area, that is the number N entered by the user from the keyboard, because it is the first variable declared in the program. Note that the program should be initiated by entering RUN rather than GO TO 10 because doing so will cause the variables area to be CLEARed, thus ensuring that N is the first variable.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>10 INPUT N
+20 PRINT N;" ";
+30 LET A=PEEK 23627+256*PEEK 23628
+40 FOR I=A+1 TO A+5
+50 PRINT PEEK I;" ";
+60 NEXT I
+70 GO TO 10
+
+<b>Table 4: A Spectrum program to inspect
+the five-byte form of a number entered by
+the users.</b>
+
+To run the program on the ZX-81 change line 30 to read:
+
+30 LET A=PEEK 16400+256*PEEK 16401
+</pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The floating point form is designed to provide the computer with a systematic method of retaining as much accuracy as possible in any given calculation. Some numbers cannot be completely specified in decimal form. The fraction one-third in decimal form consists of 1.3 followed by an infinite number of threes so that expressing it as 1.3333, for example, is almost, but not exactly, correct. The same problem occurs when binary arithmetic is used.</p>
+
+<p>The solution is to retain only the most significant digits at each stage in a calculation. Provided more significant digits are retained than are required in the answer then in all but the most exceptional circumstances the calculated result will be accurate enough for practical purposes.</p>
+
+<p>The program listed in table five calculates and PRINTs the floating point form of a number entered by the user. The line numbers have been set so that it can be placed in memory at the same time as the inspection program in table four. By entering the same number into both programs the user will see that the calculation is correct.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>210 LET N=0
+220 INPUT X
+230 LET S=SGN X
+240 LET X=ABS X
+250 LET X=2*X
+260 LET N=N+1
+270 IF X&lt;2147483648 THEN GO TO 30
+280 LET A=INT (X/16777216)
+290 LET X=X-16777216*A
+300 LET B=INT (X/65536)
+310 LET X=X-65536*B
+320 LET C=INT (X/256)
+330 LET D=X-256*C
+340 PRINT &quot;EXPONENT=&quot;;160-N
+350 PRINT &quot;MANTISSA=&quot;;A-128*(S=1)&quot; &quot;;B;&quot; &quot;;C;&quot; &quot;;D&quot;
+
+<b>Table 5. A Spectrum program to calculate and PRINT
+the floating point form of a number entered from the
+keyboard.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The program has two parts. The first stores the sign, S, of the number, X, entered by the user. It then multiplies the absolute value of X successively by 2 until the result exceeds 2 raised to the power 31 or 2147483648. The number of multiplications executed is stored in N. The new value of X then lies necessarily between 2 to the power 31 and 2 to the power 32 and so the integer part of the number can be stored exactly in 31 bits. Thus by discarding the fractional residue the number can be stored in four bytes, each containing eight bits with one bit left over to hold the sign of the number. The four bytes together are called the mantissa.</p>
+
+<p>The second part of the program calculates the values held in each of the four bytes and stores them in the variables A, B, C and D and then PRINTs the variables. An adjustment is made to the value of A depending on the sign of the original number. In effect A is less than 128 for positive numbers and greater than or equal to 128 for negative numbers.</p>
+
+<p>The fifth byte of the floating point form is used to store the exponent, that is the number of times that the mantissa must be divided or multiplied by 2 to place the decimal point in the correct position in the number. The program calculates that number using N, the number of multiplications made originally. The result is adjusted by adding 160 so that numbers greater than one have exponents greater than or equal to 128 and numbers less than one have exponents less than 128.</p>
+
+<p>If a number with an absolute value greater than 4294967296, or 2 raised to the power 32, is entered into the program in table five the result will be incorrect because there is no provision for successive division by 2 to yield a number in the required range. It is easy to adjust the program to perform such successive divisions but that is left as an exercise for the reader.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="softwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 19 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>October 1983</h6>
+
+</body>
+</html>

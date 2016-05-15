@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 47 - Machine Code</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Z80 machine code programming feature from Sinclair User, February 1986">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="seiko.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Seiko RC-1000"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 47 Contents"></a>
+<a href="../048/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 48"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Machine Code</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><img src="mcode1.jpg" width=550 height=109 vspace=10 border=0 alt="CALLing all CODE">
+
+<h2><b><i>In his final article Marcus Jeffery shows how machine<br>
+code routines can be used to save time</i></b></h2></center>
+
+<p class="first">In this, the final instalment of the series, we're going to dig deep into the Spectrum innards, to see how we can make use of what Sinclair has already given us.</p>
+
+<p>Until now, every machine code program we've written has done everything for itself. If we've wanted to put a character onto the screen, we've written a piece of code which loads the first byte into the initial location, then moves on to process the second byte, and so on.</p>
+
+<p>However, have you ever stopped to wonder how the Spectrum normally places characters onto the screen? It can't do it directly from Basic, and so the Basic is interpreted, and a machine code routine does all the work. If we know where that machine code routine is, and how it works, there is no reason why we shouldn't CALL it from our own programs.</p>
+
+<p>The Spectrum operating system, Basic interpreter and standard character set, occupies the lowest 16K of the Spectrum memory. That is all in ROM, as opposed to the subsequent 48K of memory which is addressable RAM. Any program which can be written in Basic can also be written in machine code, with CALLs to this ROM area to decrease the size of the user-written code. For instance, any printable character can be printed using the two statements:</p>
+
+<pre>  LD  A,(ascii code)
+  RST  10H</pre>
+
+<p class="first">That is one of the 'Restart' routines at the very beginning of the ROM area.</p>
+
+<p>As an example of how useful these routines can be, have a look at this month's program, the assembly code of which is shown in <a href="#fig1">figure one</a>. Its function is to perform a Block Delete - in other words, it will allow you to delete a range of lines in a Basic program.</p>
+
+<p>The first CALL (location 1C79 hex) is to a routine which will evaluate two expressions, separated by a comma, and place the resulting two numbers onto the calculator stack, with the last at the top. The routine expects to find those expressions immediately after the last executed command, entered either directly or from Basic. This location is referenced by the system variable CH_ADD - locations 23645 and 23646. Using this routine gives us yet another way of passing values to machine code routines. We've already seen how to pass them by Poking into locations, then loading these into registers, and through the use of a function. We can now specify the range of lines to delete as part of the machine code call from Basic, in the form:</p>
+
+<pre>  PRINT USR location, first line, last line</pre>
+
+<p class="first">and the CALL will automatically place the values of 'first line' and 'last line' onto the calculator stack.</p>
+
+<p>The next problem is to retrieve the values from the calculator stack. We've seen how easily that can be done before - <a href="../043/mcode.htm"><i>Sinclair User</i> October</a> - by making a CALL to location 2DA2 hex, which places the top value into the BC register pair. A couple of points we didn't mention are that the routine will also set the Carry flag if the top value is greater than 65535 - the maximum value holdable in two bytes - and that it also places a copy of the low byte into the Accumulator. This is why the two conditions following the CALL work correctly.</p>
+
+<p>Once we've got the line number from the stack, and checked it, we need to convert it into an address in memory. One way to do this, assuming we know how the Spectrum holds a Basic program, is to search through memory for the required sequence of bytes. Here again, however, by transferring the number from BC to the HL register pair, we can simply CALL location 196E hex, and the Spectrum operating system will do the work for us.</p>
+
+<p>That line-to-address conversion routine will place the starting address of the line held in HL, or the first line after this, into the HL register pair, and places the start of the previous line into the DE register pair. The first time we CALL this routine in our program, we initially increment HL. That is just so that we can make use of the 'Reclaim' routine (19E5 hex), further on in the code. The routine will close up the program area, starting at the address in the DE register pair, and finishing with the address in the HL register pair as the first unchanged location. This routine will also carry out the messy work of amending all the necessary system variable pointers for us.</p>
+
+<p>To see how the routine works, just type in the Basic loader program in <a href="#fig2">figure two</a>. This will load the code into memory, then delete the block of REM statements near the beginning of the program, before Listing itself.</p>
+
+<p>This sort of utility program can prove very useful. For instance, if you want to use a Basic loader to enter machine code into a REM statement at the start of the program, as explained in <a href="../046/mcode.htm">January's article</a>, then you'll need to delete all the lines following the initial REM, before rewriting the program. A utility such as this Block Delete will do that in a fraction of the normal time. You'll also notice that the routine is completely relocatable, so you can place it anywhere in memory.</p>
+
+<p>There are a wide variety of Spectrum ROM routines which may prove useful. <a href="../043/mcode.htm">October's article</a> showed how to use the 'RST 28H' instruction to make use of the ROM calculating routines, and <a href="#fig3">figure three</a> shows a few other generally useful CALLs. For anybody wanting to dig further into the Spectrum ROM, <i>The Complete Spectrum ROM Disassembly</i>, by Dr Ian Logan and Dr Frank O'Hara is recommended.</p>
+
+<h2><i>Figures</i></h2>
+
+<a name="fig1"></a>
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#CCCCCC">
+<p class="first"><b>Figure 1.</b></p>
+<pre>                     ORG   60000
+                     LOAD  60000
+
+EA60 CD791C   DELETE CALL  1C79H      ;Evaluate next two expressions
+EA63 CDA22D          CALL  2DA2H      ;Get 2nd number in BC
+EA66 3803            JR    C,ERR2     ;Jump to error if BC &gt; 65535
+EA68 B0              OR    B
+EA69 2007            JR    NZ,OKAY2   ;Jump on if 2nd number &lt;&gt; zero
+EA6B CDA22D   ERR2   CALL  2DA2H      ;Unstack 1st number
+EA6E 010200          LD    BC,2       ;Indicate error in 2nd number
+EA71 C9              RET              ;    and RETurn
+EA72 60       OKAY2  LD    H,B        ;HL = BC
+EA73 69              LD    L,C
+EA74 23              INC   HL         ;HL = line after the line
+EA75 CD6E19          CALL  196EH      ;    required
+EA78 E5              PUSH  HL         ;Stack this address
+EA79 CDA22D          CALL  2DA2H      ;Get 1st number in BC
+EA7C 3803            JR    C,ERR1     ;Jump to error if BC &gt; 65535
+EA7E B0              OR    B
+EA7F 2005            JR    NZ,OKAY1   ;Jump on if 1st number &lt;&gt; zero
+EA81 C1       ERR1   POP   BC         ;Unstack address
+EA82 010100          LD    BC,1       ;Indicate error in 1st number
+EA85 C9              RET              ;    and RETurn
+EA86 60       OKAY1  LD    H,B        ;HL = BC
+EA87 69              LD    L,C
+EA88 CD6E19          CALL  196EH      ;HL = address of 1st line
+EA8B 54              LD    D,H        ;DE = HL
+EA8C 5D              LD    E,L
+EA8D E1              POP   HL         ;HL = address of 2nd line
+EA8E A7              AND   A          ;Set Carry flag to zero
+EA8F E5              PUSH  HL
+EA90 ED52            SBC   HL,DE      ;HL = HL - DE
+EA92 E1              POP   HL
+EA93 D45E19          CALL  NC,19E5H   ;Reclaim memory, only if HL &gt; DE
+EA96 010000          LD    BC,0       ;Indicate success
+EA99 C9              RET
+
+                     END</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig2"></a>
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#CCCCCC">
+<p class="first"><b>Figure 2.</b></p>
+<pre>  10 CLEAR 59999
+  20 GO SUB 1000
+  30 REM This program initially
+  40 REM loads the machine code
+  50 REM Block Delete routine.
+  60 REM Then, just to prove it
+  70 REM works, it deletes these
+  80 REM REMark statements, and
+  90 REM lists the program.
+ 100 PRINT USR 60000,30,90
+ 110 LIST
+ 120 STOP
+1000 REM HEX LOAD ROUTINE
+1010 DEF FN p(x)=CODE h$(x)-48-7*(CODE h$(x)&gt;=65)
+1020 LET byte=0
+1030 RESTORE 2000
+1040 READ start
+1050 READ h$
+1060 IF h$=&quot;*&quot; THEN GO TO 1160
+1070 IF LEN h$&lt;&gt;2*INT (LEN h$/2) THEN PRINT &quot;Odd number of hex digits in: &quot;;h$: STOP
+1080 FOR i=1 TO LEN h$
+1090 IF NOT((h$(i)&gt;=&quot;0&quot; AND h$(i)&lt;=&quot;9&quot;) OR (h$(i)&gt;=&quot;A&quot; AND h$(i)&lt;=&quot;F&quot;)) THEN PRINT &quot;Illegal hex digit: &quot;;h$(i): STOP
+1100 NEXT i
+1110 FOR i=1 TO LEN h$ STEP 2
+1120 POKE start+byte,16*FN p(i)+FN p(i+1)
+1130 LET byte=byte+1
+1140 NEXT i
+1150 GO TO 1050
+1160 PRINT &quot;Code entered&quot;
+1170 PAUSE 150
+1180 RETURN
+2000 DATA 60000,&quot;CD791C&quot;
+2010 DATA &quot;CDA22D&quot;,&quot;3803&quot;,&quot;B0&quot;
+2020 DATA &quot;2007&quot;,&quot;CDA22D&quot;
+2030 DATA &quot;010200&quot;,&quot;C9&quot;,&quot;60&quot;
+2040 DATA &quot;69&quot;,&quot;23&quot;,&quot;CD6E19&quot;
+2050 DATA &quot;E5&quot;,&quot;CDA22D&quot;,&quot;3803&quot;
+2060 DATA &quot;B0&quot;,&quot;2005&quot;,&quot;C1&quot;
+2070 DATA &quot;010100&quot;,&quot;C9&quot;,&quot;60&quot;
+2080 DATA &quot;69&quot;,&quot;CD6E19&quot;,&quot;54&quot;
+2090 DATA &quot;5D&quot;,&quot;E1&quot;,&quot;A7&quot;,&quot;E5&quot;
+2100 DATA &quot;ED52&quot;,&quot;E1&quot;,&quot;D4E519&quot;
+2110 DATA &quot;010000&quot;,&quot;C9&quot;,&quot;*&quot;</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig3"></a>
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#CCCCCC">
+<p class="first"><b>Figure 3. Useful ROM routines</b></p>
+<pre>CLS             (CALL 0D6BH)
+  This will clear the whole display, resetting all the pixels, and placing the
+  current value of the system variable ATTR_P (location 23693) into the
+  attribute bytes.
+CLS-LOWER       (CALL 0D6EH)
+  This will clear just the lower part of the screen.
+LINE-ADDR       (CALL 196EH)
+  This routine expects a line number in the HL register pair. It will return
+  with HL containing the start location of either the given line or the next
+  line, if the first doesn't exist. The start of the previous line will be in
+  DE. If, on return, the zero flag is set, then the given line exists.
+RECLAIM-1       (CALL 19E5H)
+  This will 'reclaim' the area of memory starting at the location in DE, and
+  continuing up to, but not including, the location in HL. System variable
+  pointers will also be corrected.
+RECLAIM-2       (CALL 19E8H)
+  This works in a similar way to RECLAIM-1, but on entry HL should hold the
+  first location and BC should contain the number of bytes to be reclaimed.
+NEXT-2NUM       (CALL 1C79H)
+  This will advance the value in the system variable CH_ADD to point to the
+  next item. It then evaluates the next two items, which should be separated
+  by a comma, placing the results onto the calculator stack.
+EXPT-2NUM       (CALL 1C7AH)
+  As for NEXT-2NUM, but this doesn't advance the value of CH_ADD before the
+  evaluation.
+EXPT-1NUM       (CALL 1C82H)
+  As for EXPT-2NUM, but only evaluates a single expression.
+FREE-MEM        (CALL 1F1AH)
+  Calculates the amount of memory currently in use, including ROM space,
+  placing the result in both the BC and HL register pairs. Subtracting this
+  from 65536 will estimate free memory.
+ALPHA           (CALL 2C8DH)
+  On return, the Carry flag will be set if the present value in the A register
+  denotes the ASCII code of a valid alphabetic character.
+PRINT-FP        (CALL 2DE3H)
+  This will perform the horrendous task of printing a floating point number
+  from the top of the calculator stack.</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><p class="first"><a href="../046/mcode.htm"><b>Previous article in series (issue 46)</b></a></p></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="seiko.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Seiko RC-1000"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 47 Contents"></a>
+<a href="../048/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 48"></a></p>
+
+<h6 align="center">Sinclair User<br>February 1986</h6>
+<h6 align="center">Another Fine Product transcribed by Jim Grimwood at <a href="http://www.users.globalnet.co.uk/~jimg/">YRUA?</a></h6>
+
+</body>
+</html>

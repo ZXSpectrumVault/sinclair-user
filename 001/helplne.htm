@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 1 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, April 1982">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="insinc.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Inside Sinclair"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 1 Contents"></a>
+<a href="books.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Books"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<table width="220" border="0" cellpadding="10" align="right">
+<tr align="center"><td><img src="../shared/images/hewson1.jpg" width=200 height=300 border=0 alt="">
+<br>
+<p class="first"><b><font size="-1">Andrew Hewson</font></b></p>
+</td></tr>
+</table>
+
+<p class="first"><b><font size="+1">Andrew Hewson, author of <i>Hints &amp; Tips for the ZX-80</i> and <i>Hints &amp; Tips for the ZX-81</i>, answers questions on hardware and software for Sinclair ZX computers.</font></b></p>
+
+<h1>Questions on how to organise memory</h1>
+
+<p class="first">HELLO and welcome to HELPLINE. Each month I shall answer a selection of letters from my postbag on a theme of interest to Sinclair users. Often I shall refer to pages in the manual supplied with the ZX machines and this month the questions centre on chapters 27 and 28 of the ZX-81 manual which are about the Organisation of Memory and the System Variables. The first request, from Mr Adler is:</p>
+
+<p><b>&quot;Please explain the meaning of an &quot;address&quot;. How can a byte, which is a number, have an address?&quot;</b></p>
+
+<p>An important part of a computer is its memory and typical microcomputers have several thousand memory locations available for immediate use. Clearly each location needs a separate label or address to distinguish it from its fellows. The word address came into use because writing information to one of many memory locations is similar to writing a letter to one of many people. Letters are sent to an address so that they reach the person who lives there. Similarly, a computer sends information to the memory location at a given address.</p>
+
+<p>Computer addresses are simply whole numbers starting at zero; so, for example, in the unexpanded ZX-81 locations 0 to 8191 are used by the ROM, locations 8192 to 16383 are unused, and locations 16384 to 17407 are used by the RAM. The add-on 16K RAM uses locations 16384 to 32767. Only the contents of RAM may be altered and so users are generally interested in addresses 16384 and upwards.</p>
+
+<p>Each location in memory contains one byte of information. A byte can be thought of as a whole number between 0 and 255 inclusive. In practice, the a word byte is often also used to mean a &quot;location in memory&quot; as well as to mean the number which is stored at that location. Thus if location 17000 contains 34, we might say &quot;byte 17000 is 34&quot;.</p>
+
+<p>The next question, from Mr Lypartin develops our theme:</p>
+
+<p><b>&quot;I am keen to understand how my ZX-81 works but as a beginner I am perplexed by the manner in which addresses are stored in the system variables. I know, for example, that D-FILE is the beginning of the display file - but how is that information stored?&quot;</b></p>
+
+<p>The area at the bottom of RAM between 16384 and 16508 holds the system variables and is followed by the program area, starting at 16509. The display file is next but as programs can vary in length, the display file does not start at a fixed address. The ZX-81 keeps track of it by storing the current value of the starting address in D-FILE.</p>
+
+<p>If you look at page 178 of the manual you will see that the value of D-FILE is stored at address 16396 and so you might infer that you have only to look at the contents of 16396 to find the value of D-FILE.</p>
+
+<p>Unfortunately, that is not true. Remember that the value of D-FILE is an address and that addresses are whole numbers, like 16384 and 17407 and 32767. A single location can only hold a number between 0 and 255 and so two adjacent locations are used to store larger numbers. The value of D-FILE is given by:</p>
+
+<pre>value held in 16396+256*value held in 16397</pre>
+
+<p>Any whole number between 0 and 65535 inclusive can be stored using this system.</p>
+
+<p>The value held at an address can be found by PEEKing at it and so you can PRINT the value of D-FILE by entering:</p>
+
+<pre>PRINT PEEK 16396+256*PEEK 16397</pre>
+
+<p>You may know that the contents of the first location in the display file is always 118 and you can show Mat by entering:</p>
+
+<pre>PRINT PEEK (PEEK 16396+256*PEEK 16397)</pre>
+
+<a name="ramtop"></a>
+<p>Finally, I have been asked many times if there is a simple way of allowing two programs to use the same variables. Mr Peters asks:</p>
+
+<p><b>&quot;I want to write several programs which use the same data but there seems to be no way to do so using the Sinclair functions. Do I have to write routines to save and load data on cassette or is there some way of passing data between programs directly?&quot;</b></p>
+
+<p>There is. The trick is to alter the RAMTOP system variable to give you some space at the top of RAM which is out of reach of the Sinclair system in normal use. Your first program can then copy data into the area above RAMTOP. You can then load a second program, replacing the first, but the data saved above RAMTOP will still be intact. The second program can then copy the data back into its own variables area.</p>
+
+<p>Let us take the job step by step. All the calculations following refer to the unexpanded ZX-81 with values for the 16K expansion in square brackets where they are different.</p>
+
+<ul><li><p class="first"><b>Moving RAMTOP.</b> Suppose you want to pass a 10-element array between programs. A single-dimensional array occupies five bytes per element plus another six making 56 bytes in all, and so you need at least 56 bytes above RAMTOP.</p>
+
+<p class="first">When you switch on your ZX-81, RAMTOP is set automatically to one more than the top of RAM, i.e., 17408 [32768 with the 16K RAM]. The address is stored as a system variable at 16388 and 16389 as the values 0 and 68 respectively [0 and 128], because 0+256*68 =17408 [0+256*128=32768].</p>
+
+<p class="first">You can use your ZX-81 to calculate the new value to be POKEd into 16388 by entering:</p>
+
+<pre>PRINT 17408-N-256*INT((17408-N)/256)
+
+[PRINT 32768-N-256*INT((32768-N)/256)]</pre>
+
+<p class="first">Using N = 56 for our example gives 200.</p>
+
+<p class="first">The value to be POKEd into 16389 is given by:</p>
+
+<pre>PRINT INT((17408-N)/256)
+
+[PRINT INT((32768-N)/256)] In our example the result is 67 [128].</pre>
+
+<p class="first">The ZX-81 will ignore any alterations to RAMTOP until you enter NEW, so do so at that point. Of course, if you have a program in your machine you should SAVE it first.</p></li>
+
+<li><b>Finding your array.</b> Variables are stored at the address held in VARS at 16400 and 16401 so you can PRINT the current value by entering:
+
+<pre>PRINT PEEK 16400+256*PEEK 16401</pre></li>
+
+<li><b>Saving an array above RAMTOP.</b> The following program demonstrates the technique:
+
+<pre>10 DIM A(10)
+20 FOR I=1 TO 10
+30 LET A(I)=I
+40 NEXT I
+50 LET J=PEEK 16400+256*PEEK 16401
+60 LET K=PEEK 16388+256*PEEK 16389
+70 FOR I=0 TO 55
+80 POKE (K+I),PEEK(J+I)
+90 NEXT I</pre>
+
+<p class="first">Lines 10 to 40 assign the array and set its values to 1...10 - these values have been chosen for the purposes of this demonstration and have no special significance. Line 50 stores the value of VARS in J and line 60 stores the value of RAMTOP in K. The loop at lines 70 to 90 copies the contents of the array above RAMTOP.</p></li>
+
+<li><b>Retrieving an array from above RAMTOP.</b> Now delete the first program and enter the following:
+
+<pre>10  DIM A(10)
+50  LET J=PEEK 16400+256*PEEK 16401
+60  LET K=PEEK 16388+256*PEEK 16389
+70  FOR I=0 TO 55
+80  POKE (J+I),PEEK(K+I)
+90  NEXT I
+100 FOR I=1 TO 10
+110 PRINT A(I)
+120 NEXT I</pre>
+
+<p class="first">In this program the array is assigned and J and K are set to VARS and RAMTOP as before but the loop at lines 50 to 80 now copies the data from above RAMTOP to the variables area. The loop at lines 100 to 120 PRINTS the values of the array as set by the first program.</p></li></ul>
+
+<p>In each case, lines 50 to 90 represent the essential part of the program but it is important to assign the array at the beginning of the program, so that it lies at the bottom of the variables area. The same technique works for ordinary variables but strings cannot, in general, be copied in this manner, because they can move around in RAM.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="insinc.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Inside Sinclair"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 1 Contents"></a>
+<a href="books.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Books"></a></p>
+
+<h6 align="center">Sinclair User<br>April 1982</h6>
+
+</body>
+</html>
+

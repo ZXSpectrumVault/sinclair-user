@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 8 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, November 1982">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="books.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Books"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 8 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<table width="320" border="0" cellpadding="10" align="right">
+<tr align="center"><td><img src="../shared/images/hewson2.gif" width=300 height=288 border=0 alt="">
+<br>
+<p class="first"><b><font size="-1">Andrew Hewson</font></b></p>
+</td></tr>
+</table>
+
+<h1>Spanners poked in the Sinclair works</h1>
+
+<p class="first">THIS MONTH I answer some problems concerning PEEKing and POKEing. David Anthes writes: <b>My ZX-81 has a bug. When I POKE 57 into various addresses as per page 163 of the manual, I get weird effects. Sometimes the machine crashes but Sinclair claims there is nothing wrong with it.</b></p>
+
+<p>When you enter PRINT PEEK address, your computer PRINTs a positive integer number between 0 and 255 inclusive. That is the number which your machine holds in the byte at location &quot;address&quot;. The value of &quot;address&quot; must be a positive integer between 0 and 32767 on the 16K ZX-81 or Spectrum.</p>
+
+<p>POKE is the complementary command to PEEK. It puts a number into a location. The form of the command is:</p>
+
+<pre>POKE address, number</pre>
+
+<p class="first">where address is a positive integer in the range 0 to 32767 - 16K machines - and number is a positive integer in the range 0 to 255. It is a dangerous command, because POKEing the wrong location can cause the machine to crash for any one of a hundred reasons. PEEKing is a means of looking at what your computer is doing, whereas POKEing is a way of putting a spanner in the works; if you put the spanner in the wrong place or the wrong spanner in the right place you can cause havoc.</p>
+
+<p>John Hawes wants to PEEK the ZX-81 display file. He asks: <b>Is it possible to discover whether a given character is at a given position in the display of the 16K ZX-81?</b></p>
+
+<p>There are two golden rules to remember when manipulating the ZX-81 display. They are:</p>
+
+<p>The ZX-81 display file must always contain at least 25 bytes filled with the NEWLINE character, decimal 118.</p>
+
+<p>The 1K ZX-81 display file contains only the characters which have been PRINTed or PLOTted, plus sufficient spaces to fill any gap between the left-hand side of the screen and the character in question. The 16K ZX-81 display file contains 25 lines of 32 characters unless SCROLL has been used since the last CLS. The following routine PRINTS the character at row R, column C of the 16K ZX-81 display file:</p>
+
+<pre> 10 FOR I=0 TO 5
+ 20 PRINT &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;;
+ 30 NEXT I
+100 LET D=PEEK 16396+256*PEEK 16397
+110 INPUT R
+120 INPUT C
+130 PRINT AT 21,0;CHR$ PEEK (D+33*R+C)</pre>
+
+<p>Steve Packman has a Spectrum and he writes: <b>A subroutine returns to the line following the line from which it was called. I want to write a program in which the line number to which the return is made depends on the results of calculations within the subroutine. How can this be done?</b></p>
+
+<p>The simple solution to his problem is not to use a GO SUB statement but to use GO TO instead. The subroutine can then perform its calculations and return to the appropriate line in the main program by means of a second GO TO statement.</p>
+
+<p>If it is essential to the logic of the program to use a GO SUB statement, then care must be taken to ensure that the program also executes a RETURN statement subsequently. The reason is that the GO SUB statement saves the number of the line in which it occurs at the bottom of the GO SUB stack, which lies immediately below RAMTOP. The RETURN statement deletes the stack entry and causes the program to jump to the line number following the GO SUB line. Therefore if the program executes more GO SUBs than RETURNS, the line numbers accumulate at the bottom of the GO SUB stack, causing it to grow downwards and eventually fill all the spare space in RAM.</p>
+
+<p>When the 16K Spectrum is switched on, RAMTOP is set at 32599. Owners of the 48K Spectrum should enter CLEAR 32599 to simulate a 16K machine. The following routine looks at the 10 bytes immediately below RAMTOP:</p>
+
+<pre>9000 FOR T= 32599 to 32590 STEP -1
+9010 PRINT i, PEEK i
+9020 NEXT i</pre>
+
+<p>The resulting display is:</p>
+
+<pre>32599 62
+32598 ?
+32597 19
+32596 3
+32595 27
+32594 118
+32593 31
+32592 219
+32591 31
+32590 237</pre>
+
+<p>Address 32599 always contains 62 and the contents of 32598 depend on previous calculations made by the Spectrum. Locations 32597 downwards form the machine stack and need not concern us. One or more addresses can be put on the GO SUB stack using the following routine.</p>
+
+<pre> 10 INPUT j
+ 20 FOR T=1 TO j
+ 30 GO SUB 100
+ 40 NEXT i
+ 50 GO TO 9000
+100 GO TO 40</pre>
+
+<p>Add that routine to the previous one, RUN it and enter, say, 2 for the value of j. The resulting display is:</p>
+
+<pre>32599 62
+32598 ?
+32597 2
+32596 0
+32595 30
+32594 2
+32593 0
+32592 30
+32591 19
+32590 3</pre>
+
+<p>The contents of 32597 downwards have been displaced downwards by six locations. For example, 32591 now contains the value of 19, as 32597 did previously. The contents of 32597 and 32594 each show that the next two lower bytes i.e., 32596 and 32595; 32593 and 32592 respectively contain a two-byte GO SUB address. The GO SUB instruction is on line 30, so it is no surprise to see that</p>
+
+<pre>PEEK 32595+256*PEEK 32596=30</pre>
+
+<p>It can be seen that to change the RETURN address of a subroutine it is necessary to POKE new values into the appropriate pair of bytes at the top of RAM. The following program calls the subroutine from line 20 but RETURNS directly to line 100 as dictated by the value of the variable &quot;return&quot;:</p>
+
+<pre>  10 LET return=99
+  20 GO SUB 2000
+  30 PRINT &quot;LINE 30&quot;: STOP
+  99 REM
+ 100 PRINT &quot;LINE 100&quot;:STOP
+2000 LET r=PEEK 23730+256*PEEK 23732-2
+2010 IF PEEK r=2 THEN LET r=r-3: GO TO 2010
+2020 POKE r+1,return-256*INT (return/256)
+2030 POKE r+2,INT(return/256)
+2040 RETURN</pre>
+
+<p>Note that line 99 must exist, or the Spectrum stops with the error message N &quot;statement lost&quot;. Thus the problem can be solved by adding lines 2000 2040 to the end of the subroutine and setting the variable &quot;return&quot; appropriately.</p>
+
+<a name="negative"></a>
+<p>Finally, I have to thank several people, including Ettrick Thompson, for pointing out an error <a href="../006/helpln1.htm#negative">in the column in September</a>. I claimed that -3&#8593;2 = 9 but I was incorrect. Page 201 of <i>ZX Spectrum Basic Programming</i> explains that the Spectrum assigns a priority of 10 to the task of raising a number to a power and a priority of 9 to changing the sign of number.</p>
+
+<p>The parts of an arithmetic expression are evaluated in order of priority; therefore 3&#8593;2 is evaluated before negation takes place. In other words -3&#8593;2 is evaluated as if it were written as -(3&#8593;2), hence the Spectrum is correct and I was not.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="books.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Books"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 8 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>November 1982</h6>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</body>
+</html>

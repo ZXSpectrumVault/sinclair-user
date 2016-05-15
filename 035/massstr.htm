@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 35 - Mass Storage</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Comparison of the Thurnall and Stratacom disc systems from Sinclair User, February 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="top30.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Top 30"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 35 Contents"></a>
+<a href="htsquad.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Mass Storage</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="massstr.jpg" width=250 height=454 hspace=10 vspace=10 border=0 align="left" alt="Thurnall and Stratacom systems">
+<h1><i>Discs drive to the line</i></h1>
+
+<p class="first"><b><font size="+1">The last of our fast storage series takes the finalists in our disc systems race to their limits</font></b></p>
+
+<p class="first">IN THE MOVE to smaller and smaller computer systems designers face a problem with disc drives. The 5&#188;in disc has become the accepted standard and to change it means everyone has to agree on a new one.</p>
+
+<p>As readers will realise, trying to get the computer industry to agree on anything is well nigh impossible. Two designs were originally presented, 3in and 3&#189;in discs. The business sector is slowly accepting the 3&#189;in system and now the 3in is proving popular in the home industry with systems available for the BBC, Amstrad and now the Spectrum.</p>
+
+<p>This month, in the final part of our look at fast storage systems, the Statacom and Thurnall interface drive systems are put under the spotlight. Statacom supplies an interface which can he purchased separately from the drive and which can run all three sizes of drive, but it is also sold as a package with the 3in Hitachi drive. The Thurnall system is only sold with a drive. Until recently that was the infamous Hungarian MCD drive but from January it is supplied with a 3in Hitachi.</p>
+
+<p>The 3in disc, unlike the 5&#188;, is housed in a solid plastic casing. The disc surface is protected by a metal shutter which moves out of the way automatically as the disc is inserted. The discs are double-sided, the second side used by taking the disc out of the drive, turning it round, and inserting it the other way up.</p>
+
+<p>Those features make the discs easy to use and carry but also increase the cost. The average price for a 3in disc is around &#163;5.00 while a 5&#188; would cost only &#163;2.50. Also most drives, including the Hitachi, can only give 40 tracks which decreases the amount of information they can hold. That was one of the prime reasons why they did not find favour in business.</p>
+
+<p>Regular readers of <i>Sinclair User</i> will remember one of the first disc systems for the Spectrum, that from Interactive Instruments - later taken over by Primordial Peripherals. Those that do will immediately feel at home with the Statacom interface. The two are almost identical, even to having the same error codes, except that the Statacom system, for some inexplicable reason, only allows five characters for file names as opposed to the original six.</p>
+
+<p>On power up, or when a reset button on the interface is pressed, the operating system is loaded into memory. That occupies roughly the top 8K and a number of variables are initialised, taking a further 111 bytes; those can be cleared and the functions called directly. To use the system f$ is set to the file name and then, for Basic, RAND USR bs entered to save and RAND USR bl to load. Code and data are handled in the same way, using cs, cl, as and al. Basic programs cannot be merged.</p>
+
+<p>BY adding a number of parameters to f$, for instance LET f$=&quot;code,32000,200,32000&quot;, the start and length of the code can be specified - the last figure is optional and is the auto-run address. Basic can have a line number added in the same way. Data is handled differently as only dimensioned arrays can be saved; one of the tracks has to be specified as to where the data is saved.</p>
+
+<p>Each track can hold up to 2816 bytes of data, and 39 tracks can be used, the remainder used for the directory. That gives a total of 107.25K of storage per side but it would be very difficult to use all of it. Up to 39 files can be stored, each using one track, but for maximum use they would each have to fill the track. The maximum length code file which can be saved is 11 tracks, 30.25K, and arrays cannot occupy more than one track; for example a single dimension string array cannot be greater than 2808, to allow for system identifiers.</p>
+
+<p>The commands to CAT, format, backup or erase are called using dir, rid, back and zap respectively, the last requiring the file type to be added to 15. The system can, in some cases, be re-initialised by a call to the DOS.</p>
+
+<p>The speed of disc compared to tape is fast but would not win any prizes in the disc Grand Prix. Using the simple test used last month it takes three times as long as the Thurnall system to load - one minute and 23 seconds compared with 37 seconds - and one minute and 42 seconds compared with 59 seconds to save. Erasing also takes longer at 51 seconds compared to 43 seconds. Only format is faster, 29 seconds as opposed to 35.</p>
+
+<p>The disc supplied with the system contains a utility program and 15 Basic games. All of those are called from a menu program and should, in theory, return to it when the game is played. None of the games are particularly exciting - better programs appear in the listings section of <i>Sinclair User</i> - and not all return to the menu. Only a <b>Fruit Machine</b> program is memorable in that it proves impossible to lose money on it.</p>
+
+<p>The interface fits directly onto the back of the Spectrum and has a through port for add-ons; the drive connects via a cable at the back. As mentioned there is a reset button on the top, and there is also a mysterious set of DIP switches to which no reference can be found. No reference can be found either regarding a second drive and so it would appear that only one can ever be used with it.</p>
+
+<p>The Thurnall system uses a very different approach. This time the interface and drive are housed in the same box and the connection to the Spectrum, at the end of a cable, has a through port. The box also has a reset button which will reboot the system, but it can also be used to load a Basic program.</p>
+
+<p>When the system is booted a line of Basic, taking 56 bytes, is entered as line 0. That can be removed, so that no memory is used, by a simple poke. With the line all the normal Spectrum tape commands can be used with the addition of AND FN d() tacked on the end - that can be changed by the user to be any other function. Without it USR 5645 has to be added instead.</p>
+
+<p>A CAT is performed using LIST, LLIST sends it to the printer, and CLEAR is used to format. Files are erased using the normal erase keyword and there is the option of using a wildcard. The minus sign can be used to represent any character so that 'test1', 'test2' and 'test3' can all be erased with the simple 'test-'. A useful feature is that if the file name is given as '----------' then all the files on the disc will be erased - much quicker than reformatting the disc.</p>
+
+<p>One anomaly is that, unlike tape commands, a file saved using SCREEN$ must be loaded using it - you cannot use CODE - and you can load just part of a code file. Data is also handled differently. Only dimensioned arrays can be saved, undimensioned strings are dimensioned before saving and multidimensional arrays are changed to a single dimension. Also something saved as a numeric variable can be loaded back as a string variable. That would appear to be a design feature rather than something of great use.</p>
+
+<p>Each side of the disc has 39 available tracks and each holds up to 4K, a total of 156K. When the directory is shown the file name for each track is shown and so may appear more than once - a little confusing. The file names can be up to seven characters and no differentiation is made between upper and lower case. In addition a Basic program, up to 2560 bytes long, can be saved with the file name USR and that is stored on the directory track. When the reset button is pressed that is loaded, and if saved using LINE will auto-run. This is the one program that will also auto-run if merged.</p>
+
+<p>The interface is capable of driving up to two drives and also has a limited RS232 port, set at 1200 baud - limited in that it is monodirectional and so cannot tell if, for example, a printer is busy. It gets round that by having a delay from five to 12 seconds after every return character to allow for the line feed. A return is sent after 64 characters. As with Interface 1 with which it is compatible, listings can be sent with or without the tokens expanded.</p>
+
+<p>If you want a system which will allow you to transfer your commercial programs to disc then you will find little software which will not work with the Thurnall system. The Statacom system, on the other hand, causes problems. Most programs store their code at the top of memory, in the same area used by the system. Some, as with <b>Masterfile</b>, also use f$, which make them doubly difficult, if not impossible to transfer.</p>
+
+<p>The Statacom interface sells for &#163;75.00, or with drive for &#163;240, both plus VAT. The Thurnall system is &#163;219.95 inclusive of VAT and p&amp;p., and is available by mail order.</p>
+
+<p>Before buying any system you should consider carefully what you intend to use the system for. Of the seven systems we have looked at in the series, and there are at least two more in development at the moment, each has its good and bad points.</p>
+
+<p>The <b>Challenge Sprint</b> is cheap and allows most games to be loaded quickly, although it will not be able to handle the new Ultimate games with their non-standard loading speeds. The <b>Sinclair microdrive</b> is well known and has a few programs available for it. The <b>Wafadrive</b>, although slow, is reliable and good value with two drives, Centronics port and a word-pro program.</p>
+
+<p>Systems which use disc drives have the advantage that when you change computer the drives will still be usable. They may be expensive to begin with but their reliability, low cost discs and disc capacity can soon offset that. If for example, you buy 50 discs, there is a saving of over &#163;150 for the same number of microdrive cartridges.</p>
+
+<p>Of the four disc systems <b>SPDOS</b> from Watford is probably the most technically advanced but uses a lot of memory, as does the <b>Statacom</b>. The other two, from <b>Technology Research</b> and <b>Thurnall</b>, both use very little memory and so are more versatile. With Technology Research there is also a choice of drive and random access.</p>
+
+<p>It would be unfair for us to pick one system in favour of another as everyone will want a system for different reasons. Whatever you choose, and this may be a hackneyed phrase but never more true, it will add a new dimension to your computing. Things that are impossible with a cassette, or would simply take too long, are now within reach. A list of telephone numbers can be kept and loaded in seconds rather than minutes and any number of programs can be chained together to give one long program. Imagine the sort of adventure program which could be written using an 80 track, double-sided drive.</p>
+
+<p>The drawback to all this is that, at the moment, very few software houses are willing to make their software available on anything other than tape. Until they do it is an invitation to users who, having paid good money, break into programs and make copies.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="top30.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Top 30"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 35 Contents"></a>
+<a href="htsquad.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a></p>
+
+<h6 align="center">Sinclair User<br>February 1985</h6>
+
+</body>
+</html>
+

@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 30 - Protect and Survive</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Tips for beating piracy from Sinclair User, September 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="ssftwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Spectrum Software Scene"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 30 Contents"></a>
+<a href="htsquad.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Protect and Survive</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="protect1.jpg" width=300 height=538 vspace=10 border=0 alt="A pirate, with eyepatch and hook but lacking a wooden leg" hspace=10 align="right">
+
+<h1 align="center">Lowering the Jolly Roger</h1>
+
+<p align="center" class="first"><b><font size="+1">Software pirates steal over &#163;100m a year. Michael Spencer shows how to protect your programs from the scourge of the silicon seas</font></b></p>
+
+<p class="first">PIRATES are costing the software games industry millions of pounds a year. The scale ranges from the copies circulating in schools and computer clubs to the large-scale commercial deception of passing pirated copies for sale. Each copy made of a computer game robs a company or individual of the revenue which might have derived from a legitimate sale.</p>
+
+<p class="first">From sales comes profit; from profit the cash to develop more ideas. The life of a game may be shortened by months as the number of illegal copies increases. After all, who will refuse the chance to obtain a copy of a sought-after game at a fraction of the cost? It has happened extensively in the record industry, as we all know.</p>
+
+<p>You may be considering writing or even selling a computer game. A bit of effort now may prevent you being caught by the software pirates and also avoiding any infringement of the copyright laws. There are ways and means to make it less than easy, but not impossible for the software pirate.</p>
+
+<p>There are no mechanisms supplied by manufacturers in the home computer market which will give any security. In the commercial market there are methods to hinder the pirates. One way is to put a serial number in the issued software. That is possible with high-cost, low volume sales, The solution cannot be applied to the low-cost, high-volume domestic games market. The cost of doing so is far too high.</p>
+
+<p>To protect your creation from the pirate is neither easy nor completely effective. 'Tape copiers' advertised in many home computer magazines can usually defeat the protection which is possible. The copiers are advertised as a means of making personal security copies but nobody is naive enough to believe that is why they are being sold.</p>
+
+<p>Software houses and individuals have produced a few mechanisms which will make it difficult for the majority of computer users to pirate a copy for their friends. For the most popular home computer, the Spectrum, we detail ways in which you can protect your work and avoid copyright problems.</p>
+
+<p>The simplest method is to hide the program from prying eyes. For a Basic program the INK and PAPER colour can be set the same within the program lines, usually white, so that a listing will not be seen. To do that it is necessary to use a control character in a program line. A colour item is followed by a colour number to set the PAPER or INK white. CHR$16 is the colour item for ink and CHR$7 the colour number for white. Conveniently they are obtained by setting the Spectrum into Extended mode (E) and pressing SHIFT 7.</p>
+
+<p>Take the first line of the program down to the editing area. After the line number, press the sequence of keys which will give the effect INK 7. To make doubly sure that you will have the effect you are seeking it is useful to insert the control characters for PAPER white, too.</p>
+
+<p>Putting the Spectrum into E mode and pressing just 7 - do not press the SHIFT key as well - will do that. The line may have vanished previously; setting the PAPER white will ensure that it does. On returning the line to the program by pressing ENTER, the rest of the program lines on the screen will vanish as well. That may well mean that the rest of the program will be invisible but if you have used control characters later the effect may be reversed.</p>
+
+<p>Inserting a line that is not removed easily and will identify the program as yours is the next useful thing you can do. Normally the line numbers on the Spectrum run from 1 to 9999. You can create a line 0 which has the interesting property of being difficult to remove. The first line of any Basic program can be turned into a line 0. Create a line such as</p>
+
+<pre>10 REM COPYRIGHT PERRY SUSBY</pre>
+
+<p>Determine the start of the Basic program area by typing</p>
+
+<pre>PRINT PEEK 23635+256 * PEEK 23636</pre>
+
+<p>That will give a value which is usually 23755, the address of the start of the Basic program area. It will point to the first line of your program. Each line of a Basic program is different internally from that seen on the television screen. The first two bytes are the line number. For the line numbered 10 the first of the two bytes will be 0, the second 10. To change the line number to 0, type;</p>
+
+<pre>POKE 23755,0:POKE 23756,0</pre>
+
+<p>That will overwrite the line number already held and the line will appear as line 0. It cannot be removed by editing or deleting. The only way to remove it is to POKE a line number in the range 1 to 9999 to it and then remove in the normal way. Combine this technique with the 'invisible program' and it may well prove sufficiently effective to deter some would-be pirates.</p>
+
+<p>The most popular way of protecting software in use is Break protection. Normally BREAK is used to stop the computer when running a program or when using a printer or cassette recorder. When a program is stopped by BREAK it can then be listed and, of course, copied. On the assumption that a program which cannot be broken cannot be copied, break protection has gained wide acceptance but tape copiers will still work - all they do is copy the tape.</p>
+
+<p>There are two methods to consider. The first is to alter one of the system variables which controls the screen size in the lower part of the screen. That variable is DF SZ - define screen size - and is at the address 23659. Address 23569 usually holds the value 2. That can be confirmed by typing</p>
+
+<pre>PRINT PEEK 23659</pre>
+
+<p>If you put in a line in your program such as</p>
+
+<pre>250 POKE 23659,0</pre>
+
+<p>the program will be break-protected. A program protected by that method cannot use the lower two lines of the screen. INPUT is one of the commands affected by the restriction. Also of the program prints out so many lines that the request SCROLL? is seen, the system will set DF SZ back to 2 and the break protection will be lost.</p>
+
+<p>Programs protected in that way will have to use keyboard scanning to pick up user input - hint, use INKEY$. What is typed in will need to be echoed back to the screen so that the user can see what has been typed. Given that these problems are taken into account when the program is being written, the technique is sound. If break is pressed during normal running the Spectrum will crash and lock up. The only way to reset the system is to power off and on.</p>
+
+<p>The second and equally simple method is to corrupt the variable ERR SP, the pointer to the item on the machine stack to be used as an error return. BREAK is a user-introduced error in the running program. Other errors are, for example:</p>
+
+<pre>2 VARIABLE NOT FOUND
+C NONSENSE IN BASIC.</pre>
+
+<p>When BREAK is pressed a report will be seen saying &quot;BREAK INTO PROGRAM&quot; and will give the line and statement number last interpreted.</p>
+
+<p>All those messages are held in ROM and are used by the system when an error is detected. An error routine is entered and the appropriate report given. If you corrupt the return address to be used in the event of an error, the Spectrum will crash, as it is directed to another totally incorrect byte. To do that PEEK the address of ERR SP, thus:</p>
+
+<pre>LET A=PEEK 23613+256 * PEEK 23614</pre>
+
+<p>That will be done in your program, as it is only possible to apply the break protection from an already running program.</p>
+
+<p>Having found the value of A, POKE a value to it. Some values will not work; try using values such as 100, 150, 200 or 255. The value 200 is effective and causes a NEW. Results will vary depending on the value chosen. Choose one which erases the program when break is pressed. Put the line POKE A,200 - 200 being one of the effective values - in the program to do it.</p>
+
+<p>To make effective use of ERR SP a program must be totally bug-free. Once break-protected, any software errors will cause the Spectrum to crash. The program must be tested thoroughly.</p>
+
+<p>The other aspect is that the item on the machine stack is mobile. It will move up and down the stack as GO SUBS are entered and left. For a program which uses GO SUB, the PEEK and POKE lines will need repeating in each GOSUB. The original contents of the address A will have to be kept and POKEd back before the RETURN of each GO SUB. If that is not done the program will crash when trying to return from the GO SUB.</p>
+
+<p>All that can be rather tedious and can add a fair overhead in code. One advantage is that the method will allow normal input, unlike the DF SZ method. The disadvantage is that if the user enters incorrect characters to an input the Spectrum may detect an error and crash. It is best to pick up any input as character and do any necessary conversion in the program.</p>
+
+<p>The use of break protection implies that the program is already running and the user does not have to issue a RUN command. It would be pointless to issue a program which needed RUN typed in by the user. Once it is realised that the program is break-protected, all that is needed is a LIST to see what is there. A program can be saved in such a way that once reloaded it does an automatic GO TO. The line</p>
+
+<pre>SAVE &quot;program&quot; LINE 200</pre>
+
+<p>does that. Note that LINE is a keyword - below key 3. That will work only for LOAD and not MERGE. Using MERGE, a program which has been saved with the LINE qualifier can be loaded and it will not restart.</p>
+
+<p>A second far less known method is to save the Basic program as bytes and not as a program in the normal way. Parts of the memory can be saved using the CODE qualifier. Only the start address and the number of bytes to save to tape need be known. For example, the line</p>
+
+<pre>SAVE &quot;name&quot; CODE 34000,200</pre>
+
+<p>will save 200 bytes of memory starting from address 34000. Note that CODE, like LINE, is a keyword and can be found above the I key. The start of the program area is pointed at by the contents of the system variable PROG but it is more sensible to save, starting from the start of the system variables. That is fixed at address 23552.</p>
+
+<p>From that point the block of memory up to the address pointed at by STK END can be saved. That is the start of the 'free space'. So that the program will start automatically it will have to save itself. The next line after the SAVE line will have to be a GO TO line, which is obeyed when the program is loaded. In the program the following lines are used:</p>
+
+<pre>8000 SAVE &quot;name&quot; CODE 23552, A-23552
+8010 GO TO NN</pre>
+
+<p>A is the value of system variable STK END which has to be PEEKed to determine this. Use this line:</p>
+
+<pre>LET A=PEEK 23653+256 * PEEK 23654</pre>
+
+<p>The value A is the location of that start of the free space. Calculate the number of bytes to save between the start of the system variables and the start of the free space. Once saved, the program is reloaded using</p>
+
+<pre>LOAD &quot;name&quot; CODE</pre>
+
+<p>It is not necessary to specify the numbers when loading. The program will start and obey the line which follows the SAVE line.</p>
+
+<p>The point about the method is that the program begins to run immediately and break protection can be applied swiftly. Inclusion of the system variables is an additional form of protection to prevent interference with the loading process. Another advantage is that if the system variable ERR SP is changed before the SAVE command in the program, the reloaded version will be protected during the loading process. That is done by the line:</p>
+
+<pre>POKE 23613,200:POKE 23614,200</pre>
+
+<p>just before the SAVE. That usually will result in a system crash but poking ERR SP is less predictable than poking the item it points to on the machine stack. That item is used as an error return back to a specified byte which can be chosen for consistent results.</p>
+
+<p>This method is also effective against headerless load copiers. Normally the 17-byte header created on the tape just before the program contains the load starting information. As the program has been saved as bytes, the header will show only the start address and number of bytes. Once loaded, the program will start anyway.</p>
+
+<p>Almost all games sold today are in several parts on a cassette tape. A large proportion, particularly the arcade games, are written in machine code. Many others have machine code parts. A typical cassette tape may contain a Basic loader program which will load a SCREEN$ file; load machine code as bytes; and load data as bytes.</p>
+
+<img src="protect2.jpg" width=300 height=186 hspace=10 vspace=10 border=0 align="left" alt="Treasure chest stamped with copyright symbol">
+<p>A tape with several components is difficult to pirate. It is possible to chain two Basic programs so that the first which loads a SCREEN$ file - which gives the player something to look at during the loading process - can also load a second bigger program. Use the method which saves the program as bytes for the second program as well as the first, so that they both start automatically.</p>
+
+<p>A SCREEN$ file can also cover up the details of the components on the tape - set the paper and ink white. Setting the paper and ink white is also useful when the SCREEN$ is being loaded. It will not appear until the load reaches the attributes.</p>
+
+<p>All the above methods are technical solutions to the problem of software piracy. While Copyright Acts will not prevent someone copying your game, you will have some form of legal redress.</p>
+
+<p>The principle of copyright protection under the 1956 Act is that the protection is afforded automatically as soon as the original work is created. To qualify, the work must be recorded in some material form by a person entitled to do so. In the U.K. that means a British subject, a person resident in the U.K., or a U.K. company. The copyright belongs to the creator of the work.</p>
+
+<p>Copyright entitles the person to control the publishing, reproduction and broadcasting of the work. Copyright can be disposed of as if it were property. If you have been asked to create an original work by an employer or are under contract to do so, the copyright may belong to the person who asked you to do the work. Copyright protection exists for the life of the creator and 50 years thereafter.</p>
+
+<p>Obtaining copyright protection is simple; no formal registration is needed. Some sensible precautions are advised so that in a dispute you can prove that the work is yours. Send a copy to your bank manager, solicitor or your professional association. Ask for a dated receipt. Even simpler, post the work to yourself by registered post and leave it unopened on receipt.</p>
+
+<p>The internationally recognised way of identifying a work as one having copyright protection is to mark it with the copyright symbol, an encircled C or the word 'Copyright' followed by the name of the creator and the date of first publication. For example, Copyright Perry Susby 1984.</p>
+
+<p>Your work has to be original to qualify for copyright protection. With that in mind make sure that you have not copied from someone else. Consider the use of names, logos, music, utilities, screen generators and compilers. Do not use a popular name to enhance your game, for example, the name of a well-known cinema spy or a famous product.</p>
+
+<p>There are registered trade marks and names you must never use. Do not try to associate your game with anything commercial; companies will sue. The danger in using music to brighten a game are not easily apparent. The infringement is that you, if you copy a musical work, will be reproducing it.</p>
+
+<p>Even such a well-known tune as that of 'Happy Birthday' has copyright protection. Music of composers long dead may be protected under copyrighted arrangements with the arrangers enjoying protection under the Act.</p>
+
+<p>Do not be under the misapprehension that traditional music is not copyright; almost all of it is. If you want to use a musical work, contact the publisher before doing so and expect to pay a royalty. The basis for a royalty calculation is usually a percentage of the dealer price, less tax, or a percentage of the revenue from the sale of the game. The rate may be eight percent or so. That is a hefty amount to pay, so unless you are convinced that the inclusion of a copyright tune will add value to your game, it is probably best to write your own.</p>
+
+<p>If you find a tune and do not know by whom it was published or who owns the copyright, write to the Mechanical Copyright Protection Society Ltd which will be able to help.</p>
+
+<p>There are a number of utilities, compilers and screen generators on the market which can make the task of writing a game simpler and may produce a better end result. If it is apparent that such a tool made the writing of your game possible, check with the originator, particularly if your game contains lines not written by yourself. Some such products state that their use in a game requires an acknowledgement on the cassette and on the promotional material. Err on the side of caution and check with the writers of the programming aid you are using.</p>
+
+<p>Above all, do not copy other games. At best, you will be accused of a lack of originality, at worst taken to court. Remember that companies and individuals already established will have sufficient money to take legal action and you may have insufficient funds to defend yourself. Remember that the key to success is originality.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="ssftwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Spectrum Software Scene"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 30 Contents"></a>
+<a href="htsquad.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a></p>
+
+<h6 align="center">Sinclair User<br>September 1984</h6>
+
+</body>
+</html>
+

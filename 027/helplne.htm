@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 27 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX-81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, June 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="eductn.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Education"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 27 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson4.gif" width=275 height=290 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1>The trouble with joysticks</h1>
+
+<p class="first"><b><font size="+1">Andrew Hewson answers add-on queries</font></b></p>
+
+<p class="first">IT IS inevitable, I suppose, that as more add-on hardware reaches the market, more people should write to me concerning their difficulties in running all the items in their collection at one time. When the Spectrum was released the only available add-on was the ZX printer. These days a cursory glance through the pages of this magazine will reveal the variety of items available to the willing purchaser - keyboards, sound units, speech units, light pens, joysticks and more joysticks, printer interfaces, to say nothing of the official Sinclair Interfaces One and Two.</p>
+
+<p>The main difficulty people experience is plugging all the items in their collection into the back of their machines at the same time. Sometimes the difficulty is physical, in that the bulk of one item prevents a second item being plugged in, but too often it is because a manufacturer has omitted to provide a duplicate edge connector on the rear of the equipment, thus preventing a second or third item from riding piggyback. That seems particularly thoughtless to me.</p>
+
+<p>In principle, the problem can be solved by an hour or so of careful work with a soldering iron, some edge connectors and suitable multi-way cable, but I doubt if most people care to be so adventurous. In view of the multiplicity of add-ons, my advice is that if it does not have a second edge connector, don't buy it. In the last resort, consult the small advertisements as there are some constructive firms supplying extension systems.</p>
+
+<p>The main topic this month is joysticks. I have had a number of letters about them, including this cautious enquiry from Grahame Cox. He writes: <b>I have not bought a joystick because the number of options is bewildering. Would you please advise me what are the advantages and disadvantages of the various arrangements?</b></p>
+
+<p>The choice is bewildering, as he says, but probably the simplest arrangement is the keyboard clip-on type such as the Mechanical Stick from EEC or the Spectrum Stick from Grant Design. Those devices clip over the upper face of the Spectrum and contain plastic linkages which transmit the physical movement of a short joystick via appropriately-positioned feet direct to the arrow keys - 5, 6, 7 and 8.</p>
+
+<p>That arrangement has three advantages. It is cheap, it is guaranteed to work with all the games which also use the arrow keys - and that means virtually all arcade games - and the rear edge connector remains free for use with other hardware. The devices rely on a crisp mechanical linkage and if, like me, you are enthusiastic when shooting aliens, you can distort the units all too easily so that the feet no longer press against the keys.</p>
+
+<p>Assuming that you have decided against the clip-on type, the next step is to realise that there is a difference between the joystick and the electronic box of tricks - the interface - which connects the joystick to the computer. The joystick proper is essentially a stick with a limited degree of movement which closes one or more of a group of microswitches as the stick is moved within a frame.</p>
+
+<p>For my money there is not much to choose between the various conventional makes, although some people have strong preferences. I find the stiffer ones with a strong tendency to self-centre easiest to control but that is probably because I like to wrestle with the stupid things. The Trickstick from East London Robotics is a novel idea and perhaps it points to the kind of finger-tip control which will become common in the future.</p>
+
+<p>The greatest variation between manufacturers occurs in the interfaces. There are four types. Kempston, so called because Kempston was the first in the market to use the system - the joystick setting is returned by the IN 31 command; arrow keys - The joystick mimics the arrows keys 5 to 8 and the fire button mimics the 0 key; Sinclair interface two - the right-hand joystick mimics the top right half row - keys 6 to 0 - and the left-hand joystick mimics the top left half row - keys 1 to 5; programmable - can be set to mimic any five keys on the keyboard.</p>
+
+<p>Logically, the programmable types should be recommended because they are the most flexible but resetting them can be a tiresome business. The arrowkey types make a good second best, because so many games use those keys. A number of games also use the Kempston system because that was the first joystick on the market. The company also markets a range of conversion tapes for a number of popular games. I would put the Sinclair arrangement last in order of preference although, as the company manufactures the computer, I suppose we must permit a certain leeway.</p>
+
+<p>Andrew Church raises a common query. He writes: <b>Last Christmas I was given a Quickshot joystick but many of the games I had acquired previously are not compatible. Can I convert them?</b> Derek Ward has a similar problem with his Interface Two and Crack Shot joystick.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'There is not much to choose between the various makes'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>In principle any game can be converted provided you are able to &quot;break&quot; it so as to be able to analyse the program. If the joystick is read in machine code, you must disassemble the program and locate the IN instructions. Study page 160 of <i>ZX Spectrum Basic Programming</i> to determine the substitutions to be made to make the program compatible with your interface. If the joystick is read in Basic, make the appropriate substitutions in each INKEY$ or IN instruction.</p>
+
+<p>Mike Harding raises an interesting point for discussion. He writes: <b>I have noticed a great variation in the sophistication of the joystick control in various games on the market. Some are restricted to movement in one of four directions at right angles. In some, diagonal movement can occur and in some movement is possible in any direction. I have tried to emulate those effects in my software but I have not gone very far.</b></p>
+
+<p>When I received that letter I turned to my colleague, Steve Turner, author of 3D Lunattack and other games, because he has made a study of joystick control features in the course of his work. This explanation is based on his comments. The initial problem is to achieve a balance between human reaction times and the speed of the game. If a single speed increment is used, so that for example moving the joystick to the left causes an object to move to the left at a constant speed, moving the joystick instantaneously to the right halts the object and moving the stick to the right again starts it moving to the right at a constant speed; the net result is a rigid, inflexible game with not much &quot;feel&quot;.</p>
+
+<p>Turner's solution is to read the position of the joystick as frequently as possible and to adjust the velocity of the object on the screen by a small amount in accordance with the current joystick position. When that technique is used, an object appears to accelerate gradually from rest to a maximum velocity in a given direction.</p>
+
+<p>The rate of acceleration and the maximum velocity can be &quot;tuned&quot; by the programmer to make the game challenging to play without being impossible. It is also possible to include a decay constant so that the object slows gradually if the joystick is returned to the central position.</p>
+
+<p>An additional feature of Turner's approach is that while it is necessary to read the joystick only in four directions at right angles, the object can be driven in any direction on the screen. Inspired by his comments, I had the Spectrum program listed in table one written to demonstrate the effects. The program can be adapted for use with either the Interface Two - lines 2000 to 2060 - or the arrow keys/keyboard clip-on type - lines 5000 to 5070. Notice how the IN command is used to read the hardware in each case.</p>
+
+<p>The program includes two constants, CC1 and CC2, set in lines 1045 and 1046, which control the &quot;feel&quot;. The first one determines the increment in the movement of the object each time the joystick is read and the second determines the rate of decay to rest.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre> 100 GO SUB 1000: REM Define variables, constants and functions
+ 105 BRIGHT 1
+ 115 REM Repeatedly ...
+ 120 GO SUB 5000: REM Check for joystick activation
+ 130 GO SUB 3000: REM Do calculations
+ 140 GO SUB 4000: REM Do display
+ 150 GO TO 120
+ 155 REM ... until &lt; BREAK &gt; is pressed
+1000 LET ax=0: LET ay=0: REM Horizontal and vertical acceleration
+1005 LET ux=0: LET uy=0: REM Initial velocity
+1010 LET vx=0: LET vy=0: REM Final velocity
+1020 LET sx=128: LET sy=85: REM Horizontal and vertical position
+1022 LET x=sx: LET y=sy: REM Plot coords
+1030 LET axm=10: LET aym=10: REM Maximum acceleration
+1035 LET vxm=30: LET vym=30: REM Maximum velocity
+1040 LET sxm=255: LET sym=174: REM Maximum screen co-ords
+1045 LET cc1=1.0: REM Constant for joystick effectiveness
+1046 LET cc2=0.3: REM Constant for inertial decay
+1055 LET wx=0: LET wy=0: REM 'True; if 'wrap-around' occurs
+1060 REM Find the remainder after the division a/b
+1070 DEF FN m(a,b)=(ABS (a/b)-INT ABS (a/b))*ABS b*SGN a
+1090 REM Check if the bit with weight b is set in number n
+1100 REM Return 'true' flag if set, 'false' if clear
+1110 DEF FN t(n,b)=(INT (n/b)/2)-INT (INT (n/b)/2)&lt;&gt;0
+1122 REM Limit the number n to the range a-b
+1124 DEF FN x(n,a,b)=(n&lt;a)*+(n&gt;=a AND n&lt;=b)*n
+1130 REM Flags for the joystick functions
+1140 LET left=0: LET right=0: LET fwd=0: LET back=0: LET fire=0
+1160 LET value=0: REM Byte returned by joystick port
+1180 LET bdr=7: REM Border colour
+1200 INPUT &quot;Would you like a trace (y/n)?&quot;;a$
+1202 IF a$&lt;&gt;&quot;y&quot; AND a$&lt;&gt;&quot;n&quot; THEN GO TO 1200
+1204 LET p=(a$=&quot;y&quot;)
+1208 INPUT &quot;Would you like values printed?&quot;;a$
+1210 IF a$&lt;&gt;&quot;y&quot; AND a$&lt;&gt;&quot;n&quot; THEN GO TO 1208
+1212 LET v=(a$=&quot;y&quot;)
+1220 FOR i=0 TO 255 STEP 10
+1230 PLOT i,84: DRAW 0,4
+1240 NEXT I
+1260 FOR i=0 TO 169 STEP 10
+1270 PLOT 127,i: DRAW 3,0
+1280 NEXT I
+1340 RETURN 
+1999 REM for a ZX Interface 2
+2000 LET value=IN 61438
+2020 LET left=FN t(value,16)= 0
+2030 LET right=FN t(value,2)= 0
+2040 LET fwd=FN t(value,4)= 0
+2050 LET back=FN t(value,8)= 0
+2060 LET fire=FN t(value,1)= 0
+2080 RETURN 
+2400 REM Diagnostic
+2410 REM 'RUN 2500' to test the INput routine
+2500 GO SUB 2000 : CLS : PRINT left,right,fwd,back,fire : GO TO 2500
+3000 LET ax=FN x(ax+cc1*(right-left)-cc2*SGN ax,-axm,axm): REM Accelerations
+3010 LET ay=FN x(ay+cc1*(fwd-back)-cc2*SGN ay,-aym,aym)
+3030 LET vx=FN x(ux+ax,-vxm,vxm): REM Velocities
+3035 LET vy=FN x(uy+ay,-vym,vym)
+3050 LET sx=sx+ux+0.5*ax: REM Displacements
+3055 LET sy=sy+uy+0.5*ay
+3070 LET w=(sx&lt;0 OR sx&gt;sxm OR sy&lt;0 OR sy&gt;sym)
+3075 IF w THEN LET sx=FN m(sxm +sx,sxm): LET sy=FN m(sym+sy,sym)
+3100 LET ux=vx: LET uy=vy
+3120 RETURN 
+4000 LET bdr=FN m(bdr+fire,8): BORDER bdr
+4015 PLOT OVER 1;x,y
+4020 IF p AND w=0 THEN DRAW sx-x,sy-y: GO TO 4030
+4025 PLOT OVER 1;x,y
+4030 LET x=sx: LET y=sy
+4034 IF v=0 THEN GO TO 4050
+4035 PRINT AT 0,0;&quot; &quot;
+4036 PRINT AT 1,0;&quot; &quot;
+4037 PRINT AT 2,0;&quot; &quot;
+4038 PRINT AT 0,0;INT ax,INT ay 'vx,vy' sx,sy
+4050 RETURN 
+4999 REM Keyboard clip-on
+5000 LET value=IN 63486
+5010 LET left=FN t(value,16)=0
+5030 LET value=IN 61438
+5040 LET right=FN t(value,4)=0
+5050 LET fwd=FN t(value,8)=0
+5060 LET back=FN t(value,16)=0
+5070 LET fire=FN t(value,1)=0
+5090 RETURN 
+
+<b>Table 1. Spectrum joystick demonstration routine. Note - lines 4035, 4036
+and 4037 each print 32 spaces.</b></pre>
+</td></tr>
+
+<tr align="center"><td bgcolor="#CCCCCC">
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table width="100%" border="0" cellpadding="10"><tr><td bgcolor="#CCCCCC">
+<table><tr align="center"><td><img src="../shared/images/specicon.gif" width=32 height=32 border=0 alt="joystick.sna"></td><td align="center"><img src="../shared/images/specicon.gif" width=32 height=32 border=0 alt="joystick.z80"></td></tr>
+<tr align="center"><td><a href="joystick.sna">SNA</a></td><td><a href="joystick.z80">Z80</a></td></tr>
+<tr align="center"><td colspan="2"><b>Joystick routine snapshots</b></td></tr>
+</table>
+
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="eductn.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Education"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 27 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>June 1984</h6>
+
+</body>
+</html>

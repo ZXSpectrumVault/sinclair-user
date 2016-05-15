@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 130 - PAW Tutorial</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="A guide to writing adventures with PAW from Sinclair User, December 1992">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#99FFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="index.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Issue 130 Contents"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 130 Contents"></a>
+<a href="../131/index.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Issue 131 Contents"></a></p>
+
+<img src="../shared/images/suguide.gif" width=350 height=96 vspace=10 border=0 alt="The SU Guide To">
+
+<center><h1><b><i><font color="#008000">PLAYING AND WRITING ADVENTURE GAMES</font></i></b></h1></center>
+
+<br clear=all>
+
+<img src="pawtut1.gif" width=150 height=85 hspace=10 vspace=10 border=0 align="right" alt="Part Three">
+
+<p class="first"><b>This month our mini adventure heats up and you get your first real chance to explore your newly created world. Adventure General, <i>Larry Horsfield's</i> Dawn Patrol marches on...</b></p>
+
+<p>From the MM, select option M, the message table. There are 255 (0-254) messages available for use, as well as a further 200 system messages, (55-254) making a total of 455 altogether. We don't need that many, just the following to start with, as well as amending message 0, which is already present, like we did for the locations. Call message 0 by typing {A 0}, delete the text present and amend as below. As mentioned earlier in this tutorial, you should put a blank space at the end of each message. Especially message 0.</p>
+
+<table width="245" border="0" cellpadding="10" align="right">
+<tr><td><img src="pawtut2.gif" width=225 height=225 border=0 alt="">
+<br>
+<p align="right" class="first"><b><font size="-1" color="#FF0000">
+<i>Fig 1.</i> You can't go south silly, the door's closed!
+</font></b></p>
+</td></tr>
+</table>
+
+<p class="first">Message 0 The door is<br>
+Message 1 closed.<br>
+Message 2 open.<br>
+Message 3 The door swings open ...<br>
+Message 4 You close the door which shuts with a bang ...<br>
+Message 5 You can't.<br>
+Message 6 You can't leave the  castle on foot&quot;<br>
+Message 7 The sentries bar your progress. &quot;Common soldiers are not allowed in the throne room&quot; one of them barks at you.</p>
+
+<p>These will do for now, but we must also insert a few words into PAW'S vocabulary so that the player's input can be understood, so select option V from the MM. The various types of words, e.g. verbs and nouns, are in different numbered sections. For now we only need to insert one noun.</p>
+
+<p>Nouns are Section 2 and if you press {P 2} you will see that that a lot of nouns, mostly movement words, (i.e. West, East) are present. The number which a word is given is very important, as detailed in the manual, and we will insert DOOR as a noun with the number 50, so from the SM type {I DOOR 50 2} and press ENTER.</p>
+
+<h2>VERBAL AMENDMENT</h2>
+
+<table width="278" border="0" cellpadding="10" align="left">
+<tr><td><img src="../129/pawtut4.gif" width=258 height=194 border=0 alt="">
+<br>
+<p class="first"><b><font size="-1" color="#FF0000">
+<i>Fig 2.</i> Dawn Patrol begins again. Just think a little ...
+</font></b></p>
+</td></tr>
+</table>
+
+<p>Now we will amend the verbs. If you press {P 0}, you'll see that there are quite a few verbs, but there are some we don't want and a couple we will &quot;shift&quot;. To delete any word, just type D then the word and press enter. As there will be no graphics in our adventure, we don't want the verb PICS, so type {D PICS} and press ENTER. Do the same for DESCE and ASCEN. Gilsoft have inserted the word PUT with the same number, and therefore meaning, as DROP. Likewise LOOK is the same as EXAMINE (PAW only uses the first five letters of any word with six or more letters). We will want these two to have their own meaning, so first of all delete PUT and LOOK, then reinsert them as verbs numbers 32 and 33: {I PUT 32 0} and {I LOOK 33 0}. Two new verbs are needed, OPEN and SHUT - we will also insert CLOSE as a synonym for SHUT - verbs 34 and 35: {I OPEN 34 0} {I SHUT 35 0} and {I CLOSE 35 0}. To make life easy, insert the letter 9 as an abbreviation of QUIT, G for GET, and the letters RS for RAMSAVE and RL for RAMLOAD. These would be {I Q 25 0}, {I G 20 0}, {I RS 28 0}, and {I RL 29 0} respectively.</p>
+
+<p>Now to insert first of all, the entries allowing movement into locn 2. To indicate that the door is open, we will use Flag 11. All the &quot;user flags&quot; (11 to 28 and 60 to 255) have the value 0 unless you alter them, so if flag 11 equals 0 the door is closed. When the player types in OPEN DOOR we will SET flag 11, and this will give it the value 255.</p>
+
+<table width="278" border="0" cellpadding="10" align="right">
+<tr><td><img src="pawtut4.gif" width=258 height=194 border=0 alt="">
+<br>
+<p align="right" class="first"><b><font size="-1" color="#FF0000">
+<i>Fig 3.</i> ... And you'll go far. Now try opening the door.
+</font></b></p>
+</td></tr>
+</table>
+
+<p>From the vocabulary SM, go to MM and select option R, the response table. There are quite a lot of entries already present, mostly dealing with manipulating objects and game saving routines. The first entry we will put in is when the player tries to go south when the door is shut. Type {I S *} and press ENTER then Input the entry {AT 1 ZERO 11 MES 5 MES 0 MES 1 DONE}. Note there is a difference between MES and MESSAGE. MES prints a message after will appear on the same line, whereas a MESSAGE always has a &quot;carriage return&quot; after it and anything else will appear on the next line. So, if at locn 1 the player tries to go south and flag 11 is 0, PAW will respond by printing &quot;You can't. The door is closed&quot;.</p>
+
+<h2>DARKNESS AND LIGHT</h2>
+
+<p class="first">As I said earlier, the armoury will be dark when you enter it, unless you are carrying a source of light. &quot;Darkness&quot; is controlled with flag 0 and if flag is not 0 (i.e. has a value anything other than 0) the location the player is in will be in the dark. We will need two entries in response to allow for this when we move into and out of location 2, and they are:</p>
+
+<p class="first">{I S *} {AT 1 NOTZERO 11 GOTO 2 SET 0 DESC} {I N *} {AT 2 NOTZERO 11 CLEAR 0 GOTO 1 DESC}</p>
+
+<table width="278" border="0" cellpadding="10" align="left">
+<tr><td><img src="pawtut5.gif" width=258 height=194 border=0 alt="">
+<br>
+<p class="first"><b><font size="-1" color="#FF0000">
+<i>Fig 4.</i> The Objects Table. All objects must be here.
+</font></b></p>
+</td></tr>
+</table>
+
+<p>Note that SET gives any flag the value of 255, which is the maximum number you can give to any of PAW'S flags. Now for the actual entries required for the player to open the door. You may have realised that this action can be done both in location 1 and 2, and we can allow for this in our entries. Here is the entry you will require plus that for closing the door again:</p>
+
+<p class="first">{I OPEN DOOR} {ATGT 0 ATLT 3 ZERO 11 MES 3 ANYKEY SET 11 DESC}<br>
+{I SHUT DOOR} {ATGT 0 ATLT 3 NOTZERO 11 MES 4 ANYKEY CLEAR 11 DESC}</p>
+
+<p>Note that the action CLEAR resets any flag to 0 again. In the above entries we have used ATGT and ATLT, so if the player is AT greater than loon 0 or AT less than loon 3, we can only be at locations 1 or 2. Now, you may have thought that if the door is closed and you are in the armoury, you will not be able to go north. You may have already worked out the entry we will therefore need, which is {I N *} {AT 2 ZERO 11 MES 5 MES 0 MES 1 DONE}.</p>
+
+<p>You will see that I have included a keypress and that the location redescribes when you OPEN or SHUT the door. This is because we want to alter the word that will appear at the end of locns 1 and 2 to indicate the door is open or shut. This is dealt with in process table 1, so switch to this table by typing {Z} {P} {S 1} from the Response SM. As we want to attach messages 1 or 2 to the end of the texts for locns 1 and 2, we will need to insert the appropriate entries so they are scanned by PAW BEFORE the two entries which print the object lists on the screen. Therefore we will insert them using the asterisk symbols, i.e. * * . The four entries are:</p>
+
+<table width="278" border="0" cellpadding="10" align="right">
+<tr><td><img src="pawtut6.gif" width=258 height=194 border=0 alt="">
+<br>
+<p align="right" class="first"><b><font size="-1" color="#FF0000">
+<i>Fig 5.</i> The Object Word Table.
+</font></b></p>
+</td></tr>
+</table>
+
+<p class="first">{I * *} {AT 1 ZERO 11 MES 1}<br>
+{I * *} {AT 1 NOTZERO 11 MES 2}<br>
+{I * *} {AT 2 PRESENT 0 ZERO 11 MES 1}<br>
+{I * *} {AT 2 PRESENT 0 NOTZERO 11 MES 2}</p>
+
+<p>If, after entering these, you press P, you will see that they have been placed by PAW at the start of Process 1, before the two * entries. You will notice that the entries appertaining to the locn 2 include the condition PRESENT 0, which means that the light source must be present if the message does not appear on screen, and that we have not put a condition DONE or DESC in these entries. This is because we want PAW to continue scanning process 1 after acting upon any of these entries.</p>
+
+<p>We need two more entries in response at this point,the first of which will be print message 6, if the player tries to go west from the archway, and the second will print mesage 7 if the player tries to go north from locn 5:</p>
+
+<p class="first">{I W *} {AT 6 MESSAGE b DONE} {I N *} {AT 5 MESSAGE 7 DONE}</p>
+
+<p>Now test the adventure again and in locn 1 you will see that the text has been completed by the word &quot;CLOSED.&quot;, and if you try to go south the appropriate message is printed on screen, as in figure 1. Input OPEN DOOR and after the keypress the word &quot;OPEN.&quot; is substituted and you can move south into the armoury. Hang on though! Didn't we set it so that the armoury would be dark when we enter it? How come it's light then? Well, the answer is to type the letter i (for inventory) and press ENTER. Aha! You are carrying a lit pocket torch. This is object 0 and thus is a source of light. PAW has set it to be carried at the start of the adventure. This brings us nicely to the next section of the adventure - objects. After playing around with the adventure for a while, inputting OPEN, CLOSE or SHUT DOOR, etc, type in Q to quit and follow the prompts back to the MM. Select option 0 for the Object Table and after amending object 0 as below, insert the other seven objects. Note that when amending object 0, you don't need to delete everything then start again. Delete the word (lit), including the space after torch, and the full stop, then use the arrow left key to place the cursor after the &quot;t&quot; of pocket. Delete everything to the left and type {a lit} so that it reads as below, although note that when inserting object texts you should NOT put a blank space at the end of each:</p>
+
+<p class="first">Object 0: a lit torch<br>
+Object 1: an unlit torch<br>
+Object 2: a helmet<br>
+Object 3: a coat of chainmail<br>
+Object 4: a sword<br>
+Object 5: a saddle<br>
+Object 6: a bridle<br>
+Object 7: a horse</p>
+
+<p>After inserting these objects we will need to insert nouns in the vocabulary and afterwards amend the Object word, Weight and Initially At tables so that we can manipulate the objects. To save space I have listed the nouns to be inserted and the Object Weight and Initially At tables as they should appear in your database in figure 6.</p>
+
+<center>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table width="100%" border="0" cellpadding="5"><tr><td bgcolor="#FFFFFF">
+<table cellpadding="10">
+<tr align="left"><th>Nouns</th><th>Object weight tables</th><th>Object initially at tables</th></tr>
+<tr><td>TORCH 51</td><td>Object 0 weighs 1</td><td>Object 0 not created</td></tr>
+<tr><td>TORCH 51</td><td>Object 1 weighs 1</td><td>Object 1 at location 5</td></tr>
+<tr><td>HELME 52</td><td>Object 2 weighs 1</td><td>Object 2 not created</td></tr>
+<tr><td>COAT 53</td><td>Object 3 weighs 1 WR</td><td>Object 3 not created</td></tr>
+<tr><td>SWORD 54</td><td>Object 4 weighs 1</td><td>Object 4 at location 2</td></tr>
+<tr><td>SADDL 55</td><td>Object 5 weighs 1</td><td>Object 5 at location 4</td></tr>
+<tr><td>BRIDL 56</td><td>Object 6 weighs 1</td><td>Object 6 at location 4</td></tr>
+<tr><td>HORSE 57</td><td>Object 7 weighs 20</td><td>Object 7 at location 3</td></tr>
+<tr align="left"><th colspan="3">Figure 6</th></tr>
+</table>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>Only three of the object weights (table x) need amending. We can wear the helmet and chainmail coat so the attribute for each - the last number amended - needs to be altered to 2 (Wear/ Remove). The two amendments would be: {A 2 1 2} and {A 3 1 2}. As we would not normally be able to pick up a horse, we will be able to amend its weight, the third number, thus: {A 7 20 0}. The Initially At table, option 1, is amended as above but only two numbers are required, e.g. {A 1 5} or {A 3 252}.</p>
+
+<table width="278" border="0" cellpadding="10" align="right">
+<tr><td><img src="pawtut7.gif" width=258 height=194 border=0 alt="">
+<br>
+<p align="right" class="first"><b><font size="-1" color="#FF0000">
+<i>Fig 7.</i> The Message Table.
+</font></b></p>
+</td></tr>
+</table>
+
+<h2>SPECIAL LOCATIONS</h2>
+
+<p class="first">PAW has four &quot;special locations&quot; where objects are not created (252), worn (253), carried (254) and in the present location (255). The Object Word table (W) needs to be amended using the noun for each object, but of course there are TWO torches, so objects 0 and 1 are given the same nouns. Each object word is amended thus: {A 1 TORCH _} the underline symbol being where you would insert an adjective, for example RED or GREEN, LONG or SHORT, where there are two similar objects of different sizes or colours, etc.</p>
+
+<p>If you're wondering why we are not differentiating between the lit and the unlit torch i.e. by inserting the adjectives LIT and UNLIT in the Object word table, this is because only one torch is present in the adventure game at any one time, so there's no need to be specific.</p>
+
+<p>That brings us to the end of this instalment of my PAW mini-adventure programming article. You should now insert a blank tape into your datacorder - or blank, formatted disc into your disc drive - and then select option S from the main menu to save your database. You will be prompted to type in your filename, e.g. DAWN. But if you are using a disc version of PAW use the file name START for one save, then save the database again using a different name, i.e. DAWN. You should always make at least two copies of any database as a precaution. See you next month ... Larry.</p>
+
+<br clear=all>
+
+<center><p class="first"><a href="../129/pawtut.htm"><b>Previous article in series (issue 129)</b></a><br>
+<a href="../131/pawtut.htm"><b>Next article in series (issue 131)</b></a></p></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="index.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Issue 130 Contents"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 130 Contents"></a>
+<a href="../131/index.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Issue 131 Contents"></a></p>
+
+<h6 align="center">Sinclair User<br>December 1992</h6>
+
+</body>
+</html>

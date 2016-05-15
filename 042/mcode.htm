@@ -1,0 +1,358 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 42 - Machine Code</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Z80 machine code programming feature from Sinclair User, September 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#CCCCCC" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="htsquad.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 42 Contents"></a>
+<a href="adventh.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Adventure Helpline"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Machine Code</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1><i>Accumulating logic in the heart of the machine</i></h1>
+
+<p class="first"><b><font size="+1">Marcus Jeffery introduces more marvels of machine code programming</font></b></p>
+
+<p class="first">One set of extremely useful instructions in Z80 machine code is known as 'logic' instructions. Those are similar to the logic instructions available in Basic, such as AND and OR.</p>
+
+<p>We will look at those, and then develop a set of picture routines which will allow you to hold more than one screen in memory, copy from one to another, exchange them and merge them together.</p>
+
+<p>When writing programs using Basic, most people have used instructions such as</p>
+
+<pre>  IF key  &quot;Z&quot; OR key = &quot;X&quot; THEN ...</pre>
+
+<p class="first">in their programs. If you have read the section in the User Manual, then you'll also know that all those instructions return TRUE and FALSE values, where</p>
+
+<pre>     TRUE = 1
+and  FALSE = 0</pre>
+
+<p class="first">That means that if we write the following code:</p>
+
+<pre>  LET a = 1
+  LET b = 0
+  PRINT a AND b
+  PRINT a OR b
+  PRINT NOT a</pre>
+
+<p class="first">it will print '0', '1' and '0'. Also, typing</p>
+
+<pre>  PRINT a&gt;b
+  PRINT b&gt;a</pre>
+
+<p class="first">will print '1' and '0', because 'a is greater than b' is true, but not vice versa. In fact, you'll find that any non-zero value is true. Try changing the value of 'a' to a different number in the above code. You may be surprised by some of the results, but if you try something like</p>
+
+<pre>  IF 15 THEN PRINT &quot;The number 15 can also represent TRUE&quot;</pre>
+
+<p class="first">you will see what we mean.</p>
+
+<p>What is the point of all this? Well, try</p>
+
+<pre>  PRINT 99 AND 77</pre>
+
+<p class="first">on the Spectrum, and you will get the answer 99. On most computers such as the BBC micro and Commodore 64 - that would give the result 65! The computer came up with that unexpected result by testing the individual bits of the numbers, with each bit representing its own true/false value.</p>
+
+<p>We can see that better by considering the logic in binary:</p>
+
+<pre>        1100011 (99)
+AND     1001101 (77)
+        -------
+gives   1000001 (65)</pre>
+
+<p>Even on the Spectrum, when you're working in Z80 machine code, ANDs and ORs work in the same way. So if we had the assembly code</p>
+
+<pre>  LD A,15 (00001111 in binary)
+  OR 60   (00111100)</pre>
+
+<p class="first">then the value remaining in the accumulator would be 63 (binary 00111111). If we then had</p>
+
+<pre>  AND 170 (10101010)</pre>
+
+<p class="first">we would end up with 42 (00101010) in the accumulator - I wonder if that is the way Deep Thought found the ultimate answer in the <i>Hitchhiker's Guide to the Galaxy!</i></p>
+
+<p>The AND and OR instructions always return a result in the accumulator, so there is no need to specify that in the assembly language instruction. All those instructions are shown in <a href="#fig1">figure one</a>. For each bit in the two bytes which are being logically ANDed or ORed, the following apply:</p>
+
+<pre>  bit 1   |   bit 2   | b1 AND b2
+----------|-----------|-----------
+    0     |     0     |     0
+    0     |     1     |     0
+    1     |     0     |     0
+    1     |     1     |     1</pre>
+
+
+<pre>  bit 1   |   bit 2   | b1 OR b2
+----------|-----------|-----------
+    0     |     0     |     0
+    0     |     1     |     1
+    1     |     0     |     1
+    1     |     1     |     1</pre>
+
+<p>There is another instruction available in Z80. That is an exclusive- or instruction, and is represented by XOR. This can be thought of as 'if bit one is true or bit two is true, but not both'. The logic table is as follows:</p>
+
+<pre>  bit 1   |   bit 2   | b1 XOR b2
+----------|-----------|-----------
+    0     |     0     |     0
+    0     |     1     |     1
+    1     |     0     |     1
+    1     |     1     |     0</pre>
+
+<p class="first">One special use of the XOR instruction which you may come across is</p>
+
+<pre>  XOR A</pre>
+
+<p class="first">What's the use of exclusive- ORing the A register with itself? Let us say the accumulator contained the value 19 (00010011 in binary). If we execute the instruction 'XOR A', the following operation is executed:</p>
+
+<pre>        00010011
+XOR     00010011
+        --------
+gives   00000000</pre>
+
+<p class="first">In other words, it clears the accumulator, whatever it contains.</p>
+
+<p>That might, for instance, be used before some addition or subtraction instructions. You could, of course, use the instruction 'LD A,0', but that requires an extra byte and takes seven clock cycles rather than four for the XOR instruction.</p>
+
+<p>Finally, the NOT operation known in machine code as CPL which stands for 'complement'. That reverses all the bits in the accumulator so '1's become '0' and vice versa.</p>
+
+<p>Now to the picture routines. There are four routines altogether, and you could easily add your own. They all operate on a principle which uses an area of memory as though it were screen memory. Though we cannot see that area of memory, as we do with the real screen, we can still put it to all sorts of uses.</p>
+
+<p>The assembly code is given in <a href="#fig2">figure two</a>, with the Basic loader and application code in <a href="#fig3">figure three</a>. Before typing them in, let us look at one or two ways in which the logic instructions have been used.</p>
+
+<p>The first routine, MERGE - use RANDOMIZE USR 60000 - will combine the present screen picture with another presently in memory. Each screen pixel is either lit or unlit, which is a '1' or '0' respectively in screen memory. So, to combine them, we just need to OR all the bits. Doing that for a couple of diagonal lines in one character is shown in <a href="#fig4">figure four</a>. The logic instruction that does this is</p>
+
+<pre>  OR (HL)</pre>
+
+<p class="first">which ORs the accumulator - containing a byte from the additional screen in memory - with the corresponding byte from the real, visible screen.</p>
+
+<p>You might like to try changing that instruction to 'XOR (HL)'; change &quot;B6&quot; to &quot;AE&quot; in line 2020 of the Basic loader to get more unusual effects, as shown in <a href="#fig5">figure five</a>. You could also change it to 'AND (HL)' &quot;B6&quot; to &quot;A6&quot;, as in <a href="#fig6">figure six</a>.</p>
+
+<p>The other way we have used logic in this routine is the OR C which is used to check for the end of the loop. We are effectively counting down the BC register pair until it reaches zero. Unfortunately, we cannot check a register pair. What we are really doing is jumping to MNEXT if either of B or C is not zero. That could be done by checking B, and jumping if not zero (JR NZ), then checking C and jumping if not zero. However, we can get the same effect by ORing the register values and jumping. That is a fairly standard and accepted method of completing loops where the loop counter exceeds one byte, that is, 255.</p>
+
+<p>We have used the same looping technique in EXCH - use RANDOMIZE USR 60046 - which will exchange the picture in memory with the real screen. Do not worry about the meaning of the EX AF,AF' instructions. They are only used to save and restore the accumulator, and you could just as easily use 'PUSH AF', for the first and 'POP AF', for the second, but the instruction used works faster.</p>
+
+<p>The other two routines are COPY1 (RANDOMIZE USR 60021) which will copy the visible screen to memory, and COPY2 (RANDOMIZE USR 60034 which does the opposite. The LDIR instruction effectively replaces the series of instructions:</p>
+
+<pre>LOOP    LD     A,(HL)
+        LD     (DE),A
+        INC    HL
+        INC    DE
+        LD     A,B
+        OR     C
+        JR     NZ,LOOP</pre>
+
+<p class="first">- a very useful instruction which we will be considering at a future data.</p>
+
+<p>To use the routines, you have to initially CLEAR room for the invisible screen. In the Basic example, that screen has been placed in the 6144 bytes from location 53850. That is the reason for the CLEAR 53849 instruction. To specify that this is the screen for the routines to use, the first screen location has to be POKEd into the two locations 23278 and 23279. Those are two unused locations in the area used for Spectrum system variables - see pages 127-130 of the <i>Spectrum User Guide</i>. Those locations are very useful, keeping the screen location safely out of the way of any machine code application programs.</p>
+
+<p>The numbers which should be poked into these locations are</p>
+
+<pre>      POKE 23728, screen - 256 * INT (screen / 256)
+and   POKE 23729, screen / 256</pre>
+
+<p>The way the memory has been used in the example program is shown in <a href="#fig7">figure seven</a>. Of course, there's no reason why, by changing the values in locations 23728 and 23729, you should not hold a number of hidden screens, using the routines to carry out operations on all of them.</p>
+
+<h2><i>Figures</i></h2>
+
+<a name="fig1"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 1. New Z80 instruction codes</b></p>
+<pre>AND        byte    - AND the contents of the A register with the byte value
+AND        reg     - AND the contents of the specified register with the
+                     accumulator
+AND        (HL)    - AND the contents of the memory location addressed by the
+                     HL register pair with the accumulator
+OR        byte     - OR the contents of the A register with the byte value
+OR        reg      - OR the contents of the specified register with the
+                     accumulator
+OR        (HL)     - OR the contents of the memory location addressed by the
+                     HL register pair with the accumulator
+XOR        byte    - Exclusive-OR the contents of the A register with the byte
+                     value
+XOR        reg     - Exclusive-OR the contents of the specified register with
+                     the accumulator
+XOR        (HL)    - Exclusive-OR the contents of the memory location addressed
+                     by the HL register pair with the accumulator
+CPL                - complement the accumulator</pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig2"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 2.</b></p>
+<pre>                     ORG   60000
+                     LOAD  60000
+
+EA60 210040   MERGE  LD    HL,16384   ;HL = start of screen
+EA63 ED5BB05C        LD    DE,(23728) ;DE = memory screen
+EA67 010018          LD    BC,6144    ;BC = number of bytes in screen
+EA6A 1A       MNEXT  LD    A,(DE)     ;A = memory byte
+EA6B B6              OR    (HL)       ;Combine with screen byte
+EA6C 77              LD    (HL),A
+EA6D 23              INC   HL         ;Move to next byte in
+EA6E 13              INC   DE         ;    both screens
+EA6F 0B              DEC   BC
+EA70 78              LD    A,B
+EA71 B1              OR    C
+EA72 20F6            JR    NZ,MNEXT   ;Repeat for complete screen
+EA74 C9              RET
+
+EA75 210040   COPY1  LD    HL,16384   ;HL = start of screen
+EA78 ED5BB05C        LD    DE,(23728) ;DE = memory screen
+EA7C 010018          LD    BC,6144    ;BC = number of bytes in screen
+EA7F EDB0            LDIR             ;Perform copy (HL) to (DE)
+EA81 C9              RET
+
+EA82 2AB05C   COPY2  LD    HL,(23728) ;HL = memory screen
+EA85 110040          LD    DE,16384   ;DE = start of screen
+EA88 010018          LD    BC,6144    ;BC = number of bytes in screen
+EA8B EDB0            LDIR             ;Perform copy (HL) to (DE)
+EA8D C9              RET
+
+EA8E 210040   EXCH   LD    HL,16384   ;HL = start of screen
+EA91 ED5BB05C        LD    DE,(23728) ;DE = memory screen
+EA95 010018          LD    BC,6144    ;BC = number of bytes in screen
+EA98 1A       EBYTE  LD    A,(DE)     ;A = memory byte
+EA99 08              EX    AF,AF'     ;Save A
+EA9A 7E              LD    A,(HL)     ;A = screen byte
+EA9B 12              LD    (DE),A     ;Copy into Memory screen
+EA9C 08              EX    AF,AF'     ;Now restore A, and copy
+EA9D 77              LD    (HL),A     ;    to real screen
+EA9E 23              INC   HL
+EA9F 13              INC   DE
+EAA0 0B              DEC   BC
+EAA1 78              LD    A,B
+EAA2 B1              OR    C
+EAA3 20F3            JR    NZ,EBYTE   ;Loop for complete screen
+EAA5 C9              RET
+
+                     END
+
+Workarea = A50C to A66D
+ORG  end = EAA6
+LOAD end = EAA6</pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig3"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 3.</b></p>
+<pre>  10 CLEAR 53849
+  20 POKE 23728,90: POKE 23729,210
+  30 GO SUB 1000
+  40 CLS : PRINT AT 7,9;&quot;Let's call this&quot;
+  50 PRINT AT 8,9;&quot;&lt;&lt;&lt;SCREEN ONE&gt;&gt;&gt;&quot;
+  60 PAUSE 100
+  70 RANDOMIZE USR 60021
+  80 CLS : PRINT AT 7,11;&quot;This is then&quot;
+  90 PRINT AT 8,9;&quot;&lt;&lt;&lt;SCREEN TWO&gt;&gt;&gt;&quot;
+ 100 PAUSE 100
+ 110 RANDOMIZE USR 60046: PAUSE 20
+ 120 IF INKEY$=&quot;&quot; THEN GO TO 110
+ 130 RANDOMIZE USR 60000
+ 140 PRINT AT 13,4;&quot;Now we've got both at once!&quot;
+ 150 STOP
+1000 REM HEX LOAD ROUTINE
+1010 DEF FN p(x)=CODE h$(x)-48-7*(CODE h$(x)&gt;=65)
+1020 LET byte=0
+1030 RESTORE 2000
+1040 READ start
+1050 READ h$
+1060 IF h$=&quot;*&quot; THEN GO TO 1160
+1070 IF LEN h$&lt;&gt;2*INT (LEN h$/2) THEN PRINT &quot;Odd number of hex digits in: &quot;;h$: STOP
+1080 FOR i=1 TO LEN h$
+1090 IF NOT ((h$(i)&gt;=&quot;0&quot; AND h$(i)&lt;=&quot;9&quot;) OR (h$(i)&gt;=&quot;A&quot; AND h$(i)&lt;=&quot;F&quot;)) THEN  PRINT  &quot;Illegal hex digit: &quot;;h$(i): STOP
+1100 NEXT i
+1110 FOR i=1 TO LEN h$ STEP 2
+1120 POKE start+byte,16*FN p(i)+
+FN p(i+1)
+1130 LET byte=byte+1
+1140 NEXT i
+1150 GO TO 1050
+1160 PRINT &quot;Code entered&quot;
+1170 PAUSE 150
+1180 RETURN
+2000 DATA 60000,&quot;210040&quot;
+2010 DATA &quot;ED5BB05C&quot;,&quot;010018&quot;
+2020 DATA &quot;1A&quot;,&quot;B6&quot;,&quot;77&quot;,&quot;23&quot;
+2030 DATA &quot;13&quot;,&quot;0B&quot;,&quot;78&quot;,&quot;B1&quot;
+2040 DATA &quot;20F6&quot;,&quot;C9&quot;
+2050 DATA &quot;210040&quot;,&quot;ED5BB05C&quot;
+2060 DATA &quot;010018&quot;,&quot;EDB0&quot;,&quot;C9&quot;
+2070 DATA &quot;2AB05C&quot;,&quot;110040&quot;
+2080 DATA &quot;010018&quot;,&quot;EDB0&quot;,&quot;C9&quot;
+2090 DATA &quot;210040&quot;,&quot;ED5BB05C&quot;
+2100 DATA &quot;010018&quot;,&quot;1A&quot;,&quot;08&quot;
+2110 DATA &quot;7E&quot;,&quot;12&quot;,&quot;08&quot;,&quot;77&quot;
+2120 DATA &quot;23&quot;,&quot;13&quot;,&quot;0B&quot;,&quot;78&quot;
+2130 DATA &quot;B1&quot;,&quot;20F3&quot;,&quot;C9&quot;,&quot;*&quot;</pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig4"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 4.</b></p>
+<img src="mcode1.gif" width=317 height=72 hspace=10 vspace=10 border=0 alt="">
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig5"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 5.</b></p>
+<img src="mcode2.gif" width=317 height=72 hspace=10 vspace=10 border=0 alt="">
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig6"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 6.</b></p>
+<img src="mcode3.gif" width=317 height=72 hspace=10 vspace=10 border=0 alt="">
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig7"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 7.</b></p>
+<img src="mcode4.gif" width=250 height=196 border=0 alt="">
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><p class="first"><a href="../041/mcode.htm"><b>Previous article in series (issue 41)</b></a><br>
+<a href="../043/mcode.htm"><b>Next article in series (issue 43)</b></a></p></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="htsquad.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 42 Contents"></a>
+<a href="adventh.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Adventure Helpline"></a></p>
+
+<h6 align="center">Sinclair User<br>September 1985</h6>
+<h6 align="center">Another Fine Product transcribed by Jim Grimwood at <a href="http://www.users.globalnet.co.uk/~jimg/">YRUA?</a></h6>
+
+</body>
+</html>

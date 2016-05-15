@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 18 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, September 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="books.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Books"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 18 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson4.gif" width=275 height=290 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1>Can you prevent the program being listed?</h1>
+
+<p class="first"><b><font size="+1">Andrew Hewson considers security and zero line numbers</font></b></p>
+
+<p class="first">EACH MONTH I re-read the latest batch of letters and note the contents. Then I decide which to answer in the magazine, trying to mix easy topics for beginners with something more substantial for the more advanced.</p>
+
+<p>Despite summer weather there have been sufficient dedicated Sinclair users, red-eyed and finger-sore, scribbling feverish notes about desperately important problems to provide the usual mixture of easy, interesting, exacting, impossible and incomprehensible letters.</p>
+
+<p>The first is from Chris Porton. He writes: Some games listings contain an O REM statement when listed. How do you obtain such a line number and can you prevent the rest of the program being listed, too?</p>
+
+<p>To answer the question I must first explain a little about how a program is held in the ZX-81 or Spectrum. To avoid confusion I shall explain the situation for the ZX-81 in detail and then outline the differences for the Spectrum.</p>
+
+<p>The first diagram on page 171 of ZX-81 Basic Programming shows that the Basic program area starts at address number 16509. The following simple ZX-81 program PRINTs the contents of the first 20 locations in the Basic program area on the screen, i.e., it looks at the 20 locations starting at 16509:</p>
+
+<pre>10 FOR I=16509 TO 16528
+20 PRINT I;TAB 8; PEEK I;TAB l6;CHR$ PEEK I
+30 NEXT I</pre>
+
+<p>If the computer memory is cleared before the program is entered, either by disconnecting the power supply temporarily or by entering NEW, the program area will contain the three program lines only. Thus when the program is RUN it will be looking at itself The screen display will show, for example, that locations 16513 to 16520 contain the code for the command 'FOR' (235) followed by the codes for each of the seven characters I, =, 1, 6, 5, 0 and 9.</p>
+
+<p>The first two bytes, 16509 and 16510, contain 0 and 10 respectively because those two bytes are used to specify the line number of the first line, the calculation being:</p>
+
+<pre>256 * first byte + second byte = line number.</pre>
+
+<p>Experiment by POKEing new numbers into those two locations and then LISTing the program to see the effect. Try, for example:</p>
+
+<pre>POKE 16509,10
+POKE 16510,27
+LIST</pre>
+
+<p>It will be seen that the line number of the first line is then 2587 because</p>
+
+<pre>256 * 10 + 27 = 2587.</pre>
+
+<p>Notice that the order of the lines has not been changed and therefore it can be concluded that the ZX-81 has taken no action as a result of the interference with the contents of the program area. The program no longer works because the NEXT command in line 30 directs the ZX-81 to continue execution from the line following line 10. As line 10 no longer exists the program fails. Hence unless care is taken to avoid the use of FOR-NEXT loops and GO TO and GO SUB commands it is not possible to run a program with line numbers corrupted in that way. There are two tricks worth mentioning. Try entering:</p>
+
+<p>POKE 16509,39
+POKE 16510,10
+LIST</p>
+
+<p>The first line number will then be 9994 because</p>
+
+<pre>39 * 256 +10 = 9994.</pre>
+
+<p>The largest line number allowed on Sinclair machines is 9999 so, it may be asked, what happens when an attempt is made to insert a bigger line number? To determine enter:</p>
+
+<pre>POKE 16509,40
+LIST</pre>
+
+<p>The first line number is then shown as A250 whereas we would have expected it to be</p>
+
+<pre>40 * 256 + 10 = 10250.</pre>
+
+<p>Reference to the table of codes of the character set in appendix A of ZX-81 Basic Programming gives a clue to the situation. The table shows that the codes for the digits 0 to 9 are 28 to 37 respectively and they are followed by the codes for the letters of the alphabet. The ZX-81 is programmed to expect line numbers to contain at most four digits. When it finds a line number which should have five digits it uses a single letter from the beginning of the alphabet to represent the first two - A to represent 10, B to represent 11, C to represent 12.</p>
+
+<p>Provided the line numbers are kept in order, programs can be written to use line numbers up to 16383 - which appears as 6383. Fortunately the machine will accept incorrect instructions like GO TO 12530 which makes writing such programs easier than it would otherwise be.</p>
+
+<p>Attempting to POKE in line numbers greater than 16383 causes the program display to disappear and so this is the answer to Porton's second question. To see this effect enter</p>
+
+<pre>POKE 16509,99</pre>
+
+<p>The program no longer functions although it is still present in memory as can be seen by entering</p>
+
+<pre>POKE 16509,0</pre>
+
+<p>The Spectrum is very similar to the ZX-81 in those features. The principal difference is that the program area does not start at a fixed location. The address is held in the PROG system variable which can be read by entering</p>
+
+<pre>PRINT PEEK 23635+256*PEEK 23636</pre>
+
+<p>The result is normally 23655.</p>
+
+<p>The Spectrum character codes are also different from those of the ZX-81, as can be seen by studying appendix A of ZX Spectrum Basic Programming.</p>
+
+<p>Phil Jones writes: Is there a simple machine code line renumber program which also renumbers GO TOs for the Spectrum? I have seen two in magazines but they are too complicated for me to understand.</p>
+
+<p>The short answer is no, but I can help by explaining the various tasks which must be executed by the routine. Enter and RUN the following program which looks at the Spectrum program area:</p>
+
+<pre>10 FOR I=23755 TO 23800
+15 PRINT I;TAB 8;PEEK I; TAB 16;CHR$ PEEK I
+20 NEXT I</pre>
+
+<p>Locations 23755 and 23756 contain 0 and 10, thus specifying the line number of the first line. Locations 23759 to 23766 inclusive contain the codes FOR,I,=,2,3,7,5 and 5 but in between there are locations 23757 and 23758. They contain 27 and 0 and in doing so they specify the length of the remainder of the line. The calculation is</p>
+
+<pre>first byte + 256 * second byte=line length</pre>
+
+<p class="first">i.e., 27 + 256 * 0 = 27.</p>
+
+<p>Hence the line ends at location 23758 + 27 = 23785 as can be seen by allowing the Spectrum display to scroll on and noting that location 23785 contains the ENTER character code (13) and is followed by two bytes containing 0 and 15 forming the line number of the second line.</p>
+
+<p>Armed with that information it is reasonably easy to write a program to renumber only the line numbers of a Basic program. An example is shown in table one. To load the program enter and RUN the Basic hex loader listed in table two and then enter each pair of hex codes given in table one in turn. On completion, enter S to stop the Basic program.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>Hex code        Assembler code        Comment
+
+01 0A 00        LD BC,10              New first line number
+2A 53 5C        LD HL,(PROG)          Beginning of program area
+70              LD (HL),B             Insert new line
+23              INC HL                number
+71              LD (HL),C
+23              INC HL
+5E              LD E,(HL)             Load line length
+23              INC HL                into DE
+56              LD D,(HL)
+23              INC HL
+19              ADD HL,DE             Address of next line
+E5              PUSH HL               Save address
+ED 5B 4B 5C     LD DE,(VARS)          Address of end of program
+A7              AND A                 Clear carry flag
+ED 52           SBC HL,DE             End?
+30 09           JR NC,9               Jump if yes
+21 0A 00        LD HL,10              No, step size is 10
+09              ADD HL,BC             Increment line number
+44              LD B,H                and store in BC
+4D              LD C,L
+E1              POP HL                Retrieve address
+18 E4           JR -28                Jump to continue
+E1              POP HL                End
+C9              RET
+
+<b>Table 1. A program to re-number Basic programs on the Spectrum,
+excluding GOTOs and GOSUBs.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+<br>
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre> 5 FOR I=23296 TO 23551
+10 INPUT Z$
+15 IF Z$=&quot;S&quot; THEN STOP
+20 PRINT Z$;&quot; &quot;;
+25 LET Z$(1)=CHR$ (CODE Z$(1)-7*(CODE Z$(1)&gt;57))
+30 LET Z$(2)=CHR$ (CODE Z$(2)-7*(CODE Z$(2)&gt;57))
+35 POKE I,16*CODE Z$(1)+ CODE Z$(2)-816
+40 NEXT I
+
+<b>Table 2. Spectrum program to load pairs of hexadecimal
+codes into the printer buffer.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The renumber program can be executed by entering</p>
+
+<pre>RAND USR 23296</pre>
+
+<p>If the program has been loaded correctly the Basic program will be renumbered using a stepsize of 10, not five as shown in the original listing.</p>
+
+<p>A program to renumber GO TO and GO SUB commands as well as program lines would need to execute the following steps:</p>
+
+<p>Reserve some space in memory as a working area.</p>
+
+<p>Identify each GO TO and GO SUB in the program and store its address and destination label in the working area.</p>
+
+<p>Renumber each line in turn, checking the old line number against the destination labels in the working area.</p>
+
+<p>Whenever a match is found, convert the new number to character form and overwrite the character form of the destination label.</p>
+
+<p>If the new and old labels differ in character length, extend or contract the entire program area to accommodate the difference. For example, if the old label were 95 and the new one 140 the program area would have to be made one byte longer. Update the addresses held in the working area appropriately.</p>
+
+<p>Convert the new line number to floating point form and overwrite the numerical form of the destination label held in the program area.</p>
+
+<p>Delete the entry in the working space so that labels are not renumbered erroneously more than once.</p>
+
+<p>Clearly the code to undertake those tasks must be sophisticated. Some ROM routines can be used - to convert numbers from character to numeric form, for example - but a suitable routine is nonetheless likely to be 400 to 500 bytes long.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="books.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Books"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 18 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>September 1983</h6>
+
+</body>
+</html>

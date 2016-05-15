@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 32 - Mind Games</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="The Mind Games column from Sinclair User, November 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="advent.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Adventure"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 32 Contents"></a>
+<a href="helplne.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Helpline"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>mind games</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1>An object lesson for adventurers</h1>
+
+<p class="first"><b><font size="+1">Quentin Heath describes a simple system for creating complex adventures</font></b></p>
+
+<p class="first">ARTIFICIALLY intelligent characters can add atmosphere to any adventure game, but the most important parts remain the scenario and the objects it contains.</p>
+
+<p>The most popular means of programming a scenario is to use a grid, first plotted on paper and then transferred to the computer either as a compact data block within a machine code program or an array within a Basic program. Such a structure is shown in figure one which is the floor plan of an Argolian monastery. Each of the squares represents one move and the scale could be adjusted to make it one room or part of a room.</p>
+
+<center><table width="50%" border="1" cellspacing="0" cellpadding="5">
+<tr><td>
+
+<table width="100%" border="0" cellspacing="5" cellpadding="5">
+<tr><th width="25%">&nbsp;</th><th width="25%">1</th><th width="25%">2</th><th width="25%">3</th></tr>
+
+<tr align="center"><th>A</th><td colspan="3" rowspan="3">
+
+<table width="100%" border="1" cellspacing="0" cellpadding="5">
+<tr><td width="33%">&nbsp;</td><td width="33%">&nbsp;</td><td width="33%">&nbsp;</td></tr>
+<tr align="center"><td>1000<br>1030<br>1060</td><td>2000<br>0<br>0</td><td>&nbsp;</td></tr>
+<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+</td></tr>
+<tr><th>B</th></tr>
+<tr><th>C</th></tr>
+</table>
+<b>Figure 1. Argolian grid</b>
+</td></tr>
+</table></center>
+
+<p>The floorplan in figure one does not contain any information about the locations. Instead it contains a list of numbers. These values are address pointers to various other lists which describe locations and events within them. In figure one, for instance, location B1 lists a series of numbers which in themselves mean nothing. To the adventure control program, however, each number has a meaning and they are:</p>
+
+<ul>
+<li>room description = 1000</li>
+<li>monster description = 1030</li>
+<li>object description = 1060</li>
+</ul>
+
+<p>When the program's movement routine places a player at room B1 in the monastery it needs a long location description in order to inform the player what is going on. It finds the number 1000 in that position on the list and then goes to the memory address where the room description is stored. When it has found it the program gives the information in figure two to the player.</p>
+
+<center><table width="75%" border="1" cellspacing="0" cellpadding="5">
+<tr align="center"><th>address</th><th>room</th><th>monster</th><th>object</th></tr>
+<tr align="center"><td>1000</td><td>dark room</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr align="center"><td>1030</td><td>&nbsp;</td><td>Smike</td><td>&nbsp;</td></tr>
+<tr align="center"><td>1060</td><td>&nbsp;</td><td>&nbsp;</td><td>crystal egg</td></tr>
+<tr align="center"><td>2000</td><td>chapel</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr align="center"><td>0</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr align="center"><td>0</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr align="center"><td colspan="4"><b>Figure 2.</b></td></tr>
+</table></center>
+
+<p>The next action of the program is to see if any objects are stored within the room. The object description for room B1 is placed at memory location 1060 and printed out after a location description. In the example the object is a small glass egg and the program would produce the printout shown in figure three.</p>
+
+<img src="mindgms.gif" width=259 height=500 hspace=10 vspace=10 border=0 align="right" alt="A dodgy looking wizard">
+<p>If no object has been stored in a particular location the address indicator in the grid for 'object description' should contain a value which tells the program not to look for an object. The program may also change the value if an object is removed during play.</p>
+
+<p>Using the grid system the task of programming a game is made easier because the program only needs to manipulate the grid of memory references and not the lists of descriptions.</p>
+
+<p>The grid in the example is simple and more factors can, and should, be added to it. For instance, the fighting abilities of a monster who is known to haunt a room could be included in a list indicated by the location grid.</p>
+
+<p>These numbers, <a href="../031/mindgms.htm">discussed last month</a> in <i>Mind Games</i>, could be compared to player strengths and weaknesses when a fight takes place and changed as the monster wins or loses. If death occurs a zero can be placed in the reference grid.</p>
+
+<p>The monastery shown in the example grid has only one level. It is, however, easy to develop a grid in which you can move to different floors.</p>
+
+<p>Grids should be created as if they were being produced for a one level adventure but with one important difference. A new reference is added to the list for each location which indicates whether there is a staircase in the room and in which direction, up or down, it goes. The grids are laid end to end in memory.</p>
+
+<p>All the computer needs to do is look at the indicators on the list. If they are set to any number except zero there is a staircase in the room. The player is then asked whether a transition from one floor to another is required. If so, the program then switches to a different floor.</p>
+
+<p>The example, which uses absolute RAM memory addresses, is for a machine code adventure program but by creating a series of arrays, one for each grid and one for each list of information, the grid reference system can be used within a Basic adventure program. The machine code addresses are translated into array elements and a three dimensional array can store any number of grids.</p>
+
+<p>The grid reference system is simple to use and, with the techniques described in previous articles about character generation and manipulation, should enable a substantial artificially intelligent adventure game to be written.</p>
+
+<center><p class="first">
+<table cellpadding="10" bgcolor="#CCCCCC"><tr><td>
+<p class="first">You are standing in a DARK room.<br>
+There is a CRYSTAL EGG in the room<br>
+which is guarded by a SMIKE.</p>
+<p class="first"><b>Figure 3.</b></p></td></tr></table>
+</p></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="advent.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Adventure"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 32 Contents"></a>
+<a href="helplne.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Helpline"></a></p>
+
+<h6 align="center">Sinclair User<br>November 1984</h6>
+
+</body>
+</html>
+

@@ -1,0 +1,237 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 14 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, May 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="ssimon.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Sinclair Simon"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 14 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson4.gif" width=275 height=290 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1>Please explain arrays for us woodenheads</h1>
+
+<p class="first"><b><font size="+1">This month our expert correspondent, Andrew Hewson, deals with some fairly straightforward software queries before attempting to explain something more complicated about machine code routines</font></b></p>
+
+<p class="first">BY ANSWERING a few fairly straightforward software questions and then finishing with a reasonably lengthy machine code routine for those who like that type of thing, I have tried this month to provide something of interest to everyone. Peter Bankes asks: <b>Is it possible to poke the Spectrum to get caps lock?</b></p>
+
+<p>The caps lock condition is stored in bit 4 of FLAGS2 at address 23658 in the system variables area. When bit 4 is set, all entries will appear in capitals. Hence a program can determine whether caps lock is set by checking the status of that bit and altering it if required.</p>
+
+<p>The condition of bit 4 may be checked from Basic in a somewhat cumbersome fashion as illustrated by:</p>
+
+<pre>10 IF INT (PEEK 23658/8)=2*INT (INT(PEEK 23658/8)/2) THEN PRINT &quot;CAPS LOCK NOT SET&quot;: GO TO 30
+20 PRINT &quot;CAPS LOCK SET&quot;
+30 STOP</pre>
+
+<p>To set bit 4 from Basic and hence turn on the caps lock enter</p>
+
+<pre>POKE 23658, PEEK 23658+8</pre>
+
+<p>To turn it off again, enter</p>
+
+<font size="-1">POKE 23658, PEEK 23658-8</font>
+
+<p>Alternatively you may wish to use the ROM routine which &quot;toggles&quot; the caps lock. The routine is located at address 4317 (10DD hexadecimal) and successive calls of the form</p>
+
+<pre>RAND USR 4317</pre>
+
+<p class="first">turn the caps lock on and off.</p>
+
+<p>Peter Hollis has another problem concerning the Spectrum. He writes: <b>I have seen a number of program listings which have user-defined graphics characters embedded within them but with no accompanying explanation of how the characters are formed. I have no idea of how to reproduce them on my machine. Can you help?</b></p>
+
+<p>The 21 user-defined graphics characters available on the Spectrum are accessed by entering SHIFT 9 followed by one of the 21 letters A to U followed by SHIFT 9. When the Spectrum is turned on the 21 characters are set to copies of the appropriate letter and so entering SHIFT 9 before and after pressing a letter key makes no apparent difference to what is displayed. Thus the command PRINT &quot;A&quot; causes a letter A to appear in the top left-hand corner of the screen, regardless of whether the SHIFT 9 is entered before and after the letter A.</p>
+
+<p>If the user-defined graphics character assigned to the &quot; A &quot; key is redefined the new character will always subsequently be used. The new character will appear at the appropriate time when the program is executed and it will also appear in listings of the program, both on the display and on the Sinclair printer.</p>
+
+<p>Hence there is a problem when programs are published, because the new characters are shown in the listing with no reference to the key to which they are assigned.</p>
+
+<p>A possible solution is to study the listing to try to deduce which keys have been used. Usually the author includes a loop into his program of the form:</p>
+
+<pre>10 DATA 0,12,14,4,60,124,60,0
+20 FOR I=0 TO 7
+30 READ A
+40 POKE USR &quot;D&quot;+I,A
+50 NEXT I</pre>
+
+<p>Such a loop reads the eight values in turn which are used to define the shape of the new character, from the DATA statement into the variable A and then POKE them into the relevant locations in memory. In this case it is the graphics character assigned to the letter &quot;D&quot; which is being redefined.</p>
+
+<p>If you can locate similar loops in the problem program you can identify which keys have been used. You can then RUN the program, BREAK into it, and then press the keys in turn preceded and followed by SHIFT 9 to discover which shape has been assigned to which key.</p>
+
+<p>Unfortunately there are several ways of redefining graphics characters, that technique being one of the simplest. Therefore you may not be able to determine which keys have been used, in which case trial and error using the keyboard is your only remedy.</p>
+
+<center><img src="../shared/images/helplne2.gif" width=500 height=199 vspace=10 border=0 alt="Sinclair printout"></center>
+
+<p>John Brookes bought his first home computer - a Spectrum - and read several books on the machine but he is having difficulty with the concept of an array. He writes: <b>The books are generally easy to read but none of them explains arrays sufficiently clearly for us woodenheaded types. Can you help?</b></p>
+
+<p>Most tasks performed by computers comprise reading information into memory, manipulating the information according to a program of stored instructions, and writing the information out of memory.</p>
+
+<p>The information stored in memory must be organised in some convenient fashion so that the person who writes the program of instructions can do his job. Most high-level languages allow the programmer to declare variables of various kinds so that different types of information can be stored and treated in appropriate ways.</p>
+
+<p>The ZX-81 and the Spectrum each allow six types of variables - numeric with a single character name; numeric with a multiple character name; control for a FOR-NEXT loop; string; string array; numeric array.</p>
+
+<p>The first two types are identical in use, as they can each store only a single positive or negative number. Most programmers try to give a name to a variable which reminds them of the information it holds. For example, a bank account program might hold the current balance in a variable called BALANCE.</p>
+
+<p>In many programs similar information is to be stored concurrently and in that situation the program is also likely to become unnecessarily cumbersome because the same operation must be performed on many variables, each with a different name and therefore requiring a separate piece of code.</p>
+
+<p>The bank account program might be required to store the amount spent using each of 30 cheques in a cheque book. The amount spent using the first cheque could be stored in a variable called CHEQUE. The same variable could not be used to store the value of the second cheque because only one value can be stored in a numeric variable.</p>
+
+<p>The act of entering the second value &quot;over-writes&quot; the first value, causing it to be lost, hence the programmer must think of a new name for the second cheque. Most programmers would run out of inspiration long before they had named all 30 cheques.</p>
+
+<p>One way of naming all 30 which would not require too much effort would be to call them CHEQUE1, CHEQUE2, CHEQUE3. That is the idea of an array. Sinclair arrays are restricted to single-character names only but that is a small price to pay for the flexibility they provide.</p>
+
+<p>Table one shows a simple cheque book program which uses an array, C, of length 30 to hold the value of each cheque as it is entered. The program also shows the use of another variable, I, to count through the array selecting each element of the array in turn. When all the cheques have been entered the program prints the value of each in turn.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre> 10 PRINT AT 0,11;&quot;CHEQUEBOOK&quot;
+ 20 PRINT AT 2,0;&quot;ENTER CURRENT BALANCE&quot;
+ 30 INPUT BALANCE
+ 40 DIM C(30)
+ 50 PRINT AT 2,0;&quot;ENTER EACH CHEQUE IN TURN&quot;
+ 60 FOR I=1 TO 30
+ 70 PRINT AT 4,0;&quot;CURRENT BALANCE= &quot;;BALANCE
+ 80 INPUT C(I)
+ 90 LET BALANCE=BALANCE-C (I)
+100 NEXT I
+110 CLS
+120 PRINT &quot;CHEQUE NO.&quot;,&quot;VALUE&quot;
+130 FOR I=1 TO 30
+140 PRINT I,C(I)
+150 IF PEEK 16442-3 THEN SCROLL
+160 NEXT I
+
+<b>Table 1. A simple cheque book program.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>Simon Smith has a more complex question concerning arrays. He writes: <b>I have a ZX-81 and recently bought a 64K memory to replace the 16K RAM pack I had previously. I now want to enlarge the array in a program which indexes my record collection to make use of the extra memory space. Is there any way of doing so, short of copying the data to another array?</b></p>
+
+<p>Defining a new array and copying the data across using a FOR-NEXT loop would certainly be the easiest way of dealing with the problem. The disadvantage is that the new array can occupy only the space which is not used by the old array; hence when the old array is deleted - by DIMensioning it to zero - the memory space it occupies remains unused. If the old array was 12K bytes long and a further 32K bytes of memory was added, the new array could occupy only 32K of the total of 44K bytes available.</p>
+
+<p>There is no Basic command to make an array grow to fill the remaining memory space and so I have written the machine code routine listed in table two to do the job. The routine can be loaded into a REM statement forming the second line in a ZX-81 program using a hexadecimal loader. For example:</p>
+
+<pre>10 REM XA$
+20 REM AT LEAST 108 CHARACTERS
+30 FOR I=16523 to 16630
+40 INPUT Z$
+50 IF Z$=&quot;S&quot; THEN STOP
+60 PRINT Z$;&quot; &quot;;
+70 POKE I,16*CODE Z$+CODE Z$(2)-476
+80 NEXT I</pre>
+
+<p>To load the machine code routine, run the loader and enter each pair of hexadecimal codes in turn. Be very careful not to make mistakes because the program makes no error checks.</p>
+
+<p>To use the routine to double the size of a string array called A$ make the first program line a REM statement containing an 'X' followed by the name of the array, i.e., A$ as in the loader. Then POKE the factor by which you want the array to grow into the first byte of the REM statement. In that case the array is to grow by a factor of two so you should enter:</p>
+
+<pre>POKE 16514,2</pre>
+
+<p class="first">Then call the machine code routine by entering:</p>
+
+<pre>RAND USR 16523</pre>
+
+<p>Both the total length of the array and the size of the first dimension will grow by the factor specified at address 16514.</p>
+
+<p>The routine makes a number of error checks. It will detect if the named variable does not exist or is not an array. It also ensures that there is sufficient room in RAM to enlarge the array by the factor specified.</p>
+
+<p>The routine makes use of two ROM routines. The first is LOOKVARS which is located at 4380 decimal 111C hexadecimal. That routine finds the location in the variables area of the variable pointed to by CH-ADD and returns the address in the HL register pair. The second ROM routine, MAKE SPACE, inserts BC bytes at the address pointed to by HL.</p>
+
+<p>The operation of the routine can be checked by adding the following lines to the hexadecimal loader:</p>
+
+<pre>1000 DIM A$(2,3)
+1010 LET A$(1)=&quot;ABC&quot;
+1020 LET A$(2)=&quot;DEF&quot;
+1030 GO SUB 2000
+1040 POKE 16514,2
+1050 RAND USR 16523
+1060 GO SUB 2000
+1070 STOP
+2000 LET W=PEEK 16400+256*16401
+2010 FOR I=W TO W+21
+2020 PRINT I,PEEK I
+2030 NEXT I
+2040 PAUSE 32768
+2050 CLS
+2060 RETURN</pre>
+
+<p class="first">Execute the test program by entering:</p>
+
+<pre>RUN 1000</pre>
+
+<p>The program declares an array A$ and PRINTs the contents of the first 22 bytes of the variables area where the array is held. The user can note the contents of the display and compare it to the format of an array as shown on pages 173 and 174 of ZX-81 Basic Programming.</p>
+
+<p>The program then doubles the size of the array and displays the first 22 bytes again. The user will see that the total length of the array has increased appropriately and that the size of the first dimension has doubled.</p>
+
+<p>With a little care the routine can be adapted to run on the Spectrum. The ROM routines LOOKVARS and MAKE SPACE are located at 10418 and 5717 respectively - 28B2 and 1655 in hexadecimal. CH-ADD is at 23645 - 5C5D hexadecimal. It is also necessary to alter the addresses at which the scale factor and the name of the array are stored.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre><b>Table 2. A ZX-81 routine to enlarge an array dynamically.</b>
+
+Hex code     Assembler code     Comment           Hex code     Assembler code     Comment
+3A 82 40     LD A,(16514)       Return if         09           ADD HL,BC          Set HL to
+FE 01        CP 1               parameter         38 2B        JR C,43            new length.
+D8           RET C              is zero.          D1           POP DE
+21 83 40     LD HL,16515        Set CH-ADD.       E5           PUSH HL
+22 16 40     LD (16406),HL                        A7           AND A
+CD 1C 11     CALL LOOKVARS      Find array.       ED 52        SBC HL,DE          Set BC to
+D8           RET C              Return if         44           LD B,H             increase
+C0           RET NZ             numeric.          4D           LD C,L             in length.
+7E           LD A,(HL)          Return            E1           POP HL
+FE 80        CP 128             if                E3           EX (SP),HL         Set HL to
+138          RET C              string.           E5           PUSH HL            address of
+23           INC HL             Set A to          19           ADD HL,DE          end of array.
+23           INC HL             number of         23           INC HL
+23           INC HL             dimensions.       CD 9E 09     CALL MAKE SPACE    Enlarge array.
+7E           LD A,(HL)                            El           POP HL
+CB 27        SLA,A              Multiply by       Dl           POP DE
+06 00        LD B,0             two and           73           LD (HL),E          Insert new
+CB 10        RL B               add one,          23           INC HL             length.
+3C           INC A              transfer          72           LD (HL),D
+4F           LD C,A             to BC.            23           INC HL
+2B           DEC HL             HL points to      23           INC HL
+56           LD D,(HL)          length.           4E           LD C,(HL)          Set BC to
+2B           DEC HL             DE is             23           INC HL             first
+5E           LD E,(HL)          old length.       46           LD B,(HL)          dimension.
+E5           PUSH HL            Save.             11 00 00     LD DE,0            Calculate
+D5           PUSH DE                              EB           EX DE,HL           new first
+EB           EX DE,HL           Set DE            3A 82 40     LD A,(16514)       dimension.
+A7           AND A              to old            09           ADD HL,BC
+ED 42        SBC HL,BC          data length.      3D           DEC A
+EB           EX DE,HL                             FE 00        CP 0
+21 00 00     LD HL,0            Calculate         20 FA        JR NZ,-6
+3A 82 40     LD A,(16514)       new data          EB           EX DE,HL
+A7           AND A              length.           72           LD (HL),D          Store new
+19           ADD HL,DE                            2B           DEC HL             first
+38 33        JR C,51            Jump on overflow. 73           LD (HL),E          dimension.
+3D           DEC A                                C9           RET
+FE 00        CP 0                                 El           POP HL             If overflow
+20 F8        JR NZ,-8                             El           POP HL             then return.
+                                                  C9           RET</pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="ssimon.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Sinclair Simon"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 14 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>May 1983</h6>
+
+</body>
+</html>

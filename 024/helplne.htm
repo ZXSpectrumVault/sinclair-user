@@ -1,0 +1,261 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 24 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX-81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, March 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="books.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Books"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 24 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson4.gif" width=275 height=290 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1>Manipulating the sprites to eliminate flickering</h1>
+
+<p class="first"><b><font size="+1">Our expert Andrew Hewson introduces a graphics routine which makes use of the Spectrum attributes file</font></b></p>
+
+<p class="first">IN THE TWO YEARS I have been writing this column I have observed the gradual changes in the requests I have received. In the early days almost all the letters concerned the ZX-81 and most of them were fairly straightforward. These days roughly two out of every three are from Spectrum owners and very often the topic on which information is requested would need several chapters of a book to do it justice.</p>
+
+<p>Take, for example, this letter from Falgun Patel. He writes: <b>I am having great difficulty with a car game program which I am writing. The car is printed at the bottom of the screen and as it scrolls off the screen it has to be reprinted, causing a flickering. Another problem is that because the car is two characters high and two characters wide the top of the car appears briefly where the bottom of the car should be. On the Commodore 64 the problem can be solved by using sprite graphics which are not affected when the screen scrolls. Is there a machine code routine which simulates sprite graphics on the Spectrum?</b></p>
+
+<p>I find the letter typical of a number I have received in recent weeks, interesting for a number of reasons. First, it reflects the increasing sophistication of Sinclair users. Six months ago I often received letters requesting routines for scrolling the entire Spectrum screen and I dealt with the topic at that time. Falgun has observed that there are games for the Spectrum on the market which appear to use sprite graphics i.e., they scroll different parts of the screen independently of one another and therefore wishes to incorporate the feature in his own software.</p>
+
+<p>Second, his letter implies that a machine code routine to generate and manipulate sprite graphics should be fairly straightforward to design and write. That is a common assumption made by many correspondents who believe that I must produce this kind of routine in the odd half-hour between Coronation Street and supper-time. Unfortunately that is not true. There was a lag of about 15 months between the launch of the Spectrum and the time when the first 'sprite-like' games appeared on the market. Modesty forbids me to claim that I am quicker than anyone else at this kind of job.</p>
+
+<p>Third, the letter is a challenge to write some software which will be of interest to most readers and stimulate a few to develop and extend it. I am not one to decline such a challenge readily.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'Software for generating and handling sprites must be capable of dealing with a reasonable number of them simultaneously'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>Having accepted the challenge, it did not take long to realise that a complete response was impossible in the space available. Hence the software presented serves to demonstrate the principle of sprite graphics using only the Spectrum attributes file. That approach has the advantage that the routines can be adapted in a fairly straightforward manner to run on the ZX-81 and I explain how to do so at the end of this column.</p>
+
+<p>A sprite can be defined as a portion of the display image which can be moved independently of all other features of the display. Software for generating and handling sprites must be capable of dealing with a reasonable number of them simultaneously and it should be possible to overlay two or more sprites at the same position on the screen. When overlaid, sprites should either appear to pass behind or to pass through one another.</p>
+
+<p>The background forms an important component of a sprite display because the software must rebuild it every time a sprite passes over it. A plain background is the simplest to handle and so I have adopted this form. The fundamental rule to remember is to check before plotting each component part that the part of the display which will be covered by the sprite is part of the background. In that way you will ensure that sprites are plotted only on the background and never on one another.</p>
+
+<p>Similarly, when unplotting a sprite to move it elsewhere always check that the item to be &quot;painted over&quot; is part of the sprite being considered. If you do not observe that procedure you will find that the display will become cluttered with portions of sprites left over from previous cycles.</p>
+
+<p>To reduce flickering, each sprite must dwell on the screen for as long as possible, hence the basic steps in any sprite program are unplot sprite from old position; plot sprite at new position; repeat those two functions for each sprite in turn; execute all other routines incorporating delays if necessary; and return to the first situation.</p>
+
+<p>If step one is executed for all sprites and then step two is executed for all sprites, the images will appear to pass in front and behind one another. Alternatively if step one, then step two are executed for each sprite in turn, the images will appear to superimpose on one another. The latter procedure is probably more appealing to the eye but with a large number of sprites the flickering can become pronounced. The routines in table one can be used to plot and unplot a single sprite and the Basic program in table two shows how the routines can be used to drive two or more sprites.</p>
+
+<p>Because of the complexity of the routines I have departed from my usual procedure of giving a ready-assembled list of machine code. Hence the reader will almost certainly wish to use an assembler program when loading the routines into his machine. The routines and their functions are:</p>
+
+<p>RESETBG - Paint the attributes file uniformly using the colour code stored in address 23551 the last byte of the printer buffer.</p>
+
+<p>OFFSET - The IX register holds an address. Locations IX and IX + 1 hold the column number and row number respectively of the position of the upper right corner of the current sprite in the attributes file. Calculate the corresponding address in the file and store it in HL.</p>
+
+<p>PLOTGROUP - The main routine which plots, if the B register contains 0, or unplots, if the B register contains 1, a sprite. This routine calls:</p>
+
+<p>PLOTLINE - Plots or unplots a line of sprite characters by calling:</p>
+
+<p>PLOTLOC - Plot or unplot a character location at the address held in HL from the data at the address held in DE, when plotting or 23551, when unplotting.</p>
+
+<p>The data for each sprite is held as follows:
+
+<ul>
+<li>IX + 0 - column number in attributes file.</li>
+<li>IX + 1 - row number in attributes file.</li>
+<li>IX + 2 - width of sprite in characters.</li>
+<li>IX + 3 - height of sprite in characters.</li>
+<li>IX + 4 - This address is transferred to DE. DE + 0 to DE + (IX+2)*(IX+3) define the sprite.</li></ul></p>
+
+<p>I have listed the routines as if they were to be assembled at address 50000. I have then listed four routines to be assembled at 51100, 51200, 51300, 51400 which plot and unplot each of two sprites.</p>
+
+<p>The principal alterations when transferring the routines to the 16K ZX-81 are:</p>
+
+<p>Choose new locations to store the data and re-set IX accordingly; use the address held in D FILE instead of 22528 throughout; alter OFFSET and PLOTGROUP to take account of the single marker byte at the end of each 32-character display line on the ZX-81.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre><b>Label        Assembly code           Comment</b>
+ORG 50000                            Assemble code at address
+                                     50000.
+RESETBG      LD HL,22528             Address of attributes to HL.
+             LD BC,768               Length of attributes to BC.
+BG           LD A,(23551)            Background code to A.
+             LD (HL),A               Paint background at (HL).
+             INC HL                  Move to next location.
+             DEC BC                  Decrement length counter.
+             LD A,B                  Test to see if
+             OR C                    task is complete.
+             CP 0
+             JR NZ,BG                Repeat if incomplete.
+             RET                     Return on completion.
+OFFSET       LD HL,22528             Address of attributes to HL.
+             LD B,0                  Clear register B.
+             LD C,(IX+0)             Load column counter into C.
+             ADD HL,BC               Move to position of column.
+             LD C,(IX+1)             Load row counter into C.
+             LD DE,32                32 is length of one attribute
+                                     line.
+NEXTLINE     LD A,C                  Move to position of row
+             CP 0                    using the calculation
+             JR Z,END                (jump if calculation complete)
+             ADD HL,DE               HL=HL+C*DE.
+             DEC C
+             JR NEXTLINE             Continue calculation.
+END          PUSH IX                 Transfer value in IX to DE
+             POP DE                  via the stack.
+             INC DE                  Increment DE
+             INC DE                  four times so that
+             INC DE                  it points to the colour
+                                     information
+             INC DE                  for the group.
+             RET                     Return
+PLOTGROUP    LD A,0                  Clear A register.
+             LD C,(IX+3)             Load C with height of group.
+LINE         PUSH HL                 Save current position.
+             CALL PLOTLINE           Plot a line from the group.
+             POP HL                  Retrieve previous position.
+             DEC C                   Decrement height counter
+             CPC                     and
+             RET Z                   return if group is complete.
+             PUSH DE                 Save position in group colour
+                                     info.
+             LD DE,32                Step down by one line
+             ADD HL,DE               in the attributes file.
+             POP DE                  Retrieve position.
+             JR LINE                 Jump to plot next line in
+                                     group.
+PLOTLINE     LD A,(IX+2)             Load A with width of group.
+LOC          CALL PLOTLOC            Call routine to plot next
+                                     location.
+             INC HL                  Increment location in
+                                     attributes file.
+             INC DE                  Increment position in colour
+                                     group info.
+             DEC A                   Decrement width counter.
+             CP 0                    Repeat if
+             JR NZ,LOC               line is not complete.
+             RET                     Return on completion.
+PLOTLOC      PUSH AF                 Save group width counter.
+             LD A,B                  If B contains 0 then sprite is
+                                     to be
+             CP 0                    plotted, otherwise
+             PUSH BC                 (save value in B)
+             LD B,(HL)               (load B with contents of
+                                     location)
+             JR Z,PLOT               it is to be unplotted.
+             LD A,(DE)               Unplot - load A with colour
+                                     info.
+             CP B                    Compare with contents of
+                                     location.
+             JR NZ,ENDP              If dissimilar then do nothing.
+             LD A,(23551)            Contents and colour info
+                                     identical
+             LD (HL),A               hence paint location into
+                                     background.
+             JR ENDP                 Jump to end.
+PLOT         LD A,(23551)            Plot - load a with
+                                     background colour.
+             CP B                    Compare with contents of
+                                     location.
+             JR NZ,ENDP              If dissimilar then do nothing.
+             LD A,(DE)               Contents and background
+                                     identical
+             LD (HL),A               hence paint in part of sprite.
+ENDP         POP BC                  Recover plot/unplot flag.
+             POP AF                  Recover width counter.
+             RET                     Return
+ORG 51000                            Assemble at 51000
+             LD IX,23296             Data on first sprite is at
+                                     23296.
+             CALL OFFSET             Define position in attributes
+                                     file.
+             LD B,0                  Set plot/unplot flat to PLOT.
+             CALL PLOTGROUP          Plot first sprite.
+             RET                     Return.
+ORG 51100                            Assemble at 51100
+             LD IX,23296             Data on first sprite is at
+                                     23296.
+             CALL OFFSET             Define position in attributes
+                                     file.
+             LD B,1                  Set plot/unplot flat to
+                                     UNPLOT.
+             CALL PLOTGROUP          Unplot first sprite.
+             RET                     Return.
+ORG 51200                            Assemble at 51200
+             LD IX,23306             Data on second sprite is at
+                                     23306
+             CALL OFFSET             Define position in attributes
+                                     file.
+             LD B,0                  Set plot/unplot flat to PLOT.
+             CALLPLOTGROUP           Plot second sprite.
+             RET                     Return.
+ORG 51300                            Assemble at 51300
+             LD IX,23306             Data on second sprite is at
+                                     23306
+             CALL OFFSET             Define position in attributes
+                                     file.
+             LD B,1                  Set plot/unplot flag to
+                                     UNPLOT.
+             CALLPLOTGROUP           Unplot second sprite.
+             RET                     Return.
+
+<b>Table 1. A Spectrum assembly language program which, when driven from
+the Basic program in table two, demonstrates the principles of
+&quot;sprites&quot; by manipulating two groups of characters in the attributes file.</b>
+
+
+10  POKE 23298,2                     : REM Width of first sprite.
+20  POKE 23299,3                     : REM Height of first sprite.
+30  FOR I= 23300 TO 23305            : REM Colour of sprite is to be
+40  POKE I,60                        : REM green INK on white PAPER.
+50  NEXT I
+
+60  POKE 23308,3                     : REM Width of second sprite.
+70  POKE 23309,2                     : REM Height of second sprite.
+80  FOR I= 23310 TO 23315            : REM Colour of sprite is to be
+90  POKE I,40                        : REM black INK on cyan PAPER.
+100 NEXT I
+
+110 POKE 23551,32                    : REM Background PAPER to green.
+120 RANDOMIZE USR 50000              : REM Reset background colour.
+200 INPUT &quot;ROW1&quot;;I                   : REM Enter position of first
+210 INPUT &quot;COLUMN1&quot;;J                : REM sprite.
+220 POKE 23296,I
+230 POKE 23297,J
+240 RANDOMIZE USR 51000              : REM Plot first sprite.
+300 INPUT &quot;ROW2&quot;;I                   : REM Enter position of second
+310 INPUT &quot;COLUMN2&quot;;J                : REM sprite.
+320 POKE 23306,I
+330 POKE 23307,J
+340 RANDOMIZE USR 51200              : REM Plot second sprite.
+400 PAUSE 0                          : REM Pause to inspect effect.
+410 RANDOMIZE USR 51100              : REM Delete first sprite.
+420 RANDOMIZE USR 51300              : REM Delete second sprite.
+500 GO TO 200                        : REM Repeat.
+
+<b>Table 2. A Spectrum Basic program to drive the &quot;sprite&quot; routines listed
+in table one.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="books.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Books"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 24 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>March 1984</h6>
+
+</body>
+</html>

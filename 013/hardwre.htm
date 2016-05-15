@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 13 - Hardware World</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Hardware news from Sinclair User, April 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 13 Contents"></a>
+<a href="mazes.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Maze Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Hardware World</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1>Non-wobble RAM pack</h1>
+
+<p class="first">CHEETAH MARKETING has produced a 16K RAM pack for the ZX-81 which stops any RAM pack wobble without using glue, tape or screws. The front has been contoured to fit the curved back of the ZX-81 and fits it like a glove.</p>
+
+<p>Vigorous tests were carried out, such as thumping the keyboard heavily, but it refused to crash. The cost is &#163; 19.75 inc. VAT and postage.</p>
+
+<p>Cheetah also makes a 64K RAM pack for &#163;44.75. Printer owners may be pleased to know that it also works well with the Sinclair printer.</p>
+
+<p>Cheetah Marketing is at London.</p>
+
+<img src="hardwre1.jpg" width=250 height=161 hspace=10 vspace=10 border=0 align="right" alt="ZON X-81">
+<h2>ZON X for Spectrum</h2>
+
+<p class="first">BI-PAK has now made the ZON X-81 sound box available for the Spectrum as well as the ZX-81. It contains an 8912 three-channel sound chip with a powerful amplifier, loudspeaker and volume control in a 6in. x 3in. x 2in. black box. Everything is powered from the computer and some complicated sounds can be generated which will repeat without the aid of the computer.</p>
+
+<p>As the device is I/O-mapped it requires machine code on the ZX-81 but an ingenious method of making it compatible with other REM-located machine code makes it easy. The Spectrum must use an additional board which contains a 3.5MHz oscillator to stabilise the frequency used. That is about 2in. long and fits between the Spectrum and the ZON 81.</p>
+
+<p>One problem with the decoding makes it incompatible with the Microdrive and RS232 intended for the Spectrum as it uses A4, which Sinclair has already declared will be used by its devices. Apart from that it works well on both machines, providing a cheap and easy alternative to the BEEP command.</p>
+
+<p>Bi-Pack sells the ZON X for &#163;25.95 and the Spectrum board for &#163;6.80.</p>
+
+<h2>Advanced graphics from Memotech</h2>
+
+<p class="first">MEMOTECH has been producing RAM packs for some time but also produces a keyboard for the ZX-81 and a hi-res pack. The keyboard does not require the user to dive into the machine to fit. Its interface module goes into the back of the ZX-81 like all the other modules and the keyboard is on a 7in. cable emerging from the end of the metal box. It provides only 40 keys - no space bar - and the keys tend to echo inside the box, but it works well. It would be very useful to the non-technical user and does not invalidate the guarantee.</p>
+
+<p align="center" class="first"><img src="hardwre2.jpg" width=500 height=269 hspace=10 vspace=10 border=0 alt="Memotech keyboard"></p>
+
+<p>The hi-res pack - HRG - requires the use of at least a 16K RAM pack in which to store its high-res pages. Depending on the size of memory, more than one 6,337-byte page can be stored. The pages must be stored outside the normal memory above RAMTOP.</p>
+
+<p>The routines to control the screen are in a 2K EPROM from 8K-10K and use certain reserved Basic variables to transfer information to the routines. Twelve variables are required to be set up to make full use of the system; one of the 4 is used to contain one of 30 commands.</p>
+
+<p>The screen must first be set up by allocating variable V to the start of the video page, Z$ to &quot;STARCH&quot; and calling the user routine via RAND USR 8912. That then sets up the screen, clears it and changes the screen from the Sinclair version.</p>
+
+<p>You can then see only the hires screen, no INPUTs or commands are visible, and PRINT, PLOT and the like will appear on the Sinclair screen. To return to the Sinclair screen you must either press the black button on the side of the hi-res unit or set Z$ to &quot;Basic&quot; and call the user routine again.</p>
+
+<p>All commands are given in that way through the same USR call. X and Y variables determine the plot position, X being in the range 0-247 and Y is 0-191. Lines can be drawn from point P/Q to X/Y using &quot;LINE&quot;; &quot;UNLINE&quot; unplots them.</p>
+
+<p>It is a useful device but one which is not easy to learn to use. Many variables have to be set and re-set during the program for it to work. Error codes are given but things like the scroll commands can crash the system if they are not used properly.</p>
+
+<p>The casing is stylish and strong and Memotech includes Velcro strips to stick the packs to the ZX-81 to stabilise them. All the Memotech packs are moulded to fit the back of the ZX-81 and each other.</p>
+
+<p>The Memotech keyboard costs &#163;49.95 and the HRG pack &#163;39.90. They can be purchased from Memotech Ltd, Oxon, or from larger W H Smith branches.</p>
+
+<h2>32-way port for Sinclairs</h2>
+
+<p class="first">EPROM SERVICES produces a 32-way port for the ZX-81 or Spectrum which has LEDs to indicate the state of its outputs. The device is based on an 8255 chip which is I/O-mapped to give 24 lines. One of the outputs is then fed to a set of eight flip-flops which produce the other eight lines.</p>
+
+<p>A flip-flop gives two outputs which are always the opposite of each other, so if one is 0 the other is 1. That allows you to drive more devices but does not give more than 24 controllable two-state lines.</p>
+
+<p>One of the facilities provided is for using the port to select other devices.</p>
+
+<p>The PCB has no edge connector, so it has to be used with a motherboard or back-to-back connector.</p>
+
+<p>Eprom Services is at Leeds. It charges &#163;15 for the port and &#163;24 for a motherboard for the Spectrum.</p>
+
+<h2>Analogue joystick board</h2>
+
+<p class="first">MIDWICH has produced an analogue joystick board which fits both the ZX-81 and the Spectrum. It can take two joysticks by plugging them into two six-way DIN sockets on the side of the bare board. It is input/output-mapped and requires the use of a small section of machine code on the ZX-81.</p>
+
+<p>The board uses a ZN499E A/D converter and a switch to select which direction to measure. The results vary from 0 to 255 for each direction on the joystick - N/S and E/W - and the &quot;FIRE&quot; button operates one bit each of a second port, one giving 0 or 128 and the other 0 or 64; the higher number indicates that the button is pressed. Both pressed gives 128 = 64 (191).</p>
+
+<p align="center" class="first"><img src="hardwre3.jpg" width=450 height=172 hspace=10 vspace=10 border=0 alt="Joystick board"></p>
+
+<p>Inserting the power plug is difficult, as not sufficient space has been left between that and the joystick sockets on the Spectrum version.</p>
+
+<p>Midwich sells the board as a kit for &#163;17.20 and assembled for &#163;22.95. The joysticks cost &#163;4.50 uncased with fire button. The kits are well-designed with good instructions. Midwich Computer Co Ltd, Suffolk.</p>
+
+<h2>New company goes hi-res</h2>
+
+<p class="first">A HIGH-RESOLUTION graphics pack designed to work on a ZX-81 with at least 8K of memory is the G007 produced by the Nottingdale Technology Centre. By extending certain commands in Basic such as SLOW, FAST, CLS and, PLOT it gives the ZX-81 a 256 x 192 dot screen - it is slightly bigger but to keep the calculations simple it is limited to that.</p>
+
+<p>The extra number at the front of the commands gives access to the extra commands, i.e., CLS 3 inverts the whole screen without clearing it. The routines available allow the plotting of individual pixels on the screen, drawing lines, triangles and parts of circles, as well as shading them.</p>
+
+<p>PRINTing may be done to any pixel on the screen as the PRINTing corresponds to the graphics pointer. That enables you to print a character, number or letter at any place on the hi-res screen. The SLOW command determines whether it is printed in black or white and what the background will be.</p>
+
+<p>The use of the hi-res screen is enhanced further by the fact that the edit line is constantly on the screen, so INPUT and commands can be given without having to switch backwards and forwards between screens. Both the Sinclair screen and the hi-res version are separate and so clearing one will not effect the other.</p>
+
+<p>Both screens can be SAVEd, LOADed and COPYed from Basic. The hi-res screen is stored as the last program line - line G007 - and can be deleted only by a USR routine. The Sinclair Basic will not allow you to SAVE it as a named program, however, so LOAD&quot;&quot; must be used to get it back.</p>
+
+<p>The program is stored in a 2K (2716) EPROM inside the unit and uses the internal memory of the ZX-81 - 1K or 2K - to store its system variables. All of those are described in the manual with the unit, so that the machine code programmer can also use them. There are three example programs, only one of which failed to work.</p>
+
+<p>The device goes directly on to the back of the ZX-81, as it has to decode the internal memory into using the 8K-12K section of memory on the ZX-81. That means it could be incompatible with some ZX-81 RAM packs or add-ons. Using it is very easy, as one soon becomes used to adding the extra numbers they are all fully syntax-checked too - and the display is rock steady.</p>
+
+<p>Perhaps the next project for the group will be a colour board, as it would make it a very cheap BBC machine, but using only 6K of memory for the screen. To order the device, send &#163;37.55 to Nottingdale Technology Centre Ltd, London.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 13 Contents"></a>
+<a href="mazes.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Maze Games"></a></p>
+
+<h6 align="center">Sinclair User<br>April 1983</h6>
+
+</body>
+</html>
+

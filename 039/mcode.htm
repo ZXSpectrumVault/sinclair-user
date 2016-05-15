@@ -1,0 +1,349 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 39 - Machine Code</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Z80 machine code programming feature from Sinclair User, June 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#CCCCCC" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 39 Contents"></a>
+<a href="htsquad.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Machine Code</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="mcode1.gif" width=550 height=355 hspace=10 vspace=10 border=0 align="right" alt="">
+
+<h1><i>The day of reckoning</i></h1>
+
+<p class="first"><b><font size="+1">Marcus Jeffery continues his voyage into the realms of the Z80 and discovers a calculating machine</font></b></p>
+
+<p class="first"><a href="../038/mcode.htm">Last month</a>, we looked at the 'load' instructions available using the Z80 instruction code. Now we will cover a few of the necessary evils - machine code arithmetic! We'll also use a couple of these arithmetic instructions to implement a high class screen clearing routine, which you'll be able to use in your own programs.</p>
+
+<p>We have already seen an arithmetic statement in <a href="../038/mcode.htm">last month's</a> routine:</p>
+
+<pre>  INC HL ;HL = Next byte in file area</pre>
+
+<p class="first">As you probably guessed, that has the effect of adding one to the HL register pair. Remember, we didn't use any brackets. So the HL registers are changed. Not the contents of the location which they address. The instruction:</p>
+
+<pre>  INC (HL)</pre>
+
+<p class="first">would have a different effect. The sequence of instructions in <a href="#fig1">figure one</a> may make this clearer.</p>
+
+<p>We can increment the other register pairs in the same way, with:</p>
+
+<pre>  INC BC</pre>
+
+<p class="first">and</p>
+
+<pre>  INC DE</pre>
+
+<p class="first">but there are no instructions to change the contents of these addresses by surrounding them with brackets. In addition, there are increment instructions for all the single registers, so:</p>
+
+<pre>  INC A</pre>
+
+<p class="first">would add one to the A (accumulator) register.</p>
+
+<p>As mentioned in <a href="../038/mcode.htm">the first article</a>, each register can only hold a number in the range 0 to 255, so what happens if we try to increment a register which already holds the number 255? If we look at this in binary,</p>
+
+<pre>  11111111b + 1 = 100000000b</pre>
+
+<p class="first">giving a result of nine bits. Since a register can only hold eight bits, the top bit is lost, leaving a result of zero. In other words, when a register is incremented over its maximum value, it wraps around to zero again - there are no helpful 'Out of range' messages like Basic.</p>
+
+<p>Exactly the same thing happens when you increment register pairs, but here the allowed range is 0 to 65535. It is interesting to examine the lower byte of the register pair, because it acts in the same way as a single register, wrapping around to zero. However, here the ninth bit is not lost, but carried over to be added to the high byte register. So</p>
+
+<pre>  LD B,0   ;Top byte contains zero
+  LD C,255 ;Lower byte is set to the maximum value
+  INC BC   ;BC should now be 256,</pre>
+
+<p class="first">which means B now contains the value 1 and C has wrapped around to zero.</p>
+
+<p>In much the same way as increment works, you can decrement registers, which subtracts one from the register contents. Values wrap around in the same way too, so</p>
+
+<pre>  LD A,0  ;A=0
+  DEC A   ;A=255</pre>
+
+<p class="first">All of the INCrement and DECrement instructions are displayed in detail in <a href="#fig9">figure nine</a>.</p>
+
+<p>Of course, it is not always the case that you only want to add or subtract the value '1'; you may want to add, say, five to a register. You could do that by forming a loop to add or subtract a certain number of times, but fortunately Z80 contains more generally useful add and subtract commands. The instruction:</p>
+
+<pre>  ADD A,5</pre>
+
+<p class="first">would add five to the accumulator. Most processing is carried out in the A register (accumulator - hence its name), so there are no equivalent instructions for other registers. You can add registers to the accumulator using the instructions</p>
+
+<pre>  ADD A,reg (reg = A,B,C,D,E,H or L)</pre>
+
+<p class="first">Yes, it's even possible to add the accumulator to itself with the instruction:</p>
+
+<pre>  ADD A,A</pre>
+
+<p class="first">If no wrap around occurs, then this will have the effect of doubling the contents of the A register.</p>
+
+<p>Another useful ADD instruction is</p>
+
+<pre>  ADD A,(HL)</pre>
+
+<p class="first">which will add the contents of the byte location addressed by the HL register pair to the accumulator. This may sound a bit of a mouthful, but to make it clearer:</p>
+
+<pre>  LD A,8     ;A = 8
+  LD HL,123  ;HL = 123
+  LD (HL),5  ;The location 123 now contains 5
+  ADD A,(HL) ;A = 13 (8+5), not 131.</pre>
+
+<p>Finally, you can add register pairs together, as long as the result is in the HL register pair, using</p>
+
+<pre>  ADD HL,rp (rp = BC, DE or HL)</pre>
+
+<p class="first">Here again, you could double the contents of HL by adding it to itself.</p>
+
+<p>As you might expect, most of these instructions, but not quite all of them, have similar SUBtraction instructions of the form:</p>
+
+<pre>  SUB A,17</pre>
+
+<p class="first">which subtracts 17 from the contents of the A register. All of these instructions are shown in <a href="#fig9">figure nine</a>.</p>
+
+<p>When a value exceeds the range of a register, we said that the ninth bit is lost: however, that is not quite true. In the first article, we referred to an F register, but we have not yet used it. The F register is a special register which holds YES/NO values, called Flags, which we may find useful.</p>
+
+<p>So, when a result wraps around a bit - binary digit - in the F register is set to one. That bit is known as the carry flag, and can be used for operations on large numbers - that is, greater than 65535 - but we will leave that for another article, and instead cover something more interesting.</p>
+
+<p>The Z80 instruction set does not have any multiplication or division instructions, so those have to be simulated using repeated additions or subtractions. There are a few 'shift' instructions to make life a little easier.</p>
+
+<p>If we were to shift all the bits in a register to the left, then we would in effect multiply the contents by two. So, if we take the binary number</p>
+
+<pre>  00110100b = 52 ((1*4) + (1*16) + (1*32))</pre>
+
+<p class="first">and shift all the bits to the left, we get</p>
+
+<pre>  01101000b = 104 ((1*8) + (1*32) + (1*64))</pre>
+
+<p class="first">We can do that in Z80 using the instruction</p>
+
+<pre>  SLA reg (reg = A,B,C,D,E,H or L)</pre>
+
+<p class="first">SLA stands for Shift Left Arithmetic - not a particularly memorable mnemonic, I'm afraid. If a '1' - that is, a set bit - is shifted out of the top position, then it is lost - to the carry flag - and a zero is always shifted into the lowest bit. The only other left- shift instruction is</p>
+
+<pre>  SLA (HL)</pre>
+
+<p class="first">which shifts the contents of the location addressed hv the HL register pair.</p>
+
+<p>We can do exactly the opposite of this using the SRL - Shift Right Logical - instructions. Just to confuse matters further, there are similar SRA - Shift Right Arithmetic - instructions. Those are almost the same as SRL, hut instead of moving a zero into the top bit, that bit remains unchanged. <a href="#fig2">Figure two</a> may explain that better and all the instructions are shown in <a href="#fig9">figure nine</a>.</p>
+
+<p>So what can we use those instructions or? Well, they have obvious uses for multiplication and division, but the assembly code in <a href="#fig3">figure three</a> shows a more interesting application.</p>
+
+<p>All the characters which you see in the display file are held in a series of bytes. Those start at location 4000h - h = hex, 16384 in decimal - and continue to location 57FFh, or for 6144 locations. Each character in this display area is made up from eight bytes.</p>
+
+<p><a href="#fig4">Figure four</a> shows the arrangement for the letter A. If we were to shift all the bytes in the display file to the right, then all the characters would be displaced by one bit. If we did that eight times then the characters would slowly disappear!</p>
+
+<p>A Basic program to perform this professional-looking screen clear is shown in <a href="#fig5">figure five</a>. Try this out first. When you run it, you may be forgiven for wondering why nothing is happening. The screen is in fact clearing, but very, very slowly.</p>
+
+<p>Now type in the program in <a href="#fig6">figure six</a> which loads the equivalent machine code routine. If you typed in the Attribute Fill routine <a href="../038/mcode.htm">last month</a>, then you will he able to modify it, because the data - line 2000 onwards - is all that has changed. This program works quite a bit faster.</p>
+
+<p>If we go hack to the assembly code - <a href="#fig3">figure three</a> - we can see how the program works. The B register is loaded with the value eight, because we want to shift the screen to the right eight times to clear it. The main loop then starts by loading the HL register pair with the first screen location, and the DE register pair with the number of bytes on the screen which need to be changed.</p>
+
+<p>The loop from label SHIFT is then executed 6144 times. This loop performs the necessary SRL instruction, then increments the HL register, so that HL eventually moves through the entire screen. Do not worry about how the loops work just at the moment - we'll be looking at those <a href="../040/mcode.htm">next month</a>.</p>
+
+<p>You can easily include the routine in your own programs. Not only does the screen clear in an unusual manner, but none of the attributes are changed. If you add the lines given in <a href="#fig7">figure seven</a> to the program, which just colour each character square, you will see that the colours are left unchanged. You could subsequently set those using PAPER and CLS, or even use <a href="../038/mcode.htm">last month's</a> Attribute Fill routine.</p>
+
+<p>The routine is easily modified to perform slightly different functions, too. Change the data value &quot;CB3E&quot; (line 2010) to &quot;CB26&quot;. That is the code for &quot;SLA (HL)&quot;, which will perform a similar shift, but to the left.</p>
+
+<p>Z80 has a couple of interesting instructions which will rotate bytes. They work in a similar way to the shift instructions, but instead of a zero bit being shifted into the byte, the 'lost bit' is used - see <a href="#fig8">figure eight</a>. Try changing the &quot;CB3E&quot; data to &quot;CB06&quot; or &quot;CB0E&quot;, and change line 80 to &quot;GO TO 70&quot;, and see what happens.</p>
+
+<p><a href="../040/mcode.htm">Next month</a> we will see how the loops which we have been using are formed, then use that knowledge to implement a digital counter on the screen, where the digits rotate properly into their correct positions, just like a real digital clock.</p>
+
+<h2><i>Figures</i></h2>
+
+<a name="fig1"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<pre>                     ORG   60000
+                     LOAD  60000
+EA60 21D204          LD    HL,1234    ;HL = 1234
+EA63 3663            LD    (HL),99    ;The contents of the location
+                                      ;1234 are set to 99
+EA65 34              INC   (HL)       ;The contents of location
+                                      ;1234 now equal 100
+EA66 23              INC   HL         ;HL now contains 1235
+EA67 C9              RET
+                     END</pre>
+<p class="first"><b>Figure 1</b></p>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig2"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<img src="mcode2.gif" width=444 height=215 vspace=10 border=0 alt=""><br>
+<p class="first"><b>Figure 2.</b></p>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig3"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<pre>                     ORG   60000
+                     LOAD  60000
+EA60 0608            LD    B,8        ;B counts through 8 shifts
+EA62 210040   NEXT   LD    HL,16384   ;HL = start of screen memory
+EA65 110018          LD    DE,6144    ;DE = number of screen bytes
+EA68 CB3E     SHIFT  SRL   (HL)       ;Shift each screen byte right
+EA6A 23              INC   HL         ;Increment to next byte
+EA6B 1B              DEC   DE         ;Count the shifted locations
+EA6C 7A              LD    A,D
+EA6D B3              OR    E          ;Jump to label SHIFT if DE is
+EA6E 20F8            JR    NZ,SHIFT   ;still greater than zero
+EA70 10F0            DJNZ  NEXT       ;Repeat from NEXT eight times
+EA72 C9              RET
+                     END</pre>
+<p class="first"><b>Figure 3</b></p>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig4"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<img src="mcode3.gif" width=324 height=240 hspace=10 vspace=10 border=0 alt=""><br>
+<p class="first"><b>Figure 4</b></p>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig5"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<pre>  10 FOR i=1 TO 704
+  20 PRINT CHR$ (25*RND+65);
+  30 NEXT i
+  40 FOR j=1 TO 8
+  50 FOR i=16384 TO 16384+6143
+  60 POKE i,INT (PEEK i/2)
+  70 NEXT i
+  80 NEXT j
+  90 STOP</pre>
+<p class="first"><b>Figure 5</b></p>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig6"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<pre>  10 CLEAR 59999
+  20 GO SUB 1000
+  30 CLS
+  40 FOR i=1 TO 704
+  50 PRINT CHR$ (25*RND+65);
+  60 NEXT i
+  70 RANDOMIZE USR 60000
+  80 STOP
+1000 REM HEX LOAD ROUTINE
+1010 DEF FN p(x)=CODE h$(x)-48-7*(CODE h$(x)&gt;=65)
+1020 LET byte=0
+1030 RESTORE 2000
+1040 READ start
+1050 READ h$
+1060 IF h$=&quot;*&quot; THEN GO TO 1160
+1070 IF LEN h$&lt;&gt;2*INT (LEN h$/2) THEN PRINT &quot;Odd number of hex digits in: &quot;;h$: STOP
+1080 FOR i=1 TO LEN h$
+1090 IF NOT((h$(i)&gt;=&quot;0&quot; AND h$(i)&lt;=&quot;9&quot;) OR (h$(i)&gt;=&quot;A&quot; AND h$(i)&lt;=&quot;F&quot;)) THEN PRINT &quot;Illegal hex digit: &quot;;h$(i): STOP
+1100 NEXT i
+1110 FOR i=1 TO LEN h$ STEP 2
+1120 POKE start+byte,16*FN p(i)+FN p(i+1)
+1130 LET byte=byte+1
+1140 NEXT i
+1150 GO TO 1050
+1160 PRINT &quot;Code entered&quot;
+1170 PAUSE 150
+1180 RETURN
+2000 DATA 60000,&quot;0608&quot;,&quot;210040&quot;
+2010 DATA &quot;110018&quot;,&quot;CB3E&quot;,&quot;23&quot;
+2020 DATA &quot;1B&quot;,&quot;7A&quot;,&quot;B3&quot;,&quot;20F8&quot;
+2030 DATA &quot;10F0&quot;,&quot;C9&quot;,&quot;*&quot;</pre>
+<p class="first"><b>Figure 6</b></p>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig7"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<pre>  42 LET p=INT(8*RND)
+  44 LET q=INT(8*RND)
+  46 IF p=q THEN GO TO 44
+  48 PAPER p: INK q</pre>
+<p class="first"><b>Figure 7</b></p>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig8"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<img src="mcode4.gif" width=445 height=165 hspace=10 vspace=10 border=0 alt=""><br>
+<p class="first"><b>Figure 8</b></p>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig9"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<pre>INC        reg       - add one to the specified register
+INC        rp        - add one to the register pair
+INC        (HL)      - add one to the location addressed by the HL register pair
+DEC        reg       - subtract one from register
+DEC        rp        - subtract one from register pair
+DEC        (HL)      - substract one from the location addressed by the
+                       HL register pair
+ADD        A,byte    - add the given byte to the contents of the A register
+ADD        A,reg     - add the value of the given register to the A register
+ADD        A,(HL)    - add the contents of the byte location addressed by the
+                       HL register pair to the A register
+ADD        HL,rp     - add the value of the specified register pair to the
+                       HL register pair
+SUB        byte      - subtract the given byte from the A register
+SUB        reg       - subtract the contents of the register from the A register
+SUB        (HL)      - subtract the contents of the byte location addressed by
+                       the HL register pair from the A register
+
+<b>In the following four operations, the bit shifted out of the byte goes to the
+Carry Flag, and the bit shifted into the byte is zero.</b>
+
+SLA        reg       - shift the contents of the register left by one bit
+SLA        (HL)      - shift the contents of the location addressed by the
+                       HL register pair left by one bit
+SRL        reg       - shift the contents of the register right by one bit
+SRL        (HL)      - shift the contents of the location addressed by the
+                       HL register pair right by one bit</pre>
+<p class="first"><b>Figure 9</b></p>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><p class="first"><a href="../038/mcode.htm"><b>Previous article in series (issue 38)</b></a><br>
+<a href="../040/mcode.htm"><b>Next article in series (issue 40)</b></a></p></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 39 Contents"></a>
+<a href="htsquad.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a></p>
+
+<h6 align="center">Sinclair User<br>June 1985</h6>
+<h6 align="center">Another Fine Product transcribed by Jim Grimwood at <a href="http://www.users.globalnet.co.uk/~jimg/">YRUA?</a></h6>
+
+</body>
+</html>

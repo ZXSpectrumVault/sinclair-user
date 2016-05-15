@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 17 - Letters</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Letters page from Sinclair User, August 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="news.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="News"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 17 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>letters</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><table width="75%"><tr><td>
+
+<center><img src="../shared/images/letters1.gif" width=400 height=185 border=0 alt=""></center>
+
+<h1>Drawing in more critics</h1>
+
+<p class="first">I AM WRITING to give my support to J Johnson, whose <a href="../015/letters.htm#johnson">letter in the June issue</a> criticised the illustrations which accompany the program listings.</p>
+
+<p>It is easier to assimilate information if it is in a pleasant format, you say, but I am afraid that, like Johnson, I find nothing attractive about this particular format; it simply irritates me as it serves no useful purpose, adds nothing to the program listing, and wastes space which could be put to better use.</p>
+
+<p>Also, I fail to see how a program listing without the comic characters and silly remarks would be impossible to enter. All that is really required is an interesting, well-written program printed with clarity and accuracy.</p>
+
+<p>The present style of presentation may appeal to a minority of readers, perhaps to some of those in the under 16 age group. You should, however, bear in mind the results of the survey in your March issue which showed that only 29 percent of your readers are in that particular age-group, so please have some consideration for the rest of your readers.</p>
+
+<p>Incidentally, why not conduct another survey asking readers what they like and dislike about Sinclair User? I think I have already made it clear what I dislike most. As for my favourite part of the magazine, that is undoubtedly the Andrew Hewson column, for which two pages are not sufficient. If all the space saved from the comic bits were given to Hewson, then Sinclair User would be worth twice the price.</p>
+
+<p class="first"><b>J A Burgess</b></p>
+
+<p class="first">J JOHNSON'S <a href="../015/letters.htm#johnson">letter in the June issue</a> concerning the &quot;space-wasting stupid illustrations&quot; is something with which I disagree. I and probably many others think the illustrations are a very good idea, although they could be smaller.</p>
+
+<p>The user-defined graphics program in the same issue is probably a very good program but it wastes a whole page. The illustration takes 50 percent of the page and the program the other half. The page is wasted because everyone who has a Spectrum has the Horizons tape by Psion and on that tape is exactly the same program.</p>
+
+<p>Please make illustrations smaller and think about whether programs are worth inclusion or whether everybody has them.</p>
+
+<p class="first"><b>Philip Stanton</b></p>
+
+<h2>Quarts into pint pots</h2>
+
+<p class="first">I OWN A 1K ZX-81 and look forward to your publication every month. I have noticed in the last few months that some of the programs for the 16K ZX-81 will work on the 1K. That is mainly because, when compiling the programs, various byte-saving techniques have not been used, e.g., SGN PI to equal 1 or not PI to equal 0 and so on.</p>
+
+<p>So much so that the following programs, from your June issue, will in fact run on the 1K - Heavens Above, Codes, Space Supplies and Paranoid. Users of 1K should not give up because of a small memory. Check the listings of the 16K programs and re-write them slightly, maintaining all the important information.</p>
+
+<p class="first"><b>David Hambly</b></p>
+
+<h2>Picking out variables</h2>
+
+<p class="first">THE FOLLOWING tip may be useful. I at any rate had not realised the particular capacity of Sinclair Basic in question until recently. The ZX-81 is able to read a variable name out of a string and then evaluate the variable; and that may enable instructions to be passed to subroutines more compactly.</p>
+
+<p class="first">For example:</p>
+
+<pre>100 LET M=&quot;DGH&quot;
+110 GO SUB AS 900
+..............
+100 LET M= &quot;XHY&quot;
+320 GO SUB AS 900
+..............
+900 LET T=VAL
+A$(1)**VAL A$(2)+VAL A$(3)
+910 RETURN</pre>
+
+<p class="first">This saves several lines, each time the subroutine is called, over the alternative</p>
+
+<pre>100 LET A=D
+110 LET B=G
+120 LET C=H
+130 GO SUB 900
+..............
+300 LET A=X
+310 LET B=H
+320 LET C=Y
+330 GO SUB 900
+..............
+900 LET T = A**B + C
+910 RETURN</pre>
+
+<p class="first"><b>R W Sharples</b></p>
+
+<h2>The bug search goes on and on</h2>
+
+<p class="first">I READ with some interest the <a href="../015/letters.htm#reavell">letter in the June issue</a> about the bug in Hungry Horace - one which we discovered in January. I thought you may be interested in a bug in the Psion Planetoids which enables one to amass a limitless score without losing any ships.</p>
+
+<p>Shoot all the asteroids except one and then manoeuvre the ship into the top right corner of the screen. With care, it is possible to position the ship so that a small piece appears in each corner. That, coupled with the fact that the ship seems mysteriously to turn yellow in that area, makes one immune to destruction. It is possible to fire from all corners of the screen.</p>
+
+<p>Our high score using the technique stands at slightly more than 224,000. Also the game does strange things when pressing thrust and hyperspace simultaneously; try it. Surely it is possible to test games thoroughly for severe bugs like this?</p>
+
+<p class="first"><b>James Randall</b></p>
+
+<p class="first">I WRITE with reference to <a href="../015/letters.htm#reavell">Ben Reavell's letter</a> in the June issue. I own a 16K Spectrum and have the Hungry Horace cassette. To get out of the third maze, you go straight to the right, waiting for the park-keeper, then go round that section until it is safe to escape to the top. My best score is 1,000,030. It took more than an hour. I also have the Space Raiders cassette and my best score is 10,070.</p>
+
+<p class="first"><b>Nigel Power (15 years)</b></p>
+
+<h2>Tape pirates kill market</h2>
+
+<p class="first">HAVING OWNED a Spectrum for several months, I feel that I must write on the topic of illegal tape copying. Since buying a Spectrum, I have encountered only a few fellow-users and more than several of them have offered to copy any tapes I would like for my own use.</p>
+
+<p>If that small cross-section of users is typical of users nation-wide, I feel that something should be done to suppress the illegal activity.</p>
+
+<p>The video industry has already experienced pirate videos and it seems that the software industry has a similar fate in store. The video industry has already taken steps against illegal copiers heavy fines and imprisonment - and I hope those actions will not be necessary in the software industry.</p>
+
+<p>Copiers must realise that what they are doing is not only illegal, contravening copyright, but also is killing the industry from which they are feeding. They are stealing from software houses and from the original writer, who will have spent many hours perfecting a program and will expect to profit from such work.</p>
+
+<p>In most cases, only about &#163;5 is saved on each tape in the short run and, compared to the prices of some tapes for games computers, such as Atari, which often cost &#163;30, it seems a small price to pay for games which are often excellent and other such enjoyment.</p>
+
+<p>So I appeal that next time you see a game which appeals to you, instead of breaking the law by obtaining a copy, often of very poor quality anyway, spend a small sum and buy from a legal source.</p>
+
+<p class="first"><b>J H Fletcher</b></p>
+
+<h2>Tight fit is better</h2>
+
+<p class="first">I WISH to reply to <a href="../014/letters.htm#powell">Chris Powell's letter</a> in the May edition. I do not know what he means by 'the misuse of the Basic language'. First, any use other than as an introduction to computing is strictly a misuse and, second, misuse or otherwise, I found it very useful.</p>
+
+<p>It has improved my programs because I can fit in much more. His saying the tips are bad habits is ridiculous, because anything which improves programs can only be good and so long as the inexperienced programmer knows what he is doing, nothing can go wrong.</p>
+
+<p>I do not agree that the ZX81 is 'cheap and easy' to expand to 16K. I had enough trouble getting the ZX-81. You have only to look at Sinclair Programs and the program pages in Sinclair User to see how many 1K ZX-81 owners there are.</p>
+
+<p class="first"><b>Simon Brunning</b></p>
+
+<h2>Programming blind</h2>
+
+<p class="first">READERS may be interested to learn that there is a way of programming the Spectrum without showing the listing.</p>
+
+<p>The blanking-out of the listing can be achieved by having as the line in one's program:</p>
+
+<pre>1 inverse video PRINT true video &quot; &quot;
+ENTER (Then Edit)</pre>
+
+<p class="first">When the line has come back for EDITING</p>
+
+<pre>1 true video CAP/SHIFT 8 once
+inverse video PRINT &quot; &quot; ENTER</pre>
+
+<p class="first">One will notice that on the edited version, when using inverse video just before the PRINT statement, a beep can be heard, which means it is operative.</p>
+
+<p class="first"><b>D Crompton</b></p>
+
+<h2>Random expansion is not repeated</h2>
+
+<p class="first">I AM SURE many readers will have found Andrew Hewson's solution to Stephen Maltby's problem - April issue - useful and educational. Unfortunately Hewson stuck to the strict terms of Weltby's problem of picking five random whole numbers between 1 and 10 without repetition and so restricted the elegance of what might have been a much more comprehensive routine.</p>
+
+<p>Anyone who tried Hewson's routine would have found it impossible to use for more than 50 percent of solutions. I would be pleased if you would publish my solution which will randomise all whole random numbers from 1 to N without repetition.</p>
+
+<p class="first">The principle is to make a selection initially from N possibilities. This value, a(r) is put to the &quot;back&quot; of the array, in place of a(n) which is stored temporarily as S; a(r) can then be replaced by what was A(n) on the second pass through the loop contained in lines 50 to 90, a selection is made from n=r possibilities which is exchanged with A(n-r) and so on. The important difference from Hewson's solution is the progressive restriction of choice, as previous selections are 'stacked' from back to front of the array &quot;a&quot;. Hewson attempts to make all elements of the array interchangeable which can obviously only be 50 percent successful.</p>
+
+<p class="first"><b>Tony Rickwood</b></p>
+
+<h2>Problems not exceptional</h2>
+
+<p class="first">T LAYCOCK - <a href="../015/letters.htm#laycock">letters June</a>, - is not one-in-a-million. I have just returned my Spectrum, which failed to work with 48K programs despite spending a month at W H Smith's service department. My neighbour had three machines, all failing, and in disgust bought a BBC micro which works perfectly. I shall try once more but if that one fails goodbye Sir Clive. </p>
+
+<p class="first"><b>J Grabinar</b></p>
+
+<h2>Signals from space</h2>
+
+<p class="first">HAVING JUST become a 16K Spectrum owner and being a licensed radio amateur I would like to know if any of your readers has any idea or suggestion of how to achieve programming of computer-enhanced signals from deep space? I am thinking the easiest might be to enhance CW Morse signals.</p>
+
+<p>On another front, having just obtained a printer, it strikes me that it must surely be usable as an ordinary recorder, such as for temperature, and a host of other applications where a record has to be kept of voltage or resistance changes - ECG, EEG. observations in plant physiology spring to mind.</p>
+
+<p>An instrumentation amplifier would be required and the motor would have to be speed-controlled. I wonder has anybody done any work on this, such as doctoring the 0/P or the Spectrum.</p>
+
+<p class="first"><b>H Graepel</b></p>
+
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="news.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="News"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 17 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<h6 align="center">Sinclair User<br>August 1983</h6>
+
+</body>
+</html>

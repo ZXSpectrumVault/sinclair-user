@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 5 - Company Profile</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="A review of the Data-Assette ZX-99 interface from Sinclair User, August 1982">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="toolkit.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Toolkit routines"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 5 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>interface review</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<p align="center" class="first"><b><font size="+1">Stephen Adams looks at the Data-Assette ZX-99 and finds it good but that it could involve a lot of expense.</font></b></p>
+
+<center><img src="zx991.jpg" width=450 height=412 border=0 alt="ZX-99 &amp; ZX-81"></center>
+
+<h1 align="center">Control system boosts power</h1>
+
+<p class="first">THE ZX-99 is a control system for up to four different tape recorders which also has an RS232 tape interface for running a printer. The tape commands are all stored in a 2K ROM between 8K and 10K but the total area used is the whole of the 8K section between 8K and 16K. That is because of the way the ZX-99 divides the tape recorders - there must be at least two to make a sensible system - into INPUT and OUTPUT tape recorders. The two input sockets are selected individually and one lead is provided with the ZX-99 to connect the EAR and REMOTE sockets on the tape recorder. The normal cassette leads are plugged from the ZX-81 into the ZX-99 at the top and all of the SAVEing and LOADing is done through the ZX-99.</p>
+
+<p>There is a 50-page manual with the ZX-99 and it is well worth reading before starting. It is well-written and contains not only a chapter on all of the commands but example programs, problems which may occur and any peculiarities of the system.</p>
+
+<p>The commands are in the form of USR calls to various parts of the 2K ROM which can either be used direct from the keyboard or within a program. It is very easy to use in Basic but it requires the use of several variables to be set up for use by the ZX-99 before the USR commands are used.</p>
+
+<p>These are a single-dimensioned string (DIMX$(300)), Z$, Z and Y. The dimensioned string can be any single letter and is used to store the data to be sent or received from the tape. Z$ is used to tell the ZX-99 which string is used for the buffer i.e., Z$='X' - and variable Z the length of that buffer string to be sent. The Y variable is used to control the printing operations of the RS232 interface.</p>
+
+<p>The variables can be put to other uses in the program but must be filled with the correct data for the ZX-99 before doing a USR command, or an error code will stop the program. There is also a &quot;completion code&quot; in the form of an error report when LET L=USR 1234 is used. Variable L can be checked if there has been a fault, as the report will be 0 if all is well.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'One of the useful extras provided by the code is a check of the quality of a program which has been read back from the tape.'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>One of the useful extras provided by the code is a check of the quality of a program which has been read back from the tape by the ZX-99. It consists of checking for three common errors - too high a level, too low a level, and varying tape speed giving longer pulses than are to be expected. A number which gives the sum of the three errors is returned in the completion code if they are found. The USR commands provide the following functions:</p>
+
+<ul><li>Turn on the tape drive of any one input or turn on either or both of the tape drive outputs.</li>
+
+<li>Read or write a data buffer of length Z into or out of the tape recorder. On output, two copies can be made if required, one from each output.</li>
+
+<li>Skip the next block of data or program on tape.</li>
+
+<li>LOAD a program into the ZX-81 memory from an input tape drive and then SAVE it again on to one or more output tape recorders.</li>
+
+<li>Print-out a data buffer to an RS232 printer. Y defines speed, number of stop bits, parity and a choice of upper- or lower-case printing of the Sinclair character set. All codes sent to the printer are in ASCII and the user can define any ASCII character.</li>
+
+<li>Print a full list of a Basic program to the RS232 printer. No controls are provided - only the data and the common. Graphic characters are printed as ASCII codes.</li></ul>
+
+<p>The RS232 can be used only with a printer, as only an output on 3.5mm. jack is provided. All the ASCII control and other codes, including upper- and lower-case, can be generated from the keyboard or from within a program. When using a data buffer to print-out a string of characters, carriage return and line feed are separate but &lt;&gt; will produce both for a new line.</p>
+
+<p>The length of the printed list is limited only by the maximum length the printer can print, so long lines will look completely different on the printer. The speed at which the printer can work can be between 110 and 9,600 baud but the RS232 port expects to print at full speed, so the printing speed must be adjusted to that with which the printer can cope.</p>
+
+<center><img src="zx992.jpg" width=475 height=280 border=0 alt="ZX-99 setup with four cassette recorders"></center>
+
+<p>The graphics characters in a ZX-81 program are all converted into ASCII characters and are printed as such. That means that as some of the graphics correspond to control characters it could cause some weird effects on the printer, such as double-sided characters and graphics dots. The only way to avoid that is to convert all the graphics into CHR$(x) but that wastes memory.</p>
+
+<p>On the latest models, when LISTing the program, the graphics characters have been converted to spaces, enabling the user to fill-in the gaps with the appropriate graphic when the printing had been completed.</p>
+
+<p>The original ZX-99s did not do that, causing problems in the LISTing. Data-Assette has offered a new ROM to people who bought the original model.</p>
+
+<p>That does not apply when printing a data buffer, of course, as CR/LF can be done at any time along the entire length of the printer. One useful thing in the LIST routine is that it generates a blank line after single GO TOs, GO SUBs or RETURNs, showing the end of a routine.</p>
+
+<p>The tape LOADing and SAVEing are done at the same speed and in the same way, using Sinclair ROM routines, so there is no increase in speed. The fact that five seconds of blank tape is recorded between each piece of data also means that is better only to SAVE to tape large amounts of data, otherwise the data records take so long to load.</p>
+
+<p>CLS is also recommended to be used during data recording, otherwise that causes noise in the silent part of the tape. A data limit of 40 bytes is also imposed on the user as the minimum the system will put on to tape.</p>
+
+<p>Block skip will check and report tape errors but will not verify the data against the program in memory. COPYing a program overwrites all the system variables, so a re-start is made after one program has been copied, thus NEWing any program in memory. BREAK is recognised throughout all the routines and will revert to a Basic listing as normal, except on COPY.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'Non-restoration of slow mode on return to Basic is also annoying.'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>The ZX-99 has some very good features to build into programs where data needs to be written to and read from a cassette tape. Unfortunately that does not improve the speed of transfer, as the same tape system is used. The minimum requirement is two tape recorders at once, which may prove a strain on some budgets, as well as the cost of the ZX-99, which is &#163;62.90 including VAT and postage.</p>
+
+<p>The printer routines included are very useful for doing reports and graphics on a real paper printer, as the printer is under complete user control. The differences in appearance, such as the representation of lower-case by inverse letters on the screen and the limit of 32 characters per line on the ZX-81, would have to be solved by the program.</p>
+
+<p>The non-restoration of slow mode on return to Basic is also annoying, as the ZX-99 works only in fast mode, for obvious timing reasons.</p>
+
+<p>In all, a very good tape control and printer system. The ZX-99 can be bought by contacting DataAssette, London.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="toolkit.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Toolkit routines"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 5 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<h6 align="center">Sinclair User<br>August 1982</h6>
+
+</body>
+</html>
+

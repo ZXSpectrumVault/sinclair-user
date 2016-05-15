@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 11 - Software Scene</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Zeaker robot review from Sinclair User, February 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="softwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 11 Contents"></a>
+<a href="arcade.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Arcade Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>zeaker</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<p class="first"><b><font size="+1">Stephen Adams reviews a remarkable little machine from Colne Robotics which could help in writing programs</font></b></p>
+
+<h1>Inexpensive maths aid goes into production for ZX-81</h1>
+
+<img src="zeaker.jpg" width=398 height=266 hspace=10 vspace=10 border=0 align="right" alt="">
+<p class="first">THE ZEAKER is an electronic device controlled by a ZX-81 through two 2-metre long cables. It consists of a black box with wheels on either side and four sensors mounted on each corner. The motions of each of the wheels can be turned on and off under program control, so that it can be steered by the computer in much the same way as a tank. The motors can also be programmed to go forward and reverse, so that the zeaker can retract from a wall.</p>
+
+<p>The sensors can be used to detect obstructions around the zeaker. The sensors consist of metal plates which are curved around each corner of the zeaker and spring-loaded so that it is held away from the box.</p>
+
+<p>Fixed to the box under the plate are two adjustable metal stubs which form the other half of the switch. When the zeaker hits an obstruction the metal plate touches the metal stub on that side of the corner and completes the circuit. That can be detected by the computer by PEEKing a location in memory. There are four corners, each having two sensors, one on each side of the corner beneath the metal plate, making eight sensors in all.</p>
+
+<p>The zeaker also contains a loudspeaker which is connected to two oscillators inside the interface box. They produce a two-tone horn -which can be switched on and off under program control to indicate obstructions and turning.</p>
+
+<p>There are also three LEDs mounted on top of the zeaker. Two of them can be turned on under program control and the third is used to indicate that the pen, which is underneath the zeaker, is in the down position. The pen is the really important part. It turns it into a turtle-type creature which can be used by teachers to describe mathematics to children in a visual way. The pen is operated by a solenoid mounted in the body of the zeaker which is lowered under the command of the ZX-81. It consists of a cut-down ball-point refill and so is simple enough to replace when it runs out. The pen can be used to follow the motion of the animal and can be raised and lowered at any time.</p>
+
+<p>A program usually associated with drawing by computers through a programmed device like the zeaker is called Logo. Although not available on the ZX-81, a similar set of commands is available via a program on tape with every zeaker. The zeaker can learn a set pattern and with its pen in tow can repeat that pattern at any time.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'The zeaker can learn a set pattern and with its pen can repeat that pattern'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>If that pattern is the result of a formula or program, the results can be illustrated graphically by running the zeaker over a large sheet of paper and watching the results. If there is a bug in the program the place where it appears will be shown by the trace; thus it is a very simple method of getting children - and I suspect even adults - to program a computer and see if the answer is correct. If the answer is incorrect the trace will give the exact position of the error, so that it can be corrected easily.</p>
+
+<p>The program in Basic is used to POKE and PEEK at a memory location where a port has been inserted. The demonstration model was running on a Technomatics port but, being Basic, the port used could be any memory-mapped port which provides two eight-bit ports, one input and one output.</p>
+
+<p>The port is not included in the price of the zeaker and Technomatics is understood to have ceased production of the port. That should not affect zeaker users, as Colne has said that it will undertake to supply a similar port at the same price.</p>
+
+<p>The port presents the user with two 16-pin DIL sockets which provide the interface box containing all the electronics and power supply, with eight wires for input, eight wires for output to the zeaker, plus 0V and +5V connections to the computer.</p>
+
+<p>The interface box contains the motor control circuitry for forward and reverse, as well as on and off for both the motors inside the zeaker. It also contains protection circuitry so that it cannot be programmed to go in two directions at once. The interface box is between the port which is attached to the expansion port of the computer and the zeaker and is connected to both via ribbon cables. The ribbon cables are two metres long and so allow the zeaker to roam from the ZX-81. Both ends are terminated in two 16-pin DIL plugs so that they fit into the sockets on the top of the zeaker and the port.</p>
+
+<p>The interface cables to the port would have to be altered if a different port was used but Colne says it could provide a set of cables for commonly-used ports. The connections, however, will be listed in the manual so that they can be changed over easily.</p>
+
+<p>The zeaker is available as a kit, as well as ready-built, as is the interface box. The two are available together as one package. Construction should not be difficult. The manual includes the circuit diagram, port description - for those who want to use another one -and details of the control codes used. The principles of operation also include tips on how to write your own programs, as well as describing the ones provided.</p>
+
+<p>Two 1K programs provide a demonstration of random action of the zeaker and a 'learning phase', one which allows you to enter a few commands telling where to go. Two 16K programs are also included - they should take up only about 8K, in fact - and once again demonstrate random action, plus a learning function.</p>
+
+<p>The learning function is much more comprehensive than on the 1K machine in that it will allow you to use letters of the commands to program the action of the zeaker. The basic functions will be F(forward), B(backward), L(Left), R(Right), PU(Pen Up) and PD(Pen Down). Those letters are accompanied by a number describing how many steps are to be done under each command.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'The zeaker with interface and port is robust and very simple to use'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>The commands are combined into a string and then the zeaker is asked to execute the set of commands, which may also be given a name and the ZX-81 told to execute name. That leads to programs made up of a series of command words like box and triangle. To test one of the programs before trying it on the computer, a child can be asked to go through the same series of steps, imitating a zeaker, to check that the program which has been written can be understood.</p>
+
+<p>Schools and colleges have not generally accepted this method of demonstrating computers because of the previous cost of a few hundred pounds each. Now that the cost of microcomputing power is down to &#163;49.95, Colne has produced this version which will sell at &#163;59.95 as a kit or &#163;69.95 assembled. Remember that does not include the cost of the port required to run it - it cannot be connected directly to the ZX-81 expansion port. The price includes the interface box, the zeaker and power supply. A port can be supplied at approximately &#163;13.</p>
+
+<p>The size of the zeaker is 5&#189;in. X 5in. x 2in. and it has four ZX-81 programs in Basic. The interfaces and programs could be adapted easily to most computers with a user port.</p>
+
+<p>The Spectrum, Sinclair says, will soon have a version of Logo written for it as part of the package offered under the schools scheme. As there are already ports available for the Spectrum and the Spectrum Basic is ZX-81-based there should be no difficulty using it on either machine - using IN and OUT instead of PEEK and POKE.</p>
+
+<p>The zeaker and interface box, along with the port, was demonstrated by the company for <i>Sinclair User</i> and is robust and very simple to use. Colne Robotic Ltd is at Twickenham.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="softwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 11 Contents"></a>
+<a href="arcade.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Arcade Games"></a></p>
+
+<h6 align="center">Sinclair User<br>February 1983</h6>
+
+</body>
+</html>
+

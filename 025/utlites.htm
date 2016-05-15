@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 25 - Utilities</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Programming aids reviewed in Sinclair User, April 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="htsquad.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 25 Contents"></a>
+<a href="helplne.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Helpline"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Utilities</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="utlites1.jpg" width=300 height=282 hspace=10 vspace=10 border=0 align="left" alt="Super Toolkit/Paintbox">
+
+<h1>Packages to help you help yourself</h1>
+
+<p class="first"><b><font size="+1">John Gilbert reviews the programming aids now available for the Spectrum</font></b></p>
+
+<p class="first">MOST PEOPLE buy computers with some purpose in mind. A few of them may want to learn about computing and to write programs. It is when that happens that utility routines may be needed to make the task easier.</p>
+
+<p>There is a great variety of utilities available for the Spectrum which compensate for some of the inadequacies. One of the most common types of utility is the toolkit or language extension.</p>
+
+<p>The <b>Spectrum Super Toolkit</b>, from Nectarine, provides all the necessary functions a Basic programmer would need. It is also very user-friendly and should help anyone who has the slightest interest in developing programs, no matter whether they be beginner or an expert.</p>
+
+<p>The toolkit will run on the 16K and 48K machine and occupies approximately 2.5K. That means at least 6K on the 16K Spectrum will be available for user programs. That is an achievement for the author, who has included 12 routines in the package.</p>
+
+<p>The exceptional characteristic of the Super Toolkit is the one-key entry system which invokes each of the 12 commands. All you have to do to use a command is hold down the ENTER key and press the command key, such as 'L' for list all variables.</p>
+
+<p>The package is one of the most comprehensive on the market. As well as generating a full re-number of Basic programs, deleting blocks of lines, listing variables and showing the memory used by a program, it will also produce a map of the memory in the computer, including Microdrive and channel information, and read the tape header of any piece of code.</p>
+
+<p>There are no complicated POKEs involved in making any of the utilities work. All you need is a RAND USR instruction to enable and to disable it. You will also have to use the keywords PRINT or REM to re-enable its facilities after running one of your programs.</p>
+
+<p>You should have no difficulty using any of the routines, as the toolkit will produce prompts on the screen for information it needs to perform its work. For instance, when you ask for line renumbering the screen will clear and the computer will ask at which number you want your program lines to start. It will then ask for the step size between each line number. The automatic default, if you press ENTER for each of those prompts, is a line-numbering system starting at 10 and rising in stages.</p>
+
+<p>The manual with the package is just as good as Super Toolkit. It explains each utility command in turn and on the back page provides an uncluttered index of how to access them. It also shows how to turn off the toolkit when you want to use interrupt-driven machine code routines in your programs.</p>
+
+<p>Super Toolkit cannot be recommended strongly enough. It costs &#163;9.95 and fills a big gap in the market.</p>
+
+<p><b>Spectrum Extended Basic</b>, from CP Software, uses a one-keyword entry system similar to that of the Nectarine toolkit. Once invoked, all the user has to do is type an asterisk and then press the key to activate a desired command. For instance, the W would be pressed if the user wanted to use AUTO line numbering.</p>
+
+<p>The Basic uses approximately 5K of memory in which to operate. Although that is not bad for a package which allows the use of 10 new commands, when compared to the Nectarine product it takes much more memory.</p>
+
+<p>The use of memory by a utility is all-important. A good utility will reside in memory almost invisible to the programmer, who should be able to do anything with the machine except initialise it, and it should utilise as little memory as possible, so that users can write long programs. A utility which uses a great deal of memory defeats its own purpose.</p>
+
+<p>The Extended Basic could be described more accurately as another toolkit and not a set of machine code patch routines on the existing Sinclair Basic. It will operate with the Sinclair language but the routines included in the package are more in line with a toolkit than an extension of a high-level language.</p>
+
+<p>It includes an auto-line number routine, a real-time clock, continuous scroll function, block code delete and an indication of the current state of the computer memory. It is almost as easy to use and as helpful as the Nectarine toolkit and many of its commands can be incorporated into user programs. Extended Basic is not a competitor to the toolkit but it is, however, a useful companion package. Spectrum Extended Basic costs &#163;9.95 and is expensive for what it offers.</p>
+
+<img src="utlites2.jpg" width=300 height=278 hspace=10 vspace=10 border=0 align="right" alt="Print Utilities/Extended Basic">
+<p>The other type of utility which is helpful on the Spectrum is the graphics package. Although Sinclair Research included exciting graphics capabilities with the Spectrum, it is often difficult for the programmer working in Basic or the amateur programmer to get the most from the graphics potential.</p>
+
+<p>One of the best ways to highlight a program or give it a title is to increase the size of the lettering and characters on the screen. It could be done with a number of PRINT statements but it is possible, using machine code or POKE routines, to magnify the original character set from the ROM.</p>
+
+<p>A new utility package, <b>Print Utilities</b>, from Sinclair Research will allow you to magnify the character set and also to increase or decrease the width of lettering on the screen or on a printer. The software will allow you to use four widths and two heights.</p>
+
+<p>There are two versions of the package, one for the 48K and one for the 16K, although each performs identical tasks. Once it has been initialised you can set up the character height and width using a print command which employs a hash. After that you must put a CHR$ command and a number. For instance:</p>
+
+<pre>PRINT 15; CHR$ 28</pre>
+
+<p>would select a double-height character set. Other CHR$ settings would give 32, 42, 16, and 21 characters a line and will also move the cursor left and right and clear the screen.</p>
+
+<p>The different-sized character sets can be used in programs but they can also be used to reproduce listings to make them easier to read. Unfortunately the manual infers that the package is set up for the ZX printer, although with Interface One, which is catered for, output to a dot matrix printer or daisywheel would be possible, using the correct software.</p>
+
+<p>Output to a printer is more difficult than to a screen, as the double-height mode is cancelled after one line is printed and it is not possible to mix different heights in one line of text.</p>
+
+<p>Print Utilities can be obtained for the 48K Spectrum and costs &#163;9.95. For the usefulness of the product that is expensive.</p>
+
+<p><b>Paintbox</b> is a more powerful graphics utility for the 48K Spectrum. It includes the capacity to manipulate 84 user-definable graphics which are set up in four switchable memory banks. Any one of the four sets can be switched into the 'Present' mode, taking the place of the letters A to U.</p>
+
+<p>It is possible to change any of the example characters set up in the package and to save them on tape if you want to use them in your Basic or machine code programs.</p>
+
+<p>Paintbox contains a special facility which enables the user to put several UDG graphics on the screen together to examine the effect. It is also possible to rotate, inverse, and mirror the graphics with the press of a key.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'It is often difficult to get the most from the graphics potential'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>Another facility is the precision plotter, which will allow you to draw pictures on the screen using lines, circles and arcs. The pictures can be shaded with a selected colour and the colour for INK and PAPER can be changed. The utility looks like the one on the Sinclair Horizons tape, although it is set out slightly better and is more usable so far as Basic programming is concerned.</p>
+
+<p>The screen planner uses a combination of UDG graphics which can be created using the UDG banks and the Precision Plotter.</p>
+
+<p>It allows you to see the finished result of all your work. The package is a powerful graphics aid and, if the demonstrations are any criterion both in the manual and on the tape you could produce some professional screen displays. It is possible for even a beginner to draw reasonable pictures using the package. Paintbox can be obtained from Print and Plotter and costs &#163;7.50.</p>
+
+<p>There are still few utility packages available for the Spectrum and the computer has been on the market for nearly one-and-a-half-years. It seems that most software companies are concentrating on producing arcade games of one kind or another. That is unfortunate, as many Spectrum owners could produce original and interesting programs if they had access to more utilities. It might also encourage more people to start programming if they see what can be done with the utilities available.</p>
+
+<p>Some people may say that it is a little late to start thinking of producing more utilities for Spectrum owners but there are still many users trying to find interesting things to do with a computer. It would certainly be helpful if the few utilities on the market at present became many in the near future.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="htsquad.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 25 Contents"></a>
+<a href="helplne.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Helpline"></a></p>
+
+<h6 align="center">Sinclair User<br>April 1984</h6>
+
+</body>
+</html>
+

@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 34 - Mass Storage</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Comparison of the SPDOS and BETA disc systems from Sinclair User, January 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="top30.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Top 30"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 34 Contents"></a>
+<a href="zxword.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="ZXWord"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Mass Storage</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1><i>More memory less labour</i></h1>
+
+<p class="first"><b><font size="+1">In the second of our fast storage reviews, we compare the SPDOS and BETA disc systems</font></b></p>
+
+<p class="first"><a href="../033/massstr.htm">LAST MONTH</a> we looked at tape-based fast storage systems for the Spectrum. This month we turn our attention to discs, one of the first and one of the latest, those from Technology Research and Watford Electronics.</p>
+
+<p>The Spectrum is seen by many people as only a games machine. One of the reasons for that is the limitation of having a cassette interface. The BBC, Commodore and Amstrad can all have disc interfaces designed by the manufacturer; the Spectrum had the microdrive.</p>
+
+<p>That delay caused a number of manufacturers to design disc interfaces for the Spectrum but, as yet, none has been accepted by software houses as a standard. Until that happens users will buy their software on cassette, and then convert it to use on disc.</p>
+
+<p>The Beta system from Technology Research was <a href="../024/hardwre.htm">first reviewed in <i>Sinclair User</i> in March 1984</a>. Since then it has undergone a number of improvements and is now the best selling interface on the market. SPDOS from Watford Electronics has been released recently; it has the backing of a company which has made a name for itself by designing and selling interfaces for the BBC.</p>
+
+<p>Both interfaces will accept both 5&#188;in and 3in drives in 40 or 80 track, single or double-side format. SPDOS can also accept old 35 track drives. Up to four drives can be used but each must have its own power supply, as the Spectrum does not have any spare capacity. Many of the drives advertised as suitable for the BBC do not have a power supply and that can cost another &#163;30.00.</p>
+
+<p>The most popular system is 5&#188;in and discs cost between &#163;1.75 and &#163;3.00 each. The amount of information they can hold will vary according to the drive and the system used to record it. Both interfaces use a form of double density recording. Beta divides each track into 16 sectors of 256 bytes per sector, whereas SPDOS uses 10 sectors of 512 bytes. A 40 track, single-side drive, allowing one track for the directory, gives 156K and 195K respectively.</p>
+
+<p>The speed of a system depends on several things, including the speed of the drive. All discs spin at 300 rpm, five revolutions per second - but the time it takes to move from track to track will vary. Both systems can work at a number of speeds, from 6ms to 30ms for SPDOS and 6ms to 48ms for Beta. The Beta also incorporates a one second delay, if the drive is not spinning, to allow for older, belt-driven drives to reach operating speed.</p>
+
+<p>Another factor is the method of reading the sectors; Beta follows the usual practice of reading alternate sectors, so the disc has to make two revolutions per track, and SPDOS can read the sectors one after the other and so should be quicker.</p>
+
+<p>The Beta interface, unusually, lies flat from the back of the Spectrum, consequently it is compatible with all full-sized keyboards. It has a through port for other add-ons and is compatible with both the Kempston E printer interface and Sinclair Interface 1. On the right is the connector for the disc drives, which follows the same standard as the BBC and has been successfully used with a BBC drive. To the left is a socket for the Spectrum power supply.</p>
+
+<p>On power up you are presented with the copyright notice and an invitation to enter a password. This is the only system which uses passwords, which can be any combination of characters; if you are forgetful you could give all your discs a password corresponding to the ENTER key and so you need only press that in response to the prompt.</p>
+
+<p>You are then into the DOS - Disc Operating System - and presented with:</p>
+
+<pre>A&gt;</pre>
+
+<p>to remind you that you are in the DOS and that the default drive, the one to which all commands will relate, is the A, or number 1, drive. You can now use any of the DOS commands directly or enter Y to RETURN to BASIC. You can return to the DOS at any time by entering RAND USR 15360 but that is rarely needed.</p>
+
+<p>All the normal Spectrum tape commands, apart from VERIFY, can be used by the disc: the command is simply preceded by RAND USR 15363: REM:. If PRINT USR or LET variable=USR is used then the number returned will be the error message, 0, meaning no error. Calculated parameters or variables can be used as with the tape command.</p>
+
+<p>There are only two variations: by adding a third parameter when saving CODE it can be made to auto-run, and then RUN, rather than LOAD, must be used to auto-run a program. That applies to both CODE and BASIC. When LOADing and SAVEing if the second character of the file name is a colon and the first is A, B, C or D then the command is taken to apply to that drive. That is a useful way to avoid changing the default setting.</p>
+
+<p>The commands that relate only to the drive are ERASE, which will erase a file, CAT, to obtain a catalogue, USR, which can be used to change the password on the disc and NEW, to change the name of a file. MOVE has a special use. When the system saves information to the disc it is stored, in the interests of speed, in successive sectors; when files are erased gaps are left and MOVE simply moves the files up to fill the space. PEEK and POKE can be used to randomly read information from, and send it to, the disc. To change the default drive *&quot;x:&quot; is used where x is the drive. All those commands must have the usual prefix.</p>
+
+<p>The utility disc supplied with the system contains two other commands: FORMAT, to format the disc, give it its password and an identifying name; and COPY to copy a single file or the whole disc in one go. If you have only one drive then prompts are given to swap the discs.</p>
+
+<p>The instruction booklet gives examples of each of the commands and is written with the novice in mind. Details are also included on how to use the system from within your own machine code programs. The assembly listing included for that contains an error, having the line LD (nn),nn, which must be changed to include a register. The index at the back lists the commands, error messages and pin-outs.</p>
+
+<center><img src="massstr.jpg" width=402 height=219 vspace=10 border=0 alt="Spectrum with SPDOS fitted"></center>
+<p>The SPDOS, unlike the Beta interface, sits up vertically from the back of the Spectrum. It has a through port for add-ons but is not compatible with Interface 1. The lead for the disc is connected on the right hand side, using a disc connector onto the PCB, like the TRS80. On the top at the front is an LED and a reset button. The lead for the power supply has to be threaded through a hole in the interface. It will fit most full-sized keyboards, the only exception being the Transform which is rather high at the back.</p>
+
+<p>Powering up, or pressing the reset button, automatically loads the operating system into memory. If a program has been saved with the name &quot;AUTO&quot;, in upper case, then that will also be loaded. If the program is in BASIC and was saved using LINE then it will auto-run. CODE will auto-run from its first address.</p>
+
+<p>As with the Beta all the normal tape commands can be used in the usual way, apart from MERGE which will always auto-run. To make them relate to the disc they must be preceded by PRINT #4:.</p>
+
+<p>The commands that relate to the disc, which must also use the PRINT# 4 prefix, are: CAT, to obtain a catalogue - this can be followed by a string so that only those files containing the string are listed; CLEAR which performs a block delete; ERASE to erase a file - this includes a wild-card facility where ^ can stand for any character; MOVE renames files or can be used to copy them.</p>
+
+<p>SPDOS supports sequential files and a number of commands are used for that: OPEN # and CLOSE # are used to open and close files; PRINT # sends information while INPUT # and INKEY$ # are used to read it back. To use FORMAT the original system disc has to be in the current drive. That gives the disc its identifying name. Unlike the Beta system errors are returned as a Basic error message.</p>
+
+<p>The system disc contains two other system utilities. The first of those is &quot;copysys&quot;, a program which will copy the system, except for FORMAT, to another disc - necessary if you want to use CAT on the other disc. The other program is &quot;minidos&quot;, a stripped down version of the system which does not, as far as is apparent, include the sequential access commands. Also on the disc is a simple address book program which shows the use of sequential files plus three commercial programs, Tasword II, Masterfile and Omnicalc 2. Those have been converted to use the system and include demonstration data.</p>
+
+<p>Choosing between the two systems will depend entirely on what you want to use a disc system for. Both are very quick; using the same test program as last month, that is,</p>
+
+<pre>10 FOR n=1 TO 30
+20 SAVE (&quot;test&quot; +STR$n) CODE 32000,200
+30 NEXT n</pre>
+
+<p>- and changing line 20 to suit the system, SPDOS took 58 seconds in saving, 23 loading and 29 erasing while the Beta took 55, 33 and 47 respectively. Formatting depends on the number of tracks and sides; with an 80 track, single side disc SPDOS took 2 min 43 seconds and Beta 1 min 10 seconds.</p>
+
+<p>If you only want to write your own programs then SPDOS with its overlays, sequential access and faster loading times has the edge.</p>
+
+<p>If you also want to put your favourite commercial programs on disc then the Beta system is more suitable, unless you are into machine code. The system occupies just 112 bytes of memory below the Basic program area; it also uses the printer buffer when loading code but when doing so it saves the buffer to the disc, carries out the command, and then reloads the buffer.</p>
+
+<p>Both systems allow for a large number of directory entries, Beta 128, and SPDOS 144. With the latter you have more space per disc. Both require additions to the commands, the syntax for SPDOS being slightly easier to enter from the keyboard. Both sell for similar prices, Beta &#163;99.00 inclusive, SPDOS &#163;99.00 plus VAT.</p>
+
+<p>The winner in the contest between the disc drives will be the one which receives most software support. Both companies claim to be talking to software houses. In the meantime more systems are due to be launched. <a href="../035/massstr.htm">Next month</a> we look at those, including the new system from Thurnell Electronics, priced at only &#163;150.00 for both interface and drive.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="top30.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Top 30"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 34 Contents"></a>
+<a href="zxword.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="ZXWord"></a></p>
+
+<h6 align="center">Sinclair User<br>January 1985</h6>
+
+</body>
+</html>
+

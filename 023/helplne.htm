@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 23 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX-81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, February 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="htsquad.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 23 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson4.gif" width=275 height=290 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<p class="first"><b><font size="+1">Andrew Hewson helps you to iron out difficulties with the ZX-81 and Spectrum</font></b></p>
+
+<h1>Simple hints on some common complaints</h1>
+
+<p class="first">RECENTLY I have been working on a book which is based on a compilation of all the columns I have written and it has given me the opportunity to review all the letters I have received. It has been an interesting task. Initially the letters, except for a few on the ZX-80, were about the ZX-81, because the magazine was launched in April, 1982 before the Spectrum was announced. From September, 1982 the number of Spectrum letters gradually increased and nowadays the ratio is about two to one in favour of the later machine.</p>
+
+<p>The sophistication of the questions has also improved. In the early days most readers were interested in the details of Sinclair Basic, or wished to know how to PEEK and/or POKE the display. Now, there is usually a fair proportion of questions from readers who clearly already possess a reasonable knowledge of the Sinclair ROM.</p>
+
+<p>One observation stands out from an analysis of all the letters I have received - that about 15 percent of all queries concern readers' inability to make a particular piece of hardware or combination of hardware function satisfactorily. For example, about 10 percent of all ZX-81 questions concern SAVEing and/or LOADing problems. A similar proportion of Spectrum owners complain that they cannot obtain stable colour television pictures.</p>
+
+<p>Since this issue will appear at a time when tens of thousands of new Sinclair users will have recovered from the excesses of Christmas and will be using their machines on winter evenings, I thought it would be appropriate to repeat some of the tips which have appeared previously.</p>
+
+<p>The ZX-81 produces a black and white TV display. All television sets give a satisfactory picture although the Ferguson TVs sold by W H Smith, among others, give a particularly crisp and stable picture. There are three difficulties with the machine.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>&quot;About 15 percent of all queries concern readers' inability to make a particular piece of hardware function satisfactorily&quot;</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>The first is that the keyboard is poor, so many owners purchase a second one. Of the number on the market I would hesitate to recommend one in particular. All the keyboards I have seen are reasonably satisfactory, although my impression is that the more expensive ones are likely to prove to be better purchases because the keys tend to be of better quality.</p>
+
+<p>In some cases the ZX-81 is connected to the keyboard via the rear edge connector. In other cases the entire ZX-81 is installed inside the keyboard case. There is little to choose between these two approaches. In the former case making the connection is easy but the result is rather untidy. In the latter case users need a certain amount of confidence in their DIY ability, because it is necessary to dismantle the ZX-81 and thereafter the printed circuit board inside.</p>
+
+<p>The second problem with the ZX-81 is that the 1K of memory in the basic machine is inadequate for all but the simplest tasks, so most owners buy extra memory which, except for those units designed to fit inside the second type of keyboard described, is plugged into the edge connector at the back of the computer. Unfortunately, the connection can be rather tenuous; jarring the machine can be enough to disturb it momentarily. That is sufficient to wipe the memory clean of its current program, so that the poor frustrated user is tempted to &quot;jar&quot; the computer a few more times - and rather harder, too.</p>
+
+<p>Some of the add-on memories on the market are supplied with double-sided sticky pads to counteract this RAM wobble problem and at least one manufacturer supplies a special plastic support. Most users employ strategically placed pieces of sticky tape.</p>
+
+<p>The ZX-81 does not recognise immediately more than 16K of RAM and so most users buy that much additional memory. Colin Jones, however, has a 64K RAM and he has stumbled on a problem. He writes:</p>
+
+<p><b>I am puzzled. My machine keeps crashing due to what appears to be lack of memory when I add just one more line to my Basic program, which at present occupies only 15451 bytes, there being a further 27477 bytes free.</b></p>
+
+<p>The source of his problem is the ZX-81 display file. An obscure feature of the design of the ZX-81 causes the machine to crash if a TV picture is shown while the display file straddles addresses 32767 and 32768. In fairness to Sinclair Research, it does not happen if the ZX-81 is used as designed with only 16K of RAM.</p>
+
+<p>In the ZX-81 a Basic program starts at address 16509. The display file lies immediately above the Basic area and occupies 793 bytes. A quick calculation shows that Jones' display file currently ends at 32652, just 16 bytes short of the illegal boundary.</p>
+
+<p>The solution to the problem is to put the ZX-81 into FAST mode and enter into the program a long line with at least 100 separate numbers in it. For example 10 LET A = 0 + 0 + ...... + 0.</p>
+
+<p>Such a line is rather tedious to enter but it is well worth the effort in the circumstances. While the line is being typed in it is stored in the editing area which lies above the display file in memory.</p>
+
+<p>On completion, i.e., when the newline key is pressed - the screen goes blank because the machine is in FAST mode and the line is transferred to the appropriate place in the program area. Numbers when stored in the program area are followed by six &quot;hidden&quot; bytes which are used to store the floating point form of the number. Thus each &quot;0 +&quot; occupies eight bytes in the program area - one each for the &quot;&quot; one for each &quot;+&quot; - and six hidden bytes; so the total line occupies rather more than 800 bytes. The display file is moved up in memory by that amount to accommodate the increased space requirement in the program area so that it lies completely above address 32767 when the display resumes.</p>
+
+<p>The user can then continue to add program lines as usual. When a sufficient number have been added the monster line can be deleted, having served its purpose.</p>
+
+<p>Incidentally, a machine code routine located above address 32767 in the ZX-81 will not function correctly, as Brian Gentle has discovered. The best location for machine code for those with 64K RAMs is between addresses 8192 and 16383. Code placed there will not be over-written and will remain in place when a new Basic program is loaded from tape. Provided the code is fully re-locatable it can occupy any address in that area.</p>
+
+<center><img src="../shared/images/helplne2.gif" width=500 height=199 vspace=10 border=0 alt="Listings"></center>
+
+<p>The third problem is that many users have difficulty SAVEing and LOADing programs to and from cassettes. John Martin is the latest in a long line of readers who have written on the topic. He has analysed the waveform recorded on a number of commercial tapes for the ZX-81 and has noted substantial differences in their appearance. Nonetheless, each LOADs satisfactorily most of the time. He has much more difficulty with cassettes which he has recorded than with prerecorded software.</p>
+
+<p>Martin's story is not unusual. The fundamental problem appears to be that the ZX-81 is rather deaf. Some cheap cassette players are incapable of providing the relatively high signal levels necessary to LOAD a program successfully without introducing too much distortion.</p>
+
+<p>Unfortunately, more expensive stereo cassette players which deliver higher signal levels do not solve the problem, because they contain sophisticated circuits designed to improve the quality of audio recordings but which introduce more distortion into recordings of computer data. There is also the danger that the very high signal levels produced by some expensive cassette players could damage the computer. My advice to the beginner having difficulties of this nature to ensure that the ZX-81 will LOAD programs satisfactorily is by taking it to a friend or neighbour who has a tried-and-tested combination and attempting to LOAD a pre-recorded cassette from his player into your computer.</p>
+
+<p>So, clean the playing head of the cassette player carefully and connect one wire only from cassette player to computer - i.e., EAR socket to EAR socket. If repeated attempts to LOAD several cassettes all fail, return your computer to the shop from which you bought it and exchange it for another.</p>
+
+<p>You may find that the program appears to LOAD but the LISTing on the screen is garbled and the program fails to function correctly. In that case you can be reasonably sure that if you persist in your attempts, perhaps varying the volume setting slightly, you will succeed eventually.</p>
+
+<p>Having established that your machine works with your friend's player the next step is to try your own. Put the tone control, if present, to the highest treble setting and turn the volume control to maximum. Play a few seconds of a pre-recorded tape without a plug in the EAR socket so that the loudspeaker is activated. If the &quot;very harsh high-pitched buzz&quot; described on page 108 of the ZX-81 manual is loud enough to send the cat diving for cover and wake the baby next door, it is probably sufficient for the ZX-81 to LOAD the program.</p>
+
+<p>When your ears have stopped ringing, rewind the cassette and try LOADing it into your ZX-81. Observe the pattern on the TV display. When the program is LOADing, the display should consist of broad but unstable horizontal black-and-white bands.</p>
+
+<p>If the signal level is too low, the white bands will be broader than the black. If it is too high, the black bands will be broader than the white, to the point where almost the entire screen is black. Adjust the volume setting until neither black nor white dominates, rewind the cassette and try again. You should find that the tape LOADS, perhaps after two or three attempts.</p>
+
+<p>Finally, SAVE a short program from your ZX-81 on to a fresh blank cassette. Ensure that only a single wire connects the two MIC sockets and keep it well away from your TV set. If you cannot record a very harsh high-pitched buzz which is more or less as loud as the program on a pre-recorded cassette, return to your friend and use his equipment to determine whether it is your ZX-81 or your cassette player which is at fault.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>&quot;My advice is to try before you buy if at all possible&quot;</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>Assuming that you can SAVE programs satisfactorily, you may well find that they are less easy to LOAD than pre-recorded material. That is because your cassette player does not record with the same fidelity as the equipment used to produce commercial programs. There is nothing much you can do about it except to make multiple copies of all programs, so that if one copy fails you have at least one more copy. There are a number of rules to observe when using cassettes for storing programs:</p>
+
+<ul><li>Keep them free of dust by storing them in their library cases. A drop-out which would be barely noticeable in an audio cassette will stop a program from reLOADing.</li>
+<li>Keep them away from the television set. The strong magnetic field present will degrade the recording.</li>
+<li>&quot;Exercise&quot; them occasionally, i.e., fast-wind them from one end to the other and back again. That will minimise &quot;print through&quot; from one layer of tape to the next and even taut and slack areas.</li>
+<li>Keep back-up copies.</li></ul>
+
+<p>SAVEing and LOADing programs is much less of a problem with the Spectrum. A number of readers complain, however, that they cannot obtain satisfactory colour TV pictures; either the colour shimmers too much for comfort or it cannot be obtained at all. It is very difficult to recommend a particular make of TV as requested by John Anton. I used to feel that the Ferguson TX range worked well but my company recently bought one of the new models in the range and it is not as satisfactory as previous purchases.</p>
+
+<p>My advice is to try before you buy if at all possible. Most TV retailers will allow potential purchasers to test the TV of their choice with their home computers, provided the shop is not too busy with other customers.</p>
+
+<p>A number of readers are uneasy about the difference in practice between the 16K and 48K Spectrum. Derek Burn writes: <b>Can all 16K Spectrum programs be run unchanged on the 48K machine? I am prompted to ask by seeing 16K program listings which have an addendum giving modifications for the 48K computer.</b></p>
+
+<p>The strict answer to the question is no. There are small differences in the use of RAM between the two machines and so minor variations are needed in some programs to take account of those differences. The principal difference is that both the ZX-81 and the Spectrum use memory from the bottom upwards and the top downwards, with all spare memory concentrated in between.</p>
+
+<p>Clearly if 32K of memory is added at the top of the machine, the material which was previously at the top of RAM must be moved up by 32K to amalgamate the extra memory into the spare area. Certain system variables, RAMTOP in particular, enable the machine to keep track of those alterations.</p>
+
+<p>In practice, the difference between 16K and 48K programs is usually very small and can be accommodated by an addendum to the program listing. You will find that all pre-recorded 16K programs on the market will also run on 48K machines, although the converse, of course, is not true.</p>
+
+<p>Unfortunately there can be difficulty with some commercial cassettes when programs are LOADed into a Series III machine. Norman Godsmark asks in some annoyance: <b>How much software is being sold to unsuspecting owners of Series III Spectrums which will not operate with their computers?</b></p>
+
+<p>The answer, fortunately, is not very much. The problem has arisen because Sinclair recently released a slightlymodified version of the new machine, the Series III, which responds differently to the IN command compared to the previous two models. To test your machine enter</p>
+
+<pre>PRINT IN 16602</pre>
+
+<p>A Series I or Series II machine will respond with 63, whereas a Series III will respond with 191. The IN command, or its machine code equivalent, is used in a number of commercial programs to read the keyboard; that is the source of the problem. If the program is in machine code and the creator was cautious when he wrote it, the program will interpret automatically the input on both types of machine correctly and so the difculty is not as widespread as it might have been.</p>
+
+<p>If you encounter a problem of this nature, contact the software house which publishes the program and ask for a replacement copy.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="htsquad.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 23 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>February 1984</h6>
+
+</body>
+</html>

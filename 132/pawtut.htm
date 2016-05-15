@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 132 - PAW Tutorial</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="A guide to writing adventures with PAW from Sinclair User, February 1993">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#99FFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="index.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Issue 132 Contents"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 132 Contents"></a>
+<a href="../133/index.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Issue 133 Contents"></a></p>
+
+<img src="../shared/images/suguide.gif" width=350 height=96 vspace=10 border=0 alt="The SU Guide To">
+
+<center><h1><b><i><font color="#008000">PLAYING AND WRITING ADVENTURE GAMES</font></i></b></h1></center>
+
+<br clear=all>
+
+<img src="pawtut1.gif" width=150 height=85 hspace=10 vspace=10 border=0 align="right" alt="Part Five">
+
+<p class="first"><b>This is the final part of <i>Larry Horsfield's</i> PAW adventure writing tutorial. Remember, you'll need a full version of PAW to follow the instructions Larry has given in the last four months, but if you're serious about writing adventures then it's money very well spent. Meanwhile why not let Larry tell you how to saddle and mount your horse ...</b></p>
+
+<p>Last month we ended with just two problems left. How to saddle and bridle the horse. We will start with the saddle and there are two inputs the player can use to implement this action. Hold on though, surely the word saddle is a noun? Not to worry, there is an easy way around this, and that is to insert a &quot;null word&quot; as the verb. The two response table entries for the saddle, using flag 14, plus the entry for putting the bridle on the horse (flag 15), which is similar to the saddle, are thus:</p>
+
+<table><tr><td>PUT SADDLE</td><td>PREP ON</td></tr>
+<tr><td>&nbsp;</td><td>NOUN 2 HORSE</td></tr>
+<tr><td>&nbsp;</td><td>CARRIED 5</td></tr>
+<tr><td>&nbsp;</td><td>PRESENT 7 DESTROY 5</td></tr>
+<tr><td>&nbsp;</td><td>SET 14</td></tr>
+<tr><td>&nbsp;</td><td>OK</td></tr>
+
+<tr><td> _ SADDL</td><td>NOUN2 HORSE</td></tr>
+<tr><td>&nbsp;</td><td>CARRIED 5</td></tr>
+<tr><td>&nbsp;</td><td>PRESENT 7</td></tr>
+<tr><td>&nbsp;</td><td>DESTROY 5</td></tr>
+<tr><td>&nbsp;</td><td>SET 14</td></tr>
+<tr><td>&nbsp;</td><td>OK</td></tr>
+
+<tr><td>PUT BRIDL</td><td>PREP ON</td></tr>
+<tr><td>&nbsp;</td><td>NOUN 2 HORSE</td></tr>
+<tr><td>&nbsp;</td><td>CARRIED 6</td></tr>
+<tr><td>&nbsp;</td><td>PRESENT 7</td></tr>
+<tr><td>&nbsp;</td><td>DESTROY 6</td></tr>
+<tr><td>&nbsp;</td><td>SET 15</td></tr>
+<tr><td>&nbsp;</td><td>OK</td></tr></table>
+
+<p>Now we come to the entry that will, provided all the gameplay has been completed, mark the
+
+<img src="pawtut4.gif" width=185 height=500 hspace=10 vspace=10 border=0 align="right" alt="Armoured knight">
+
+final input in our mini-adventure, i.e. RIDE HORSE. First of all, insert the verb RIDE into the vocabulary as verb 41. YOU could also insert the verb mount as a synonym. Now go to the process tables and begin TWO new tables, 5 and 6. Before we insert any entries in Response or Process, switch to the message texts and insert the following messages:</p>
+
+<p class="first">Message 17: {The horse has no }<br>
+Message 18: saddle.<br>
+Message 19: bridle.<br>
+Message 20: You don't have a sword.<br>
+Message 21: You are not wearing the _.<br>
+Message 22: You mount the horse and ride out of the castle to join your comrades on the dawn patrol ...<br>
+<br>
+WELL DONE!<br>
+You have finished the adventure!</p>
+
+<p>You should position 'WELL DONE' in message 22 so it is in the centre of the screen, and you should put a blank line at the bottom using the ESCC7 routine. I have put brackets around message 17 as there is a space at the end and you'll notice that I've used the underline symbol in message 21. This will print as the object name in place of the &quot;_&quot; when combined with certain contacts in the respective entries. O.K., now go to the response table and insert the following entry:</p>
+
+<p class="first">RIDE HORSE AT 3<br>
+PROCESS 5<br>
+DONE</p>
+
+<p>Now switch to the response tables and select Process 5. We will handle the conditions that determine whether the player can RIDE the HORSE by inserting entries in Process 5, checking to see if the player is wearing the helmet and chainmail, not carrying the sword and if the saddle and bridle are not on the horse. The checking entries in Process 5 are thus:</p>
+
+<table>
+<tr><td>* *</td><td>NOTWORN 2</td><td>&nbsp;</td><td>* *</td><td>NOTWORN 3</td></tr>
+<tr><td>&nbsp;</td><td>WHATO</td><td>&nbsp;</td><td>&nbsp;</td><td>WHATO</td></tr>
+<tr><td>&nbsp;</td><td>LET 51 2</td><td>&nbsp;</td><td>&nbsp;</td><td>LET 51 3</td></tr>
+<tr><td>&nbsp;</td><td>MESSAGE 21</td><td>&nbsp;</td><td>&nbsp;</td><td>MESSAGE 21</td></tr>
+<tr><td>&nbsp;</td><td>DONE</td><td>&nbsp; &nbsp;&nbsp;</td><td>&nbsp;</td><td>DONE</td></tr>
+<tr><td colspan="5">&nbsp;</td></tr>
+<tr><td>* *</td><td>NOTCARR 4</td><td>&nbsp;</td><td>* *</td><td>ZERO 14</td></tr>
+<tr><td>&nbsp;</td><td>MESSAGE 20</td><td>&nbsp;</td><td>&nbsp;</td><td>MES 17</td></tr>
+<tr><td>&nbsp;</td><td>DONE</td><td>&nbsp;</td><td>&nbsp;</td><td>MESSAGE 18</td></tr>
+<tr><td colspan="4">&nbsp;</td><td>DONE</td></tr>
+<tr><td colspan="5">&nbsp;</td></tr>
+<tr><td>* *</td><td>ZERO 15</td><td colspan="3">&nbsp;</td></tr>
+<tr><td>&nbsp;</td><td>MES 17</td><td colspan="3">&nbsp;</td></tr>
+<tr><td>&nbsp;</td><td>MESSAGE 19</td><td colspan="3">&nbsp;</td></tr>
+<tr><td>&nbsp;</td><td>DONE</td><td colspan="3">&nbsp;</td></tr>
+</table>
+
+<p>The WHATO action, &quot;WHAT Object&quot;, is explained in the PAW manual, but in this case the LET 51 2, referring to object 2 the helmet (or 3 the coat of chainmail), indicates to PAW that that number is being referred to and the description of that object number is printed in the message in place of the &quot;_&quot; character. lf you Print the system messages, you will see that quite a lot of them use this facility. The final entry to be inserted in Process 5 is the one which is acted upon when all the player is wearing is the helmet and chainmail, carrying the sword and the saddle and bridle are on the horse. This entry is thus:</p>
+
+<table>
+<tr><td>* *</td><td>MESSAGE 22</td></tr>
+<tr><td>&nbsp;</td><td>SET 16</td></tr>
+<tr><td>&nbsp;</td><td>TURNS</td></tr>
+<tr><td>&nbsp;</td><td>END</td></tr>
+</table>
+
+<p>We have not put any conditions in this entry because the previous entries have checked for the objects being either worn or carried and the saddle and bridle being on the horse. I have included the SET 16 line because of some of the entries we will be putting in later. If the player is wearing the helmet and chainmail, carrying the sword and the saddle and the bridle are on the horse, when RIDE HORSE or MOUNT HORSE is typed in, message 22 is printed on the screen, the number of turns you have taken is shown and you are asked if you want to play again. The 'full solution' for the adventure, using the minimum number of inputs is, by the way, as follows:</p>
+
+<p><b>U, GET TORCH, D, W, N, LOOK UNDER BENCH, WEAR HELMET, LIGHT TORCH, S, E, OPEN DOOR, S, GET SWORD, N, E, E, GET ALL, W, SEARCH STRAW, GET CHAINMAIL AND WEAR IT, SADDLE HORSE, PUT BRIDLE ON HORSE, RIDE HORSE ... Adventure complete.</b></p>
+
+<table width="278" border="0" cellpadding="10" align="right">
+<tr><td><img src="pawtut2.gif" width=258 height=194 border=0 alt="">
+<br>
+<p align="right" class="first"><b><font size="-1" color="#FF0000">
+Well done, you've completed the adventure and all is well. Now invent your own one or expand Dawn Patrol.
+</font></b></p>
+</td></tr>
+<tr><td><img src="pawtut3.gif" width=258 height=194 border=0 alt="">
+<br>
+<p align="right" class="first"><b><font size="-1" color="#FF0000">
+The fail message in Dawn Patrol. This adds an element of urgency to the game, players won't get away with being lazy.
+</font></b></p>
+</td></tr>
+</table>
+
+<p>That, however, isn't the end of the programming. You may have realised that firstly we inserted another process table which we haven't used yet and that we haven't made any use at all of process table 2, which I explained was PAW's 'turn' at the adventure. There also isn't any rush to complete the adventure, although the storyline mentions that if you haven't joined your comrades, your commander will notice your absence. We will therefore use this part of the plot to provide a bit of excitement by having your commander come looking for you if you haven't completed the adventure within 30 moves. First of all, insert the two following messages:</p>
+
+<p class="first">MESSAGE 23: You hear a loud voice yell out nearby, &quot;Private Smith! where are you hiding you 'orrible little man?&quot;</p>
+
+<p class="first">MESSAGE 24: You hear footsteps behind you and a gruff voice shouts out, &quot;Here he is! Throw him in the dungeon for failing to report for duty!&quot; Two burly soldiers frogmarch you away and throw you in the castle dungeon! You took too many moves and have failed!</p>
+
+<p>You should start each message by inserting a blank line at the top using the ESCC7 routine (i.e. Extend mode - 7 - Delete), and you should also put a blank line at the end of message 24. This is to separate the messages when on screen. After entering those messages, go to the process table and, in process2, insert this short entry:{* *} {PROCESS 6} Now select process 6 and insert the following entries:</p>
+
+<table>
+<tr><td>* *</td><td>ZERO 16</td><td>&nbsp;</td><td>* *</td><td>ZERO 16</td></tr>
+<tr><td>&nbsp;</td><td>ZERO 5</td><td colspan="2">&nbsp;</td><td>EQ 5 10</td></tr>
+<tr><td>&nbsp;</td><td>LET 5 31</td><td colspan="2">&nbsp;</td><td>MESSAGE 23</td></tr>
+<tr><td colspan="5">&nbsp;</td></tr>
+<tr><td colspan="3">&nbsp;</td><td>* *</td><td>ZERO 16</td></tr>
+<tr><td colspan="4">&nbsp;</td><td>EQ 51</td></tr>
+<tr><td colspan="4">&nbsp;</td><td>MESSAGE 24</td></tr>
+<tr><td colspan="4">&nbsp;</td><td>TURNS</td></tr>
+<tr><td colspan="4">&nbsp;</td><td>END</td></tr>
+</table>
+
+<p>In addition to the ordinary User Flags (11 to 28 &amp; 60 to 255) there are 9 &quot;auto-decrement&quot; flags (2 to 10) which are decremented if non-zero by PAW. Some of these as explained in the manual, operate under certain conditions, but flags 5 to 8 just decrement every input by the player or PAW. In the last entry you have to make a &quot;death&quot; message appear when the flag you use equals 1, and hence add 1 to the number of moves when inserting the first entry so that the sequence will work properly. Once all the above has been inserted into your database, test the adventure and if you make some meaningless moves you will see the first message appear after 20 moves, then the final &quot;death&quot; message 10 moves later.</p>
+
+<h2>WHERE DO WE GO FROM HERE?</h2>
+
+<p class="first">So far I have given you the instructions, the rest is up to you! You can expand 'DAWN PATROL' by inserting 'EXAMINE' messages and response table entries for all objects in the adventure. How about putting in more locations around the castle and maybe a puzzle or two of your own devising, it's all up to you.</p>
+
+<p>If you are serious about adventure writing, I advise you to start by writing a small adventure, about twice the size of 'DAWN PATROL', and then work your way upwards to a full size adventure.</p>
+
+<p>The average 48K adventure should be about 40 - 50 locations. There should be an evenly balanced number of puzzles ranging in difficulty from dead easy to quite hard.</p>
+
+<p>If you are working in 128K, the game can of course be much bigger, but don't fall into the trap of putting in loads of 'walk through' locations. (If you are a 'humorous' adventure writer, watch out! Most adventure players are adults and do not appreciate 'modern' humour, nor do they like smuttiness or bad language, a lot of players are women).</p>
+
+<p>OK, so you've written your adventure, now what? Well, if you're interested in a serious attempt at an adventure, you should have the game 'playtested'. This involves giving the game to someone who plays through the adventure, trying to solve the puzzles in various ways and checking for spelling and grammatical errors. You should give the game to a couple of playtesters first, then, once they have found bugs you can correct them. After this give the game to another two friends to playtest again, they are bound to find bugs the others missed.</p>
+
+<h2>MARKETING YOUR ADVENTURE:</h2>
+
+<p class="first">At last you have a finished, playtested and debugged, adventure. The big question now is how do you sell your game? The hard way to do it is on your own, and you should really sit down and consider what this option involves. It means buying blank cassettes, jiffy bags, stamps, paying for photocopies etc. not to mention hours spent loading and test playing copies of your adventure.</p>
+
+<p>The alternative is to submit your finished adventure to one of the established adventure software houses, such as Zenobi software, FSF Adventure or The Guild. If you do this, don't just send a badly labelled cassette and a note saying 'this is my adventure, will you sell it?' as has happened to me a couple of times. Give whoever you send it to full details of the plot, also provide a map and a full solution.</p>
+
+<p>The software house will evaluate your offering and tell you whether or not they are interested in publishing it under their label. Don't feel too dejected if your adventure isn't accepted, ask why it was turned down and what could be done to improve it. If your adventure is good enough the software house will accept it and you will probably be asked to sign a contract regarding the royalties the software company will pay you.</p>
+
+<p>Whatever you do, you are not going to become an overnight millionaire. The adventure side of computer games is an ever decreasing section of the market and income from even the best selling adventures is quite small compared to the vast amounts of money that can be earned from arcade games. Most adventure houses will pay you 30-40p per adventure sold, usually paid quarterly.</p>
+
+<p>So, why do we do it? Well most of us are doing it because we love adventure games, and the money side of things is an added bonus. The only exception to this among the current Spectrum adventure software companies is Zenobi Software, better known as John Wilson, who has made a business out of adventure publishing which is his sole source of income. This is a success story which is unparalleled in the world of adventure writing,with over 100 titles currently available.</p>
+
+<p>I hope my articles over the lost few months have been of interest to you, and my tutorials have been easy to follow. I am willing to evaluate your games and help you out if you have any problems. Please give full details of your game and send a full copy of your database on tape, 3&quot; +3 disk or 3.5&quot; +D disk. Please note, however, that I cannot help you with the plot of your adventure!</p>
+
+<p class="first"><b>LARRY HORSFIELD</b>,<br>
+FSF ADVENTURES,<br>
+LONDON.</p>
+
+<p class="first">Other useful addresses:</p>
+
+<p class="first"><b>Zenobi Software</b>,<br>
+Rochdale.</p>
+
+<p class="first"><b>The Guild</b>,<br>
+Birmingham.</p>
+
+<p class="first"><b>Compass Software</b>,<br>
+Great Yarmouth.</p>
+
+<p>That brings me to the end of the last instalment of my PAW mini-adventure programming tutorial. You should now insert a blank tape into your datacorder, blank, formatted disc into your disc drive or whatever disk you've been using up until now and then select option M from the main menu to save your database. If you are using a disc version of PAW use the filename START for one save, then save the database again using a different name i.e. DAWN. You should always make at least two copies of any database as a precaution. Good luck with your new adventure writing hobby.</p>
+
+<p><b>By Larry Horsfield</b></p>
+
+<br clear=all>
+
+<center><p class="first"><a href="../131/pawtut.htm"><b>Previous article in series (issue 131)</b></a></p>
+
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table width="100%" border="0" cellpadding="10"><tr><td bgcolor="#99FFFF">
+<table><tr align="center"><td><img src="../shared/images/specicon.gif" width=32 height=32 border=0 alt="pawguide.sna"></td><td align="center"><img src="../shared/images/specicon.gif" width=32 height=32 border=0 alt="pawguide.z80"></td></tr>
+<tr align="center"><td><a href="../shared/pawguide.sna">SNA</a></td><td><a href="../shared/pawguide.z80">Z80</a></td></tr>
+<tr align="center"><td colspan="2"><b>Completed adventure snapshots</b></td></tr>
+</table>
+</td></tr></table>
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="index.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Issue 132 Contents"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 132 Contents"></a>
+<a href="../133/index.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Issue 133 Contents"></a></p>
+
+<h6 align="center">Sinclair User<br>February 1993</h6>
+
+</body>
+</html>

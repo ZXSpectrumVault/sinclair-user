@@ -1,0 +1,357 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 33 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX-81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, December 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="mindgms.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 33 Contents"></a>
+<a href="../034/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 34"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson5.jpg" width=275 height=407 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1>Journey to the centre of the ROM</h1>
+
+<p class="first"><b><font size="+1">Andrew Hewson delves into the heart of the Z80 to unearth some useful routines.</font></b></p>
+
+<p class="first">SINCLAIR Research have manufactured three machines all based on the Z80 microprocessor: the ZX-80, the ZX-81 and the ZX Spectrum, and it is interesting to observe the development from one machine to the next.</p>
+
+<p>A consequence of that understandable policy of developing one ROM from its predecessors is that some features which were necessary or desirable in the earlier version may be retained in the later version because the relevant code is known to work even though they impose constraints on the new design. This is, indirectly, the answer to the following question from John Blackwood who asks &quot;<b>Why is 9999 the largest line number permitted on the ZX-81?</b>&quot;</p>
+
+<p>At first sight the limitation to 9999 seems quite illogical because 9999 is not a 'round number' as far as the Z80 microprocessor is concerned. A more logical upper limit might be 255 because that is the maximum integer which the machine can store in a single memory location - or byte. However, many users could be expected to write programs containing more than 255 lines and so a greater limit is desirable. The next highest 'round number' is 65535 which is the largest integer which the computer can store in two consecutive bytes. So why limit line numbers to 9999 when 65535 could be used just as easily?</p>
+
+<p>The reason appears to be that by limiting line numbers in that way and by manipulating the numeric codes for variables the ZX-81 has a device for distinguishing lines in the program area from variables in the variables area.</p>
+
+<p>To understand the mechanism at work, consider the binary representation of 9999. Line numbers are held with their most significant byte first. That is contrary to the usual Z80 convention so we can assume that the manufacturers had some special motive in choosing that arrangement. Hence line number 9999 is held as a byte containing 39 followed by a byte containing 15 because</p>
+
+<pre>39 * 256 + 15 = 9999</pre>
+
+<p class="first">The bit pattern of the byte, obtained by converting 39 to binary, is 00100111. Notice that the three most significant bits - bit numbers 7, 6 and 5 are set to 0, 0 and 1 for this, the largest permitted line number. Hence bit numbers 7, 6 and 5 of the first byte of all permitted line numbers will be set to 0, 0 and 1, or in the case of line numbers less than 8192, they will be set to 0, 0, 0.</p>
+
+<p>Now look at pages 172 to 174 of the <i>ZX-81 Basic Programming</i> manual and you will see illustrations of the different types of variables as they are represented in the variables area. In each case the first byte contains a numeric code related to the code of the letter which identifies the variable - or the code of the first letter of the variable name in the case of a number whose name is longer than one letter. The largest possible letter code is 63, the code for Z, which is still 00111111 in binary, and the smallest is 38, the code for A, which is 00100110 in binary.</p>
+
+<p>Hence bits 7 and 6 are not needed when distinguishing between letter codes and as bit 5 is always set to one, the ZX-81 can use these bits to distinguish between the different types of variable. Three bits can be set in</p>
+
+<pre>2*2*2=8</pre>
+
+<p class="first">different ways. Table 1 lists the eight ways and their interpretation.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre><b>Table 1. This shows the meaning of the top three bits
+in the first byte of a program line or Basic variable in the
+ZX-81 and the Spectrum.
+
+Bit pattern               Interpretation</b>
+000                       Line number less than 8192
+001                       Line number between 8192 and 9999
+010                       String
+011                       Number with single character name
+100                       Array of numbers
+101                       Number with multiple character name
+110                       Character array
+111                       Control variable for a FOR-NEXT loop</pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>It is strange that Sinclair should take such elaborate precautions to distinguish a line number from a variable because the same purpose could be served by comparing the address of the byte in question to the D-FILE or VARS system variables. It allows the ZX-81 to use the same routine, at 2546 to 2576, to step through memory to the 'next' line or the 'next' variable but that seems a small advantage.</p>
+
+<p>It is certainly one of the features which has been carried forward from the ZX-80 to the ZX-81 and then to the Spectrum.</p>
+
+<p>We shall return to discussing Basic variables later but first a small but relevant digression is prompted by the following question from Patrick Higham. He asks: &quot;<b>Is there a simple method of printing characters on the Spectrum screen from a machine code routine?</b>&quot;</p>
+
+<p>Printing from machine code is very straightforward because the manufacturers have thoughtfully provided a routine in ROM to do all the hard work. The routine is called at address 16 decimal - 10 in hexadecimal - and should be accessed using the special Z80 machine code instruction</p>
+
+<pre>RST 16</pre>
+
+<p>That instruction, for some reason which has never been adequately explained, is called a 'restart' - hence the RST abbreviation - and is one of eight such special instructions. As far as the user is concerned it has the same effect as a CALL instruction except that only one byte instead of three is required to hold it.</p>
+
+<p>The routine is entered with the A register set to the code of the character to be PRINTed and the appropriate character appears on the screen at the current PRINT position. All registers are preserved by the routine except the AF register pair and so in some circumstances it may be necessary to PUSH and POP AF before and after the RST instruction respectively.</p>
+
+<p>The routine listed in table 2 demonstrates the use of RST 16 by using it to PRINT all characters with codes lying between 32 and 255 inclusive. Note that includes all the tokens so the routine demonstrates that command words like POKE, READ and DRAW can be PRINTed using RST 16 if required. The decimal codes for the routine can be loaded into the printer buffer using the decimal loader listed in table 3.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre><b>Table 2. A Spectrum program to PRINT the characters with codes
+in the range 32 to 255 inclusive. Note that when the a register
+contains 255, the effect of the inc a instruction is the same as
+subtracting 255, ie a subsequently contains zero.
+
+Decimal     Assembly      Code           Comment</b>
+62 32                     ld a, 32       Load the a register with 32
+245         Again         push af        Save a on the stack
+215                       rst 16         PRINT the character
+241                       pop af         Retrieve a from the stack
+60                        inc a          Increment the a register
+32 250                    jr nz, Again   Jump to PRINT next character
+201                       ret            Return when a reaches zero</pre>
+</td></tr>
+<tr><td bgcolor="#CCCCCC"><center><hr width="50%" noshade></center>
+</td></tr>
+<tr><td bgcolor="#CCCCCC">
+<pre><b>Table 3. A simple decimal loader for POKEing decimal numbers into the
+Spectrum printer buffer. To halt the program enter STOP (Symbol
+Shift A).</b>
+
+10 FOR I = 23296 TO 23551
+20 INPUT J
+30 POKE I,J
+40 PRINT I,J
+50 NEXT I</pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The RST 16 facility can also be used to control the screen format and layout character codes but a little care must be taken not to follow the INK, PAPER and other control codes by invalid numbers because otherwise error code K results. Some of those layout characters are extremely useful, for example</p>
+
+<pre>LD A, 13
+RST 16</pre>
+
+<p class="first">will PRINT an 'ENTER' character so that the current PRINT position will move to the start of the next line.</p>
+
+<p>Of course, the PRINT routine at address 16 was not provided by the manufacturers solely for the benefit of users of the finished machine. The Spectrum ROM itself makes extensive use of the facility and so it is littered with RST 16 instructions. That goes some way to explaining the power of RST instructions. Every time one is used two bytes of memory are saved - the difference between the length of a CALL and a RST instruction - and more importantly the Z80 does not waste time calculating the address which is being called because it is implicit in the instruction. Hence RST is very useful for calling routines which are used frequently.</p>
+
+<p>The call to RST 16 is an important part of the routine which is listed in table 4 in response to the following letter from Alan Procter: &quot;<b>Have you a routine to identify the variables existing in memory, identifying them as numerics, string simple or array?</b>&quot;</p>
+
+<p>The routine is rather longer than the ones I usually include in this column and so I recommend that an assembler program is used to load it into memory. Please note that the routine is not relocatable ie if the decimal codes are used it can only be loaded into the printer buffer starting at 23296.</p>
+
+<p>The routine contains seven subroutines which I have called setb, prtvar, prtdol, addlen, lonvar, addsix and prtype. Those perform the following functions:
+
+<ul>
+<li><b>setb</b> There are six different types of Basic variables and this subroutine looks at the first byte of the current variable and puts the corresponding value into the b register. Table 5 shows the types and the value of b.</li>
+<li><b>prtvar</b> Each type of Basic variable except one has a single character name. This subroutine decodes the character code by successively subtracting 32 and PRINTs the result.</li>
+<li><b>prtdol</b> If the current variable is a string or a string array, this subroutine PRINTs a dollar sign to follow the single character name.</li>
+<li><b>addlen</b> The two bytes following the single byte name of strings, string arrays and character arrays contain a number equal to the number of bytes used to store all the data in the variable. This routine adds this number to the pointer in hl so that the next variable can be found.</li>
+<li><b>lonvar</b> This routine PRINTs up to ten characters of the name of a numeric variable with a multiple character name and moves the hl pointer to the end of the variable name.</li>
+<li><b>addsix</b> Six bytes are used to hold the data in numeric variables. This subroutine adds six to the hl pointer so that the next variable can be found.</li>
+<li><b>prtype</b> This subroutine TABs to column 16 using the ROM routine at 0A5Fh and then PRINTs the appropriate variable type as determined from the value in the b register from the list of types held in the 'table' at the end of the routine.</li>
+</ul></p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre><b>Table 4. A Spectrum routine to PRINT the names and types of all the current
+Basic variables.
+
+Decimal       Assembly       Code              Comment</b>
+42 75 92                     ld hl,(23627)     VARS to hl
+126           tend:          ld a,(hl)         128 is the end of VARS marker
+254 128                      cp 128
+200                          ret z
+205 111 91                   call setb         Set b register to 1 to 6
+205 55 91                    call prtvar       Print the name ofthe variable
+205 67 91                    call prtdol       Print the dollar sign if necessary
+203 64                       bit 0,b           Is b even?
+40 5                         jr nz,even        If so jump
+205 125 91                   call addlen       No, addlen skips over the data
+24 22                        jr prtres         Skip to prtres
+203 80        even:          bit 2,b           b is even. Is it 2?
+40 15                        jr z,two          If so jump
+203 72                       bit 1,b           Is b 4?
+40 8                         jr z,four         If so jump
+213                          push de           b is 6 so this is a loop counter
+17 13 0                      ld de,13          Skip over 13 bytes
+25                           add hl,de
+209                          pop de
+24 3                         jr two
+205 141 91    four:          call lonvar       This is a long variable
+205 134 91    two:           call addsix       Skip over remaining six bytes
+205 77 91     prtres:        call prtype       Print type of variable
+62 13                        ld a,13           Output the enter character
+215                          rst 16
+24 204                       jr tend
+197           prtvar:        push be           This routine decodes and prints the
+198 32                       add 32            (first letter of the) variable held
+16 3          tryb:          djnz decb         in the a register
+215                          rest 16
+193                          pop be
+201                          ret
+214 32        decb:          sub 32
+24 247                       jr tryb
+203 64        prtdol:        bit 0,b           This routine prints a dollar sign
+200                          ret z             if b contains 1 or 5
+203 72                       bit 1,b
+192                          ret nz
+62 36                        ld a,36
+215                          rst 16
+201                          ret
+229           prtype:        push hl           This routine prints the appropriate
+197                          push be           variable type taken front the table
+33 168 91                    ld hl,table       controlled by the value in b
+16 7          dec:           djnz nexlet
+229                          push hl
+205 95 10                    call 0a5fh        Tab to column 16
+225                          pop hl
+24 8                         jr out
+126           nexlet:        ld a,(hl)         Decrement b if the next letter has
+35                           inc hl            code 128
+254 128                      cp 128
+40 241                       jr z,dec          When b is zero the correct entry
+24 248                       jr nexlet         has been found
+126           out:           ld a,(hl)         Print each letter in turn, first
+254 128                      cp 128            checking for the 128 terminator
+40 4                         jr z,endpr
+215                          rst 16
+35                           inc hl
+24 247                       jr out
+193           endpr:         pop be            Restore be
+225                          pop hl            and hl
+201                          ret               before returning
+61            setb:          ld,b,1            This routine sets the value of b in
+14 91                        ld c,91           range 1 to 6 according to the value
+185           nexb:          cp c              in the first byte of the variable name
+216                          ret c
+4                            inc b
+121                          ld a,c
+198 32                       add 32
+79                           ld c,a
+126                          ld a,(hl)
+24 246                       jr nextb
+213           addlen:        push de           This routine is used to skip over the
+35                           inc hl            body of the data for numeric arrays,
+94                           ld e,(hl)         strings and string arrays
+35                           inc hl
+86                           ld d,(hl)
+35                           inc hl
+25                           add hl de
+209                          pop de
+201                          ret
+213           addsix:        push de           Used for simple variables and long
+17 6 0                       ld de,6           variables to skip over the body of
+25                           add he,de         the data
+209                          pop de
+201                          ret
+197           lonvar:        push be           This routine prints up to ten
+6 10                         ld b,10           characters from along variable name
+35            nexlon:        inc hl
+55                           scf
+126                          ld a,(hl)
+254 128                      cp 128
+48 12                        jr nc,endlon
+215                          rst 16
+16 246                       djnz nexlon
+35            aglon:         inc hl            Discard any remaining characters
+55                           scf               after the tenth character has been
+126                          ld a,(hl)         printed
+254 128                      cp 128
+48 5                         jr nc,endlon
+24 247                       jr aglon
+214 128       endlon:        sub 128
+215                          rst 16
+193           endl:          pop be
+201                          ret
+83            table:         defb 83
+116                          defb 116
+114                          defb 114
+105                          defb 105
+110                          defb 110
+103                          defb 103
+128                          defb 128
+83                           defb 83
+105                          defb 105
+109                          defb 109
+112                          defb 112
+108                          defb 108
+101                          defb 101
+32                           defb 32
+118                          defb 118
+97                           defb 97
+114                          defb 114
+105                          defb 105
+97                           defb 97
+98                           defb 98
+108                          defb 108
+101                          defb 101
+128                          defb 128
+78                           defb 78
+117                          defb 117
+109                          defb 109
+101                          defb 101
+114                          defb 114
+105                          defb 105
+99                           defb 99
+32                           defb 32
+97                           defb 97
+114                          defb 114
+114                          defb 114
+97                           defb 97
+121                          defb 121
+128                          defb 128
+76                           defb 76
+111                          defb 111
+110                          defb 110
+103                          defb 103
+32                           defb 32
+110                          defb 110
+117                          defb 117
+109                          defb 109
+101                          defb 101
+114                          defb 114
+105                          defb 105
+99                           defb 99
+128                          defb 128
+83                           defb 83
+116                          defb 116
+114                          defb 114
+105                          defb 105
+110                          defb 110
+103                          defb 103
+32                           defb 32
+97                           defb 97
+114                          defb 114
+114                          defb 114
+97                           defb 97
+121                          defb 121
+128                          defb 128
+76                           defb 76
+111                          defb 111
+111                          defb 111
+112                          defb 112
+32                           defb 32
+99                           defb 99
+111                          defb 111
+117                          defb 117
+110                          defb 110
+116                          defb 116
+101                          defb 101
+114                          defb 114
+128                          defb 128</pre>
+</td></tr>
+<tr><td bgcolor="#CCCCCC"><center><hr width="50%" noshade></center>
+</td></tr>
+<tr><td bgcolor="#CCCCCC">
+<pre><b>Table 5. The codes placed in the b register by the &quot;setb&quot; routine in table 4
+and the corresponding variable types.
+
+b register               Type of variable</b>
+    1                    String of characters
+    2                    Simple numeric variable
+    3                    Numeric array
+    4                    Numeric variable with multiple character name
+    5                    String array
+    6                    Loop counter</pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="mindgms.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 33 Contents"></a>
+<a href="../034/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 34"></a></p>
+
+<h6 align="center">Sinclair User<br>December 1984</h6>
+
+</body>
+</html>

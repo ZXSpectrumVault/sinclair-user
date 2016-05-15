@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 4 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, July 1982">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="newbiz.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="New Business"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 4 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<table width="220" border="0" cellpadding="10" align="right">
+<tr align="center"><td><img src="../shared/images/hewson1.jpg" width=200 height=300 border=0 alt="">
+<br>
+<p class="first"><b><font size="-1">Andrew Hewson</font></b></p>
+</td></tr>
+</table>
+
+<h1>Peripheral difficulties</h1>
+
+<p class="first"><b><font size="+1">Andrew Hewson answers more of your problems, including some worries about the Spectrum and possible add-ons</font></b></p>
+
+<p class="first">I RETURN to the knotty problem of transferring data between programs but first I have some questions concerning peripherals. Peter Mann writes:</p>
+
+<p><b>I have been told that if I use my existing hi-fi cassette deck on the new Spectrum, the computer would blow up. Why should that be so? I would much rather use my expensive deck than have to try a 'cheap' portable tape recorder.</b></p>
+
+<p>The Spectrum is a low-voltage device designed to detect and decode the kind of poorly-reproduced, low-voltage signal levels obtainable from the earpiece of a 'cheap' portable tape recorder. In contrast, a hi-fi system is designed to deliver an accurately reproduced signal with sufficient power to fill a room with sound. Large voltage fluctuations are normal from a hi-fi system, even at tow volume levels, and so connecting a Spectrum to a hi-fi system clearly risks overloading the computer.</p>
+
+<p>To make the most of a Spectrum, you need it on a large table or desk, with TV, cassette player, books, magazines, pencil and paper to hand. I can understand that you do not wish to spend money necessarily on a portable cassette player but I am sure you would find it much more convenient to use.</p>
+
+<p><b>Recently I have bought a ZX-81 for business use and am thinking of buying a ZX printer. Is the printer suitable for printing ready-gummed labels?</b> asks John Modha.</p>
+
+<p>Unfortunately, the answer is no.</p>
+
+<p>The ZX printer is capable only of printing on the special aluminium-coated paper supplied with it. I suggest you look at advertisements, as one or two firms supply a printer interface which allows the ZX-81 to drive a conventional printer.</p>
+
+<p>Alan Pitcher says: <b>I have just ordered a Spectrum. Can you suggest a cassette unit to use with it?</b></p>
+
+<p>Sinclair has improved the cassette facilities markedly in the design of the Spectrum and so it is hoped that we will all find it much easier to use than the ZX-80 and ZX-81 in that respect. Instead of recommending a cassette player which might not be available in your area, I suggest that you choose a shop which sells a variety of players and take your computer, your TV and a typical cassette and make sure you can LOAD and SAVE before you buy. I have done that and found that shopkeepers are happy to help, provided you ask permission and explain the problem.</p>
+
+<center><img src="helplne1.jpg" width=500 height=238 vspace=10 border=0 alt="ZX Spectrum"></center>
+
+<p>My advice to Peter Stokes is similar. He writes: <b>I would like to replace the TV I use with my ZX-81 by a small monitor to obtain better video resolution. Can you advise me?</b></p>
+
+<p>I would not bother to use a video monitor. I have seen various TVs and monitors connected to ZX-81s and with some the picture is poor and with others very good. It does not seem to matter whether you use a video monitor or not.</p>
+
+<p>My preference is for one of the Ferguson range of small black-and white portables, which I find give a very clear picture and which cope well with the interruptions in the signal caused by the FAST command.</p>
+
+<p>I shall probably be besieged by letters advocating another make or model and so I repeat the advice to 'try before you buy'.</p>
+
+<p>Geoffrey Ottley is going to the States for three years and he asks: <b>Will I be able to use my computer in the U.S. without further adaptation or will I need a new transformer?</b></p>
+
+<p>Electricity is supplied in the U.K. at 240V, 50 cycles per second, whereas in the U.S. the supply is at 120V, 60 cycles per second. Hence a U.S. power supply will be needed with an output of 9V DC and rated at 1.2 amps. It will also be necessary to use a TV made for the British market because U.K. TVs display 50 frames per second, whereas U.S. TVs display 60 frames per second.</p>
+
+<p>The U.S. version of the ZX-81 is also rather better screened than the U.K. version, so if your new neighbours complain of interference on their TV you will have to put your computer in an earthed metal box. Perhaps it would be easier to buy a new ZX-81 on your arrival.</p>
+
+<center><img src="../shared/images/helplne2.gif" width=500 height=199 vspace=10 border=0 alt="Sinclair printout"></center>
+
+<p>Now I return to a topic which has aroused a good deal of interest since I mentioned it two months ago. Readers of the first issue of <i>Sinclair User</i> will remember that <a href="../001/helplne.htm#ramtop">I described two Basic routines</a> for transferring data from a program, above RAMTOP, loading a second program from cassette and then transferring the data back to the variables area of the second program, thus enabling two programs to 'speak' to one another.</p>
+
+<p>Les Auckland writes: <b>I would like to know how to SAVE and LOAD data only into a program held in core. Can you assist?</b></p>
+
+<p>There are two methods. The first is quick and elegant and consists essentially of writing new SAVE and LOAD routines in machine code. The second method is slow and clumsy but it is easy to understand and the necessary software is mostly in Basic, so I will explain it as the preferential method. The steps in outline are:</p>
+
+<p>SAVE the data of interest on tape; to prevent the program in the ZX-81 being over-written, copy the program area above RAMTOP; LOAD the data from tape in the usual way; create some space in the program area and copy the program from above RAMTOP into the newly created space in the program area.</p>
+
+<p>Obviously, to create some data to LOAD into a program we must RUN a previous program to read in or calculate the data to be SAVE. The earlier program could be deleted line by line but the process is rather laborious, so use this technique instead:</p>
+
+<p>First note the line number of the first line of the program. Suppose it is line number 10; then find the effective length of the program by entering</p>
+
+<pre>PRINT PEEK 16396+256*PEEK 16397-16513</pre>
+
+<p>Suppose the result is 1859. Then enter</p>
+
+<pre>POKE 16511,1859-256*INT (1859/256); POKE 16512,INT (1959/256);10</pre>
+
+<p>or whatever was the first line number.</p>
+
+<p>Do not attempt to LIST the program between entering the instructions or you will have to pull out the plug and start again. You are making the ZX-81 think that the whole program is one monster Basic line and if it attempts to LIST it all, it becomes confused. Entering 10, or whatever, deletes the monster line in the usual way.</p>
+
+<p>The data can then be SAVEd, together with the display file and other odds and ends, on tape.</p>
+
+<p>The second step is to LOAD a new program and store it above RAMTOP. The technique is very similar to storing data above RAMTOP which I have explained previously. Be sure to move RAMTOP down as explained on page 168 of ZX-81 Basic Programming before LOADing the new program. The following routine copies a program above RAMTOP:</p>
+
+<pre>10 LET J=PEEK 16396+256*PEEK 16397-17509
+20 PRINT
+30 LET K=PEEK 16388+256*PEEK 16389
+40 FOR I=0 TO J-1
+50 POKE K+I, PEEK (16509+I)
+60 NEXT I</pre>
+
+<p>The routine PRINTS the length of the program, J, in bytes. You should make a note of it because it will be needed later.</p>
+
+<p>The data can then be LOADed from tape in the usual way. The current program will, of course, be over-written and so the final step is to copy it back from above RAMTOP. A machine code routine is needed for that step, because space must be created in the program area in which to store the program using a routine in ROM.</p>
+
+<p>The routine is 20 bytes long and I suggest you store it at addresses 32748 to 32767 by entering and RUNning the following routine:</p>
+
+<pre>10 FOR I=32748 to 32767
+20 INPUT M
+30 POKE I,M
+40 PRINT I,PEEK I
+50 NEXT I</pre>
+
+<p>Enter the following numbers one by one from the keyboard: 42, 12, 64, 229, 43, 1, 0, 0, 197, 205, 158, 9, 193, 209, 42, 4, 64, 237, 176, 201. You might like to determine how the routine works by translating the decimal numbers into Z-80 assembler using Appendix A of the ZX-81 Basic Programming manual.</p>
+
+<p>Before running the machine code routine, POKE the program length, J, into it by entering</p>
+
+<pre>POKE 32754,,J-256*INT(J/256)
+POKE 32755,INT(J/256)</pre>
+
+<p>Then delete the Basic routine,put the ZX-81 into FAST mode, and call the machine code routine by entering</p>
+
+<pre>IF USE=32748 THEN STOP</pre>
+
+<center><p>&copy; Copyright Hewson Consultants 1982</p></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="newbiz.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="New Business"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 4 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>July 1982</h6>
+
+</body>
+</html>
+

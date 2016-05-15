@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 32 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX-81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, November 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="mindgms.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 32 Contents"></a>
+<a href="../033/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 33"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson5.jpg" width=275 height=407 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1>Moving displays in black and white</h1>
+
+<p class="first"><b><font size="+1">Andrew Hewson looks at the position of the ZX-81 screen display and shows how to produce headerless files on the Spectrum</font></b></p>
+
+<p class="first">I HAVE NOTICED a decrease in the number of questions from ZX-81 owners in the past year and so I have tended to concentrate on the Spectrum. This month I redress the balance.</p>
+
+<p>The first question, from Mr Dave Harris, introduces the theme: &quot;<b>Can you explain the ZX-81 display file?</b>&quot;</p>
+
+<p>The area at the bottom of RAM between 16384 and 16508 holds the system variables and is followed by the program area, starting at 16509. The display file is next but as programs can vary in length, the display file does not start at a fixed address. The ZX-81 keeps track of it by storing the current value of the starting address in D-FILE.</p>
+
+<p>If you look at page 178 of the manual you will see that the value of D-FILE is stored at address 16396 and so you might infer that you have only to look at the contents of 16396 to find the value of D-FILE.</p>
+
+<p>Unfortunately, that is not true. Remember that the value of D-FILE is an address and that addresses are whole numbers, like 16384 and 17407 and 32767. A single location can only hold a number between 0 and 255 and so two adjacent locations are used to store large numbers. The value of D-FILE is given by: value in 16396 + 256*value in 16397. Any whole number between 0 and 65535 inclusive can be stored using that system. The value held at an address can be found by PEEKing at it and so you can PRINT the value of DFILE by entering:</p>
+
+<pre>PRINT PEEK 16396 + 256*PEEK 16397</pre>
+
+<p class="first">You may know that the contents of the first location in the display file is always 118 and you can show that by entering:</p>
+
+<pre>PRINT PEEK (PEEK 16396 + 256*PEEK 16397)</pre>
+
+<p class="first">Similarly, the address of the end of the display is held in VARS - or more correctly is one less than the value in VARS - and can be PRINTed by entering:</p>
+
+<pre>PRINT PEEK 16400 + 256*PEEK 16401 - 1</pre>
+
+<p class="first">Each line displayed on the screen is terminated by a byte containing decimal 118 and there is one more byte at the beginning of the file also containing 118. As there are 24 lines in the display, there are 25 bytes containing 118 and it is essential to the correct functioning of the display software that all 25 bytes are present.</p>
+
+<p>With an unexpended ZX-81 the display file consists of those 25 bytes and no more unless a LIST, PRINT or PLOT command has been executed since the last CLS or RUN command. That is a device to keep the display file as small as possible.</p>
+
+<p>With a memory expansion pack of 4 K or more the ZX-81 pads out the display file with 32 bytes per line each containing zero - i.e., blanks.</p>
+
+<p>Mark Wilson writes: &quot;Could you please tell me how to scroll the ZX-81 screen up, down, left and right?&quot;</p>
+
+<p>To scroll the screen downwards or from side to side it is necessary to rearrange the contents of the display file in the appropriate logical fashion. There is one rule which must be obeyed whilst such rearrangements are in progress. It is that whilst running in SLOW mode the ZX-81 display file must contain at least 25 bytes holding 118 at all times. If that rule is broken the consequences are dire - the machine crashes and the only remedy is to pull out the plug and start again.</p>
+
+<p>Tables 1 and 2 consist of programs to scroll the display from side to side and downwards respectively. A few simple alterations as shown to the program in table 1 will change the direction of scrolling from right to left to left to right as required. Similar changes could be made to the program in table 2 to scroll the screen upwards but I have not shown them because it is easier to use the SCROLL command.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre>100 LET A = PEEK 16396 + 256*PEEK 16397
+110 LET H = PEEK 16400 + 256*PEEK 16401 - 1
+120 LET D = 1
+130 LET I = H
+150 LET S = PEEK I
+160 LET I = I - D
+170 IF PEEK I = 118 THEN GO TO 200
+180 POKE I + D,PEEK I
+190 GOTO 160
+200 POKE I + D,S
+210 IF I = A THEN STOP
+220 LET I = I - D
+230 GO TO 150
+
+<b>Table 1. A program to scroll the ZX-81
+display from left to right. To scroll from
+right to left alter lines 120, 130 and 210
+as follows:</b>
+
+120 LET D = -1
+130 LET I = A
+210 IF I = H THEN STOP</pre>
+</td></tr></table>
+</td></tr></table>
+
+<br>
+
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre>100 LET A = PEEK 16396 + 256*PEEK 16397
+110 LET B = PEEK 16406 + 256*PEEK 16401 - 1
+120 LET C = I
+130 IF PEEK (B - C) = 118 THEN GO TO 160
+140 LET C = C + 1
+150 GO TO 130
+160 FAST
+170 FOR I = B - 1 TO A + C STEP -1
+180 POKE I, PEEK (I - C)
+190 NEXT I
+200 FOR I = A + 1 TO A + C - 1
+210 POKE I,0
+220 NEXT I
+
+<b>Table 2. A program to scroll the ZX-81
+display downwards.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The first program works as follows. Variables A and B are set to the values of D-FILE and VARS less one, that is to the addresses of the beginning and end of the display file respectively. Then each location in the display file is inspected in turn using variable I. If it does not contain 118 then the value in it is POKEd into the location to the left or to the right - depending on the value set for D in line 120 - and the routine loops to line 160 to inspect the next location.</p>
+
+<p>If a location contains 118 the value from the beginning of the line - store in variable - is POKEd into the adjacent location. That is the way in which a wraparound effect is achieved. A test is then made - line 210 - to see if the job is completed. The second program works in an analogous fashion.</p>
+
+<p>Adrian Neilson writes: &quot;<b>Please explain how to get a scan going across the screen which makes up a picture and the name of the game and then fills in with colour.</b>&quot;</p>
+
+<p>The technique is very straight forward and is explained in the Spectrum Manual but I have received several letters on the topic. The current Spectrum display can be SAVEd at any time using either of the commands:</p>
+
+<pre>SAVE &quot;name&quot; SCREEN$
+SAVE &quot;name&quot; CODE 16384,6912</pre>
+
+<p class="first">The display can be LOADed by entering any of the following:</p>
+
+<pre>LOAD &quot;name&quot; SCREEN$
+LOAD &quot;name&quot; CODE 16384,6912
+LOAD&quot;name&quot;CODE</pre>
+
+<p>A particular problem with SAVEing and LOADing the screen is that the various commands and messages are also displayed on the screen. In doing so they prevent the programmer from having full flexibility in the way in which he constructs his display.</p>
+
+<p>A way around the problem is to reserve space RAMTOP for a copy of the display by entering CLEAR 58623 and to use the area to maintain a copy of the required display. A display which is SAVEd from the upper area will automatically LOAD into the display file if the SCREEN$ qualifier is used, i.e. the following pair of instructions are mutually compatible:</p>
+
+<pre>SAVE &quot;name&quot; CODE 58623,6912
+LOAD &quot;name&quot; SCREEN$</pre>
+
+<p>Lindsey Round has written to say: &quot;<b>How do you create headerless files and save and load them on the Spectrum?</b>&quot;</p>
+
+<p>In normal operation all Spectrum cassette files are SAVEd and LOADed in two parts. The first part is very short and specifies the name, type, length, and so on of the main part of the file. On reading the header the Spectrum checks that the name and type match that which it is looking for and displays them on the screen. The remaining data are used by the main loading routine so that it knows where to place the incoming data and how much there will be of it.</p>
+
+<p>The main saving and loading routines in ROM can be called directly from a machine code routine provided the correct parameters are passed in the appropriate Z80 registers. In that way headerless files may be written and read to and from cassette.</p>
+
+<p>Table 3 lists the various parameters and their interpretations and table 4 lists two routines which SAVE and LOAD the screen in that fashion. The routines can be loaded into the Spectrum using an assembler or using the simple decimal loader listed in table 5.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre>
+                         <b>To Save                  To Load</b>
+Carry flag status        Clear                    Set
+A register contents      255 (ffh)                255 (ffh)
+IX register contents     Address to SAVE from     Address to LOAD to
+DE register contents     Number of byes to SAVE   Number of bytes to LOAD
+Address of ROM routine   1218 (04c2h)             1366 (0556h)
+
+<b>Table 3. Parameters of Spectrum routines to SAVE and LOAD headerless files.</b></pre>
+</td></tr></table>
+</td></tr></table>
+
+<br>
+
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre><b>Decimal                 Assembler                Comment</b>
+167                     AND A                    Clear carry
+62 255                  LD A,255                 Load A with 255
+221 33 0 64             LD IX,16384              SAVE from 16384
+17 0 27                 LD DE,6192               Length 6912
+205 194 4               CALL 1218                Call SAVE routine
+201                     RET                      Return
+55                      SCF                      Set carry
+62 255                  LD A,255                 Load A with 255
+221 33 0 64             LD IX,16384              LOAD 16384
+17 0 27                 LD DE,6912               Length 6912
+205 86 5                CALL 1366                Call LOAD routine
+201                     RET                      Return
+
+<b>Table 4. Two Spectrum routines to SAVE and LOAD the screen display
+to and from a headerless file.</b></pre>
+</td></tr></table>
+</td></tr></table>
+
+<br>
+
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre>10 LET I = 23296
+20 INPUT J
+30 POKE I,J
+40 PRINT I, PEEK I
+50 GOTO 20
+
+<b>Table 5. A simple Spectrum program for loading decimal code into the
+print-buffer. When used to store the routine in Table 4 the routines can
+be saved at addresses 23296 and 23310.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="mindgms.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 32 Contents"></a>
+<a href="../033/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 33"></a></p>
+
+<h6 align="center">Sinclair User<br>November 1984</h6>
+
+</body>
+</html>

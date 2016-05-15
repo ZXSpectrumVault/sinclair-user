@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 11 - Mind Games</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="The Mind Games column from Sinclair User, February 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="helplne.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Helpline"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 11 Contents"></a>
+<a href="../012/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 12"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>mind games</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<table border="0" cellpadding="10" align="left">
+<tr><td align="center">
+<img src="../shared/images/mindgms1.gif" width=191 height=250 border=0 alt="" hspace=10>
+</td></tr>
+<tr><td align="center">
+
+<table border="1" cellpadding="15">
+<tr><td>
+<pre>10  FAST
+20  INPUT M
+30  IF M&lt;3 THEN
+ GO TO 20
+40  LET L=INT (M/2)-1
+50  LET Q=-INT(-SQR M)
+60  DIM P$(L)
+70  LET T=3
+80  LET S=6
+90  LET N=3
+100 LET M=1
+110 FOR I=(M+M)*(M+1)
+ TO L STEP N
+120 LET P$(I)=&quot;X&quot;
+130 NEXT I
+140 FOR M=M+1 TO L
+150 IF P$(M)=&quot;X&quot; THEN
+ NEXT M
+160 IF M=L+1 THEN GO TO
+ 220
+170 LET N=M+1
+180 LET T=T+1
+190 LET S=S+N
+200 IF N&lt;Q THEN GO TO
+ 110
+210 NEXT M
+220 PRINT &quot;NUMBER OF
+ PRIME NUMBERS=&quot;;T,&quot;SUM
+ OF PRIMES==&quot;;S
+230 SLOW
+</pre>
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+
+<p class="first"><b><font size="+1">Philip Joy sorts through his postbag and finds a chess cassette which speaks</font></b></p>
+
+<h1>Good response to first puzzle</h1>
+
+<p class="first">THERE was a fantastic response to my first puzzle. Many correct answers and only a few incorrect ones. I will include the best program with respect to size, technique, and speed. It was sent by W E Thomson, of Suffolk. While most took six to 10 minutes, this took only one minute five seconds.</p>
+
+<p>There was a mistake on my part to the solution given last month; it should be 1,548,137. To use the program it should be typed into a ZX-81 but it should work on a Spectrum. When it is run the highest number to test is required; in the puzzle case that is 5000. The program will then sum all prime numbers below that number (as shown on the left).</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'A very good way of testing programs is to find in how many moves mate can be achieved. It is easy to create a mate problem and gives the most accurate check'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>There was a program sent by B C Woodrow of Dorset. He says he has had his ZX-81 only since September and while not the best version, it was very good.</p>
+
+<p>The Quicksilva 48K Spectrum chess program has been sent. It seems to have some space age theme about it, as the short story with it is like a science fiction story. The game has speech, something you may or may not be able to hear. It also has six levels of play, analysis of moves, and a save game option. The game, called the Chess player, is available from Quicksilva Ltd, Southampton.</p>
+
+<p>Now to a letter first mentioned a few months ago from Simon Gross of Ipswich. He says that to put a chess program through tests, to see how good it is, is best done by recording results, as opposed to studying the program. Studying a program of 9K machine code is not a very easy task. It is a very skilled job to look objectively at the skill sector of a chess game, let alone unravel the machine code as well.</p>
+
+<p>Recording results about the look ahead and speed is much easier. I must agree that very few people could look at so much machine code and decide how a game will play.</p>
+<p>
+Gross suggests mate in so many moves type of problem, so that the program has to look ahead; the better programs will find mate easier and earlier. That is a very good way of testing programs and anyone can create a mate problem. The time it takes to work out the problem, if it does, is noted. That will give the most accurate check on chess games the average person can do.</p>
+
+<p>It may give you some insight into how to beat your version of chess in the end-game. If you make up the problems, your own game will be improved. Different versions will act differently, so you can try it on all your versions. If you discover anything interesting, send the details.</p>
+
+<p>For this month's puzzle I have devised a cunning maths problem: 1.2.3.4.5.6.7=16 5/6 or 16.833333</p>
+
+<p>The dots are either +,-,* or /, but which is which? The idea is to get your ZX-81 or Spectrum to find what each individual dot is. The program must work out the answer. Send the answers and program, again no prizes, but the best one will be published in a future issue. Remember that 1+2*4 is 9 and not 12, i.e., multiplication first.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="helplne.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Helpline"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 11 Contents"></a>
+<a href="../012/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 12"></a></p>
+
+<h6 align="center">Sinclair User<br>February 1983</h6>
+
+</body>
+</html>
+

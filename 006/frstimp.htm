@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 6 - Spectrum User - First Impressions</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="An article on programming from Spectrum User, September 1982">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="helpln1.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Spectrum Helpline"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 6 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>First Impressions</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<table border="0" cellpadding="10" align="right">
+<tr><td align="center">
+<img src="frstimp.jpg" width=300 height=389 border=0 alt="">
+</td></tr>
+<tr><td align="center">
+
+<table border="1" cellpadding="15">
+<tr><td>
+<pre>  10 BORDER 1: PAPER 6: CLS : PA
+PER 6
+  15 PRINT AT 3,13;&quot;NIM&quot;
+  20 PRINT AT 5,5;&quot;This is a gam
+e for two&quot;
+  22 PRINT &quot;players,or one playe
+r and the&quot;
+  24 PRINT &quot;computer&quot;
+  30 PRINT AT 8,5;&quot;The players t
+aketurns to&quot;
+  32 PRINT &quot;subtract any number 
+ &lt;=a&quot;
+  34 PRINT &quot;predetermined value 
+from 100.The&quot;
+  36 PRINT &quot;winner is the one to
+ reach 0.&quot;
+  40 PRINT AT 14,0;&quot;What is your
+ name?&quot;
+  50 INPUT a$
+  60 CLS
+  65 PRINT &quot;Who are you going to
+ play?&quot;
+  67 PRINT &quot;(computer=c)&quot;
+  70 INPUT b$
+  72 INPUT &quot;Who is going to play
+ first?&quot;;c$
+  75 CLS
+  90 LET g=0
+  95 IF c$=b$ THEN LET g=g+1
+ 100 LET j=100
+ 140 INPUT &quot;Max.no.to be subtrac
+ted?&quot;;b
+ 145 PRINT AT 3,3;&quot;Max.=&quot;;b
+ 150 PRINT AT 11,14;j
+ 170 IF g=0 THEN PRINT AT 19,2;a
+$;&quot;s turn&quot;: LET g=g+1: GO TO 200
+ 172 IF g=1 AND b$&lt;&gt;&quot;c&quot; THEN PRI
+NT AT 19,2;b$;&quot;s turn&quot;: LET g=g-
+1: GO TO 200
+ 175 IF g=1 AND b$=&quot;c&quot; THEN LET
+c=j-INT (j/(b+1))*(b+1)
+ 180 IF c=0 THEN LET c=INT (RND*
+b+1)
+ 190 LET a=c: LET g=g-1: PRINT A
+T 19,2:&quot;Computers turn=&quot;;c: PAUS
+E 150: GO TO 210
+ 200 INPUT a
+ 210 PRINT AT 19,2;&quot;(30 spaces)&quot;
+ 240 LET a=INT (a)
+ 250 IF a=0 OR a&gt;j OR a&gt;b THEN P
+RINT AT 19,2;&quot;Try again(20 space
+s)&quot; : GO TO 200
+ 300 LET j=j-a
+ 390 PRINT AT 11,14;&quot;(3 spaces)&quot;
+ 400 PRINT AT 11,15;j
+ 450 IF j=0 THEN GO TO 1000
+ 500 GO TO 170
+1000 CLS
+1010 IF g=1 THEN PRINT AT 11,3;a
+$;&quot;is the winner&quot;
+1020 IF g=0 AND b$=&quot;c&quot; THEN PRIN
+T AT 11,3;&quot;The computer is the w
+inner&quot;
+1030 IF g=0 AND b$&lt;&gt;&quot;c&quot; THEN PRI
+NT AT 11,3;b$;&quot;is the winner&quot;
+</pre>
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+
+<p align="center" class="first"><b><font size="+1">Alyson Bailey takes her first steps with personal computers</font></b></p>
+
+<h1 align="center">Learning to program the Spectrum way</h1>
+
+<p class="first">HOW CLEVER are computers, I wondered, as I unpacked my first, a Spectrum, two weeks ago. Since then my assessment of this tiny box, no bigger than an average-sized book, has varied through &quot;very bright&quot; to &quot;doesn't think for itself&quot; and &quot;shows great potential&quot;.</p>
+
+<p>The manuals which accompanied the new toy were excellent and we soon had a variety of combinations of BORDER and PAPER flashing gaily on and off the TV screen, accompanied by notes of random duration. A clock with a moving hand, graphs and a design produced with circles of different diameters followed in quick succession. If this was computing, it was tremendous fun.</p>
+
+<p>It was the youngest member of the family, aged 14, who noticed the first deficiency. His friends, he said, had computers which played games and ours did not. So far as we knew, no software was available for the Spectrum and if we wanted games we would have to type in the programs ourselves. Armed with a selection of computer magazines we set to work enthusiastically but our enthusiasm soon began to wane.</p>
+
+<p>The print for some of the programs was too faint to read. Others, though clearly printed, did not work. Our typing errors did not help; the computer was amazingly fussy about punctuation and that had never been one of our strong points.</p>
+
+<p>Although admitting that some of the failures were our fault, others, we were convinced, were not. The computer refused some words like RND(99) and other programs containing words like CHR and PEEK seemed doomed to failure. PLOT resulted in miniature graphs in the bottom left-hand corner of the screen.</p>
+
+<p>What was wrong? Did the computer have a language and perhaps even a dialect all of its own which prevented it communicating with even its closest relatives, the ZX-80 and ZX-81 ? Was this ASCII - whatever ASCII is? At long last we found a program which worked - <b>Luca</b> from <i>Sinclair User</i>, June, 1982. Junior added sound and colour and altered the graphics and what a difference those additions made. Who complained that the sound was too quiet? Imagine all those beeps played at the same volume as pop music.</p>
+
+<p>Success was followed by more failures, despite avoiding programs containing &quot;foreign&quot; words. Had we over-estimated the powers of understanding of our computer yet again? We studied the listings. Surely there were mistakes. Should the letter in one program not be the number 5, the INT in another be replaced by =; was CLS missing in another?</p>
+
+<p>Several seemed to have whole lines missing while others had superfluous ones, no doubt relics of bygone versions. Our computer could not cope with typing errors. Those errors were human and beyond the mental capacity of the Spectrum. With errors corrected, those programs produced several more working games. Why, we asked, do producers of magazines over-estimate the ability of computers? Surely experience should have taught them that computers are not superhuman?</p>
+
+<p>Frustrated by our failures but elated by our ever-improving ability to understand our computer, we decided to try to write our own program. We agreed that the concept of our first attempt must be simple. Sinclair User provided the basic idea, the game <b>Nim</b>. It is a game for two players who take turns to take any number of matches, up to a predetermined value, from a pile of 100. The winner is the person who takes the last match. We typed in the basic game:</p>
+
+<pre>100 LET j=100
+150 PRINT j
+200 INPUT a
+300 LET j=100-a
+400 PRINT j
+500 GO TO 200</pre>
+
+<p class="first">and decided to take up to 11 matches and set our program to RUN. It worked. &quot;That is a bit boring&quot;, commented junior, and I must admit it fell far short of <b>Space Invaders</b>.</p>
+
+<p>&quot;Wait&quot;, I said, &quot;it will get better&quot;. Colour impressed him, so we added that - line 10 - and moved the numbers to the centre of the screen - edit lines 150 and 400 - remembering to clear one before the next appeared - line 390.</p>
+
+<p>Running the program produced only a marginally better response. We added captions, lines 15, 20, 22 - without &quot;one player and the&quot; - 30, 32, 34, 36; some questions and demands for answers - lines 40, 50, 60, 65, 70, 75 - let the computer decide whose turn was next - lines 90, 170, 172, without &quot;AND b$&lt;&gt;&quot;c&quot;), 210, edit 500 and gave a choice of number to be subtracted - lines 140, 145.</p>
+
+<p>Then the game was much more interesting but cheating began to rear its head and had to be eliminated - lines 240, 250. After much thought, I realised how to win and decided to let the computer take my turn if so requested - add the remainder of lines 22 and 172 and add lines 24, 67, 175, 190. We also added lines 450, 1000, 1010, 1020, 1030 to announce the winner. Interest soared.</p>
+
+<p>It was at that point that the computer showed human characteristics. It refused to play if it knew it could be beaten. Addition of another line - 180 - forced it to continue playing. Then it could not prevent me winning, provided my mathematics did not let me down - and frequently they did. Junior complained that the computer won only because it had second turn. He was given the choice of first or second turn - lines 72, 95 - but still he lost and I won. No-one else has beaten the computer and if they do I will alter the program so that even I cannot win.</p>
+
+<p>All that leads me to wonder who really is my opponent when I play games against a computer. Is the computer as intelligent as it appears or am I playing some far-off programmer I have never met?</p>
+
+<p>Put this program into your computer and see if you can beat it or me. If you can, try to alter the program to make the computer win every time. If you succeed you are the true winner. The computer can achieve no more than the programmer - or can it? Are you as quick at mathematics? I am not.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="helpln1.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Spectrum Helpline"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 6 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<h6 align="center">Spectrum User<br>September 1982</h6>
+
+</body>
+</html>
+

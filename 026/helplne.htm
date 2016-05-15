@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 26 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX-81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, May 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="books.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Books"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 26 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson4.gif" width=275 height=290 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1>Difficulties with odd characters</h1>
+
+<p class="first"><b><font size="+1">Andrew Hewson intrigued by printer buffer</font></b></p>
+
+<p class="first">ONE OF the difficulties of writing a regular column on a popular subject is that if I make a mistake my letterbox reverberates as correspondents from far and near hasten to correct my error and I have to hide from a postman weighed down with mail. So will all those readers who have been POKEing their Spectrums to determine whether they have Issue 2 or Issue 3 machines according to my advice in the January issue of Sinclair User please cease writing to ask what I was talking about? What I wrote was incorrect and I apologise for the confusion.</p>
+
+<p>I was attempting to describe the difference between the most recent form of the Spectrum, the Issue 3 machine, and its predecessor in terms of a subtle difference in their response to the IN command. In fact, a much more straightforward method is to look through the slot in the rear where the edge connector is situated. In the latest models an aluminium heatsink about 12cm long and 2cm wide is clearly visible situated above the printed circuit board. That heatsink is absent from Issue 2 machines.</p>
+
+<p>Incidentally, the 48K form of the first version of the Spectrum, Issue 1, made use of the space now occupied by the heatsink for a 32K memory board. In the re-design which resulted in Issue 2, sufficient space was found on the main board for the extra memory.</p>
+
+<p>Doreen Fusco has brought an unusual effect to my attention. She writes: <b>I was poking about in the printer buffer of my ZX-81 when I discovered that if I altered the contents of the final byte my printer produced double-height characters. I knew this could be done in machine code but I was surprised to discover it was possible from Basic, too. What is happening?</b></p>
+
+<p>I was intrigued by the letter and I soon discovered that a simple ZX-81 routine of the form:</p>
+
+<pre>10 POKE 16476,0
+20 LPRINT &quot;DOUBLE HEIGHT&quot;</pre>
+
+<p class="first">would produce double-height printer output.</p>
+
+<p>The reason is that the relevant ROM routine uses the newline character - CODE 118 - which is held at address 16476 to indicate the end of the information to be posted to the printer. The routine scans through the printer buffer eight times, working out, with the aid of the character table, the form of the top eighth of each character, then the second eighth, then the third eighth and so on.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'Unfortunately the routine picks up other information'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>In between each line of eighths the routine sends a signal to the printer causing it to slow the rate at which the printer motor turns. When the routine has gathered all the information for the next line of eighths, a second signal is sent, causing the motor to increase speed again. It is that staccato effect which causes the printer to sound like an asthmatic old man.</p>
+
+<p>Changing the contents of 16476 causes the ROM routine to omit, among other things, to send the slow-down signal to the printer, hence more paper is wound past the printing head in between eighths, giving the appearance of double-height characters. Unfortunately in the absence of the newline character, the routine picks up other extraneous information which results in nonsense characters also appearing on the output. I can see no way round the difficulty and I would be interested to hear from anyone who can. In the meantime, however, there appears to be no way of putting the effect to good use.</p>
+
+<p>John Heritage is clearly using his computer for financial calculations. He asks: <b>How can I reduce the answer to a calculation to two decimal places and how can I ensure that the decimal points in a vertical line of figures always lie below one another?</b></p>
+
+<p>As is so often the case, the answer to each of the questions is straightforward, once the general principle is understood. In the first case the INT function, which rounds down a decimal number to the nearest whole number, can be used to round down to two decimal places, simply by multiplying beforehand by 100 and dividing by the same number afterwards.</p>
+
+<p>In the second case, the number can be converted to a string using the STR$ function and then the string can be searched to identify the position of the decimal point. A simple calculation will then ensure that the number is PRINTed with the decimal point in the correct column.</p>
+
+<p>The program in table one shows those principles in practice. Notice that the variable I is increased by five in the equivalent of the third decimal place in line 30 to counteract the effect of the INT function rounding downwards. Thus, for example, a value of 3.648 is rounded up, correctly, to 3.65 by that line, whereas 3.642 is rounded down to 3.64.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>10  LET D$=&quot;.&quot;
+20  INPUT I
+30  LET I=INT(100*I + 0.5) / 100
+40  LET Z$ = STR$I
+50  FOR J = 1 TO LEN Z$
+60  IF Z$(J) = D$ THEN GO TO 80
+70  NEXT J
+80  PRINT AT 21,16 - J;Z$
+90  INPUT &quot;33 spaces&quot;;
+100 GO TO 20
+
+<b>Table 1. A Spectrum routine which rounds
+the contents of I to two decimal places and
+PRINTS the result with decimal point in
+column 16. To adapt the routine for the ZX-81,
+change line 90 to read 90 SCROLL.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>Incidentally, a number should be rounded only immediately before it is PRINTed and not at intermediate stages of a calculation. If the number is to be used on a subsequent occasion the unrounded form should be stored in a separate variable. Alistair Baird raises an interesting topic. He writes: <b>I wish to store some information above RAMTOP on my 48K Spectrum and to clear out the user-defined graphics, I entered CLEAR 65535: NEW: CLEAR 60000: NEW. Imagine my surprise when I found that the lowest 104 bytes were set to zero but the remaining 64 bytes 65472 to 65535 - still contained non-zero values. Can you explain?</b></p>
+
+<p>Computer memory is rather like a blackboard; it is of limited size and to accommodate new information it is usually necessary to erase information which has become redundant. There are two principal methods which a computer can use to update its blackboard. Either it can erase information as soon as it has become redundant and move all current information into one block, so as to accumulate all spare memory in one place, or it can ignore the problem and over-write redundant information the next time it wants to use the space.</p>
+
+<p>The first method has the advantage of minimising the total amount of memory required but the disadvantage that current information is forever being shuffled around in memory - in the jargon of the computer trade that activity is called garbage collection. The second method has the advantage of speed but the disadvantage that unless the software keeps a careful note of the situation, portions of memory can become clogged with redundant information.</p>
+
+<p>The ZX-81 and the Spectrum use the first method to an obsessive degree, fussing around like a nervous squirrel hoarding memory at every opportunity. As a result, Basic programs tend to run slower than on other machines.</p>
+
+<p>In the case of Baird's problem, the Spectrum omits to re-set a portion of memory which it will not be accessing in future. The two instructions CLEAR 65535 : NEW delete the user-defined graphics area as required but the machine then establishes its stack at 65535 working downwards; the machine stack is used to hold the return addresses of ROM routines being executed and other vital but temporary information.</p>
+
+<p>Entering CLEAR 60000: NEW subsequently moves down the stack but draws a frozen copy of it in the 64 bytes at 65472 to 65535, as Baird discovered. The only solution is for the user to delete the data, a fairly simple matter using either a Basic or a machine code routine.</p>
+
+<p>Wim Gulpen of the Netherlands brings an international flavour to the column. He asks: <b>Can you provide a Spectrum machine code routine to scroll the top eight lines of the display only? I have written a Basic routine but it is too slow.</b></p>
+
+<p>To answer the question I have adapted two routines which appear in 40 Best Machine Code Routines for the ZX Spectrum, a book I wrote with John Hardman. The routines are listed together in table two. The first part scrolls the display file and the remainder scrolls the attributes. The eighth line of the display is cleared and its attributes set to the value held in the system variable ATTR P.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<table border=0 cellspacing="0" cellpadding="3">
+<tr>
+<td><b>Hexadecimal</b></td><td>&nbsp;</td><td><b>Assembler</b></td><td><b>Comment</b></td>
+</tr>
+<tr>
+<td>11 00 40</td><td>&nbsp;</td><td>ld de,16384</td><td>Top lhs of first line</td>
+</tr>
+<tr>
+<td>21 20 40</td><td>&nbsp;</td><td>ld h1,16416</td><td>Top lhs of secod line</td>
+</tr>
+<tr>
+<td>06 08</td><td>&nbsp;</td><td>ld 6,8</td><td>Number of lines</td>
+</tr>
+<tr>
+<td>C5</td><td>NXTBLK</td><td>push be</td><td>Save number of lines</td>
+</tr>
+<tr>
+<td>01 E0 00</td><td>&nbsp;</td><td>ld bc,224</td><td>7 lines each 32 characters long</td>
+</tr>
+<tr>
+<td>ED B0</td><td>&nbsp;</td><td>ldir</td><td>Copy (hl) to (de)</td>
+</tr>
+<tr>
+<td>06 20</td><td>&nbsp;</td><td>ld 6,32</td><td>Length of last line</td>
+</tr>
+<tr>
+<td>3E 00</td><td>&nbsp;</td><td>ld a,0</td><td>Clear a register</td>
+</tr>
+<tr>
+<td>12</td><td>LASTLIN</td><td>ld (de),a</td><td>Clear last line</td>
+</tr>
+<tr>
+<td>13</td><td>&nbsp;</td><td>inc de</td><td>&nbsp;</td>
+</tr>
+<tr>
+<td>23</td><td>&nbsp;</td><td>inc hl</td><td>&nbsp;</td>
+</tr>
+<tr>
+<td>10 FB</td><td>&nbsp;</td><td>djnz LASTLIN</td><td>&nbsp;</td>
+</tr>
+<tr>
+<td>C1</td><td>&nbsp;</td><td>pop be</td><td>Recover number of lines</td>
+</tr>
+<tr>
+<td>10 EE</td><td>&nbsp;</td><td>djnz NXTBLK</td><td>Decrement and jump if not zero</td>
+</tr>
+<tr>
+<td>01 E0 00</td><td>&nbsp;</td><td>ld bc,224</td><td>7 lines each 32 characters long</td>
+</tr>
+<tr>
+<td>11 00 58</td><td>&nbsp;</td><td>ld,de,22528</td><td>First line of attributes file</td>
+</tr>
+<tr>
+<td>21 20 58</td><td>&nbsp;</td><td>ld h1,22560</td><td>Second line of attributes file</td>
+</tr>
+<tr>
+<td>ED B0</td><td>&nbsp;</td><td>ldir Copy</td><td>(hl) to (de)</td>
+</tr>
+<tr>
+<td>3A 8D 5C</td><td>&nbsp;</td><td>ld a,(23693)</td><td>Value of ATTR P to a register</td>
+</tr>
+<tr>
+<td>06 20</td><td>&nbsp;</td><td>ld b,32</td><td>Length of last line</td>
+</tr>
+<tr>
+<td>12</td><td>LASTATTR&nbsp;&nbsp;</td><td>ld (de),a</td><td>Clear last line</td>
+</tr>
+<tr>
+<td>13</td><td>&nbsp;</td><td>inc de</td><td>&nbsp;</td>
+</tr>
+<tr>
+<td>10 PC</td><td>&nbsp;</td><td>djnz LASTATTR</td><td>Repeat if not zero</td>
+</tr>
+<tr>
+<td>C9</td><td>&nbsp;</td><td>ret</td><td>Return</td>
+</tr>
+<tr>
+<td colspan="4"><b>Table 2. A Spectrum program to scroll the top eight lines of the screen display.</b></td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The routines can be loaded into the Spectrum printer buffer using an assembler or the Basic hexadecimal loader program listed in table three. Call the routines by entering:</p>
+
+<pre>RANDOMIZE USR 23296</pre>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>10 FOR I = 33296 TO 23551
+20 INPUT Z$
+30 IF Z$ = &quot;S&quot; THEN STOP
+40 PRINT Z$
+50 LET Z$(1) = CHR$(CODE Z$(1) - 7*(CODE Z$(1)&gt;57))
+60 LET Z$(2) = CHR$(CODE Z$(2) - 7*(CODE Z$(2)&gt;57))
+70 POKE I,16*CODEZ$(1) + CODEZ$(2) - 816
+80 NEXT I
+
+<b>Table 3. A Spectrum program to load pairs of
+hexadecimal codes into the printer buffer.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="books.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Books"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 26 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>May 1984</h6>
+
+</body>
+</html>

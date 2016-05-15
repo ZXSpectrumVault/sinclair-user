@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 25 - ZX-81 Modem Adaptor</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="A review of the Universal Modem Adaptor from Sinclair User, April 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 25 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>ZX-81 Modem Adaptor</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1>Communications with the ZX-81</h1>
+
+<p class="first"><b><font size="+1">John Lambert investigates a new idea</font></b></p>
+
+<img src="zx81mod1.jpg" width=375 height=278 hspace=10 vspace=10 border=0 align="right" alt="ZX-81 with adaptor and RAMpack fitted">
+<p class="first">IT IS UNUSUAL in the Sinclair hardware world to be presented with a completely new idea. The Universal Modem Adaptor from Microcomputer Resources Ltd is such a device. With the adaptor your ZX-81 can now communicate with almost any other computer and, with the addition of a suitable modem, it can &quot;talk&quot; to most of the large Information Providers such as Prestel, Micronet, Rewtel, Cashtel and many more.</p>
+
+<p>It would be best to explain some of the terms. First, a modem, standing for MOdulator/DEModulator. It takes electronic signals from a computer and translates them into a form which can be sent along a telephone line; it also takes signals from the telephone and translates them back into a form the computer can understand.</p>
+
+<p>An Information Provider, in this sense, is a computer database which can he accessed via a telephone line. To be able to do that the adaptor has to use a means of communication which the IPs will understand, first in the way the information is coded for transmission and, second, what each code means. For transmitting and receiving it uses a standard known as RS232, a method where some bits of each byte are set, or not, to indicate where each byte starts and stops and also the content of the byte. Readers may care to look at a longer explanation of this in the January issue of <i>Sinclair User</i>.</p>
+
+<p>There is a version of this standard for use on telephone lines laid down by British Telecom called the CCITT. The standard way of interpreting the code is similar to ASCII and has two forms - that laid down by Prestel, which includes an alphamosaic graphic set, and that known as CET from the Council of Educational Technology, which devised a system whereby telesoftware could be downloaded to a microcomputer.</p>
+
+<p>The adaptor plugs into the user port of the ZX-81 and needs a 16K RAM pack plugged in the back. If you have a Sinclair printer you can also use it to COPY frames. A lead from the side of the adaptor terminates in a 5-pin DIN plug. The lead carries the Transmit data (TXD) and Received data (RXD) lines, plus earth (COM). For the purpose of the review of Prism Modem 1000 which has a 5-pin socket into which the lead plugs was used.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'If you then want to access Prestel, all you have to do is to connect the modem to a socket and plug a telephone in the back'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>Inside the adaptor is a 4K EPROM which resides in memory from 8K to 12K and is called into use by the command RAND USR 8192. At that you are presented with a greetings page which fills the screen, as suddenly you have 40 columns rather than the usual 32. If the sides of the message are off the screen, by using the left and right cursor keys the whole screen can be made to scroll in that direction.</p>
+
+<p>If you then want to access Prestel, all you have to do is to connect the modem to a telephone socket and plug a telephone in the back. With the switch on the front of the modem set to M/NET, you dial Prestel and when you hear a continuous tone you put down the line switch and are presented with the Prestel greetings page and a request for your password. To access other IPs the system is similar but will depend on how quickly they can send and receive their data.</p>
+
+<p>Prestel presents the ZX-81 with a problem, in that it is a colour IP and, of course, the ZX-81 can work only in black and white. The adaptor circumvents the problem in two ways; by using a system of colour weighting it notes the relative intensities of the colours it should be using and then prints in either black on white or white on black - that method can be turned off if necessary. It is also possible to invert the screen, to print white on black as normal.</p>
+
+<p>Another problem with any data sent by telephone is that any noise on the line can be interpreted as data. If that happens, by use of the shifted 7 key a message is sent back to Prestel (*00) and the whole page is re-transmitted.</p>
+
+<p>Only the number keys are used normally, plus new-line - which has been reconfigured as - and the fullstop - reconfigured as *. If, however, you want to send a message, telegram or use the Mailbox facility, the rest of the keyboard can be used, the alphabetic keys giving lower-case and upper-case when SHIFTed.</p>
+
+<img src="zx81mod2.jpg" width=375 height=206 hspace=10 vspace=10 border=0 align="left" alt="Adaptor">
+<p>In graphics mode the full alphamosaic set is available, including double-size characters. Also available in function mode are all the necessary Prestel control codes. The only ones missing are cursor on/off, flash and conceal/reveal.</p>
+
+<p>While the adaptor was designed initially to be used with Prestel, it can be used to access other databases. On startup it sets a number of variables to the Prestel standard, which can be changed by the user. The first of them is the speed of data reception/transmission or baud rate - bits per second. Prestel uses 1,200/75 while other IPs may use 1200/1,200 or 300/300 and you have the choice of all three. The Prism modem can work only at 1200/75 or 1200/1200. Second, while RS232 is a standard, it has many versions and is, in fact, not very standard. For the technically-minded, the adaptor is set initially to one start bit, seven data bits, one even parity bit and one stop bit. You can then toggle - set or not - odd/even parity and also between enabling parity of not, with don't care on input and a stop bit on output.</p>
+
+<p>Finally, some IPs - not Prestel - require the screen to scroll up and that can also be toggled on and off. Screen scrolling is rather slow at about one-third of a second but should not present a problem.</p>
+
+<p>There are even more features built into the adaptor. If you want to send a message, obviously to sit and type it out while connected to a telephone line could be both expensive and time-consuming. To that end there is a 5K area of memory set aside as a Local Message Buffer where you can store up to five pages or frames. You can therefore compose your message at leisure and send it all at once.</p>
+
+<table width="181" border="0" cellpadding="10" align="right">
+<tr><td><img src="zx81mod3.jpg" width=375 height=286 border=0 alt="">
+<br>
+<p align="right" class="first"><b><font size="-1">Universal Modem Adaptor with Prism Modem 1000.</font></b></p>
+</td></tr>
+</table>
+
+<p>The buffer can also be used to download individual pages for later use. In addition, Microsource has built-in a fast cassette interface which will load or save the contents of the buffer. When saving it puts out a three-second tone to set the level on recorders with an automatic level control and then saves at more than 250 characters per second.</p>
+
+<p>The adaptor has the codes for the CET standard built-in. With an IP such as Micronet which has software to be downloaded - at the time of writing that facility had been inhibited - by finding the header frame and then calling the downloader routine programs up to 12K can be downloaded. The adaptor checks each page as it is loaded, trying again automatically if it finds an error and, when complete, sends a logoff message (*90). It then checks the program for syntax errors and puts a REM statement with a question mark at the start of the line if it finds one.</p>
+
+<p>If you want to connect your modem to the adaptor, provision has been made for a wide variety of inputs. Although it operates at TTL levels - 3.5V - 0.2V - the input pin is connected to a resistive diode network so that it can accept the full +/-12V. It also has inverter gates which can be by-passed should your modem require it. On output, the adaptor generates tones to conform to CCITT V23.</p>
+
+<p>For the technically-minded, the adaptor contains a ROM, two single-bit ports and an eight-bit buffer. The buffer is used to provide the bit graphics. When the ROM is called the Basic ROM is paged-out and the adaptor runs five interacting tasks. It samples the input port, converting its contents to ASCII and storing it in the display buffer. The screen buffer is then sent to the TV and the keyboard is sampled.</p>
+
+<p>Finally, the display buffer is interpreted to generate the screen buffer. When either sending a character or copying the screen to the printer, all other tasks are suspended. About 10K of RAM is used for the bit-mapped display and workspace, 5K for the local message buffer and 1K for Basic, which is used when downloading a program. If the program is more than 5K long, space is taken from the display, which is then turned off.</p>
+
+<p>All in all, it is an extremely well-designed piece of hardware with a multitude of uses. On its own it can be used to generate teletext graphics which provide greater flexibility than the standard ZX-81 set; with a modem it opens a world of information literally at your fingertips. The thought which has gone into it is obvious and at &#163;29.95 it represents very good value. To obtain similar features on another computer you would have to spend at least twice as much, if not more.</p>
+
+<p>For further information contact Microcomputer Resources Ltd, Herts.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 25 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<h6 align="center">Sinclair User<br>April 1984</h6>
+
+</body>
+</html>
+

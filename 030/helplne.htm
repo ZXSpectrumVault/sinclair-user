@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 30 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX-81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, September 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="mindgms.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 30 Contents"></a>
+<a href="../031/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 31"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson4.gif" width=305 height=300 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1 align="center">Control Your characters</h1>
+
+<p align="center" class="first"><b><font size="+1">Andrew Hewson reveals some useful tips for programming graphics</font></b></p>
+
+<p class="first">EACH MONTH I try to vary the contents of this column; sometimes I tackle a single difficult topic in detail, sometimes I cover several related topics and sometimes I discuss a mixed bag of ideas. The column this month belongs firmly in the final category.</p>
+
+<p>The first letter is from John Lockerby who writes: <b>I am repeatedly faced with the &quot;Nonsense in Basic&quot; error when writing programs for my Spectrum. It always occurs when I try to READ from DATA statements. What am I doing wrong?</b></p>
+
+<p>Appendix B of the Spectrum Basic Programming Manual states that error code C - Nonsense in Basic - occurs with the VAL and VAL$ functions, not with the DATA or READ commands, so it is easy to understand John's confusion. In fact neither the error message nor the explanation in the manual are as clear as they might be.</p>
+
+<p>A few moments spent experimenting with the VAL and VAL$ functions will show that error code C occurs when the string on which the function operates cannot be evaluated; for example, the VAL function evaluates a string as a numerical expression so that VAL &quot;5 + 2&quot; = 7 whereas both VAL &quot;5 + *2&quot; and VAL &quot;a$&quot; give error code C because in each case the expression within the quotes breaks the rules which govern the form of numeric expressions. Hence the ROM routine which is responsible for evaluating the expression gives up in disgust and triggers the printing of the error message.</p>
+
+<p>The program in table one shows an example of that type of situation. Both of the DATA statements in lines 10 and 20 can be READ by the loop in lines 100 to 130 depending on the line number, J, selected by the user. If line 10 is selected the program reads each of the four characters in turn into the string variable A$ and then PRINTs it. If line 20 is selected, however, error C occurs because the program attempts to read a numeric item into the string.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre> 10 DATA &quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;
+ 20 DATA 1,2,3,4
+ 50 INPUT &quot;ENTER NUMBER OF DATA LINE&quot;;J
+ 60 GO TO 50 + 20 * (J = 10) + 20 * (J = 20)
+ 70 RESTORE J
+100 FOR I = 1 TO 4
+110 READ A$
+120 PRINT A$
+130 NEXT I
+
+<b>Table 1. To demonstrate that error code C can
+occur at run-time when there is a mismatch between
+the contents of DATA and READ statements. The
+program executes correctly if DATA line 10 is
+selected but fails if DATA line 20 is selected.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>Peter Groenewald asks: <b>Is there a poke command for the 16K Spectrum which causes the cursor to change from upper to lower case?</b></p>
+
+<p>That is not possible, unfortunately, because the letter representing the cursor - either K, L, C, E or G depending on the mode in which the machine is operating - is determined indirectly from the MODE system variable which is held at address 23617. The value of MODE is read by the cursor printing subroutine at address 6369 in the Spectrum ROM and it then passes the appropriate character code - either 75, 76, 67, 69 or 71 - to the main printing routine at 2548. The contents of the ROM cannot be changed and so it is impossible to change the character codes. It is, of course, possible to copy the ROM routine into RAM and modify it but it is not possible to return the modified copy to ROM.</p>
+
+<p>A possible solution is to change the character set which the PRINT routine uses by altering the system variable called CHARS held at address 23606. CHARS points to the base of the table which controls the form of each character. Changing that variable alters the form of the entire character set and it must, of course, be changed back again after use otherwise all subsequent characters PRINTed will be incorrect.</p>
+
+<p>John Edwards would like to make use of the facility to change the character set. He asks: <b>Is it possible to print characters which are underlined?</b></p>
+
+<p>The answer is to copy the original character set from ROM to RAM, modify it so that characters will be generated with an underline and then alter CHARS to point to the base of the new table. The program listed in table two demonstrates the method.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre> 10 CLEAR 32767
+100 FOR I = 0 TO 767
+110 POKE 32768 + I, PEEK (15616 + I)
+120 NEXT I
+200 FOR I = 0 TO 94
+210 POKE 32783 + 8 * I, 127
+220 NEXT I
+230 POKE 23607,127
+
+<b>Table 2. A program to copy the character
+set into RAM, underline all characters except
+space and point the CHARS system variable to
+the new character set.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The first line in the program brings RAMTOP down to 32767 so that the new character table which will be stored above that address will not be overwritten by the Basic system. Next, the character table in the ROM is copied byte by byte to its new location. Only the characters with codes lying between 32 and 127 are derived directly from that table - all the remainder consist of tokens or control codes. Each character requires eight bytes to define it so that the entire table is 768 bytes long.</p>
+
+<p>The eight bytes which determine each character do so in horizontal slices so that to underline a character fully it is necessary to set all the bits in the final byte to 1. In other words the final byte must be set to 255. That will cause a continuous line to appear beneath a line of PRINTed characters. I prefer a broken line so I have used the value 127 in the program to ensure the first and last bits are not set. I have also avoided underlining the space character, which happens to be the first character in the set, by starting the loop at address 32783 rather than 32775.</p>
+
+<p>The final line of the program resets the CHARS variable. Incidentally, the initial value is 60 and in order to recover the original character set it is necessary to enter POKE 23607,60.</p>
+
+<p>Owners of the 16K Spectrum will have to lower RAMTOP to a smaller value, such as 31743, and change the value POKEd into CHARS appropriately. The relationship between RAMTOP and this value is:</p>
+
+<pre>Value POKEd into 23607 = INT ((RAMTOP + 1) / 256) -1
+Value POKEd into 23606 = RAMTOP - 255 - 256 * (Value POKEd into 23607)</pre>
+
+<p class="first">Note that the method does not alter the user defined graphics which are set to a copy of the capital letters A to U when the machine is switched on.</p>
+
+<p>Michael Gwynne writes: <b>I notice that some commercial Basic programs include lines that are flashing or in colour. How are these effects produced?</b></p>
+
+<p>The Spectrum uses a system of control codes so that the software can &quot;tell&quot; the hardware when a particular screen effect is required. The default values, for instance, black INK on white PAPER, are determined by the system variables but temporary effects can be produced within a PRINT or INPUT statement. Try, for example, typing:</p>
+
+<pre>10 PRINT &quot;This is the colour</pre>
+
+<p class="first">and then press the CAPS SHIFT and SYMBOL SHIFT keys together followed by the CYAN key - number 5 on the keyboard. Complete the PRINT statement by entering:</p>
+
+<pre>cyan.&quot;</pre>
+
+<p>The second part of the PRINT statement appears with a cyan background. Further program lines will appear in black INK on cyan PAPER.</p>
+
+<p>To see how these control codes work enter the program listed in table three. Take care to press the CAPS SHIFT and SYMBOL SHIFT keys together followed by the CYAN key in between the first quotation mark and the capital A in line 10.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre> 10 LET A$ = &quot;(CAPS SHIFT SYMBOL SHIFT, 5)ABCDEF&quot;
+ 20 LET PROG = PEEK 23635 + 256 * PEEK 23636
+100 FOR I = PROG TO PROG + 18
+110 LET J = PEEK (PROG + I)
+120 IF J  15 AND J  24 THEN LET J = J + 201
+130 PRINT &quot; PROG + &quot; ; I ; &quot;    &quot; ; J, CHR$ J
+140 NEXT I
+
+<b>Table 3. To demonstrate the PAPER control codes which
+look at the first nineteen bytes of the Basic area.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The program lists the contents of the first nineteen bytes of the Basic area in memory. The PROG system variable which is held at address 23635 points to the beginning of that area - normally 23755 if no microdrive hardware is attached. When the program is RUN the result is as shown in table four.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre>PROG + 0              0             ?
+PROG + 1             10             ?
+PROG + 2             15             ?
+PROG + 3              0             ?
+PROG + 4            241             LET
+PROG + 5             65             A
+PROG + 6             36             $
+PROG + 7             61             =
+PROG + 8             34             &quot;
+PROG + 9            218             PAPER
+PROG + 10             5             ?
+PROG + 11            65             A
+PROG + 12            66             B
+PROG + 13            67             C
+PROG + 14            68             D
+PROG + 15            69             E
+PROG + 16            70             F
+PROG + 17            34             &quot;
+PROG + 18            13
+
+<b>Table 4. The display produced by the program
+in table 3.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p class="first">The first nineteen bytes hold the first line of the program and so the interpretation of table four is as follows. The first two bytes specify the line number - in this case, 10 - in the form:</p>
+
+<pre>Line number = 256 * PEEK (PROG + 0) + PEEK (PROG + 1)</pre>
+
+<p class="first">The next two bytes specify the line length in the form:</p>
+
+<pre>Line length = PEEK (PROG + 2) + 256 * PEEK (PROG + 3)</pre>
+
+<p class="first">The next five bytes are interpreted as:</p>
+
+<pre>LET A$=&quot;</pre>
+
+<p class="first">The next two bytes - PROG + 9 and PROG + 10 - control the colour effects. Notice that the program adds 201 to the contents of PROG + 9. I have done that because otherwise an &quot;INVALID COLOUR&quot; error occurs. Thus the contents of PROG + 9 is really code 17 and appendix A of the Programming Manual shows that to be the PAPER control code. The next byte, PROG + 10, contains the number 5 which is the number of the CYAN key. Thus the two bytes together tell the system hardware to temporarily change the PAPER colour to CYAN.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="mindgms.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 30 Contents"></a>
+<a href="../031/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 31"></a></p>
+
+<h6 align="center">Sinclair User<br>September 1984</h6>
+
+</body>
+</html>

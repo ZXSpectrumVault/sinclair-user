@@ -1,0 +1,431 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 40 - Machine Code</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Z80 machine code programming feature from Sinclair User, July 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 40 Contents"></a>
+<a href="htsquad.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Machine Code</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><img src="mcode1.jpg" width=550 height=291 hspace=10 vspace=10 border=0 alt="Counter active">
+
+<p class="first"><b><font size="+1">Continuing his look at Z80 operations Marcus
+Jeffery loops the loop</font></b></p></center>
+
+<p class="first">Not having the structure available in many languages, such as Pascal, machine code programs rely on the use of jump statements. Those are akin to the Basic GO TO command. A typical machine code jump might look like</p>
+
+<pre>  EA6O 3E01   LD A,1
+  EA62 C360EA JP EA60</pre>
+
+<p class="first">which would load the accumulator with the value one, then jump to location EA60 (hex) to repeat the instruction.</p>
+
+<p>When using machine code, we usually use an assembler, and those allow the use of labels to make jumps clearer. You will have seen those before in the mnemonic listings, and a number of labels can be seen in <a href="#fig2">figure two</a>. The above loop could thus be</p>
+
+<pre>  EA60 3E01   LABEL LD A,1
+  EA62 C3EA60       JP LABEL</pre>
+
+<p class="first">That of course is an infinite loop, and does not allow an exit. The Basic equivalent would be</p>
+
+<pre>  10 LET A=1: GO TO 10</pre>
+
+<p>A very similar instruction to JP is JR - Jump Relative. When using JP, the program always jumps to the specified location. With JR, however, the program jumps to a location relative to your present location. The example above using JR would be</p>
+
+<pre>  EA60 3E01 LABEL LD A,1
+  EA62 18FC       JR LABEL</pre>
+
+<p class="first">which would jump to the location EA64 - the start of the next instruction - minus four - giving EA60.</p>
+
+<p>The JR instruction has the advantage of being one byte shorter - two bytes instead of three - but that implies that you cannot use it to jump any great distance. The displacement byte is assumed to be PLUS - forward - if it is less than 80h and MINUS - backwards - if greater than 7Fh. In the latter case, the value is calculated as 100h (256) minus the value given.</p>
+
+<p>We can check this with</p>
+
+<pre>  FCh     = 252
+  256-252 = -4
+  EA64h-4 = EA60h</pre>
+
+<p class="first">That means that we have a range of</p>
+
+<pre>  00h-7Fh (0 to 127)
+and FFh-80h (-1 to -128)</pre>
+
+<p class="first">The other advantage of using JR, rather than JP, is that it is relocatable. We will be discussing this in a later article, but essentially it implies that the actual address is not used.</p>
+
+<p>Of course, just as in Basic, jumps are not much use on their own. Their real power is only realised when they are combined with conditions. Z80 machine code does not have the flexibility of Basic when testing for conditions.</p>
+
+<p>All testing is carried out on the hitherto unused F (Flag) register. The individual bits of this register are used as shown in <a href="#fig1">figure one</a>. The values of the bits in the register are set based on the last operation, so they can then be tested using special instructions.</p>
+
+<p>All the jump instructions are shown in <a href="#fig6">figure six</a>, but here is a typical example, showing how to form a loop.</p>
+
+<pre>        .
+        .
+        .
+        LD HL,1
+LOOP    ADD HL,HL
+        DEC A
+        JR NZ,LOOP
+        .
+        .
+        .</pre>
+
+<p class="first">The HL registers are initially loaded with the value of one. The ADD instruction effectively multiplies HL by two. The value of A is then decremented, and if Not Zero (NZ) a relative jump is made, otherwise the code continues. This small piece of code has the effect of placing the value of 2^A into HL, assuming that A is greater than zero and not too large to cause HL to overflow.</p>
+
+<p>Special instructions are also provided whose only job is to set flags in the F register. Those are the compare instructions - see <a href="#fig6">figure six</a>. In the counter program we use.</p>
+
+<pre>  CP 8Ah</pre>
+
+<p class="first">That subtracts the data (8Ah) from whatever value is currently in the accumulator. The flags are set, but the value of the accumulator is left unchanged. The next instruction is</p>
+
+<pre>  JR NZ,CHANGE</pre>
+
+<p class="first">which will now jump to the label CHANGE if the contents of the accumulator are not 8Ah - that is Acc-8Ah &lt;&gt; 0.</p>
+
+<p>One final test instruction which we will look at is BIT. That can be used to test individual bits of a particular register or location. In our program</p>
+
+<pre>  BIT 7,A</pre>
+
+<p class="first">tests to see if the most significant bit - the top bit, counting from bit 0 left to right - in the accumulator is set. If the specified bit is set - in other words, is a '1' - then Z (Zero) in the Flag register will be False. That may seem complex at first, because the complement of the specified bit is placed into the Z flag. Have a look at the program to see how this works.</p>
+
+<p>Other bit instructions which you may come across are SET and RES, which place a '1' or '0' respectively into a specified bit. Variations of this instruction are shown in <a href="#fig6">figure six</a>.</p>
+
+<p>We have seen how to implement a loop using a conditional jump instruction. Z80 also has a specified abbreviated loop instruction called DJNZ. This stands for 'Decrement the B register and Jump to a given label if Not Zero'.</p>
+
+<p>So, if we wanted to improve the example above, by using the B register instead of A, we could write</p>
+
+<pre>        .
+        .
+        .
+        LD HL,1
+LOOP    ADD HL,HL
+        DJNZ,LOOP
+        .
+        .
+        .</pre>
+
+<p>There is one last set of instructions to look at before we deal with this month's program. Those are the 'stack' operations. When using machine code, it's very easy to run out of registers to use. One way of dealing with that is to save the register to a spare location, use the register for another task, then reload it from the location.</p>
+
+<p>There are a number of disadvantages with this method, and it is such a common problem that there are a number of special instructions to deal with it. Those are called PUSH and POP. A stack can be thought of as a pile of plates. If a plate is PUSHed onto the top of the pile, then it must also be the first removed - POPped.</p>
+
+<p>Registers may be pushed onto the stack in pairs - A+F, B+C, D+E and H+L - and popped from the stack in the same way. A pointer to use the top of the stack, surprisingly known as the stack pointer (SP), is automatically updated for you.</p>
+
+<p>The only thing to remember is to take the register pairs off the stack in reverse order to which they were put on. This is known as a LIFO - Last In, First Out - structure.</p>
+
+<p>Now the program. The idea is to implement a digital counter, which will automatically update its value by one whenever it is called, and display the new value on the screen.</p>
+
+<p>The clever bit is to ensure that this update is shown graphically as rotating digits, just like the real digital display. The assembly code for this - <a href="#fig2">figure two</a> - can be divided into three distinct stages:</p>
+
+<pre>        EA60-EA76 which adds one to the four-digit counter.
+
+        EA77-EAB0 which does the on-screen scrolling.
+
+        EAB1-EABB which resets, ready for the next call.</pre>
+
+<p>The comments should enable you to follow the program, but here are a few points. When incrementing the four digits - each held in one byte, including a fifth overflow byte - the top bit of the digit is set if it has changed. That is the reason for the test 8Ah (Top Bit + 10).</p>
+
+<p><a href="#fig3">Figure three</a> should give some indication of how the scrolling works. The code from EA88 to EA94 scrolls the necessary characters down by seven pixel lines, and the code to EAA2 finds the value of the next byte to be placed on the screen from the Spectrum character set. The four instructions from ESHIFT create a delay loop, to give you time to see the display. To halve the speed of the scrolling, increase the number loaded into E, at ESHIFT, by one.</p>
+
+<p>Finally, the two numbers held in location EAC1 and EAC2 - label DSPLY - are the bottom- right screen address of the four bytes displayed. <a href="#fig4">Figure four</a> gives a list of the values you can place in here to move the counter on the screen.</p>
+
+<p><a href="#fig5">Figure five</a> gives a Basic loader program and example calling routine. You will notice that lines 40 to 70 use our special abbreviations for graphics characters, so please read <a href="#graphins">the instructions</a> on the first page of Program Printout.</p>
+
+<p>You might like to change the program. First of all, to make the program count downwards, rather than up, change the following</p>
+
+<pre>Line 2010: 3C to 3D
+           FE8A to FE7F
+Line 2020: 3680 to 3689
+Line 2170: 09090909 to 00000000
+Line 2180: 00 to 09</pre>
+
+<p>This will then count down from 9999. Note that all the digits change when the routine is first called, ensuring that all the digits are displayed.</p>
+
+<p>If you would like to count from a different number, simply change the start digits at the end of line 2170, and print the start number in line 70, instead of the four spaces. The INK statement in line 70 also specifies the colour of the digits.</p>
+
+<p>It is quite a simple matter to modify the code to work with more than four digits. To add a fifth digit, change thee start number (line 2170) to a five- digit figure. You must also change the address of the display location - presently EAC1. So alter the C1EA to read C2EA in lines 2030 and 2050.</p>
+
+<h2><i>Figures</i></h2>
+
+<a name="fig1"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 1. Flag register</b></p>
+<img src="mcode2.gif" width=300 height=140 hspace=10 vspace=10 border=0 alt="">
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig2"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 2. Assembly code</b></p>
+<pre>                     ORG   60000
+                     LOAD  60000
+
+EA60 21BCEA          LD    HL,NMBRS   ;HL = start of digits
+EA63 3E80     OVFLOW LD    A,80H      ;set top bit in A
+EA65 86              ADD   A,(HL)     ;add previous digit
+EA66 3C              INC   A          ;    and update it
+EA67 77              LD    (HL),A     ;replace digit in memory
+EA68 FE8A            CP    8AH        ;has it reached 10?
+EA6A 2005            JR    NZ,CHANGE  ;go on if not, else
+EA6C 3680            LD    (HL),80H   ;reset digit to zero
+EA6E 23              INC   HL         ;increment to next digit
+EA6F 18F2            JR    OVFLOW     ;go back for next digit
+
+EA71 21C1EA   CHANGE LD    HL,DSPLY
+EA74 2B              DEC   HL         ;zero overflow digit
+EA75 3600            LD    (HL),0
+EA77 0608            LD    B,8        ;B counts 8 shifts
+EA79 21BCEA   NSHIFT LD    HL,NMBRS   ;HL points to digits
+EA7C ED5BC1EA        LD    DE,(DSPLY) ;DE = bottom right of display
+EA80 7E       NDIGIT LD    A,(HL)     ;get digit in A
+EA81 CB7F            BIT   7,A        ;is top bit set?
+EA83 2824            JR    NZ,ESHIFT  ;jump to finish if not
+EA85 D5              PUSH  DE
+EA86 E5              PUSH  HL         ;stack registers
+EA87 F5              PUSH  AF
+EA88 62              LD    H,D
+EA89 6B              LD    L,E        ;HL = display line above DE
+EA8A 25              DEC   H
+EA8B 0E07            LD    C,7        ;C counts 7 shifts
+EA8D 7E       SCROLL LD    A,(HL)     ;move a byte to the
+EA8E 12              LD    (DE),A     ;    line below
+EA8F 15              DEC   D          ;move HL and DE pointers
+EA90 25              DEC   H          ;    up by one line
+EA91 0D              DEC   C
+EA92 20F9            JR    NZ,SCROLL  ;repeat 7 times
+EA94 F1              POP   AF         ;restore AF register
+EA95 CB27            SLA   A
+EA97 CB27            SLA   A          ;multiply A by 8
+EA99 CB27            SLA   A
+EA9B 80              ADD   B          ;add shift count
+EA9C C680            ADD   A,80H      ;add lsb loc &quot;0&quot;
+EA9E 6F              LD    L,A
+EA9F 263D            LD    H,3DH      ;HL = 3D80H+8*digit+shift
+EAA1 7E              LD    A,(HL)
+EAA2 12              LD    (DE),A     ;display appropriate byte
+EAA3 E1              POP   HL         ;restore digits to HL
+EAA4 23              INC   HL         ;move to next digit
+EAA5 D1              POP   DE         ;restore display position
+EAA6 1B              DEC   DE         ;previous display position
+EAA7 18D7            JR    NDIGIT     ;do next digit
+EAA9 1E01     ESHIFT LD    E,1
+EAAB 76       DELAY  HALT             ;delay to give user time
+EAAC 1D              DEC   E          ;    to see the scrolling
+EAAD 20FC            JR    NZ,DELAY
+EAAF 10C8            DJNZ  NSHIFT     ;repeat eight times
+
+EAB1 21BCEA          LD    HL,NMBRS   ;HL = start of digit data
+EAB4 0604            LD    B,4        ;there are four digits
+EAB6 CBBE     RESBIT RES   7,(HL)     ;top (changed) bit = 0
+EAB8 23              INC   HL         ;next digit
+EAB9 10FB            DJNZ  RESBIT
+EABB C9              RET
+
+EABC 09090909
+EAC0 00       NMBRS  DB    9,9,9,9,0
+EAC1 714F     DSPLY  DB    71H,4FH
+                     END
+
+Work area     - A692 to A82B
+ORG end       - EAC3
+LOAD end      - EA60</pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig3"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 3. Example of scrolling</b></p>
+<img src="mcode3.gif" width=246 height=598 hspace=10 vspace=10 border=0 alt="">
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig4"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 4. Screen display locations (hex)</b></p>
+<img src="mcode4.gif" width=263 height=157 hspace=10 vspace=10 border=0 alt="">
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig5"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 5. Basic program</b></p>
+<pre>  10 CLEAR 59999
+  20 GO SUB 1000
+  30 CLS
+  40 INK 2: PRINT AT 10,13;&quot;(ig4:4*g3:g7)&quot;
+  50 PRINT AT 11,13;&quot;(ig5:4*sp:g5)&quot;
+  60 PRINT AT 12,13;&quot;(ig1:4*ig3:ig2)&quot;
+  70 INK 1: PRINT AT 11,14;&quot;(4*sp)&quot;
+  80 RANDOMIZE USR 60000
+  90 GO TO 80
+ 100 STOP
+1000 REM HEX LOAD ROUTINE
+1010 DEF FN p(x)=CODE h$(x)-48-7*(CODE h$(x)&gt;=65)
+1020 LET byte=0
+1030 RESTORE 2000
+1040 READ start
+1050 READ h$
+1060 IF h$=&quot;*&quot; THEN GO TO 1160
+1070 IF LEN h$&lt;&gt;2*INT (LEN h$/2) THEN PRINT &quot;Odd number of hex digits in: &quot;;h$: STOP
+1080 FOR i=1 TO LEN h$
+1090 IF NOT((h$(i)&gt;=&quot;0&quot; AND h$(i)&lt;=&quot;9&quot;) OR (h$(i)&gt;=&quot;A&quot; AND h$(i)&lt;=&quot;F&quot;)) THEN PRINT &quot;Illegal hex digit: &quot;;h$(i): STOP
+1100 NEXT i
+1110 FOR i=1 TO LEN h$ STEP 2
+1120 POKE start+byte,16*FN p(i)+FN p(i+1)
+1130 LET byte=byte+1
+1140 NEXT i
+1150 GO TO 1050
+1160 PRINT &quot;Code entered&quot;
+1170 PAUSE 150
+1180 RETURN
+2000 DATA 60000,&quot;21BCEA&quot;,&quot;3E80&quot;
+2010 DATA &quot;86&quot;,&quot;3C&quot;,&quot;77&quot;,&quot;FE8A&quot;
+2020 DATA &quot;2005&quot;,&quot;3680&quot;,&quot;23&quot;
+2030 DATA &quot;18F2&quot;,&quot;21C1EA&quot;,&quot;2B&quot;
+2040 DATA &quot;3600&quot;,&quot;0608&quot;,&quot;21BCEA&quot;
+2050 DATA &quot;ED5BC1EA&quot;,&quot;7E&quot;,&quot;CB7F&quot;
+2060 DATA &quot;2824&quot;,&quot;D5&quot;,&quot;E5&quot;,&quot;F5&quot;
+2070 DATA &quot;62&quot;,&quot;6B&quot;,&quot;25&quot;,&quot;0E07&quot;
+2080 DATA &quot;7E&quot;,&quot;12&quot;,&quot;15&quot;,&quot;25&quot;
+2090 DATA &quot;0D&quot;,&quot;20F9&quot;,&quot;F1&quot;
+2100 DATA &quot;CB27&quot;,&quot;CB27&quot;,&quot;CB27&quot;
+2110 DATA &quot;80&quot;,&quot;C680&quot;,&quot;6F&quot;
+2120 DATA &quot;263D&quot;,&quot;7E&quot;,&quot;12&quot;,&quot;E1&quot;
+2130 DATA &quot;23&quot;,&quot;D1&quot;,&quot;1B&quot;,&quot;18D7&quot;
+2140 DATA &quot;1E01&quot;,&quot;76&quot;,&quot;1D&quot;
+2150 DATA &quot;20FC&quot;,&quot;10C8&quot;,&quot;21BCEA&quot;
+2160 DATA &quot;0604&quot;,&quot;CBBE&quot;,&quot;23&quot;
+2170 DATA &quot;10FB&quot;,&quot;C9&quot;,&quot;09090909&quot;
+2180 DATA &quot;00&quot;,&quot;714F&quot;,&quot;*&quot;</pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig6"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 6. New Z80 instruction codes</b></p>
+<pre>                     ORG   60000
+                     LOAD  60000
+
+EA60 21BCEA          LD    HL,NMBRS   ;HL = start of digits
+EA63 3E80     OVFLOW LD    A,80H      ;set top bit in A
+EA65 86              ADD   A,(HL)     ;add previous digit
+EA66 3C              INC   A          ;    and update it
+EA67 77              LD    (HL),A     ;replace digit in memory
+EA68 FE8A            CP    8AH        ;has it reached 10?
+EA6A 2005            JR    NZ,CHANGE  ;go on if not, else
+EA6C 3680            LD    (HL),80H   ;reset digit to zero
+EA6E 23              INC   HL         ;increment to next digit
+EA6F 18F2            JR    OVFLOW     ;go back for next digit
+
+EA71 21C1EA   CHANGE LD    HL,DSPLY
+EA74 2B              DEC   HL         ;zero overflow digit
+EA75 3600            LD    (HL),0
+EA77 0608            LD    B,8        ;B counts 8 shifts
+EA79 21BCEA   NSHIFT LD    HL,NMBRS   ;HL points to digits
+EA7C ED5BC1EA        LD    DE,(DSPLY) ;DE = bottom right of display
+EA80 7E       NDIGIT LD    A,(HL)     ;get digit in A
+EA81 CB7F            BIT   7,A        ;is top bit set?
+EA83 2824            JR    NZ,ESHIFT  ;jump to finish if not
+EA85 D5              PUSH  DE
+EA86 E5              PUSH  HL         ;stack registers
+EA87 F5              PUSH  AF
+EA88 62              LD    H,D
+EA89 6B              LD    L,E        ;HL = display line above DE
+EA8A 25              DEC   H
+EA8B 0E07            LD    C,7        ;C counts 7 shifts
+EA8D 7E       SCROLL LD    A,(HL)     ;move a byte to the
+EA8E 12              LD    (DE),A     ;    line below
+EA8F 15              DEC   D          ;move HL and DE pointers
+EA90 25              DEC   H          ;    up by one line
+EA91 0D              DEC   C
+EA92 20F9            JR    NZ,SCROLL  ;repeat 7 times
+EA94 F1              POP   AF         ;restore AF register
+EA95 CB27            SLA   A
+EA97 CB27            SLA   A          ;multiply A by 8
+EA99 CB27            SLA   A
+EA9B 80              ADD   B          ;add shift count
+EA9C C680            ADD   A,80H      ;add lsb loc &quot;0&quot;
+EA9E 6F              LD    L,A
+EA9F 263D            LD    H,3DH      ;HL = 3D80H+8*digit+shift
+EAA1 7E              LD    A,(HL)
+EAA2 12              LD    (DE),A     ;display appropriate byte
+EAA3 E1              POP   HL         ;restore digits to HL
+EAA4 23              INC   HL         ;move to next digit
+EAA5 D1              POP   DE         ;restore display position
+EAA6 1B              DEC   DE         ;previous display position
+EAA7 18D7            JR    NDIGIT     ;do next digit
+EAA9 1E01     ESHIFT LD    E,1
+EAAB 76       DELAY  HALT             ;delay to give user time
+EAAC 1D              DEC   E          ;    to see the scrolling
+EAAD 20FC            JR    NZ,DELAY
+EAAF 10C8            DJNZ  NSHIFT     ;repeat eight times
+
+EAB1 21BCEA          LD    HL,NMBRS   ;HL = start of digit data
+EAB4 0604            LD    B,4        ;there are four digits
+EAB6 CBBE     RESBIT RES   7,(HL)     ;top (changed) bit = 0
+EAB8 23              INC   HL         ;next digit
+EAB9 10FB            DJNZ  RESBIT
+EABB C9              RET
+
+EABC 09090909
+EAC0 00       NMBRS  DB    9,9,9,9,0
+EAC1 714F     DSPLY  DB    71H,4FH
+                     END
+
+Work area     - A692 to A82B
+ORG end       - EAC3
+LOAD end      - EA60</pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name=graphins><h2><i>Graphics Instructions</i></h2></a>
+
+<p class="first">IN GENERAL, graphics abbreviations are enclosed in brackets, which should not be entered. A string of the same graphics character is represented in the form (3*A) which would be entered as AAA, where A is the graphics character. A space, where it is important to have the correct number of spaces, is indicated by (sp). Spaces in text will not normally be indicated. Where several graphics characters are used, they are separated by commas, which should not be entered. With Spectrum and QL listings the letter I has a flat top and the numeral 1 has a sloping top.</p>
+
+<p>The above applies to all Sinclair machines. The following instructions are for specific machines.</p>
+
+<p><b>ZX-81</b>: ZX-81 listings are generally reproduced as they appear when you enter them, spaces and all. Where extensive graphics are used, REM statements will be inserted to provide a guide to the position of each character.</p>
+
+<p><b>Spectrum</b>: User-defined graphics are represented by underlined letters, without brackets. Type the appropriate letter while in graphics mode. The underline does not appear on the screen. Inverse characters have the letter i before them, e.g. iZ, iA, iP. Block graphic characters are indicated by g followed by the number of the appropriate key: g4 would mean the block graphics on key 4, ig4 the inverse of that graphic. Control codes are indicated by cc before the character, and are obtained by pressing CAPS SHIFT while in extended mode. They do not appear on the screen but may change the colour of the cursor and will affect what is printed after them: cc3,i* would thus have the effect of printing an inverse asterisk in red.</p>
+
+<p><b>QL</b>: User-defined graphics on the QL are indicated by a description of the keys pressed to obtain them, underlined and in brackets. Thus (CTRL + 9) means press CTRL and 9 together. The same applies for unusual characters within the QL character set, which our printer is unable to reproduce.</p>
+<br clear=all>
+
+<center><p class="first"><a href="../039/mcode.htm"><b>Previous article in series (issue 39)</b></a><br>
+<a href="../041/mcode.htm"><b>Next article in series (issue 41)</b></a></p></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 40 Contents"></a>
+<a href="htsquad.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a></p>
+
+<h6 align="center">Sinclair User<br>July 1985</h6>
+<h6 align="center">Another Fine Product transcribed by Jim Grimwood at <a href="http://www.users.globalnet.co.uk/~jimg/">YRUA?</a></h6>
+
+</body>
+</html>

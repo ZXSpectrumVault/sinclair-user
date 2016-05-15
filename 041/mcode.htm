@@ -1,0 +1,324 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 41 - Machine Code</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Z80 machine code programming feature from Sinclair User, August 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 41 Contents"></a>
+<a href="htsquad.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Machine Code</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="mcode1.jpg" width=398 height=381 hspace=10 vspace=10 border=0 alt="Shaping up with stacks of data" align="right">
+
+<p class="first"><b><font size="+1">How to store data in Z80 code; Marcus Jeffery fills in on assemblers and colours in shapes</font></b></p>
+
+<p class="first">One of the biggest problems when using Z80 machine code is finding places to put numbers. In Basic, there are plenty of variables and arrays which can be used to store data, but in Z80 there are just a few registers.</p>
+
+<p>One way around that is to use an instruction:</p>
+
+<pre>  LD (address), register</pre>
+
+<p class="first">which would place the value of the register into the contents of the specified address. A better method, however, is known as the 'stack'.</p>
+
+<p>A stack is a type of data structure, in much the same way as an array, list, queue and so on. With an array, you tell the computer which element you want by giving the array subscripts. With a list, you start at the 'head' and move towards the 'tail'. A queue is known as a First In First Out (FIFO) structure because you add items to the end of the queue and take them away from the start.</p>
+
+<p>A stack is a Last In First Out (LIFO) structure. Imagine a stack of plates. Trying to take a plate from the middle of the stack is likely to have disastrous results. You will probably also have problems if you try to put a plate into the middle. You can only safely place and remove plates from the top. In Z80 machine code, those operations are known as PUSH and POP.</p>
+
+<p>Z80 only allows you to PUSH and POP two registers at a time, giving the instructions:</p>
+
+<pre>  PUSH AF ; POP AF
+  PUSH BC ; POP BC
+  PUSH DE ; POP DE
+  PUSH HL ; POP HL</pre>
+
+<p class="first">So, for example, the code</p>
+
+<pre>  LD HL,1234
+  PUSH HL
+  LD HL, 4321</pre>
+
+<p class="first">would leave HL containing the number 4321. However, if we now execute the instruction</p>
+
+<pre>  POP HL</pre>
+
+<p class="first">then the number 1234 will be restored to HL. One interesting point is that the stack does not know which registers it has stacked; all it has done is place two bytes onto the stack. Therefore, instead of the last instruction, we could just as easily use, say,</p>
+
+<pre>  POP BC</pre>
+
+<p class="first">which would overwrite the contents of the BC registers with the number 1234.</p>
+
+<p>The main point to remember when using PUSHes and POPs is that they must always be a matching pair. If you allow values to be stacked without POPping, the area set aside for the stack will eventually run out of room. The location of the top of the stack is held in a register pair called, surprisingly, the Stack Pointer, which is abbreviated to SP. Bearing that in mind, another useful instruction is</p>
+
+<pre>  EX (SP), HL</pre>
+
+<p class="first">which will exchange the last two bytes placed on the stack with the contents of the HL register pair.</p>
+
+<p>Remember that the brackets indicate that we want the 'contents of the location addressed by' the contents of the Stack Pointer, not the contents of the Stack Pointer. Those instructions are shown at the end of the article in <a href="#fig4">figure four</a>. That also shows a few other instructions which operate on the Stack Pointer, though you're unlikely to find those very useful as yet.</p>
+
+<p>Though your use of the stack is likely to be limited to the above instructions under most circumstances, it is far more flexible. For example, you will have noticed the instructions CALL and RET in recent programs. Those act in the same way as GO SUB and RETURN in Spectrum Basic.
+The instruction</p>
+
+<pre>  CALL address</pre>
+
+<p class="first">transfers execution to the specified address, and</p>
+
+<pre>  RET</pre>
+
+<p class="first">returns to the instruction immediately following the CALL. However, when that happens, the computer has got to know where to return to. Consequently, when the CALL instruction is executed, the computer PUSHes the value of the location following the CALL statement onto the stack. Then, when a RETurn statement is found, the stack is POPped to tell the computer which code to execute next.</p>
+
+<p>Now we are ready for this month's example program, which will allow you to fill in any shape on the screen. To run this just type in and run the Basic program in <a href="#fig1">figure one</a> - the Hex Loader is the same as usual. To use the routine generally, POKE the x coordinate into location 23728 and the y coordinate into 23729. Those two locations among the system variables - <i>User Guide</i>, page 130 - are normally unused.</p>
+
+<p><a href="#fig2">Figure two</a> shows the equivalent in assembly code. The PBYTE routine takes the screen coordinates 'x' and 'y' - in C and B, respectively - and calculates the coordinates of the screen byte, placing the result into the HL register pair. In addition, a single bit is set in the A register, corresponding to the bit within the HL byte which represents the (x,y) coordinate. The letters in brackets, given in the comments on the right-hand side of the listing, refer to <a href="#fig3">figure three</a>, which should help to explain how the BC coordinates are converted into the HL location.</p>
+
+<p>The routine works by filling in the (x,y) pixel - assuming that it is not already filled - then doing the same for the pixels to the North, South, East and West. Those in turn, if filled, will fill in four directions, and so on.</p>
+
+<p>In that way, the whole shape is filled. By writing a general routine - FBYTE - to carry out the operation, it can 'call itself' to fill to the North, South, East and West!</p>
+
+<p>Remember that the return locations from the CALLs are all stacked, so the routine always knows where to return to. The only problem is that the (x,y) coordinates in BC would be overwritten, so we must stack those too. The comments marked with asterisks show which instructions are connected with saving and restoring values - imagine how messy that would be without the stack!</p>
+
+<p>That is by no means the quickest way of filling shapes, but is probably quick enough for most purposes. You might like to try it out in Basic. You can easily implement a stack, as follows:</p>
+
+<pre>         1 DIM s(1000)
+         2 LET sp = 0
+PUSH: 1000 LET s(sp) = xcoord
+      1010 LET s(sp+1) = ycoord
+      1020 LET sp = sp+2
+      1030 RETURN
+POP:  2000 LET sp = sp-2
+      2010 LET ycoord = s(sp+1)
+      2020 LET xcoord = s(sp)
+      2030 RETURN</pre>
+
+<p class="first">The major problem with this method of filling shapes is that it uses enormous amounts of stack space. If you try to fill large shapes on the screen, you may find the whole computer crashing as the stack runs out of space. The easy way to avoid that is to split large spaces into a number of smaller shapes.</p>
+
+<h2><i>Assemblers</i></h2>
+
+<p class="first">If you are sufficiently attracted to the advantages of using machine code, then you will probably consider purchasing an Assembler package. The assembly code listings given in these articles use <b>Spectre-Mac-Mon</b> from Oasis Software, but other assemblers may have slightly different formats.</p>
+
+<p>Assembly code is usually divided into a number of fields. Those are</p>
+
+<pre>  LABEL MNEMONIC
+  OPERAND COMMENT</pre>
+
+<p class="first">In some cases, such as the <b>Zeus Assembler</b> from Sinclair Research, the source listing also contains line numbers, as in Basic. The first thing to look for is the method of entering those formatted instructions. On- screen editors are obviously very useful. One very important feature is the use of labels - don't buy it if it doesn't use them.</p>
+
+<p>In addition to the normal Z80 mnemonic instructions, most assemblers include 'pseudo-operations'. Those include such mnemonics as ORG, to tell the computer where in memory to assemble the code. EQU allows constants to be assigned label names, making the listing more readable. DB - or similar - standing for Define Byte, allows memory locations to be initialised to particular values.</p>
+
+<p>It is often possible to define 'macros', which allow you to assign a name to a sequence of instructions. Conditional assembly allows you to decide whether certain pieces of code are assembled at assembly-time. Many more features may be found, varying between assemblers.</p>
+
+<p>Many assemblers include 'monitors'. Those allow you to examine memory, while running machine code. Though not absolutely necessary, the more serious machine code user will find those invaluable. Some important additional features to look for are the setting of 'break points', single-stepping, examination of registers, intelligent copy, modify memory and disassembly.</p>
+
+<p>When converting listed programs for your own assembler, the two main points to check are:</p>
+
+<p>The Format: assemblers differ in the fields, length of labels, format of numbers, and so on;</p>
+
+<p>The Memory: assemblers are likely to use different areas of memory. For instance, the routines given have all started from location 60000. However, the <b>Zeus Assembler</b> uses that as workspace, so the routines should be changed to start at, say, 30000.</p>
+
+<p>In all cases, check with the documentation given with your assembler.</p>
+
+<h2><i>Figures</i></h2>
+
+<a name="fig1"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 1</b></p>
+<pre>  10 CLEAR 59999
+  20 GO SUB 1000
+  30 CLS
+  40 CIRCLE 120,100,20
+  50 POKE 23728,120: POKE 23729,100
+  60 RANDOMIZE USR 60000
+ 100 STOP
+1000 REM HEX LOAD ROUTINE
+1010 DEF FN p(x)=CODE h$(x)-48-7*(CODE h$(x)&gt;=65)
+1020 LET byte=0
+1030 RESTORE 2000
+1040 READ start
+1050 READ h$
+1060 IF h$=&quot;*&quot; THEN GO TO 1160
+1070 IF LEN h$&lt;&gt;2*INT (LEN h$/2) THEN PRINT &quot;Odd number of hex digits in: &quot;;h$: STOP
+1080 FOR i=1 TO LEN h$
+1090 IF NOT((h$(i)&gt;=&quot;0&quot; AND h$(i)&lt;=&quot;9&quot;) OR (h$(i)&gt;=&quot;A&quot; AND h$(i)&lt;=&quot;F&quot;)) THEN PRINT &quot;Illegal hex digit: &quot;;h$(i): STOP
+1100 NEXT i
+1110 FOR i=1 TO LEN h$ STEP 2
+1120 POKE start+byte,16*FN p(i)+FN p(i+1)
+1130 LET byte=byte+1
+1140 NEXT i
+1150 GO TO 1050
+1160 PRINT &quot;Code entered&quot;
+1170 PAUSE 150
+1180 RETURN
+2000 DATA 60000,&quot;ED4BB05C&quot;
+2010 DATA &quot;CD68EA&quot;,&quot;C9&quot;
+2020 DATA &quot;C5&quot;,&quot;CD8EEA&quot;,&quot;C1&quot;
+2030 DATA &quot;5F&quot;,&quot;A6&quot;,&quot;C0&quot;,&quot;7B&quot;
+2040 DATA &quot;CDBEEA&quot;,&quot;C5&quot;,&quot;04&quot;
+2050 DATA &quot;3EB0&quot;,&quot;90&quot;,&quot;C468EA&quot;
+2060 DATA &quot;C1&quot;,&quot;C5&quot;,&quot;05&quot;
+2070 DATA &quot;E468EA&quot;,&quot;C1&quot;,&quot;C5&quot;
+2080 DATA &quot;0C&quot;,&quot;C468EA&quot;,&quot;C1&quot;
+2090 DATA &quot;0D&quot;,&quot;E468EA&quot;,&quot;C9&quot;
+2100 DATA &quot;79&quot;,&quot;E607&quot;,&quot;5F&quot;
+2110 DATA &quot;CB39&quot;,&quot;CB39&quot;,&quot;CB39&quot;
+2120 DATA &quot;3EAF&quot;,&quot;90&quot;,&quot;47&quot;
+2130 DATA &quot;E638&quot;,&quot;CB27&quot;,&quot;CB27&quot;
+2140 DATA &quot;B1&quot;,&quot;6F&quot;,&quot;78&quot;,&quot;E607&quot;
+2150 DATA &quot;67&quot;,&quot;78&quot;,&quot;E6C0&quot;
+2160 DATA &quot;CB3F&quot;,&quot;CB3F&quot;,&quot;CB3F&quot;
+2170 DATA &quot;84&quot;,&quot;C640&quot;,&quot;67&quot;,&quot;43&quot;
+2180 DATA &quot;04&quot;,&quot;AF&quot;,&quot;37&quot;,&quot;CB1F&quot;
+2190 DATA &quot;10FC&quot;,&quot;C9&quot;
+2200 DATA &quot;B6&quot;,&quot;77&quot;,&quot;C9&quot;,&quot;*&quot;</pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig2"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 2</b></p>
+<pre>                     ORG   60000
+                     LOAD  60000
+
+EA60 ED4BB05C FILL   LD    BC,(23728) ;Get start coordinates
+EA64 CD68EA          CALL  FBYTE      ;Fill from here
+EA67 C9              RET              ;Return to BASIC
+
+EA68 C5       FBYTE  PUSH  BC         ;Stack BC *
+EA69 CD8EEA          CALL  PBYTE      ;HL = Screen address
+EA6C C1              POP   BC         ;Restore BC (coordinates) *
+EA6D 5F              LD    E,A        ;Save A (bit mask) *
+EA6E A6              AND   (HL)       ;If Screen bit not empty,
+EA6F C0              RET   NZ         ;    then RETurn
+EA70 7B              LD    A,E        ;Restore A *
+EA71 CDBEEA          CALL  PSCRN      ;Fill the screen point
+EA74 C5              PUSH  BC         ;Stack coordinate *
+EA75 04              INC   B          ;Look NORTH
+EA76 3EB0            LD    A,176
+EA78 90              SUB   B
+EA79 C468EA          CALL  NZ,FBYTE
+EA7C C1              POP   BC         ;Restore coordinate *
+EA7D C5              PUSH  BC         ;Stack coordinate *
+EA7E 05              DEC   B          ;Look SOUTH
+EA7F E468EA          CALL  PO,FBYTE
+EA82 C1              POP   BC         ;Restore coordinate *
+EA83 C5              PUSH  BC         ;Restore coordinate *
+EA84 0C              INC   C          ;Look EAST
+EA85 C468EA          CALL  NZ,FBYTE
+EA88 C1              POP   BC         ;Restore coordinate *
+EA89 0D              DEC   C          ;Look WEST
+EA8A E468EA          CALL  PO,FBYTE
+EA8D C9              RET
+
+EA8E 79       PBYTE  LD    A,C
+EA8F E607            AND   7          ;Get bit in byte (b)
+EA91 5F              LD    E,A
+EA92 CB39            SRL   C          ;Get (a) in register C
+EA94 CB39            SRL   C
+EA96 CB39            SRL   C
+EA98 3EAF            LD    A,175      ;Convert y-coord, to give
+EA9A 90              SUB   B          ;    (0,0) at top-left
+EA9B 47              LD    B,A
+EA9C E638            AND   56         ;Get (d) in register A
+EA9E CB27            SLA   A
+EAA0 CB27            SLA   A
+EAA2 B1              OR    C          ;Get (d)+(a) in register A
+EAA3 6F              LD    L,A        ;    then move to register L
+EAA4 78              LD    A,B
+EAA5 E607            AND   7          ;Get (e) in register A
+EAA7 67              LD    H,A        ;Place temporarily in H
+EAA8 78              LD    A,B
+EAA9 E6C0            AND   192        ;Get (c) in register A
+EAAB CB3F            SRL    A         ;Move to position
+EAAD CB3F            SRL    A
+EAAF CB3F            SRL    A
+EAB1 84              ADD    H         ;Add (e)
+EAB2 C640            ADD    64        ;Add screen base address
+EAB4 67              LD     H,A       ;Place in register H
+EAB5 43              LD     B,E       ;B = bit in byte (0-7)
+EAB6 04              INC    B         ;B = bit in byte (1-8)
+EAB7 AF              XOR    A         ;Clears A register
+EAB8 37              SCF              ;Set carry flag, then
+EAB9 CB1F     PBLOOP RR     A         ;    rotate carry into
+EABB 10FC            DJNZ   PBLOOP    ;    bit position in A
+EABD C9              RET
+
+EABE B6       PSCRN  OR     (HL)      ;Set screen bit by ORing
+EABF 77              LD     (HL),A    ;    mask with current screen
+EAC0 C9              RET
+
+                     END
+
+Workarea - A800 to A956
+ORG  end - EAC1
+LOAD end - EAC1</pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig3"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 3.</b></p>
+<img src="mcode2.gif" width=350 height=188 hspace=10 vspace=10 border=0 alt="Figure 3.">
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig4"></a>
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 4. New Z80 instruction codes</b></p>
+<pre>PUSH      rp        - place the register pair (AF,BC,DE,HL) onto the top of
+                      the stack
+POP       rp        - remove the top two bytes from the top of the stack, 
+                      placing the contents into the register pair (AF,BC,DE,HL)
+EX        (SP),HL   - exchange the two bytes from the top of the stack
+                      with the contents of the HL register pair
+
+Of the instructions we have seen so far, the following can also be used
+with the Stack.
+
+ADD       HL,SP     - add the Stack Pointer to the HL register pair
+DEC       SP        - decrement the Stack Pointer by one
+INC       SP        - increment the Stack Pointer by one
+LD        SP,(addr) - set the Stack Pointer to the contents of the specified
+                      address
+LD        SP,data   - place the given data into the Stack Pointer
+LD        SP,HL     - set the Stack Pointer to the contents of the 
+                      HL register pair
+LD        (addr),SP - place the contents of the Stack pointer into the given
+                      address</pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><p class="first"><a href="../040/mcode.htm"><b>Previous article in series (issue 40)</b></a><br>
+<a href="../042/mcode.htm"><b>Next article in series (issue 42)</b></a></p></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 41 Contents"></a>
+<a href="htsquad.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a></p>
+
+<h6 align="center">Sinclair User<br>August 1985</h6>
+<h6 align="center">Another Fine Product transcribed by Jim Grimwood at <a href="http://www.users.globalnet.co.uk/~jimg/">YRUA?</a></h6>
+
+</body>
+</html>

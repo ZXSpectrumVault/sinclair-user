@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 15 - Letters</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Letters page from Sinclair User, June 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="news.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="News"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 15 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>letters</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><table width="75%"><tr><td>
+
+<center><img src="../shared/images/letters1.gif" width=400 height=185 border=0 alt=""></center>
+
+<h1>Will not get fooled again</h1>
+
+<p class="first">WE HAD a wide range of reactions to our April Fool program in the April edition. We were surprised by the irritation it caused some of our readers, since we assumed that most people have a sense of humour.</p>
+
+<p>To those who say they feel cheated we can only say that <i>Sinclair User</i> contains much more than one small program to interest users of Sinclair machines.</p>
+
+<hr noshade width="50%">
+
+<p class="first">ON APRIL 1, I programmed the Machine Code Converter program into my ZX-81. I was about to load my game from my tape recorder on to my computer to be converted into machine code when I typed in the name of my program, pressed New Line and I was an April Fool. I thought that the machine code converter program was too good to be true and I was going to see how it worked when I had used it but 1 was so excited I just got down to work typing-in the program and had a complete surprise.</p>
+
+<p>I must congratulate you; this was the best April Fool trick anybody ever played on me.</p>
+
+<p class="first"><b>Robert Courtney</b></p>
+
+<p class="first">I WAS impressed when I saw the machine code converter. I thought that at last a sensible program had been published instead of the continual games programs; but I was to be proved wrong. If you think that this April Fool was a clever trick, I feel sorry for you.</p>
+
+<p class="first"><b>S Mercer</b></p>
+
+<p class="first">CONGRATULATIONS. I fell for it, hook line and sinker. I even read the address 1 April Way and it did not register. One good thing is that it is the first time I have seen the inverse screen, so I have ordered a video inverter from one of your advertisers.</p>
+
+<p class="first"><b>E Solari</b></p>
+
+<p class="first">I AM annoyed with Machine Code Converter as I was going to buy a program to do this when I saw that program, so I bought the magazine and thought I could spend the money I saved. I did so and now I have to save again.</p>
+
+<p class="first"><b>John Clark (aged 11)</b></p>
+
+<h2>Divide and confuse</h2>
+
+<p class="first">THIS IS to let you, John Gilbert and anyone who read <a href="../013/letters.htm#gordon">my previous letter</a> (April) know that I am not crazy. The improvement which I suggested to John Gilbert's program was, unhappily, misprinted. It should read:</p>
+
+<pre>GO SUB 1000+(VAL M*1000)</pre>
+
+<p class="first">The idea can be extended to any number of subroutines whose line numbers are related directly to menu inputs. The version printed substituted '&#247;' for '+' which made nonsense of the whole thing and I apologise to anyone whose machine is still searching for a sub-routine numbered 0.3333333333333.</p>
+
+<p class="first"><b>M Gordon</b></p>
+
+<h2>Heading for good sound</h2>
+
+<p class="first">I THOUGHT your readers would be interested that at the back of the Spectrum is an ear socket into which one can plug in a pair of personal headphones. The sound is greatly improved.</p>
+
+<p class="first"><b>Roy Graham (aged 12)</b></p>
+
+<a name="johnson"></a>
+<h2>Illustrations waste space</h2>
+
+<img src="letters.gif" width=350 height=251 hspace=10 vspace=10 border=0 align="right" alt="Cartoon">
+<p class="first">WITH A ZX-81 and a Spectrum I am naturally a regular reader of your excellent magazine. Normally I do not mind, and accept as a challenge and a useful learning exercise the mistakes and misprints we find in many programs.</p>
+
+<p>I feel sure, however, that most readers would appreciate more attention being given to program accuracy and less to the superfluous Yankee-type illustrations. For example, the neat little program from Alistair Mullins in your April issue does not work as printed and the useless illustration takes up more than 50 percent of the page area. Yet in your editorial you say that &quot;important items have still had to be omitted or postponed because of lack of space.&quot;</p>
+
+<p>On the other hand, in the same issue there is the clever, albeit light-hearted program compiled by John Sidney which works perfectly without the support of a space-wasting stupid illustration.</p>
+
+<p>Would you please credit your readers with a little more intelligence than the need for these wasteful comic-strip type drawings and consider using the space they occupy with something more stimulating to a computer user's mind?</p>
+
+<p class="first"><b>J Johnson</b></p>
+
+<p class="first"><i>The reason we include illustrations is that we believe computer users to be human beings who find it easier to assimilate information if it is presented in a pleasant format. If space were saved by removing the drawings it would mean complete pages of listings which would be almost impossible to enter. The comment about the Muncher program on page 65 is incorrect. It has been checked again and found to work if the instructions are followed.</i></p>
+
+<h2>Long listings made easier</h2>
+
+<p class="first">YOU MAY have noticed that when typing-in a long listing on the ZX-81, three or four listings sometimes have to be made by the ZX-81 to get the current line on the screen. That can be tiresome but I think I have discovered a cure.</p>
+
+<p>When the screen starts to get filled by the listing, you merely POKE the number of the bottom line into the system variable S-TOP. So if 'B' is the number of the bottom line, you would POKE 16419,B-256-INT(B/256) and POKE 16420, INT(B/256). That then makes the bottom line the top line in any automatic listing, e.g., when 'NEWLINE' is pressed, leaving plenty of room for further lines without re-listing.</p>
+
+<p>I think your magazine is great and get it every month but I still feel you could cater for ZX-81 users a little more.</p>
+
+<p class="first"><b>D Sargent (aged 13)</b></p>
+
+<a name="reavell"></a>
+<h2>Horace gets a good meal</h2>
+
+<p class="first">YOU SAY in <i>Sinclair User</i> that the testers of Hungry Horace cannot get out of the third maze. I have found an easy way of getting points which works only on the third and fourth mazes; it works by hitting the bell slightly and then quickly getting back. I have made more than 100,000 points and get in and out of the third and fourth maze without much trouble.</p>
+
+<p class="first"><b>Ben Reavell (aged 9)</b></p>
+
+<h2>Customised beeping</h2>
+
+<p class="first">COLIN KOSTYRAKA - <a href="../013/letters.htm#kostyrka">letters, April 1983</a> - may be interested to learn that Uncle Clive made the keyboard beep a system variable so that it could be altered to suit individual taste and application. I dislike a protracted beep because I find it irritating and because it slows program entry. On the other hand POKE 23609, 50 provides adequate keyboard beep without loss of speed.</p>
+
+<p class="first"><b>Simon Hothersall</b></p>
+
+<h2>Program fade-out</h2>
+
+<p class="first">HOW ABOUT treating your dot matrix printer to a new ribbon before producing copy for printing? Even the ZX-81 syntax checker sometimes cannot tell the difference between &quot;equals&quot;(=) and &quot;minus&quot; (-).</p>
+
+<p class="first"><b>Edward Heron</b></p>
+
+<p class="first">I AM writing about a query and that is this ~ what is it? How do you print it?</p>
+
+<p class="first"><b>Richard Kellett</b></p>
+
+<p class="first"><i>The little sign is the way the cursor key is represented by our new printer and should be ignored. We are attempting to ensure that it does not appear again in listings.</i></p>
+
+<a name="laycock"></a>
+<h2>Spectrums still annoy</h2>
+
+<p class="first">MANY PEOPLE are saying that Sinclair's troubles are all in the past. I beg to differ. Since mid-December I have had four Spectrums and I am praying that this one does not go wrong; if it does, I shall personally want to thump Uncle C.</p>
+
+<p>I think a company such as Sinclair Research should be able to produce a computer which works and does not break down when it is switched on, as did my third computer.</p>
+
+<p>I respect that my predicament is probably one-in-a-million but I feel very annoyed that it happens. Why does not Clive spend some of that &#163;130 million of personal wealth on researching why the computers do not work and why the colour does not work on some colour televisions, such as Toshiba, on which I spent more than &#163;250.</p>
+
+<p class="first"><b>T Laycock</b></p>
+
+<h2>Slow pain in the neck</h2>
+
+<p class="first">FOR ZX-81 users without an add-on keyboard, try this to avoid computer-neck, a painful condition caused by looking at the TV each time you press a key to make sure entry has been registered.</p>
+
+<p>Before entering your program, put the computer into FAST mode. That causes the video display to shake when a key is depressed and, without moving your head, the shake can be seen with the corner of your eye. When entry has been completed, switch, if you wish, to SLOW mode.</p>
+
+<p>I use this method and find it very effective.</p>
+
+<p class="first"><b>Ivor Brooks</b></p>
+
+<h2>Vocabulary growth</h2>
+
+<p class="first">MY FIVE-YEAR-OLD, computer-crazy son made the following contribution to computer language - &quot;computiful&quot;, meaning someone completely at one with his computer.</p>
+
+<p class="first"><b>D B Forrest</b></p>
+
+<h2>Pontoon's colour conversion</h2>
+
+<p class="first">HERE IS an idea which will enable your readers with a 16K Spectrum to make use of the excellent game of Pontoon in the January edition. Start by typing-in the program from line 2260 to 2400, but change line 2400 to read - 2400-LOAD, then save that on tape by - SAVE &quot;GRAPHICS&quot; line 2260, stop the tape, and leave it there. Clear the computer and type-in the main program, lines 10 to 2250. Add two lines to this, lines 2260 and 2270, as follows:</p>
+
+<pre>2260 RETURN
+2270 RUN</pre>
+
+<p class="first">Then save this on the tape immediately after the graphics by SAVE &quot;PONTOON&quot; line 2270.</p>
+
+<p>The whole program can then be run on the 16K Spectrum by LOAD and will auto-run. This will enable readers with a 16K Spectrum to make use of this superb 48K game.</p>
+
+<p class="first"><b>K Kiteley</b></p>
+
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="news.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="News"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 15 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<h6 align="center">Sinclair User<br>June 1983</h6>
+
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 12 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, March 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="americn.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="American Market"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 12 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson3.gif" width=275 height=302 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<p class="first"><b><font size="+1">Andrew Hewson considers a number of problems involving the use of graphics on both the ZX-81 and the Spectrum</font></b></p>
+
+<h1>Getting larger characters by using a Basic program</h1>
+
+<p class="first">CAN ZX-81 characters be printed using POKES to make them bigger and easier to read? That is what John Kerr asks.</p>
+
+<p>The answer is that there is a method, although it is not necessary to use POKE. The Basic program in table one PRINTs a character at eight times its normal size. The program is rather slow but it serves to illustrate the technique.</p>
+
+<p>Both the ZX-81 and Spectrum construct characters by inking-in relevant squares in an 8x8 grid. No squares are inked-in for the space character, for example, and a star-shaped group of squares is inked-in to form the asterisk. An 8x8 grid is used because the form of each horizontal strip of squares can be stored using the eight bits which form a byte by inking-in a square if the corresponding bit is set to one. Thus eight bytes are used to store the form of each character. The ZX-81 character table is held in the ROM at locations 7680 onwards.</p>
+
+<p>The program works by setting the variable A to the address of the first byte of the character selected by the user. Lines 150 to 270 are the beginning and end of a loop which cycles through each of the eight bytes in turn. The contents of the current byte are loaded into variable B and then compared to 2**7,2**6,2**5 and the like in turn.</p>
+
+<p>That is equivalent to testing each of the eight bits. If B is greater than or equal to 2**I, the corresponding bit is set and so the program PRINTS a character. If B is less than 2**I, a space is PRINTed instead. Thus an image of the character is constructed which occupies not one but 8x8 PRINT locations.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre>100 PRINT &quot;ENTER A CHARACTER&quot;
+110 INPUT Z$
+120 CLS
+130 LET A=7680+8*CODE Z$
+140 PRINT Z$;&quot;IS HELD AT &quot;;A;&quot; TO &quot;;A+7
+150 FOR J=A TO A+7
+160 LET B=PEEK J
+170 PRINT B,
+180 FOR I=7 TO 0 STEP -1
+190 LET E=2**I
+200 IF B&lt;E THEN GO TO 240
+210 PRINT Z$
+220 LET B=B-E
+230 GO TO 250
+240 PRINT CHR$ 0;
+250 NEXT I
+260 PRINT
+270 NEXT J
+
+<b>Table 1. ZX-81 program to PRINT a character at
+eight times its normal size.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre><b>Hex code       Assembler Code       Comment</b>
+21 00 1E       LD HL,7680           Address of table
+                                    to HL
+ED 4B 82 40    LD BC,               8*character
+               (16514)              code to BC
+09             ADD HL,BC
+EB             EX HL,DE
+2A 0C 40       LD HL,               Address of
+               (D-FILE)             display to HL
+23             INC HL
+06 08          LD B,8               Set byte counter
+C5             PUSH BC              and save it
+06 08          LD B,8               Set bit counter
+1A             LD A,(DE)            Byte to A
+17             RLA                  Left bit to carry
+30 06          JRNC,+6              Bit set?
+F5             PUSH AF              Yes, save A
+3A 84 40       LD A,(16516)         Print character
+77             LD (HL),A
+F1             POP AF               Restore A
+23             INC HL
+10 F4          DJNZ,-12             Finished byte?
+C1             POP BC               Yes
+10 01          DJNZ+1               Finished?
+C9             RET                  Yes
+C5             PUSH BC              No
+01 19 00       LD BC,25             Move print
+09             ADD HL,BC            position to
+13             INC DE               next line
+18 E5          JR-27                and take
+                                    next byte
+
+<b>Table 2. ZX-81 routine to PRINT a character at eight
+times its normal size.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The Basic program is rather slow to execute and so I have written the machine code routine listed in table two to do a similar task on the 16K ZX-81. The routine can be loaded using a simple hex loader, for example:</p>
+
+<pre>10 REM AT LEAST 46 CHARACTERS
+20 FOR I=16517 TO 16552
+30 INPUT Z$
+40 IF Z$=&quot;S&quot; THEN STOP
+50 PRINT Z$;&quot; &quot;;
+60 POKE I,16*CODE Z$+CODE Z$(2)-476
+70 NEXT I</pre>
+
+<p>The REM statement must contain at least 46 characters because the machine code routine is 43 bytes long and it uses another three bytes to hold variables. To load the routine run the hex loader and enter each pair of hex character codes in turn.</p>
+
+<p>To use the routine, retain line 10 of the hex loader and enter the following:</p>
+
+<pre> 20 PRINT &quot;ENTER A CHARACTER&quot;
+ 30 INPUT Z$
+ 40 CLS
+ 50 LET A=8*CODE Z$
+ 60 POKE 16514, A-256*INT(A/256)
+ 70 POKE 16515, INT(A/256)
+ 80 POKE 16516, CODE Z$
+ 90 RAND USR 16517
+100 PAUSE 32768
+110 CLS
+120 GO TO 20</pre>
+
+<p>Paul Cooksley has a Spectrum. He writes: <b>When I enter POKE 23607,50 the whole character set becomes spotty squares. Why?</b></p>
+
+<p>The chapter on the system variables of ZX Spectrum Basic Programming shows that location 23607 contains one fewer than the high byte of the address of the Spectrum character table. The character table is held at 15616 and so locations 23606 and 23607 normally contain 0 and 60 respectively because</p>
+
+<pre>0+256*(60+1)=15616</pre>
+
+<p>Thus, noting that the first true character in the Spectrum character set has CODE 32 not CODE 0 as on the ZX-81, the ZX-81 program in table one can be adapted to run on the Spectrum by substituting</p>
+
+<pre>130 LET A=PEEK 23606+256*PEEK 23607+8*CODE Z$</pre>
+
+<p>It is also necessary to alter lines 190 and 240 as follows:</p>
+
+<pre>190 LET E=2&#8593;I
+240 PRINT CHR$ 32;</pre>
+
+<p>POKEing a new value into 23607 causes the Spectrum to look in a new place for the eight bytes which determine each character leading to the spotty squares effect which Cooksley noticed. The same effect can be generated on the ZX-81 because the high byte of the address of the character table is held in the I register. A short machine code routine can be used to alter the value in I as in this program sent by Roger Milton:</p>
+
+<pre> 1 REM YO GO SUB? TAN
+10 POKE 16517,71
+20 INPUT A
+30 POKE 16515,A
+40 RAND USR 16514
+50 IF A&lt;&gt;30 GO TO 20</pre>
+
+<p>The GO SUB and TAN in line one must be entered as tokens. To achieve that enter the line in reverse order, i.e.</p>
+
+<pre>TAN b GO SUB?bb 1 REM YO</pre>
+
+<p class="first">where &quot;b&quot; represents back-space. The program transfers the value entered by the user to the I register and the spotty squares effect results. If the correct value is entered (30) the program halts.</p>
+
+<p>Unfortunately it is not possible to use values greater than 63 which would point into the RAM area because the ZX-81 hardware misinterprets the resulting address. The only effect is to generate black or white squares.</p>
+
+<p>One of the many extra features of the Spectrum is the facility to VERIFY tape copies of programs or data. Is it possible to verify the screen display? asks Michael Moses.</p>
+
+<p>VERIFYing the display should be straightforward using the commands</p>
+
+<pre>VERIFY &quot;&quot; SCREEN$</pre>
+
+<p class="first">or as an equivalent</p>
+
+<pre>VERIFY &quot;&quot; CODE 16384,6192</pre>
+
+<p>Unfortunately the ROM routine which searches the cassette PRINTs the name of the cassette file to be VERIFYed on the screen, thereby corrupting the Spectrum copy of the display.</p>
+
+<p>There are two solutions. The first is to copy the display to an area above RAMTOP and VERIFY the copy of the display. That technique has the added advantage that the display can be restored from above RAMTOP if required.</p>
+
+<p>The routine in table three copies the display above RAMTOP, SAVEs and VERIFYs the copy and restores the display on completion. It is written to run on the 48K machine. To run it on the 16K Spectrum, change 229 in each of the DATA statements to 101 and change 58624 in lines 290 and 310 to 25856. Space must be reserved above RAMTOP before the display is generated by entering</p>
+
+<pre>CLEAR 58624</pre>
+
+<p class="first">on the 48K machine or</p>
+
+<pre>CLEAR 25856</pre>
+
+<p class="first">on the 16K machine.</p>
+
+<p>The routine works by loading two short machine code routines into the printer buffer from the DATA statements. The two routines copy and restore the display respectively by setting the HL register pair to the address to be copied from; the DE register pair to the address to be copied to; and the BC register pair to the number of bytes to be copied in this case 6912. The LDIR instruction then moves each byte in turn.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre>9800 RESTORE
+9810 DATA 33,0,64,17,0,229,1,0,27,237,176,201
+9820 DATA 33,0,229,17,0,64,1,0,27,237,176,201
+9830 FOR T=23296 to 23319
+9840 READ a
+9850 POKE i,a
+9860 NEXT i
+9870 RANDOMIZE USR 23296
+9880 CLS
+9890 PRINT &quot;Save copy on tape&quot;
+9900 SAVE &quot;Display&quot; CODE 58624,6912
+9910 PRINT &quot;Rewind tape for verification&quot;
+9920 VERIFY &quot;Display&quot; CODE 58624
+9930 RANDOMIZE USR 23308
+
+<b>Table 3. A routine to SAVE and VERIFY the display
+by copying it above RAMTOP.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The CLS command in line 9880 is redundant. Its only purpose is to demonstrate that the routines are working correctly by clearing the display between copying and restoring it. The copy which has been SAVEd on tape can be LOADed in the usual way by entering</p>
+
+<pre>LOAD &quot;&quot; SCREENS</pre>
+
+<p>The disadvantage of the routine is that a great deal of space - almost 7K - is used to store the display above RAMTOP, which leaves very little space on the 16K Spectrum for anything else. Table four presents an alternative which uses much less space because it stores only the parts of the display which are corrupted by the Spectrum cassette search routine. A special routine must also be used to LOAD the cassette copy.</p>
+
+<p>The program works by copying the first 17 characters on line one of the display into the printer buffer lines 9500 to 9560 - followed by the attributes of the 17 - characters lines 9570 to 9590. It then PRINTs on the display the message which the Spectrum cassette search routine will PRINT when it locates the cassette copy and SAVEs the display file, the attributes and the beginning of the printer buffer which can be used to restore the display to the correct condition. The routine then resets the PRINT position and VERIFYs the cassette copy - lines 9620 to 9630. Finally, lines 9640 to 9730 copy the contents of the printer buffer back to the display.</p>
+
+<p>The VERIFY routine can also be used to LOAD the display by changing line 9630 to</p>
+
+<pre>9630 LOAD &quot;&quot; CODE 16384</pre>
+
+<p>It is important to note that the message PRINTed by line 9600 should be 17 characters long. Thus if the cassette copy is to be called &quot;Display&quot;, three trailing blanks should be added after the word Display.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre>9500 LET k=0
+9510 FOR i=16416 TO 18208 STEP 256
+9520 FOR j=0 TO 16
+9530 POKE 23296+k, PEEK (i+j)
+9540 LET k=k+1
+9550 NEXT j
+9560 NEXT i
+9570 FOR i=0 TO 16
+9580 POKE 23296+i+k, PEEK (22560+i)
+9590 NEXT i
+9600 PRINT AT 1,0;&quot;Bytes:Display&quot;
+9610 SAVE &quot;Display&quot; CODE 16384,7065
+9620 PRINT AT 0,0;
+9630 VERIFY &quot;&quot; CODE 16384
+9640 LET k=0
+9650 FOR i=16414 TO 18208 STEP 256
+9660 FOR j=0 TO 16
+9670 POKE i+j, PEEK (23296+k)
+9680 LET k=k+1
+9690 NEXT j
+9700 NEXT i
+9710 FOR i=0 TO 16
+9720 POKE 22560 +i,PEEK (23296+i+k)
+9730 NEXT i
+
+<b>Table 4. A routine to SAVE and VERIFY the display
+using the printer buffer.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="americn.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="American Market"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 12 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>March 1983</h6>
+
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 20 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX-81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, November 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="microdv.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Microdrive"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 20 Contents"></a>
+<a href="books.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Books"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson4.gif" width=275 height=290 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1>Returning to basics helps solve problems</h1>
+
+<p class="first"><b><font size="+1">Andrew Hewson tackles some misconceptions</font></b></p>
+
+<p class="first">READERS will be aware that I use letters I receive as the basis for an article on a given topic rather than restricting myself to direct answers to each question posed. I use the approach principally to make the column interesting to all readers rather than the few who may share a particular problem with a particular correspondent. As a result, more than a single sentence from each letter is rarely published.</p>
+
+<p>Recently I have become aware from reading a number of letters again that the questions posed are often based on a misconception of one kind or another, even to the extent that the fundamental question does not exist. It is difficult to answer such letters without publishing them more or less in full. To illustrate the point, consider the following from Larry Simpson. He writes:</p>
+
+<p><b>I gained the impression from reading about machine code that it was an improvement on Basic partly because hex numbers were used which were more closely related to the binary system of the computer. If so, why do you recommend the use of a hex loader program whose only purpose appears to be to convert hex code back into decimal and poke it into memory?</b></p>
+
+<p>In attempting to answer the question I feel like the man who, when asked the directions to a particular town, replied &quot;If I were going there I wouldn't start from here&quot;. In the same way I cannot tackle Simpson's question without backtracking and correcting some of his ideas.</p>
+
+<p>First, it is not correct to say that machine code is an improvement on Basic. I would prefer to say that some tasks can be undertaken by programs written in machine code which could not be undertaken by a Basic program or, if they could, they would be too slow to be satisfactory. Thus it is necessary sometimes to resort to machine language to complete a specific programming task. Writing machine code programs, however, is a skilful and time-consuming process; nobody in his right mind would choose to write a routine in machine language if a Basic routine could do the same job at an acceptable speed.</p>
+
+<p>Second, the difference between Basic and machine language has little to do with the difference between hexadecimal and decimal. In Sinclair computers a Basic program is interpreted each and every time it is executed. In other words, each program line is analysed by the routines in ROM to work out the exact form of each command and then the command is executed.</p>
+
+<p>A machine language program, in contrast, is not analysed at all by the ROM routines, although the program may make use of ROM routines for its own purposes; rather the form of the machine language is such that it drives the microprocessor at the heart of the computer directly.</p>
+
+<p>It is as if the analytical capabilities of the ROM routines which form the Basic interpreter are a very crude imitation of those of the human brain. When a soldier on parade is given the command Forward March his brain interprets the command and despatches a complex sequence of electrical impulses to the muscles of his arms and legs which cause them to contract and relax in such a way as to drive his body forward in the required fashion. The electrical impulses form the &quot;machine code routines&quot; which drive his muscles.</p>
+
+<p>In principle it would be possible to mimic those impulses artificially and, given sufficient surgical skill, to direct them into the soldier's spinal column so that he could be made to walk involuntarily without his brain performing its usual interpretive function.</p>
+
+<p>Finally, I do not recommend the routine use of the simple loader programs which I have included in the column from time to time. Their purpose is to enable all readers to load and try the machine code routines which also appear in the column. Simpson is correct in one respect - their only function is to POKE numbers, in decimal or hexadecimal as appropriate, into locations in memory, because it is those numbers which cause the microprocessor to perform the required task.</p>
+
+<p><b>Where can I find the addresses of the Spectrum ROM routines and can you explain how to use them?</b> asks Michael Dobson. The most comprehensive sources of information are the books by Dr Ian Logan, <i>The Complete Spectrum ROM Disassembly</i> and <i>Sinclair ZX-81 ROM Disassembly</i>, parts A and B. The books list the entire contents of the appropriate ROM with a certain amount of information on the action of each section of code.</p>
+
+<p>They are unsuitable for a beginner because a great deal of material concerning the operation of the Z-80 processor is taken for granted. Hence I would suggest that the average reader starts with one of the many introductory books on assembly language programming which usually contain information on some of the routines.</p>
+
+<p>Jean-Hugues Belpois requests information on such a routine. He writes: <b>Can you publish a routine which will print the amount of free memory remaining for use on a Spectrum?</b></p>
+
+<p>It is not necessary for me to offer such a routine for the Spectrum because a similar one already exists in ROM at address 7962. The routine returns, via the BC register pair, the amount of ROM and RAM already in use on the 48K machine - or the amount plus 32768 on the 16K machine. Hence to use the routine on both the 16K and the 48K machine enter:</p>
+
+<pre>PRINT 65536 - USR 7962</pre>
+
+<p>The ZX-81 ROM does not contain the equivalent routine, so I have shown an alternative in table one. The routine can be loaded with the inevitable decimal loader listed in table two. To call the routine enter:</p>
+
+<pre>PRINT USR 16514</pre>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>
+<b>Decimal   Assembler     Comment</b>  
+             Code
+42 101 92    LD HL,        Load HL with the
+             (STKEND)      address of the
+                           beginning of free
+                           memory
+235          EX DE,HL      Transfer the value to
+                           DE
+38 0         LD HL,0       Clear HL
+57           ADD           Add the address of
+             HL,SP         the end of free
+                           memory into HL
+237 82       SBC           Subtract DE from
+             HL,DE         HL
+68           LD B,H        Transfer the result to
+77           LD C,L        the BC register pair
+201          RET           Return to Basic
+
+<b>Table 1. A ZX-81 program to calculate the current amount of
+remaining free memory.</b>
+
+10 REM Space for machine code routine - at least 65 characters
+20 FOR I=16514 TO 16614
+30 INPUT A
+40 IF A&lt;0 OR A&gt;255 THEN STOP
+50 POKE I,A
+60 PRINT I,A
+70 NEXT I
+
+<b>Table 2. A decimal loader program for the ZX-81. The REM statement
+at line 10 is essential. The contents of the REM statements will have
+changed after the program is executed.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>Steven Neal asks an interesting question. He writes: <b>How can specific characters be removed from the screen on the ZX-81 while leaving the bulk of the display intact?</b> The solution to the problem is straightforward. In essence, it is necessary to scan through the display file, testing each location to see if it contains the code of the character to be deleted. If it does, then POKE zero ix, the code for a blank - into the location. The display file lies in the area in memory between the addresses pointed to by the DFILE and VARS systems variables. Those two variables are held at 16396 and 16400 respectively. A suitable Basic program is listed in table three.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>10 LET I=PEEK 16396+256*PEEK 16397
+20 LET J=PEEK 16400+256*PEEK 16401
+30 PRINT &quot;ENTER THE CHARACTER TO BE DELETED&quot;
+40 INPUT Z$
+50 LET Z=CODE Z$
+60 FOR K=I TO J-1
+70 IF PEEK K=Z THEN POKE K,0
+80 NEXT K
+
+<b>Table 3. A ZX-81 routine to delete selectively
+a character entered by the user from the ZX-81
+display.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>That type of routine can be used to tidy the ZX-81 display when successive calculations are being performed. In those situations an annoying problem can arise when the PRINT AT command is used to overwrite the result of a previous calculation with a new value, because the command does not necessarily cover the result completely. For example, if 3.333333 is overwritten by 4.5 the display will show 4.533333, which is very misleading.</p>
+
+<p>Clearly a routine which deletes all numbers from the display selectively is required. The routine must also be capable of detecting and deleting a decimal point embedded in a number and the presence of a number in scientific notation, e.g., 130,000,000 which is PRINTed as 1.3 E 8. The machine code routine listed in table four performs all those functions.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre><b>Decimal        Assembler        Comment</b>
+237 75 12      LD               Load BC with
+64             BC,(16396)       address of
+                                beginning of
+                                display file
+42 16 40       LD               Load HL with
+               HL,(16400)       address of end of
+                                display file
+167            AND A
+237 66         SBC HL,BC        Calculate length of
+                                display file
+68             LD B,H           Transfer result
+77             LD C,L           to BC register pair
+42 12 64       LD               Load HL with
+               HL,(16396)       address of
+                                beginning of
+                                display file
+126            LD A,(HL)        Beginning of main
+                                loop - copy byte
+                                pointed to by HL
+                                to A
+254 38         CP 38            Jump if greater
+                                than or equal to 38
+                                (one
+242 184 64     JP P,16568       greater than the
+                                code for 9)
+254 28         CP 28            Jump if less than
+                                28
+250 184 64     JP M,16568       (the code for 0)
+54 0           LD (HL),0        Byte contains a
+                                digit hence overwrite
+35             INC HL           Increment HL
+126            LD A,(HL)        Copy byte to A
+                                register
+254 42         CP 42            Jump if not equal
+                                to 42
+32 2           JR NZ,2          (the code for E)
+54 0           LD (HL),0        Byte contains E
+                                hence overwrite
+43             DEC HL           Decrement HL
+43             DEC HL           Decrement HL
+126            LD A,(HL)        Copy byte to HL
+254 21         CP 21            Jump if equal to 21
+40 8           JR Z,8           (the code for+)
+254 22         CP 22            Jump if equal to 22
+40 4           JR Z,4           (the code for -)
+254 27         CP 27            Jump if not equal
+                                to 27
+32 2           JR NZ,2          (the code for.)
+54 0           LD (HL),0        Byte contains +,-
+                                or. hence
+                                overwrite
+35             INC HL           Increment HL
+35             INC HL           Increment HL
+11             DEC BC           Decrement length
+                                of display counter
+62 0           LD A,0           If remaining length
+184            CP B             of display
+32 210         JR NZ,-46        is not zero
+185            CP C             then jump to
+32 207         JR NZ,-49        beginning of main
+                                loop
+201            RET              Return to Basic
+
+<b>Table 4. A machine code program to delete all numbers
+appearing on the ZX-81 display. The program must be loaded
+into a REM statement forming the first line of a Basic program.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>I wrote a machine code routine to undertake the task because a Basic program would have been too slow to be satisfactory. The routine illustrates the speed of machine code; when it is used digits on the screen disappear quickly.</p>
+
+<p>Unfortunately it is not possible to write an equivalent routine for the Spectrum, because the display is handled in a different fashion.</p>
+
+<p>The Basic program in table five illustrates the technique. The first loop PRINTS the letters in blue INK on white PAPER and the numbers in black INK on white PAPER. The attribute value of the black/white combination is 57. Hence the second loop searches the attribute file, locating the bytes which contain 57. When such a location is found its contents are changed to 63.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>100 FOR I=1 TO 20
+110 PRINT INK I; PAPER 7 ;&quot;ABCDEF&quot;;
+120 PRINT INK 0; PAPER 7; 1234.56789
+130 NEXT I
+140 PAUSE 9999
+200 FOR I=22528 TO 23551
+210 IF PEEK I=56 THEN POKE 1,63
+220 NEXT I
+
+<b>Table 5. A Spectrum program which illustrates
+the technique for clearing digits selectively from
+the display by manipulating the attributes file.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>Finally, an apology. I write the column using a word processor package on a microcomputer. Unfortunately the printing head of the printer I use does not have a greater than or a less than sign, so I add those characters by hand before the manuscript is despatched to the editor. Unfortunately I forgot to do so for the column which appeared in the August issue. Hence lines 50 and 60 of the Basic program in table three of that issue should in each case contain a greater than sign immediately before the 57.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="microdv.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Microdrive"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 20 Contents"></a>
+<a href="books.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Books"></a></p>
+
+<h6 align="center">Sinclair User<br>November 1983</h6>
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 48 - Currah &#956;Source</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Currah &#956;Source review from Sinclair User, March 1986">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="qlbooks.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="QL Books"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 48 Contents"></a>
+<a href="micon.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Micon Midi"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Hardware World</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><h1 class="greyback">The Forth Source</h1></center>
+
+<p class="first">THE BEST things come in small packages. That describes the recently released Currah &#956;Source from Quadhouse. In a self-contained ROM cartridge it has a full-function-two-pass macro assembler, Forth and a debugger, all of which can interact with Basic. It is also compatible with Interface 1.</p>
+
+<img src="usource.jpg" width=303 height=250 hspace=10 vspace=10 border=0 align="right" alt="&#956;Source cartridge">
+
+<p>Currah, as regular readers of <i>Sinclair User</i> will remember, also made the &#956;Speech - a speech synthesiser - but went down last year. Quadhouse has bought the rights to the &#956;Source and is now producing it.</p>
+
+<p>Both the assembler and Forth work by storing their information in Basic lines, in the form of a REM statement followed by either '!' to denote an assembler line or '#' for a Forth line. Multistatement assembler lines are possible.</p>
+
+<p>This is its main limitation as the editing facilities of Spectrum Basic are fairly primitive. Despite that, the range of features and the ease of use more than compensate.</p>
+
+<h2><i>The Assembler</i></h2>
+
+<p class="first">Using Basic in this way means that you do not have the normal renumber, block move, and block delete commands which you find in assemblers with their own editors, such as Devpac, but as a bonus you can use Basic variables within the assembler. You could have a line such as:</p>
+
+<pre>REM ! LD HL,base</pre>
+
+<p class="first">where base has previously been defined.</p>
+
+<p>In theory, there is nothing to stop you re-assembling and running code a number of times within the same program using different values.</p>
+
+<p>Operands can be calculated within the assembler, mixing Basic variables, trigometric functions or plain numbers in decimal, hex and binary. Basic strings can also be imported as required.</p>
+
+<img src="../shared/images/suclassg.gif" width=200 height=82 hspace=10 vspace=10 border=0 align="right" alt="Sinclair User Classic">
+
+<p>The best feature of the assembler is the ability to use macros, the assembler equivalent of a Basic procedure. Parameters are passed to the macro and on assembly the value of the parameter at the time is used.</p>
+
+<p>Unlike a subroutine, recursion is allowed - the macro calling itself - up to any level. Conditional assembly is also catered for.</p>
+
+<p>Assembly can either be direct to memory or, if desired, to a channel. That channel can be to a microdrive file, RS232 or Net if Interface 1 is attached. You can generate listings in a number of formats, to a choice of channels.</p>
+
+<p>If the &#956;Source only contained this assembler it would be worth the money, however you also get Forth.</p>
+
+<center><table border="0" cellpadding="10">
+<tr><td bgcolor="#CCCCCC"><pre><b>Figure 1. Reserved Variables</b>
+
+Assemble
+Forth
+Loader
+Debug
+Forsv1
+Forsv2</pre></td></tr></table></center>
+
+<h2><i>Forth</i></h2>
+
+<p class="first">The &#956;Source Forth is loosely based on Forth-79 and is a 16-bit integer only. Over 70 words and six control operators are predefined and the user dictionary can be linked to those or another user-defined dictionary.</p>
+
+<p>Great variation is allowed in the way that Forth can be used, either in a single line or as a series of routines, in a similar manner to the BBC assembler. When invoked, each valid Forth line is interpreted until a non-valid line is encountered. In that way any number of separate blocks of lines can be used.</p>
+
+<p>Like the assembler, Basic variables can be used within Forth, and that allows for an easy mix of the two languages. The only things it cannot handle are multi-dimensional arrays.</p>
+
+<p>There is not enough space here to list all the predefined words and features. They are reasonably extensive, but not up to the Melbourne House-Abersoft-standard. Most omissions, however, can be catered for by dropping back into Basic, and then back to Forth.</p>
+
+<p>This Forth is for the serious enthusiast; &#956;Source has to be plugged in to run the programs and so is only useful for people who write programs for their own use. Given that, many people will find it invaluable.</p>
+
+<center><table border="0" cellpadding="10"><tr><td bgcolor="#CCCCCC">
+<pre><b>Figure 2. Assembler Pseudo-Ops</b>
+
+ORG    Origin
+LIST   To channel n
+OBJ    Object code to channel n
+OPT    Various options
+DEFW   DEFine Ward
+DEFB   DEFine Byte
+DEFM   DEFine Message
+DEFV   DEFine allophone
+DEFS   Reserve Space
+EQU    EQUate a label
+MACRO  Start of Macro definition
+ENDM   End of Macro definition
+ASIF   Start if conditional assembly
+END    END of conditional assembly</pre>
+</td></tr></table></center>
+
+<h2><i>Debugger</i></h2>
+
+<p class="first">In addition to all the above you also get a debugger. This allows you to step through any part of the Spectrum ROM or RAM and display and/or alter it. There is also a single step monitor.</p>
+
+<p>The monitor has the normal facilities to set breakpoints, jump into routines, plus the ability to single step subroutines or alter the 'front panel' display to show just those registers/memory addresses you require.</p>
+
+<p>Given the limitations imposed by basing the assembler and Forth in Basic lines, &#956;Source works very well. The advantage of having these programs in ROM can not be overstated.</p>
+
+<p>The assembler on its own makes the &#956;Source good value, with Forth and the debugger thrown in it is excellent value. While &#956;Source is not intended for the computer novice, for the enthusiast it is a must. It costs &#163;19.95.</p>
+
+<p align="right" class="first"><i>John Lambert</i></p>
+
+<p class="first"><b>Quadhouse Computers, Cleveland.</b></p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="qlbooks.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="QL Books"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 48 Contents"></a>
+<a href="micon.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Micon Midi"></a></p>
+
+<h6 align="center">Sinclair User<br>March 1986</h6>
+
+</body>
+</html>

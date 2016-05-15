@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 6 - Spectrum User - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Spectrum User, September 1982">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="specusr.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Spectrum User"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 6 Contents"></a>
+<a href="frstimp.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="First Impressions"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1>Transferring programs</h1>
+
+<p class="first"><b><font size="+1">Andrew Hewson answers the first batch of your Spectrum problems</font></b></p>
+
+<p class="first">I HAVE received a number of letters about the ZX Spectrum and the editor has asked me to devote a special column to them. A question which several people have posed, including Paul Tuck, is: <b>Can I use ZX-80/1 programs on my Spectrum?</b></p>
+
+<p>There is no straightforward answer, because of a number of important differences between the three machines. Broadly speaking, a ZX-81 program which does not use PEEK or POKE and contains its machine code routines will run on the Spectrum. Similarly, a Spectrum program which does not use PEEK or POKE, machine code routines, colour, graphics and the other new facilities will run on the ZX-81. Note, however, that cassettes SAVEd on one machine will not load on the others.</p>
+
+<p>Converting a ZX-80 program can be difficult, because it uses integer arithmetic, whereas the ZX-81 and Spectrum use real arithmetic.</p>
+
+<p><b>Can you explain how the display file works? I have tried PEEKing and POKEing it but I still cannot understand it</b>, writes Sam Peters.</p>
+
+<p>Look at pages 164 and 165 of the ZX Spectrum Basic programming manual. You will see from the memory map that the display file is at the bottom of RAM between 16384 and 22527 inclusive, with the so-called attributes area at 22528 to 23295. A quick calculation shows that there are 6,144 bytes in the display file and as there are 32 characters in each of 24 lines displayed on the screen, that means that there are eight bytes per character. You can see how those bytes are used by running this program:</p>
+
+<pre>9000 FOR i=16384 TO 22527
+9010 POKE i,255
+9020 NEXT i
+9030 PAUSE 0</pre>
+
+<p>The screen will be covered gradually with black horizontal lines. Notice that each line is separated by eight vertical steps from its predecessor, that lines are drawn in groups of eight, and that at the end of each group the next line is drawn back at the beginning of the group. There are three such groups.</p>
+
+<p>In effect, the display is in three separate units and within each unit the first 256 bytes determine the condition of the top one-eighth of each character position. The next 256 bytes determine the next one-eighth of each character position, and so on.</p>
+
+<p>The attributes area is 768 bytes long, i.e., one byte per character position. It is scanned in the logical fashion so that to POKE the fifth character on the second line of the display, for example, you POKE 22527 = 32 = 5. The attribute byte specifies, among other things, the foreground and background colour, so you can only obtain, at most, two colours per character position.</p>
+
+<p>Hence you cannot expect to obtain high-resolution graphics in multiple colours. This routine demonstrates the full range of facilities. It takes some time to produce the display but it is worth it in the end:</p>
+
+<pre>9000 FOR i=16384 TO 20480 STEP 2048
+9010 FOR j=i TO i+2047
+9020 POKE j,7
+9030 NEXT j
+9040 NEXT i
+9050 FOR i=22528 to 23295 STEP 256
+9060 FOR j=0 TO 255
+9070 POKE i+j,j
+9080 NEXT j
+9090 NEXT i</pre>
+
+<p>If you are impatient, replace the first five lines by</p>
+
+<pre>9000 FOR i=1 TO 704
+9010 PRINT &quot;CHR$ 138&quot;:REM CHARACTER NUMBER 138
+9020 NEXT i</pre>
+
+<p class="first">for the same effect but with the bottom two lines missing.</p>
+
+<a name="negative"></a>
+<p>David Jones of Leeds makes an interesting point concerning the raising of numbers to powers. He writes: <b>If you square variables which are negative you get an error message. Surely that should not happen?</b></p>
+
+<p>You can see what he means if you run the routine:</p>
+
+<pre>10 LET a=-3
+20 PRINT a&#8593;2</pre>
+
+<p>That gives an error message &quot;Invalid argument&quot;, which is better than the command</p>
+
+<pre>PRINT -3&#8593;2</pre>
+
+<p class="first">for which the Spectrum prints an answer of -9 which is incorrect - the answer is, of course, +9.</p>
+
+<center><b>(But see <a href="../008/helplne.htm#negative">Helpline, November</a>)</b></center>
+
+<p>The reason the routine generates an error message is that the Spectrum treats all numbers as real numbers, i.e., as non-integers, and raising a negative number to a non-integer power is not defined mathematically. The usual interpretation of -3&#8593;2 is -3 multiplied by itself twice, i.e., -3 x -3, but it is difficult to understand how to interpret -3&#8593;2.5,for example. What does -3 multiplied by itself two-and-a-half times mean?</p>
+
+<p>If the first number is positive, there is a satisfactory interpretation - for a&#8593;b read exp (b*LNa). That form gives the same result when b is integer as &quot;a multiplied by itself b times&quot; and a result which looks acceptable when b is non-integer. This routine demonstrates the results:</p>
+
+<pre>10 PRINT,,&quot;Enter a and b&quot;
+20 INPUT a,b
+30 PRINT &quot;exp(b*LNa)=&quot;; EXP (b*LNa)
+40 PRINT &quot;a&#8593;b=&quot;;a&#8593;b
+50 GO TO 10</pre>
+
+<p>Unfortunately the interpretation does not work if a is negative because the log of a negative number is undefined. The log of zero is minus infinity and so the log of a negative number would have to be less than minus infinity, which is nonsense.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="specusr.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Spectrum User"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 6 Contents"></a>
+<a href="frstimp.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="First Impressions"></a></p>
+
+<h6 align="center">Spectrum User<br>September 1982</h6>
+
+</body>
+</html>
+

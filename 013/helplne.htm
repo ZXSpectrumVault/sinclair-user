@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 13 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, April 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="memic.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Memic 81"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 13 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson4.gif" width=275 height=290 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<p class="first"><b><font size="+1">Andrew Hewson answers more of your queries and problems</font></b></p>
+
+<h1>Educational difficulties</h1>
+
+<p class="first">A QUESTION often posed by those writing an educational program who have incorporated a number of problems into their program and want to present, say, half of them in one session, is asked by Steven Maltby. <b>How do you tell the ZX-81 to think of five random whole numbers between 1 and 10 without the risk of repetition?</b></p>
+
+<p>The obvious answer to his question is a routine of the form:</p>
+
+<pre> 10 DIM A(5)
+ 20 LET A(1)=1+INT(RND*10)
+ 30 PRINT A(1);&quot; &quot;;
+ 40 FOR I=2 TO 5
+ 50 LET R=1+INT(RND*10)
+ 60 FOR J=I TO I-1
+ 70 IF A(J)=R THEN GO TO 50
+ 80 NEXT J
+ 90 LET A(I)=R
+100 PRINT A(I);&quot;&quot;;
+110 NEXT I</pre>
+
+<p>Array A is used to store each selection and if a repetition arises it is discarded and a fresh random number is drawn. The routine works well for small samples but becomes progressively slower if the number of samples is increased.</p>
+
+<p>To see the effect, try changing lines 10, 20, 40 and 50 as follows, to simulate the effect of drawing all 52 cards from a pack in random order:</p>
+
+<pre>10 DIM A(52)
+20 LET A(1)=1+INT(RND*52)
+40 FOR 1=2 TO 52
+50 LET R=1+INT(RND*52)</pre>
+
+<p>Each selection tends to take longer than the previous one because the chance of choosing a number which has appeared previously increases. In choosing the final number, the ZX-81 must select the correct number out of 52 possibilities, which can take a very long time.</p>
+
+<p>A much more elegant solution is to use a routine which mimics the act of shuffling a pack of cards, i.e., create an array containing all 52 possibilities in order and then randomise the location of each element of the array in turn. A suitable routine of this form for Maltby's problem is:</p>
+
+<pre> 10 DIM A(10)
+ 20 FOR I=1 TO 10
+ 30 LET A(I) = I
+ 40 NEXT I
+ 50 FOR I=1 TO 10
+ 60 LET R=1+INT(RND*10)
+ 70 LET S=A(R)
+ 80 LET A(R)=A(I)
+ 90 LET A(I)=S
+100 NEXT I
+110 FOR I=1 TO 5
+120 PRINT A(I)
+130 NEXT I</pre>
+
+<p>Lines 10 to 40 set up the array, lines 50 to 100 swop each element in turn with another element selected at random the equivalent of shuffling cards - and lines 110 to 130 PRINT the first five elements of the randomised array.</p>
+
+<center><img src="../shared/images/helplne2.gif" width=500 height=199 vspace=10 border=0 alt="Sinclair printout"></center>
+
+<p>Several readers, including Nicholas Kennedy, Geoffrey Hulme, and Gareth Rieley, are interested in adding RAM to their ZX-81s or Spectrums. They ask questions like: <b>What are the advantages and problems of using a 64K RAM on the ZX-81? Can 16K Spectrum programs be loaded into the 48K machine? Can 16K ZX-81 RAMs be used on the Spectrum? Why is there a difference in price between add-on RAMs for the Model One and Model Two Spectrums?</b></p>
+
+<p>In the face of such a barrage I contacted Stephen Adams, who specialises in dismantling Sinclair computers for fun, for the latest information. Most people know that 64K of total memory - i.e., ROM and RAM - is the most which can be used with the Z-80 microprocessor without special paging facilities. In the ZX-81 the bottom 8K of memory is reserved for the ROM - the set of machine code instructions which give the machine its character. In the unexpanded machine the next 8K is absent and then there is 1K of RAM at addresses 16K to 17K.</p>
+
+<p>When a 16K RAM pack is added it displaces the 1K of RAM to occupy addresses 16K to 32K. The implication of that design is that Sinclair intended originally to release a new ROM with enhanced facilities to occupy addresses 0 to 16K.</p>
+
+<p>In fact, it has never done so but other manufacturers have stepped in to fill the gap with graphics units and assemblers; 16K and 32K memories are also available which occupy addresses 16K to 32K and 16K to 48K respectively.</p>
+
+<p>In either case, all the extra memory is available directly to the Basic system; 64K RAMs are available of which 48K lies between addresses 16K and 64K and is available for normal use. Another 8K replaces the &quot;missing&quot; 8K of ROM but that part of memory can be PEEKed and POKEd only from Basic. The final 8K is present but unused, which means presumably that the manufacturer also has some future application in mind.</p>
+
+<p>The memory situation for the Spectrum is equally complicated but for rather different reasons. In this machine the ROM occupies 0 to 16K and the standard 16K RAM occupies the remaining area up to 32K. The easiest way to add more memory is to return the machine to Sinclair with a suitable cheque and it will do the job, but that means doing without your machine for a time.</p>
+
+<p>Add-on memory is available from other manufacturers but Sinclair has redesigned the circuit board completely since its original launch and so it is necessary to determine whether your machine is an early version - model one or a re-designed version - model two.</p>
+
+<p>Most model one machines have grey keys, whereas model two has light blue keys. To be certain which model you have you should look into the machine through the slot in the rear where the edge connector is situated. If you have a 16K model one you will see a vacant 16-pin socket on the printed circuit board lying to the left of the slot and about two centimetres from the rear of the machine. If your machine is a 48K model one the 16-pin socket will not be vacant but will act as the connector between the main printed circuit board and a subsidiary board on which the extra memory and decoding chips are mounted.</p>
+
+<p>In that case you will also see seven circular capacitors, each rather smaller than a halfpenny piece, mounted on the subsidiary board in a line facing the rear of the machine.</p>
+
+<p>The 16-pin socket is not present on the model two because there is space available on the redesigned main printed circuit board for the extra memory and decoding chips. Instead, the very large Z-80 microprocessor chip is clearly visible through the slot, lying approximately below the 9 key on the keyboard.</p>
+
+<p>The reason for the price difference for add-on memory between model one and model two machines is apparent. To extend a model one the necessary chips must be mounted on a suitable board to be located above the main board. To extend a model two the necessary chips need only to inserted in the sockets already provided on the main board.</p>
+
+<p>It is not possible to plug a ZX-81 RAM pack directly into a Spectrum, although at least one company now markets a small adaptor to allow you to do so, thus giving 32K of RAM with a 16K ZX-81 RAM pack or 48K of RAM with a 64K ZX-81 RAM pack.</p>
+
+<p>Programs written for a 16K or 32K Spectrum should work without modification on the 48K machine and it is safe to assume that all 16K programs available commercially will run on the larger machines. Of course, the converse is not true; it is most unlikely that a program written for 48K would function on a smaller machine.</p>
+
+<p>Alan Baker of Fareham asks: <b>Would you advise using a flexible ribbon connector instead of plugging a RAM pack directly into the user port?</b></p>
+
+<p>A ribbon connector can be used provided it is short, say, 3in. or 4in. long. I know several people who have used such a connector to alleviate the well-known ZX-81 wobble problem.</p>
+
+<p>Simon Boyes of Stairbridge has a Spectrum. He asks: <b>Is it possible to generate multi-coloured single characters?</b> The simple answer is no. The Spectrum allows one PAPER and one INK colour only per character position. The only way to obtain the illusion of a third colour at a single location is to PRINT first one character and then a second character alternately, using different INK and or PAPER values in each PRINT statement. The following routine illustrates the method:</p>
+
+<pre>10 PRINT AT 0,0;INK 1;&quot;TTTTTT&quot;
+20 PRINT AT 0,0;INK 4;&quot;XXXXXX&quot;
+30 GO TO 10</pre>
+
+<p>The effect is not particularly convincing, because the display appears to blink. If the characters are made to move the eye is distracted from the blinking by the movement. Thus with a little ingenuity characters in different INK colours can be made to appear to occupy the same location and move through one another.</p>
+
+<p>The easiest way to generate the illusion is to rotate user-defined graphics characters bit by bit, rePRINTing the characters after each rotation. Table one shows a machine code routine which rotates the A and B characters to the right and the C and D characters to the left. After eight calls to the routine the A character has been moved to the position occupied previously by B. The B character, in turn, has been moved to the right and then wrapped around to occupy the position previously taken by A.</p>
+
+<p>The second half of the routine works in a similar fashion to move the D character to the left and to wrap around the C character. The routine can be loaded into memory using a loader program such as:</p>
+
+<pre>10 FOR T=23296 TO 23345
+20 INPUT j
+30 PRINT i,j
+40 POKE i,j
+50 NEXT i</pre>
+
+<p>Run the program and enter each of the decimal numbers in the left-hand column in turn. The machine code routine will be loaded into the printer buffer starting at address 23296. The effect of the routine can be assessed by a loop of the form:</p>
+
+<pre>10 PAPER 0: BORDER 0
+20 CLS
+30 PRINT AT 0,0;INK 2;&quot;AB AB AB AB AB AB AB AB&quot;
+40 PRINT AT 0,0;INK 4;&quot;CD CD CD  CD CD CD CD CD&quot;
+50 RANDOMISE USR 23296
+60 GO TO 30</pre>
+
+<p>The PRINTed letters, ABCD, must be graphics characters selected by pressing SHIFT 9 at the beginning and end of each string.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre><b>Table 1 - Routine to rotate A to B and D to C.</b>
+
+Decimal         Assembler         Comment
+
+42,123,92       ld hl,(23675)     Point de
+84              ld d,h            and hl
+93              ld e,l            to A
+1,8,0           ld bc,8           A and B
+9               add hl,bc
+65              ld b,c
+26              ld a,(de)         Next byte
+78              ld c,(hl)         of each
+203,48          sra a             Rotate
+203,25          rr c              right
+203,23          rl a
+203,15          rrc a
+18              ld (de),a         Save bytes
+113             ld (hl),c
+19              inc de
+35              inc hl
+16,240          djnz,-16          Again
+84              ld d,h            Point de
+93              ld e,l            and hl
+1,8,0           ld bc,8           to
+9               add hl,bc         C and D
+65              ld b,c
+26              ld a,(de)         Next byte
+78              ld c,(hl)         of each
+203,39          sla a             Rotate
+203,17          rl c              Left
+203,31          rr a
+203,7           rlc a
+18              ld (de),a         Save bytes
+113             ld (hl),c
+19              inc de
+35              inc hl
+16,240          djnz,-16          Again
+201             ret</pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="memic.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Memic 81"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 13 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>April 1983</h6>
+
+</body>
+</html>

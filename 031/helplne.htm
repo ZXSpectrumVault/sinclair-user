@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 31 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX-81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, October 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="htsquad.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 31 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson4.gif" width=315 height=310 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1 align="center">Data preservation</h1>
+
+<p align="center" class="first"><b><font size="+1">Andrew Hewson has some time SAVEing techniques</font></b></p>
+
+<p class="first">WHAT IS the method for deleting a ZX-81 program while preserving the variables and display? asks James Gilbert.</p>
+
+<p>First you must note the line number of the first line of the program. Let us suppose it is line number 10. Then you can find the effective length of the program by entering:</p>
+
+<pre>PRINT PEEK 16396 + 256*PEEK 16397 - 16513</pre>
+
+<p class="first">Suppose the result is 1859. Then enter:</p>
+
+<pre>POKE 16511, 1859 - 256*INT(1859/256)
+POKE 16512,INT(1859/256)
+10 (or whatever was the first line number)</pre>
+
+<p>Do not attempt to LIST the program between entering the instructions or you will have to pull out the plug and start again. You are making the ZX-81 think that the whole program is one monster Basic line and if it attempts to LIST at all, it becomes confused. Entering 10, or whatever, deletes the monster line in the usual way.</p>
+
+<p>David O'Brien has written a program for his ZX-81 which he runs every month to update a numerical array. He has now accumulated a substantial amount of data in the array and he wishes to pass the data to a second program. Unfortunately there is no method built into the ZX-81, in contrast to the ZX Spectrum, for SAVEing an array on tape and then LOADing it into another program. He writes: <b>Can you save me the effort of typing all the figures again?</b></p>
+
+<p>There are two methods. The first is quick and elegant and consists essentially of writing new SAVE and LOAD routines in machine code. The second method is slow and clumsy but it is easy to understand and the necessary software is mostly in Basic, so I will explain it as the preferential method.</p>
+
+<p>The steps, in outline, are:</p>
+
+<p class="first">1 - delete the original program whilst preserving the data using the method explained above; 2 - SAVE the data of interest on tape; 3 - LOAD the new program and copy it above RAMTOP to prevent it being subsequently overwritten; 4 - LOAD the data from tape in the usual way; 5 - create some space in the program area and copy the program into it from above RAMTOP.</p>
+
+<p>The first step has been explained above and the second is straightforward - simply use the conventional SAVE command. Some odds and ends, including the display file, will be copied to tape along with the data required.</p>
+
+<p>In step three be sure to move RAMTOP down as explained on page 168 of the ZX-81 manual before LOADing the new program. Then use the routine listed in Table 1 to copy the program above RAMTOP. The routine PRINTS the length of the program, J, in bytes. Make a note of it because it will be needed later.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre> 10 LET J=PEEK 16396+256*PEEK 16397-16509
+20 PRINT J
+30 LET K=PEEK 16388+256*PEEK 16389
+40 FOR I=0 TO J-1
+50 POKE K+I, PEEK(16509+I)
+60 NEXT I
+
+<b>Table 1. A ZX-81 routine to copy a program above RAMTOP.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>In step four the data is LOADed from tape in the usual way. The new program will, of course, be overwritten and so the final step is to copy it back from above RAMTOP. A machine code routine is needed for that step, because space must be created in the program area in which to store the program using a routine in ROM.</p>
+
+<p>The routine is 20 bytes long and I suggest you store it at addresses 32748 to 32767 by entering and RUNning the following routine:</p>
+
+<pre>10 FOR I = 32748 TO 32767
+20 INPUT M
+30 POKE I,M
+40 PRINT I, PEEK 1
+50 NEXT I</pre>
+
+<p>Enter the following numbers one by one from the keyboard:</p>
+
+<pre>42,12,64,229,43,1,0,0,197,205,
+158,9,193,209,42,4,64,237,176,
+201.</pre>
+
+<p class="first">You might like to determine how the routine works by translating the decimal numbers into Z-80 assembly language using Appendix A of the ZX-81 programming manual.</p>
+
+<p>Before running the machine code routine, POKE the program length, J, into it by entering</p>
+
+<pre>POKE 32754, J - 256*INT(J/256)
+POKE 32755,INT(J/256)</pre>
+
+<p class="first">Then delete the Basic routine, put the ZX-81 into FAST mode, and call the machine code routine by entering</p>
+
+<pre>IF USR 32748 = 0 THEN STOP.</pre>
+
+<p>Marc Jones writes: <b>If after entering a program on my Spectrum, I POKE 255 into the first byte of the Basic area at address 23755, the program disappears. Why?</b></p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre>  5 LET A = 1
+10 PRINT &quot;BYTE&quot;;TAB 6;&quot;CONTENTS&quot;;TAB 16;&quot;CHARACTER&quot;
+15 LET S = PEEK 23635 + 256*PEEK 23636
+20 FOR I = S TO S + 20
+25 PRINT I;TAB 8;PEEK I;TAB 20;CHR$ PEEK I
+30 NEXT I
+
+<b>Table 2. A Spectrum program which looks at the first
+20 bytes of the program area.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>To answer that I must first explain a little about how a program is held in the Spectrum. Enter the program listed in Table 2. The program will also work on the ZX-81 if line 15 is altered to read</p>
+
+<pre>15 LET s = 16509</pre>
+
+<p class="first">Line 5 is a dummy line whose purpose is to allow the user to study the storage of numbers in programs.</p>
+
+<p>The program lists the first 20 locations in the basic program area on the screen. The area starts at the address stored in PROG as may be seen from the diagram on page 165 of the ZX Spectrum manual. PROG - that is the address of the basic program area, is found at 23635 and 23636, as may be seen on page 174 of the same book.</p>
+
+<p>If the computer memory is cleared before the program is entered either by disconnecting the power supply temporarily or by entering NEW, the program area will contain that program only. Thus when the program is RUN it will be looking at itself. The results for the Spectrum and the ZX-81 are shown in Tables 3 and 4. The screen display shows, for example, that the fifth location contains the code for the LET command (241) followed by the codes for each of the three characters A, = and 1.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre><b>BYTE        CONTENTS     CHARACTER</b>
+23755          0             ?
+23756          5             ?
+23757          11            ?
+23758          0             ?
+23759          241          LET
+23760          65            A
+23761          61            =
+23762          49            1
+23763          14            ?
+23764          0             ?
+23765          0             ?
+23766          1             ?
+23767          0             ?
+23768          0             ?
+23769          13
+
+<b>Table 3. The first 15 lines of
+the screen display produced when
+the program in Table 2 is executed.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The first two bytes contain 0 and 5 respectively because those two bytes are used to specify the line number of the first line, the calculation being:</p>
+
+<pre>256 * first byte + second byte = line number</pre>
+
+<p class="first">Experiment by POKEing new numbers into those two locations and then LISTing the program to see the effect. Try, for example,</p>
+
+<pre>POKE S,10
+POKE S + 1,27
+LIST</pre>
+
+<p class="first">It will be seen that the line number of the first line is now 2587 because</p>
+
+<pre>256 * 10 + 27 = 2587</pre>
+
+<p class="first">Notice that the order of the lines has not been changed and therefore it can be concluded that the Spectrum has taken no action as a result of the interference with the contents of the program area.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre><b>BYTE          CONTENTS        CHARACTER</b>
+16509            0           
+16510            5           
+16511            11               "
+16512            0           
+16513            241             LET
+16514            38               A
+16515            20               =
+16516            29               1
+16517            126              ?
+16518            129         
+16519            0
+16520            0
+16521            0 
+16522            0
+16523            118              ?
+
+<b>Table 4. The first 15 lines of the
+screen display produced when the program
+in Table 2 is adapted for the ZX-81.
+The graphics characters on the second and
+tenth lines have been omitted for clarity.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>There are a couple of tricks worth mentioning. Try entering</p>
+
+<pre>POKE S,39
+POKE S + 1,10 LIST</pre>
+
+<p class="first">The first line number will now be 9994 because</p>
+
+<pre>39 * 256 + 10 = 9994</pre>
+
+<p class="first">The largest line number allowed on Sinclair machines is 9999 so, it may be asked, what happens when an attempt is made to insert a larger line number? To find out enter:</p>
+
+<pre>POKE S,40
+LIST</pre>
+
+<p class="first">The first line number is now shown as :250 whereas we would have expected it to be</p>
+
+<pre>40 * 256 + 10 = 10250</pre>
+
+<p class="first">Reference to the table of codes of the character set in Appendix A of the manual gives a clue to the situation. The table shows that the codes for the digits 0 to 9 are 48 to 57 and they are followed by the codes for the colon, semi-colon, and so on. The Spectrum is programmed to expect line numbers to contain at most four digits. When it finds a line number which should have five digits it uses a single letter from the characters following the numbers in the table to represent the first two - : to represent 10, ; to represent 11, &lt; to represent 12, etc.</p>
+
+<p>Provided the line numbers are kept in order programs can be written to use line numbers up to 16383 (which appears as @ 383). Fortunately, the machine will accept 'incorrect' instructions like GO TO 12530 which makes writing such programs easier than it would otherwise be.</p>
+
+<p>Attempting to POKE in line numbers greater than 16383 causes the program display to disappear as Marc discovered. To see the effects enter</p>
+
+<pre>POKE S,99</pre>
+
+<p class="first">The program no longer functions although it is still present in memory as can be seen by entering</p>
+
+<pre>POKE S,0</pre>
+
+<p>Finally, I have to apologise for an error in the program printed in table 1 of <a href="../028/helplne.htm">the July issue</a> of <i>Sinclair User</i>. Unfortunately I omitted the following line:</p>
+
+<pre>1 DIM s$(200,5)</pre>
+
+<p class="first">Thank you to everyone who wrote pointing out the omission and apologies to all who failed to get the program to work.</p>
+
+<p>Incidentally the program is slow to execute - because it is written in Basic - and appears to stop with the job half finished. In fact it is busy thinking and will carry on eventually if left to its own devices.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="htsquad.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hit Squad"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 31 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>October 1984</h6>
+
+</body>
+</html>

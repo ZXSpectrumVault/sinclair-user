@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 36 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX-81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, March 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="sincc5.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Sinclair C5"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 36 Contents"></a>
+<a href="../037/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 37"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson6.jpg" width=300 height=275 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1>Blueprint for Spectrum memory manipulation</h1>
+
+<p class="first"><b><font size="+1">Andrew Hewson investigates the memory map and puts the tick into a Spectrum screen clock using machine codes</font></b></p>
+
+<p class="first">THE INSPIRATION for the column this month comes from a letter from Peter Green who writes: &quot;<b>I was recently given a Spectrum and I want to learn how it works. I have been reading the manual, particularly Chapter 24 on the internal workings, but it does not make much sense to me.</b>&quot;</p>
+
+<p>A computer is a machine which is capable of storing a sequence of instructions and then executing them. To do so requires a memory in which the instructions can be stored. Most home micros contain two distinct types of memory. The first type is read-only-memory - ROM - which contains the fixed set of instructions implanted in the machine by the manufacturer. The second type is random-access-memory - RAM.</p>
+
+<p>RAM is the notepad of the computer. When it is performing a task it is continually looking at what is in RAM - 'reading' from memory - and altering the contents of RAM 'writing' to memory. The notepad is not used haphazardly - different parts of RAM are used to store different sorts of information.</p>
+
+<p>A Basic program entered by the user, for example, is stored in one part of RAM, whilst the variables used by the program are stored elsewhere. In Sinclair machines, the size of the notepad is limited so the machine is careful to allocate just the right amount of space required to hold a given piece of information.</p>
+
+<p>Spare space is always collected in one place so that if, for example, the user wants to add a line to his program the information in RAM is shuffled along so that some spare space is used up and just enough space is created at the location at which the line is to be added.</p>
+
+<p>There are 16384 memory locations in RAM in the 16K ZX Spectrum the 48K machine has a further 32768 locations making 49152 in all. Each location can hold a single whole number between 0 and 255 inclusive and is identified by its 'address' which is a positive whole number.</p>
+
+<p>Addresses 0 to 16383 are assigned to the fixed form of memory, the ROM, and so the first address assigned to RAM is 16384. Table one shows the memory map of the Spectrum: how RAM is used starting at 16384. The display file, for example, which holds the information which is currently displayed on screen, occupies locations 16384 to 22527. The attributes, which determine the colour, brightness and so on, of the screen display, follow immediately afterwards in locations 22528 to 23295.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre><b>Starting address or       Location of          Memory contents
+system variable name      system variable</b>
+16384                          -                display file
+22528                          -                attributes
+23296                          -                printer buffer
+23552                          -                system variables
+23734                          -                microdrive map
+CHANS                        23631              channel information
+PROG                         23635              Basic program
+VARS                         23627              variables
+E-LINE                       23641              command/line being edited
+WORKSP                       23649              data being INPUT
+STKBOT                       23651              calculator stack
+STKEND                       23653              spare
+sp                             -                machine stack and GOSUB stack
+RAMTOP                       23730              user machine code routines
+UDG                          23675              user-defined graphics
+P-AMT                        23732              end of RAM
+
+<b>Table 1. Spectrum memory map. The stack point, sp, is held not in RAM but in
+the sp register in the Z80A microprocessor.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The first five addresses in the first column of table one are all fixed because the display file and the attributes all occupy a fixed amount of space. The fifth area is assigned to the microdrive maps. If a microdrive is attached to the Spectrum that area contains the information on the layout of the data on the cartridge.</p>
+
+<p>If a microdrive is not attached, the area is not needed in which case the sixth area, channel information, lies immediately after the fourth, the system variables, in line with the practice of saving space wherever possible. Hence the starting address of the channel information area and all subsequent areas is not fixed but can 'float' up and down RAM.</p>
+
+<p>The Spectrum keeps track of the starting address of all those areas by storing the current value of each address within the system variables area. The system variables area is the fourth in the sequence, between the printer buffer and the microdrive maps at locations 23552 to 23733. The address within the system variables area which holds the starting address of each 'floating' area is listed in column two of table one. The address of the Basic program area, for instance, is held at 23635 within the system variables area.</p>
+
+<p>Referring to each system variable by the address at which it is held is rather awkward and so each is given a name - PROG in the case of the location which holds the address of the Basic program area. Those names are for the user's convenience only. They are not recognised by the Spectrum. Thus entering the line:</p>
+
+<pre>PRINT PROG</pre>
+
+<p class="first">will cause the error message '2 Variable not found' to be PRINTed unless a Basic variable called PROG has been generated coincidentally by a program or by the user. The value of such a Basic variable would in general have nothing to do with the value of the PROG system variable.</p>
+
+<p>Simon Carver also has a Spectrum. He writes: &quot;<b>Can you explain the difference between PEEK and POKE?</b>&quot;</p>
+
+<p>The memory map is the key to understanding the use of RAM by the Spectrum but the keys to exploring RAM are the Basic keywords, PEEK and POKE, which allow the user to look at the contents of a memory location and alter it respectively.</p>
+
+<p>PEEK is a function of the form:</p>
+
+<pre>PEEK address</pre>
+
+<p class="first">The address can be a positive whole number between 0 and 65535 or an arithmetic expression which when evaluated gives such a positive number. It is important to enclose an arithmetic expression in brackets because</p>
+
+<pre>PEEK 16384 + 2</pre>
+
+<p class="first">is integrated as 2 added to the result of:</p>
+
+<pre>PEEK 16384</pre>
+
+<p class="first">whereas</p>
+
+<pre>PEEK (16384 + 2)</pre>
+
+<p class="first">is interpreted as</p>
+
+<pre>PEEK 16386</pre>
+
+<p>The value returned by the PEEK function is the number currently held at the address in question which will always be a positive whole number between 0 and 255 inclusive. It was explained above the PROG system variable is held at address 23635 but that is not strictly correct. The value of PROG, being an address in RAM, is always much larger than 255, and therefore two adjacent addresses, 23635 and 23636, are needed to hold it. The value of PROG can be PRINTed by entering:</p>
+
+<pre>PRINT &quot;PROG =&quot;;PEEK 23635 + 256 * PEEK 23636</pre>
+
+<p class="first">All addresses are held in two adjacent locations in this fashion and can be inspected by entering:</p>
+
+<pre>PRINT PEEK first address + 256 * PEEK subsequent address</pre>
+
+<p class="first">For example, if a Spectrum is used without a microdrive attached the microdrive map will be non-existent and the channel information will follow immediately after the system variables areas. Thus the value of the CHANS system variable will be the same as the starting address of the microdrive map, were it to exist, that it, 23734. CHANS is held at 23631 and 23632 and so entering</p>
+
+<pre>PRINT PEEK 23631 + 256 PEEK 23632</pre>
+
+<p class="first">will yield the value 23734.</p>
+
+<p>The PEEK function can be used to look at the contents of any location in memory, including the fixed instructions in ROM. It is therefore a very important tool. PEEKing any location will not cause the Spectrum to crash or corrupt a program or variables. Very occasionally, the results of a PEEK can be misleading because the contents of the location being PEEKed may alter during or immediately after the execution of the instruction. For example, if the contents of the locations which are assigned to the top left-hand corner of the screen display are PEEKed and the results PRINTed in the top left hand corner of the screen, the information will already be out-of-date by the time the user views it.</p>
+
+<p>The POKE command is altogether more dangerous than the PEEK function because by invoking it the user is likely to interfere in the functioning of the Spectrum. It is quite possible using this command to make a nonsense of the information in RAM causing the machine to crash, or to halt and display an error code.</p>
+
+<p>The form of that command is:</p>
+
+<pre>POKE address, number</pre>
+
+<p class="first">Once again, the address is a positive whole number between 0 and 65535 inclusive, or an arithmetic expression which gives such a number when evaluated. Unlike PEEK is is not essential to enclose an arithmetic expression in brackets because POKE is a command, not a function, and therefore cannot be evaluated as a whole. The number POKEd into a location must lie between 0 and 255 inclusive.</p>
+
+<p>Both the ZX-81 and the Spectrum will accept and execute a POKE command directed at an address in ROM - an address between 0 and 16383 inclusive. However, the number will never reach its destination because the contents of ROM are fixed. That fact can be demonstrated by RUNning the following program:</p>
+
+<pre>10 PRINT PEEK 0
+20 POKE 0,92
+30 PRINT PEEK 0</pre>
+
+<p>Line 10 PRINTS the contents of the first location in ROM. Line 20 attempts to alter the contents to 92 but line 30 will show that no effect has registered.</p>
+
+<p>The final letter comes from Michael Mehta. He writes: &quot;<b>Could you supply a machine code routine on the Spectrum which shows the elapsed time in minutes and seconds on the screen? I know how to do the job in Basic but the routine takes too long to run.</b>&quot;</p>
+
+<p>The machine code routine to display minutes and seconds is listed in table two. As usual, I have listed the code in decimal so that those people who do not have an assembler can POKE it straight into memory.</p>
+
+<p>Please note that the routine runs under the interrupt system. This is achieved by setting the Z80 into interrupt mode two and then vectoring the call to the beginning of the routine.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre><b>
+Decimal           Assembly Code             Comment</b>
+14 255                 defw clock           define address of clock routine
+50                tix  defb 50              50 &quot;ticks&quot; per second
+0                mins  defb 0               store for minutes counter
+0                secs  defb 0               store for seconds counter
+237 86           stop  im 1                 reset interrupt mode 1
+201                    ret                  return
+                chars  equ 23606            set address of character set
+62 254          start  ld a,254             beginning of routine
+237 71                 ld i,a               transfer part of address to i register
+237 94                 im 2                 set interrupt mode 2
+201                    ret                  return
+229             clock  push hl              preserve all registers on stack
+213                    push de
+197                    push bc
+245                    push af
+58 2 255               ld a,(mins)          minutes counter to a
+33 27 64               ld hl,401bh          address in display file to hl
+205 114 255            call disp            call routine to display minutes
+62 58                  ld a,58              character code for colon to a
+33 29 64               ld hl,401dh          address in display file to hl
+205 91 255             call pchr            call routine to display colon
+58 3 255               ld a,(secs)          seconds counter to a
+33 30 64               ld hl,401eh          address in display file to hl
+205 114 255            call disp            call routine to display seconds
+58 1 255               ld a,(tix)           tick counter to a
+61                     dec a                decrement tick count
+50 1 255               ld (tix),a           new count to tick store
+32 31                  jr nz,exit           jump if tick count is non-zero
+62 50                  ld a,50              tick count is zero - set a to 50
+50 I 255               ld (tix),a           and transfer m tick store
+58 3 255               ld a,(secs)          seconds counter to a
+60                     inc a                increment seconds count
+254 60                 cp 60                compare to 60
+32 15                  jr nz,two            jump if less than 60
+58 2 255               ld a,(mins)          seconds equal 60 -
+                                            load a with minutes
+60                     inc a                increment minutes
+254 60                 cp 60                compare with 60
+32 2                   jr nz,one            jump if less than 60
+62 0                   ld a,0               minutes equal 60 - load a with 0
+50 2 255          one  ld (mins),a          set new minutes count
+62 0                   ld a,0               load a with 0
+50 3 255          two  ld (secs),a          set new seconds count
+241              exit  pop af               restore all registers from stack
+193                    pop be
+209                    pop de
+225                    pop hl
+195 56 0               jp 56                return via normal interrupt routine
+229              pchr  push hl              preserve hl
+42 54 92               ld hl,(chars)        character table address to hl
+214 32                 sub 32               subtract 32 from character code
+135                    add a,a              double code
+135                    add a,a              double code
+135                    add a,a              double code
+95                     ld e,a               calculate address of character in table
+22 1                   ld d,l
+25                     add hl,de
+6 8                    ld 6,8               print each eighth of
+                                            character in turn
+209                    pop de               restore hl to de
+126              zero  ld a,(hl)            load eighth into a
+35                     inc hl               increment pointer
+18                     ld (de),a            post eighth to display
+20                     inc d                increment display pointer
+16 250                 djnz zero            jump back for next eighth
+201                    ret                  end of sub-routine
+205 135 255      disp  call cvrt            call conversion routine
+122                    ld a,d               transfer tens column to a
+198 48                 add 48               add base code
+213                    push de              preserve de and hl
+229                    push hl
+205 91 255             call pchr            call routine to print tens character
+225                    pop hl               restore hl
+35                     inc hl               increment hl
+209                    pop de               restore de
+123                    ld a,e               transfer units column to a
+198 48                 add 48               add base code
+205 91 255             call pchr            call routine to print units character
+201                    ret                  end of sub-routine
+22 255           cvrt  ld d,255             load d with 255
+20              three  inc d                increment d
+214 10                 sub 10               subtract 10 from a
+48 251                 jr nc,three          jump if positive
+198 10                 add 10               add back last ten
+95                     ld c,a               store result in e
+201                    ret                  end of sub-routine
+
+<b>Table 2. A Spectrum routine to display minutes and seconds in the top right hand
+corner of the screen.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="sincc5.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Sinclair C5"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 36 Contents"></a>
+<a href="../037/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 37"></a></p>
+
+<h6 align="center">Sinclair User<br>March 1985</h6>
+
+</body>
+</html>

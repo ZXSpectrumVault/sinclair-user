@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 12 - Hardware World</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Hardware news from Sinclair User, March 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 12 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>hardware world</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1>Tracing made easier</h1>
+
+<img src="hardwre1.jpg" width=400 height=205 hspace=10 vspace=10 border=0 align="right" alt="RD Tracer">
+<p class="first">ONE OF the most outstanding achievements in the graphics field is the RD tracer, a device which allows you to draw across a piece of paper with a cross hair - like a rifle sight - and have the computer copy the same thing on to the screen. The three-part arm needs to be fixed to the board on which you are working by the sticky strip provided - or Blutack. A template is provided to allow you to line up this and the graph-type map over which the arm works.</p>
+
+<p>The map is marked in pixels and PRINT positions, so that letters and numbers can be added to the drawing. The interface black box, which contains an edge connector and PCB continuing strip, plugs into the expansion port of the ZX-81 or Spectrum. As it fits both computers it has only a 23-way edge connector and must therefore be used in the same way as the printer - placed after any Spectrum equipment.</p>
+
+<p>On the ZX-81 it is memory-mapped into location 15391; on the 48K Spectrum it is input/output mapped (port 31), but if required on the 16K Spectrum it can also be memory-mapped via an adapter. LEDs are provided on the module to indicate when it is being used and also if it is being used on the input/output map.</p>
+
+<p>The tracer tape has ZX-81 and Spectrum programs on the same side. That is satisfactory for the Spectrum but ZX-81 owners should locate the ZX-81 program before attempting to LOAD the program.</p>
+
+<p>The tracer has four programs for the Spectrum and two for the ZX-81. For the Spectrum the tracer can be used to create lines, circles or just to follow the trace of the arm in all the colours available. The drawing can them have areas &quot;painted&quot; in or shaded in the same or a different colour.</p>
+
+<p>One thing to remember is that each character square can have only two colours. All the commands are available by one key press and the entire program is written in Basic so that it can be customised easily.</p>
+
+<p>The other use of the tracer is to input data in the form of co-ordinates for graphs; they can be stored as strings and the tracing program made to execute the co-ordinates one after another, creating an automatic drawing routine.</p>
+
+<p>The pictures can be saved on to tape from within the program and can also be loaded back for modification. The cost of the tracer is &#163;55.50 with 10 per-cent discount for cash. It is available from RD Labs, Herts.</p>
+
+<p>The drawing can be scaled to give a 3D effect, with the program taking care of the perspective. With user-definable graphics plus text and the tracer producing any other shapes, all kinds of pictures can be created.</p>
+
+<h2>Sound improvement</h2>
+
+<p>TELESOUND 84 is the latest version of the sound modulator for Spectrum, ZX-81 and the BBC computer. There is a reduction in size to &#190;in. x &#189;in. x &#189;in. and the length of the leads which connect it to the computer is much improved. The sound quality is also better and because of the connection by clips to the circuit it can be removed easily.</p>
+
+<p>The Spectrum BEEP is now amplified by the TV set and is loud enough for anyone. The cost of the Telesound 84 is &#163;9.95 from Compusound, Worcs.</p>
+
+<h2>EPROMs for Spectrums</h2>
+
+<p class="first">EPROM SERVICES has produced a Spectrum version of its EPROM board for the 16K Spectrum. It is in the top 8K of memory from 56K to 64K which is normally empty. It consists of four sockets on a board, to which can be added static RAMs - 6116 type - or 2K EPROMs - 2716 +5V type.</p>
+
+<p>As yet there are no EPROMs available for the Spectrum but some will soon be available.</p>
+
+<p>EPROM 1 contains 10 small routines for program editing such as block delete, delete up/down from a specified line, renumbering.</p>
+
+<p>Only the lines, - no GO TOs or GO SUBs - and various checks on the memory, such as program length.</p>
+
+<p>The next 12 routines are for entering machine code into REM statements, in hex only, and extending and modifying both the machine code and the REM statement. There is also a very useful hex dump facility to view an area of memory which gives eight columns of hex addresses and the data in them.</p>
+
+<p>Sixteen more routines contained in the same EPROM deal with the screen display and, together with a 2K RAM stored at 14K-16K on the same board, allow you to store machine code on TV screens in non-Basic RAM to be recalled later. That makes a total of 38 routines in one 2K EPROM.</p>
+
+<p>EPROM II concerns tape routines, including a RAPID load and SAVE. The other routines allow you to verify and identify a Sinclair SAVEd program.</p>
+
+<p>EPROM IV contains a very good ZX-81 monitor program. It requires also that the board be fitted with 2K of RAM at 14K-16K to store the monitor screen, stack and scratchpad. All the system variables are saved and the various Z-80A registers can be set before entering a machine code routine.</p>
+
+<p>The Spectrum EPROM board also has the facility to be switched out of the memory map by input/output port. It has a blank 2K EPROM fitted - EPROM 1 - and costs &#163;19. EPROMs II to IV cost &#163;10 each and are available only for the ZX-81 at present. Eprom Services is at Leeds.</p>
+<br clear=all>
+
+<h2>Basicare turns the micro inside out</h2>
+
+<table width="420" border="0" cellpadding="10" align="right">
+<tr><td><img src="hardwre2.jpg" width=400 height=287 border=0 alt="">
+<br>
+<p align="right" class="first"><b><font size="-1">Basicare expansion system</font></b></p>
+</td></tr>
+</table>
+<p class="first">BASICARE seems to be intent on revolutionising the world of microcomputing by providing all the facilities of a computer except the CPU and the language outside the micro. The system contains RAM and can be extended to Centronics printers, character generators, battery-backed RAM, RS232 with no worry about where to fit them in the 64K of the memory map of the ZX-81.</p>
+
+<p>When fully-expanded the Basicare system could have 112 peripherals, divided into SLOTs on each page of the memory map. Sixteen pages of 32K worth of dynamic memory, 512K of memory for use by Basic or machine code, four 8K areas of DATA plus four 8K areas of TOOLKIT routines - ROM/RAM or battery-backed RAM. Total memory size of the system is 576KB. Since they take up most of the expense of any system, Basicare has made them compatible with most computers by linking them via a 64-way edge connector. The computer is connected to that bus via a PERSONA module, which fits into the computer memory map. That way the modules can remain the same; it is only the position on the memory map which changes.</p>
+
+<p>The basic system must consist of a computer - at present the only PERSONAs available are for the ZX-81 and the Spectrum - and the PERSONA for that computer.</p>
+
+<p>Having established the system for accessing all those extra boxes, you are still limited to 64K of memory map - 8K or 16K ROM, 8K for SLOT and PATH areas, and the rest can be RAM unless you buy a MINIMAP module to switch the pages in the system. That would seem essential, otherwise there are many other cheaper systems which stay within 64K.</p>
+
+<p>Extra memory may be added in 16K or 64K dynamic portions or 2K chips of static memory. Dynamic memory can be used only in the 16K-32K and 48K-64K regions of the memory map. The RAM pack containing static chips may have a USERFRONT option fitted to allow you a programmable character set.</p>
+
+<p>The SLOT area in the memory map - 44K-48K - is used to store all the input/output devices such as Centronics printer module - Pericon c -and the two types of 24-line input/output ports available - Pericon a and b. The SLOT is also used to access the MINIMAP by POKEs to change the pages. Another 4K area, called PATH, is not specified in the documentation and presumably will act like the BBC computer TUBE interface to connect to other micros.</p>
+
+<p>The file area - dynamic RAM - can be used to hold segments of a program like subroutines. Those subroutine pages can be called by a Basic POKE to change from one routine to another.</p>
+
+<h2>Repeat key for ZX-81</h2>
+
+<p class="first">AN AUTO KEY repeat key module is available for the ZX-81 which works in the same way as the Spectrum - 1.5 sec. delay before repeating. It is soldered on to the ZX-81 via nine wires and rests inside the case underneath the keyboard. It is not the same design as the Haven Hardware module. It works just as well as the Spectrum and provides a clean action.</p>
+
+<p>TV Services of Cambridge makes the device and it is sold by that company and Kempston Electronics at &#163;6.50 including postage. TV Services is at Cambridge.</p>
+
+<h2>The games companion</h2>
+
+<img src="hardwre3.jpg" width=400 height=249 hspace=10 vspace=10 border=0 align="right" alt="Games Companion module">
+<p class="first">PROGRAM POWER has produced what seems to be an all-in-one module which contains joystick, soundboard and amplifier. The amplifier can also be used to boost the weak BEEP of the Spectrum up to a full two watts via the volume control. The board is not cased and fits ZX-81 or Spectrum, although the ZX-81 user will have to write some machine code to use it.</p>
+
+<p>The board does not have a continuing strip at the back, so place it last.</p>
+
+<p>A demonstration tape is provided with every purchase and allows you via Basic to hear a selection of pre-set sounds and to be able easily to alter the sound registers one by one. The sound chip also contains an input and output port and they are used to run the joystick.</p>
+
+<p>The joystick is not the switched type, however, and gives a position back in the form of two numbers X and Y. The fire button results in setting a variable to 1 if pressed and all the joystick commands are accessed by a machine code routine for greater speed.</p>
+
+<p>At present you have to put together the joystick, as it arrives only as a kit. The instructions are easy enough to follow but it requires soldering and the screws which hold the case together seem difficult to fit.</p>
+
+<p>The system works very well and as it contains its own loudspeaker and is driven from the Spectrum or ZX-81 power supply, it should do very well.</p>
+
+<p>Micro Power sells the sound board for &#163;24.43 and the joystick for &#163;6.53 inc. case or &#163;4.55 without, all inc. VAT. Micro Power is at Leeds.</p>
+
+<h2>Joystick from Kempston</h2>
+
+<p class="first">KEMPSTON (Micro) Electronics has a joystick of the switch type for the ZX-81 or Spectrum. It is a Competition-Pro joystick and is input/output-mapped by A6 being low. The joystick has a solid metal shaft and is spring-loaded with a black balled top. The two red fire buttons are about one inch in diameter and both produce the same result. The joystick can be in eight positions as the leaf springs used will both operate if moved in a diagonal direction. The joystick gives 8 for down, 4 for up, 1 for left and 2 for right. So up/right will give 6 and the joystick fire buttons both give 16.</p>
+
+<p>The interface is &quot;dead-ended&quot;, so it must go on after any other equipment, but it is attached to the joystick by 5ft. of cable, so that should not be a problem. Software is always important to an item like this and Kempston already has four programs which can use the joystick, from Abbex, Quicksilva and Softek. Gulpman has also been converted for use with the joystick. When you buy the joystick you also get the listings of three programs provided free - one Space Invaders, a hi-res drawing program and a program to mix with the Bat and Ball game provided on the Horizon tape. The joystick costs &#163;25 inc. VAT from Kempston Electronics, Kempston, Bedford.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 12 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<h6 align="center">Sinclair User<br>March 1983</h6>
+
+</body>
+</html>
+

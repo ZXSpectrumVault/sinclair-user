@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 48 - Hewson's Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Hewson's Helpline from Sinclair User, March 1986">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="worminp.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Worm In Paradise"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 48 Contents"></a>
+<a href="qlink.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="QLink"></a></p>
+
+<h2 class="blackback"><i>HEWSON'S HELPLINE</i></h2>
+
+<br clear=all>
+
+<img src="../shared/images/hewson7.jpg" width=156 height=300 hspace=10 vspace=10 border=0 align="right" alt="Mr Hewson">
+
+<h1><i>Defining your characters</i></h1>
+
+<p class="first"><b><i><font size="+1">Andrew Hewson explains UDGs from A to Z</font></i></b></p>
+
+<p class="first">CHRIS FOWLER of Sheffield has been using the <b>Big Gen</b> program, published in <i>Sinclair User</i> a while ago, to create new user-defined graphics characters. He writes: <b>This is fine as far as it goes but as you know we are limited to 21 UDGs. Is there any way I can use the full alphabet, because I want to create a handwriting font?</b></p>
+
+<p>Indeed there is. There are 96 characters in the ordinary Spectrum character set. The set starts with character code 32 the space or blank character and ends with the copyright symbol - code 127. They are defined by the contents of a table held permanently in ROM at address 15616. Each definition is held in eight bytes and so the whole table is 768 bytes long.</p>
+
+<p>The method of encoding and decoding the eight bytes can be understood with the help of some knowledge of binary numbers and an imaginary 8x8 grid. Each element in the grid is called a pixel and each pixel can be set to either the Ink or the Paper colour. It is the precise arrangement of Ink and Paper coloured pixels in the 8x8 grid which creates each character.</p>
+
+<p>Each of the eight bytes devoted to a character defines the setting of one horizontal line of eight pixels. The contents of a byte - which necessarily lies in the range 0 to 255 in decimal - is read as an eight digit binary number so that there is a one-to-one correspondence between pixels and binary digits. A binary number consists of zeros and ones only. All pixels for which the corresponding binary digit is zero are set to the Paper colour, whereas all pixels for which the corresponding digit is one are set to the Ink colour.</p>
+
+<p>Very often, the first and last bytes of the group of eight controlling a given character are zero. Those two bytes determine the top and bottom of the character respectively, and a zero setting ensures that all the corresponding pixels are set to the Paper colour. Thus when the character appears on the screen it is well separated from other items o n the lines above and below.</p>
+
+<p>For a similar reason each byte usually contains an even number which is also less than 128. As a result, all pixels at the right and left are also set to the Paper colour so that the character is easily distinguished from its fellows on either side.</p>
+
+<p>The contents of the character table, being held in ROM, cannot be changed. The address of the beginning of the table is 256 more than the value held in the CHARS system variable, which is located at 23606 and 23607, and the table is only accessed by the Spectrum via CHARS. Hence the Spectrum can be forced to use a new, user-defined, character set simply by changing the values stored in CHARS.</p>
+
+<p>Creating a new character set from scratch is a complicated task because the shape of each letter or digit must be worked out in detail. lt is also best done one character at a time.l recommend the following. Move RAMTOP down by 768 bytes to make room for a copy of the entire ROM character set to be stored above RAMTOP. Copy the character set byte by byte above RAMTOP and then reset CHARS to point to the base of the new table. This task is accomplished by the program listed in table one.</p>
+
+<p>The program listed in table two displays the 96 characters in the set assuming they are stored at the top of memory. It then allows you to select one character, enter eight new values to be POKEd into the character set and displays the result for comparison. Just to get the ball rolling, I have also listed in table three the codes for the Greek letters alpha, beta and gamma in both upper and lower case. Try using them in the program in table two to see the effect.</p>
+<br clear=all>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre><b>Table 1. A Spectrum program to copy the character
+set above RAMTOP.</b>
+
+10 CLEAR 64599 : REM MOVE RAMTOP DOWN
+20 FOR I=0 TO 767 : REM COPY TABLE FROM ROM TO HIGH RAM
+30 POKE 64600+I, PEEK (15616+I)
+40 NEXT I
+50 POKE 23606,88 : REM RESET CHARS APPROPRIATELY
+60 POKE 23607,251</pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre><b>Table 2. A Spectrum program to alter a character
+set stored at address 64600.</b>
+
+ 10 FOR I=32 TO 127: REM PRINT 96 CHARACTERS
+ 20 PRINT CHR$ I;
+ 30 NEXT I
+ 40 PRINT
+ 50 INPUT &quot;ENTER CODE OF CHARACTER TO CHANGE &quot;; X
+ 60 LET X=INT X
+ 70 IF X&lt;32 OR X&gt;127 THEN GO TO 50
+ 80 PRINT &quot;ENTER EIGHT NEW DIGITS&quot;
+ 90 FOR I=0 TO 7
+100 INPUT J: PRINT I,J
+110 POKE 64600+8*(X-32)+I,J
+120 NEXT I
+130 FOR I=32 TO 127
+140 PRINT CHR$ I;
+150 NEXT I
+160 PRINT</pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre><b>Table 3. Digits corresponding to the Greek letters
+alpha, beta and gamma in both upper and lower case.</b>
+
+<b>Letter  Lower case codes                           Upper case codes</b>
+Alpha   0   0   0   56   72   72   60   0          0   16   40   68   124   68   68   0
+Beta    0   112 72  112  72   112  64   64         0   120  68   120  68    68   120  0
+Gamma   0   0   72  48   32   32   32   0          0   124  68   64   64    64   64   0</pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<center><hr width="50%" noshade></center>
+<br clear=all>
+
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<h2><i>A Spectrum clock</i></h2>
+
+<p class="first">HAVE YOU ever wondered what makes your Spectrum tick? Not tick like a bomb but tick like a clock?</p>
+
+<p>The answer is that there ire a couple of crystals inside, rather like the crystals which control the running of digital watches. These crystals control the rate at which the machine works and keep everything in time, in, much the same way as the drum majorette tossing her baton in front of the Dagenham Girl Pipers keeps her band in time. (No, really? Ed)</p>
+
+<p>The user is not normally aware, nor needs to be aware, of this temporal control. The programmer, however, often needs to know what the time is, or the elapsed time since some event or, for a critical piece of code, the time taken for the code to execute. Hence the manufacturers have provided a handy clock for the programmer to access.</p>
+
+<p>The clock is contained in the Frames system variable at addresses 23672, 23673 and 23674. Every fiftieth of a second one of the two crystals stops the Spectrum in the middle of whatever it is doing and makes it hop to address 56, near the bottom of the ROM, to execute the machine code which starts there. One of the functions of that piece of machine code is to increment - increase by one - the Frames system variable. The piece of machine code has other important functions too, but I'll just deal with the Frames part at the moment.</p>
+
+<p>The method of incrementing is straightforward. lf the value in address 23672 is less than 255 then one is added to that value and that is the end of the matter - the incrementing of Frames is complete. That is what happens most of the time.</p>
+
+<p>However, with an increment occurring every fiftieth of a second it doesn't take long for the value in address 23672 to build up to 255. On the next clock tick after that occurs the value in address 23672 is reset to zero and the value in address 23673 is incremented. Thus, every fiftieth of a second address 23672 is incremented to a maximum of 255 and every five seconds or so - well, every 256 fiftieths of a second (5.12 seconds) to be exact - it is reset to zero.</p>
+
+<p>What happens when the value in address 23673 builds up to 255? Remember, this value is incremented every 5.12 seconds when 23672 is reset to zero. Yes, you guessed it. The value in 23673 is reset to zero and the value in address 23674 is incremented. This happens every 256x256 fiftieths of a second, which my calculator tells me is every 1310.72 seconds or, roughly, every 21mins and 50 secs.</p>
+
+<p>Finally, on the next increment cycle,  21mins 50 secs after, the value in address 23674 reaches 255, it too is reset to zero and the whole business stars again. This occurs nearly four days after the Spectrum was first turned on.</p>
+
+<p>Hence the Spectrum has an accessible clock which ticks every fiftieth of a second and runs on multiples of 256, Humanity, however, normally uses clocks which tick every second, or tenth or hundredth of a second, and which count for our convenience in minutes and hours. Why does the spectrum tick every fiftieth of a second? And why use multiples of 256?</p>
+
+<p>Answering the second question first, the reason is that a single byte can be used only to store a number in the range 0 to 255 inclusive, so that multiples of 256 are natural numbers for the Spectrum to use.</p>
+
+<p>Fair enough you say, but why tick every fiftieth of a second? That is the amount of time taken by UK televisions, and those in other countries which use the PAL system, to construct a single frame of the television picture. (Strictly speaking, only half the picture is constructed in a fiftieth of a second but that is not material to the argument presented here.)</p>
+
+<p>Hence one of the primary jobs of the crystals which make the Spectrum tick, is to trigger the hardware which grabs the information for display and posts it off to the television outlet every fiftieth of a second. You can just imagine the Spectrum designers noting that they had to set the hardware going every fiftieth of a second, and deciding that they might as well use the same period as the base unit of the software clock.</p>
+</td></tr></table>
+</td></tr></table>
+
+<center><hr width="50%" noshade></center>
+<br clear=all>
+
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#000000">
+<h2><i><font color="#FFFFFF">Code books</font></i></h2>
+
+<img src="helplne1.jpg" width=164 height=250 hspace=10 vspace=10 border=0 align="right" alt="Spectrum ROM Disassembly">
+
+<p><font color="#FFFFFF">MACHINE CODE programming continues to attract Sinclair users. Sadly it also continues to be a source of frustration and difficulty to some. Take this plea for help from James Broad of Oxford, for example. He writes: I'm baffled. I'm learning machine code and finding it an awful struggle, although your column is proving invaluable. What books did you use when you were learning?</font></p>
+
+<p><font color="#FFFFFF">It is something that we all have to go through and there are not many people who take to the black art of machine code programming without putting in a lot of effort first.</font></p>
+
+<p><font color="#FFFFFF">The books which I used are not relevant because the Z80 chip was not around then. These days I would recommend purchasing something cheap and cheerful, like Mastering Machine Code on your ZX Spectrum from Melbourne House, as a taster. lf you find that you understand the basics then move onto something more sophisticated. I recommend Z80 and 8080 Assembly Language Programming by Kathe Spracklen, published by Hayden ISBN 0-8104-5167-0. If you get stuck then go back to a Spectrum specific book.</font></p>
+
+<p><font color="#FFFFFF">For those who really get the bit between their teeth then Ian Logan's books from Melbourne House, Understanding Your Spectrum and The Complete Spectrum ROM Disassembly, ISBN numbers 0-86161-111 and 0-86161-116, are both very useful. The most authoritative book which is also widely available in the UK is How to Program the Z80 by Rodney Zaks, ISBN number 0-89588-057-1, but don't be tempted to get it unless you have the others under your belt already.</font></p>
+
+<p><font color="#FFFFFF">Rest assured that everyone finds the learning business tricky and those that deny it probably haven't learnt as much as they think they have. If it was easy it wouldn't be interesting.</font></p>
+
+<p><font color="#FFFFFF">Perhaps the most inspiring way to learn is to study a few commercial games and then remind yourself that most of the people who are writing the highly sophisticated code which drives today's games knew little about machine code and nothing about the Spectrum just a few short years ago.</font></p>
+</td></tr></table>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="worminp.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Worm In Paradise"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 48 Contents"></a>
+<a href="qlink.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="QLink"></a></p>
+
+<h6 align="center">Sinclair User<br>March 1986</h6>
+
+</body>
+</html>
+

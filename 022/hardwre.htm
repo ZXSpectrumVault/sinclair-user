@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 22 - Hardware World</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Hardware news from Sinclair User, January 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 22 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Hardware World</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1>Communications taken out of the cradle</h1>
+
+<p class="first">MICROMYTE has produced a communications system to use on a home telephone which will allow you to SAVE and LOAD programs to another ZX-81 or Spectrum user at 600 baud. The system consists of a cradle for the normal standard telephone, which has an amplifier and filter in it. The power pack is plugged into it and then a lead taken from the alternate power socket to the computer.</p>
+
+<p>If you have a Spectrum the alternate power socket is a jack plug; if you have a ZX-81 the alternate socket is a Spectrum-type barrel socket. A lead with both kinds of plugs is provided.</p>
+
+<p>A cassette is supplied with the software which does all the work. You must first LOAD it into the computer. The program first lowers RAMTOP - on the Spectrum by 1,535 bytes - and then loads the machine code program above it. Separate programs are provided for 16K and 48K machines. The program can be called at any time during a running program or from the keyboard by using RAND USER 64000 on a 48K Spectrum.</p>
+
+<p>The bottom line is taken over for messages once the machine code routine is entered and (T) transmit or (R) receive appears on the screen. Pressing (R) will start the LOADing routine immediately. That routine waits for a &quot;header&quot; from the EAR socket before starting.</p>
+
+<p>If T is selected, you are asked whether you want to SAVE a program (1), variables (2) or the current screen (3). Pressing the appropriate number leads to a message Press Key to transmit. That should not be done until a few things have been checked.</p>
+
+<p>The cassette lead then connects the EAR and Signal IN socket on cradle. The person at the other end has set up the program to receive and done the same thing. Both yours and the other person's handsets have been strapped on to the cradles using the Velcro strap provided. Anyone else in the room has to be warned that quiet is required or the data might be corrupted by noise in the room.</p>
+
+<p>Once those have been checked you can press any key. The speaker beneath the mouthpiece of the telephone - the end with the label -tends to emit a certain amount of noise. That is amplified Spectrum noise and should be ignored. It will, however, identify which way up the telephone handset should be. The sound the transmission makes is rather like a Spectrum program - first a short header, then a long series of data, both accompanied by the flashing bands on the border.</p>
+
+<p>Saving a Basic program seems to work well, as does a screen file, but DATA tends to be corrupted and warning messages of BAD DATA and WARNING flashing in red on the bottom line appear. The program allows you to try again by sending the program again without touching the keyboard. Breaking the system on the receiving side may crash the system.</p>
+
+<p>The best way to send variables would seem to be to send the complete program, variables and all. The DATA saving also appears to take much longer than necessary, as it still appears to take a minute or so to send even the shortest single string. There is no way at present to send CODE except as string variable. The variables used by the program are listed in a table at the back of the detailed instructions. The only ones which may be of use to the programmer are two bytes which set the colours for the flashing border and four bytes which set the start and end of the data sent.</p>
+
+<p>They may be POKEd but there is no indication as to how to use them without going through the Program/Data screen routine which presumably will re-set them.</p>
+
+<p>The cradle is not a true modem and so will not allow you to talk to any other user not using the same system. ZX-81 and Spectrum versions are not yet compatible, either. It is, however, a cheap and useful way of sending programs down the line and since the variables are sent automatically, interactive games can be used.</p>
+
+<p>Sending from within a program means that when LOADed successfully the program will auto-run from the next line of the program.</p>
+
+<p>The system can also be put together without connections other than to the EAR socket and with no knowledge of modems.</p>
+
+<p>Telephone time, however, is expensive and the system is still affected by noise from its surroundings and from the telephone line. If you have a constantly noisy line, it is not the system for you.</p>
+
+<p>The system will work with model three Spectrum and Interface One. The code is all that is required and that can easily be SAVEd and LOADed from Microdrive.</p>
+
+<p>Micro-Myte 60 costs &#163;39.60 from Micro-Myte Communications, Bristol.</p>
+
+<h2>More power to extra keyboards</h2>
+
+<p class="first">A SIMPLE device is available which allows you to use the ZX-81 or Spectrum +9 volt power supply to power other equipment while you are not using your computer.</p>
+
+<p>Two versions are available, one as a standard +5 volt regulated power supply and the other adjustable from +9 volts to +5 volts. Two screw terminals are provided for the output to your circuits.</p>
+
+<p>It can be used to supply more power to any extra boards on a motherboard system if you have two power supplies. Versions are available for ZX-81 and Spectrum, the only difference being the input power socket.</p>
+
+<p>The unit is in a small, black plastic box 2&#189; x 1&#189; x 1in. and has an LED on top to indicate power on. The cost is &#163;6.95 for the nonadjustable version and &#163;7.95 for the variable version.</p>
+
+<h2>Card system is ideal for serious work on Spectrum</h2>
+
+<p align="center" class="first"><img src="hardwre.jpg" width=400 height=219 border=0 alt="U-Micro motherboard"></p>
+
+<p>U-MICROCOMPUTERS, an Apple card manufacturer, has decided to do the same thing for the Spectrum. One of the things for which the Apple computer is famous is the internal motherboard-type slots, which allow you to plug-in things like RS232s, parallel ports and disc drives. All are on separate cards, which need only to be plugged into the system. They are also expensive and some have to be put in particular slots.</p>
+
+<p>The same kind of system has been adopted by U-Micro on its Spectrum range. There is a three-slot motherboard which is completely buffered to reduce the load on the Spectrum. An extension is also offered which will extend it up to seven. That, however, must be supplied by separate power supply using a standard - non-standard to Sinclair users - multi-way plug. The power supply must also supply +12 volts, +9 volts and -12 volts for things like RS232s.</p>
+
+<p>There are, however, advantages. One is that a spare unbuffered printed circuit board edge on the right-hand side of the board is provided; all edge connectors and cards are gold-plated as a matter of course. That can take the Interface One happily and would solve a problem for users whose Spectrum is in a case.</p>
+
+<p>The other advantages are complete Spectrum bus computability, unlike some other systems, and an alternative decoding system for I/O devices which will allow seven boards to be added to one system without clashes.</p>
+
+<p>That is because the motherboard provides for each edge connector, or slot, to have a different chip-select signal on edge connector position 4A.</p>
+
+<p>That is derived from the top three address lines A7-A5. Internal addresses on each card by U-Micro use the upper three address lines A8-A10.</p>
+
+<p>All that, of course, increases the cost, but U-Micro also compensates for that by detailing in a glossy booklet all the information you want to know about the card you have bought. The booklet contains not only details on how to set up and use the card but also a circuit diagram and specifications of the major chip used.</p>
+
+<p>Listings are also given of any software included in the package. Unfortunately it also includes some mistakes which, although minor, tend to take some gloss from the product. Also for some unknown reason all the booklets have identical covers; it is only when you open them that you can tell which is which.</p>
+
+<p>For serious work using a Spectrum the board is ideal; it relieves the Spectrum of power supply problems and loading of the edge connector by too many devices. It also allows you more cards than any other systems which are compatible with Sinclair equipment.</p>
+
+<p>The only problem is that the ideal solution is not inexpensive. An adaptor is required to fit the Spectrum and motherboard printed circuit board edges together costs &#163;6.90, three-slot backplane &#163;35.65, four-slot extension - if required - &#163;25.30. A power supply was not available at the time of writing but a &#163;70 alternative was supplied. The Spectrum one should be half the price, U-Micro says. There should be an additional &#163;1.50 for postage and packing.</p>
+
+<p>Cards available from U-Micro are dual RS232, dual parallel ports - with a Centronics kit as an extra - and a prototyping card. Other producers' Spectrum cards can also be used but may restrict the use of addresses.</p>
+
+<p>All equipment has a 12-month guarantee and can be obtained from U-Microcomputers Ltd, Cheshire.</p>
+
+<h2>Useful keyboard spoiled by poor design</h2>
+
+<p class="first">D'KTRONICS new keyboard for the Spectrum provides an ABS plastic case which contains the computer as well as providing a 40-key keyboard and a numeric pad. The keyboard keys are a dull grey with clear plastic, stick-on transfers. The numeric keypad is numbered from 9 down to 0, at the bottom, in a 3 by 4 high matrix, the other two keys being CAPS SHIFT and SYMBOL SHIFT. Those being next to each other means that a single finger can be used to get into &quot;E&quot; mode.</p>
+
+<p>The tops are dished and have a solid feel to them, even if they are noisy to use. The plastic transfers, however, tend to wear out after long use. The shift keys are usually the first to suffer. Also red symbols on grey keys do not show very clearly, as Sinclair soon discovered.</p>
+
+<p>The computer is easy enough to fit inside the case; you unscrew the case and remove the printed circuit board, re-screwing it on some pillars inside the case using the same screws. The keyboard connectors are two plugs which go into the keyboard sockets very easily.</p>
+
+<p>An area with posts is set aside for the power-pack board, which also must be removed from its case. The instructions then say a bolt or two must be used to hold it in place. No bolts or holes in the case are provided and no safe position on the printed circuit board exists for bolts. Either the company should drop that as a facility or provide some better method of securing the power supply before someone does some damage.</p>
+
+<p>There is a simple solution. Four upright projections are moulded into the case which go through holes in the printed circuit board. If several turns of insulating tape are wound over those poles - the number of turns can be found by experiment - when the power supply is pushed down over the poles the insulating tape compresses into tight washers above and below the board, holding it into position.</p>
+
+<p>All the wiring should be kept neat and away from the computer board, though the +9 volt plug will have to be taken outside the case to plug into the socket on the computer. Holes are provided in the back for the TV socket, tape sockets, power socket and expansion connector.</p>
+
+<p>One problem with the last item is that some add-ons will not fit, due to the slope on the back of the keyboard case. That means that some items which plugged into the edge connector have their cases stopped about &#189;in. away from where they should be, by the edge of the case.</p>
+
+<p>That means that the edge connector does not connect with the device. It should be corrected immediately. It can be solved by cutting away the projection under the expansion port for at least the whole length of the edge connector. Microdrives and Interface One cannot be connected to a Spectrum in this type of case without a massive cutting-out of the back of the case.</p>
+
+<p>It is a pity that the keyboard and case is spoiled by moderate design. A little more thought about adding things to the Spectrum would have made a much better product.</p>
+
+<p>D'KTronics is at Saffron Walden, Essex. The cost of the keyboard is &#163;46.25.</p>
+
+<h2>D/A converters incompatible with Microdrive</h2>
+
+<p class="first">EPROM SERVICES has produced two digital-to-analogue converters for the ZX-81 and Spectrum. They allow you to program an output voltage up to +9 volts by outputting a number from the computer. One of them is an independent unit which has three A/D converters and requires no extra port to use it. It is a bare board and an edge connector must be soldered on if you are not using a motherboard. The unit is incompatible with the Interface One, which controls the Microdrive, as both use the same address line A4.</p>
+
+<p>The three outputs appear on screw terminals at the top of the board and there are three sets of variable resistors to adjust the zero volts and the maximum volts setting.</p>
+
+<p>Each output is controlled by an A/D converter chip so that all the programmer has to do is OUT a number to set up the system - the port used is based on a 8255 chip - select the output required and output the number for the voltage required.</p>
+
+<p>The device is one of the few which will allow you to obtain more than 2.55 volts DC. The devices can be very useful for measuring where a standard voltage is input and the output is measured by a D/A converter for the device reaction, transistor testing and resistance measurements.</p>
+
+<p>The other D/A is very similar but will fit only on to the Mk 1 version of the company's I/O port.</p>
+
+<p>Both work well but are incompatible with other devices you may want to use on the system.</p>
+
+<p>The three-output D/A board costs &#163;27 and the single output one for use with a Mk1 port only &#163;10.</p>
+
+<h2>Timely for experiments</h2>
+
+<p class="first">GLANMIRE Electronics of the Republic of Ireland has produced a real-time clock and eight-bit I/O port for the Spectrum or ZX-81. The crystal-controlled clock is battery-driven and is recharged when connected to the computer power supply - a maximum of 40ma according to the booklet.</p>
+
+<p>It is set to compensate for various months but not leap years. It can be adjusted by a screwdriver control on the board to go faster or slower. A 256-byte PROM mounted on the board provides the software to read and write to the clock from within Basic and the time is returned in a Basic variable called T$.</p>
+
+<p>It provides a good basis for experimenting but at a cost. It is also incompatible with most other I/O equipment for the Spectrum, as it uses all the spare addresses. The board provides a full ZX-81-type extension at the back for a RAM pack. It might be useful with some applications which require an accurate, independent clock as part of time-keeping systems, such as accounts control or data logging.</p>
+
+<p>From Glanmire Electronics Ltd, Co. Cork, Ireland, the clock and I/O ports costs &#163;40 for the Spectrum version and for the ZX-81 version &#163;36. They are not interchangeable.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 22 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<h6 align="center">Sinclair User<br>January 1984</h6>
+
+</body>
+</html>
+

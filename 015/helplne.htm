@@ -1,0 +1,294 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 15 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, June 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="ssimon.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Sinclair Simon"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 15 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson4.gif" width=275 height=290 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1>Screen displays can be a moving experience</h1>
+
+<p class="first"><b><font size="+1">Scrolling and losing lines are problems dealt with in detail by our expert adviser, Andrew Hewson, in this month's column</font></b></p>
+
+<p class="first">A number of questions concerned with the screen display of the ZX-81 and the Spectrum are answered this month. The first is from John Pritchard, whom I met while answering Helpline questions on the <i>Sinclair User</i> stand at the Bristol Computer Fair. He asked: <b>Is it possible to scroll the screen sideways or downwards on the ZX-81?</b></p>
+
+<p>It is. Before describing the technique I shall review the method used to organise the display in first the 1K and then the 16K machine. The ZX-81 display is byte-mapped, i.e., each byte of memory in the portion of RAM used for the display - the so-called display file - determines the contents of one character position on the screen.</p>
+
+<p>As there are 24 lines of 32 characters, each 24*32 = 768 bytes of RAM would be required to hold the contents of the complete display. That is a great deal of space compared to the 1,024 bytes available in the 1K machine.</p>
+
+<p>To avoid wasting precious memory the 1K ZX-81 rarely constructs a complete display. When the machine is switched on, and after the CLS, NEW and RUN commands, the display file is at its minimum size of 25 bytes only. Each byte contains decimal 118 which is the newline character. The 25 newline characters indicate the beginning of the display and the end of each of the 24 lines. To see that effect plug in a ZX-81 without a RAM pack and RUN the program listed in table one.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>100 LET A=PEEK 16396+256*PEEK 16397
+110 LET B=PEEK 16400+256*PEEK 16401
+120 DIM C(25)
+130 FOR I=1 TO 25
+140 LET C(I)=PEEK (A+I-1)
+150 NEXT I
+160 FOR I=1 TO 25
+170 PRINT C(I)
+180 NEXT I
+190 PRINT
+200 PRINT &quot;LENGTH OF DISPLAY FILE WAS &quot;: B-A
+
+<b>Table 1. A program to PRINT the initial length of the
+ZX-81 display file and the contents of the first 25 bytes.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>Variable A is set to the address of the beginning of the display file as held in the D-FILE system variable - see page 178 of ZX-81 Basic Programming. Variable B is set to the address of the end of the display file as held in the VARS system variable. Array C is then used to store the contents of the 25 bytes of the display. When all 25 values have been stored they are PRINTed on the screen. The original length of the display file is then PRINTed.</p>
+
+<p>Note that it is not possible to PRINT the 25 values immediately they are determined, because to do so would alter the display as it was being studied. Similarly, it is the original length of the display file which is shown, not the length to which it grows as the program runs. Then RUN the program with the following lines inserted:</p>
+
+<pre>10 PRINT &quot;AAA&quot;
+20 PRINT &quot;BBB&quot;</pre>
+
+<p>The six letters AAA BBB appear on the first two lines at the top left of the screen, followed by the contents of the first 25 bytes. The first byte contains 118 as before. The second, third and fourth bytes contain 38, the code for A-see page 182 of ZX-81 Basic Programming - and the fifth byte contains 118, indicating the end of the first line of the display.</p>
+
+<p>The next three bytes contain 39, which is the code for B and are followed by 118, indicating the end of the second display line. All subsequent bytes contain 118, indicating that the remaining lines of the display were blank when the contents of array B were set. The length of the display, as calculated after AAA and BBB are PRINTed, increases from 25 to 31 bytes to accommodate the six letters shown on the screen.</p>
+
+<p>With a 16K RAM pack added, the ZX-81 pads the display file with bytes containing 0, the code for a space. Thus a blank display file consists of an initial byte containing 118, followed by 32 bytes containing 0, terminated by another byte holding 118 to indicate the end of the first line. The subsequent lines are held similarly as 32 bytes of zeros, terminated by a byte containing 118.</p>
+
+<p>To scroll the screen downwards or from side to side it is necessary to rearrange the contents of the display file in the appropriate logical fashion. There is one rule which must be obeyed while such rearrangements are in progress. It is that while running in SLOW mode the ZX-81 display file must contain at least 2 5 bytes holding 118 at all times. If that rule is broken, the consequences are dire; the machine crashes and the only remedy is to pull out the plug and start again.</p>
+
+<p>Tables two and three consist of programs to scroll the display from side to side and downwards respectively. A few simple alterations as shown to the program in table two will change the direction of scrolling from right to left to left to right as required.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>100 LET A=PEEK 16396+256*PEEK 16397
+110 LET B=PEEK 16400+256*PEEK 16401-1
+120 LET D=1
+130 LET I=B
+140 IF PEEK I=118 THEN GO TO 210
+150 LET S=PEEK I
+160 LET I=I-D
+170 IF PEEK I=118 THEN GO TO 200
+180 POKE I+D,PEEK I
+190 GO TO 160
+200 POKE I+D,S
+210 IF I=A THEN STOP
+220 LET I=I-D
+230 GO TO 140
+
+<b>Table 2. A program to scroll the ZX-81 display
+from left to right. To scroll the display from right
+to left alter lines 120, 130 and 210 as follows:</b>
+
+120 LET D=-1
+130 LET I=A
+210 IF I=B THEN STOP</pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>100 LET A=PEEK 16396+256*PEEK 16397
+110 LET B=PEEK 16400+256*PEEK 16401-1
+120 LET C=I
+130 IF PEEK (B-C)=118 THEN GO TO 160
+140 LET C=C+1
+150 GO TO 130
+160 FAST
+170 FOR I=B-1 TO A+C STEP-1
+180 POKE I,PEEK (I-C)
+190 NEXT I
+200 FOR I=A+1 TO A+C-1
+210 POKE I,0
+220 NEXT I
+
+<b>Table 3. A program to scroll the
+ZX-81 display file downwards.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>Nasser Gazi and Chris Cooper both ask: <b>How can the Spectrum display be scrolled?</b></p>
+
+<p>The Spectrum display is bit-mapped from the 6K display file to the screen i.e., the screen is divided into 256x192=49,152 pixels and each bit of each of the bytes in the display file determines whether one pixel is illuminated. There are eight bits in each byte, 6,144 bytes in the display file, and 8x6,144=49,152, so for each bit there is one corresponding pixel.</p>
+
+<p>The display file is held at the bottom of RAM between addresses 16384 to 22527 inclusive. If the number 255 is POKEd into a location in that area of RAM, a short horizontal line appears on the screen. For example:</p>
+
+<pre>POKE 16384,255</pre>
+
+<p class="first">causes a line to appear at the top of the first character position at the top left-hand corner of the screen. There are no breaks in the line, because all the eight bits are set in a memory location containing 255. Thus the length of the line is 1 byte = 8 bits = 8 pixels.</p>
+
+<p>Any other number POKEd into the display file will cause a broken short horizontal line to appear on the screen. A regular broken line can be produced by POKEing 170 or 85.</p>
+
+<p>The order in which the mapping takes place from the display file to the screen can be seen using a loop of the form:</p>
+
+<pre>10 FOR I=16384 TO 22527
+20 POKE 1,255
+30 NEXT I</pre>
+
+<p>That loop POKEs 255 into each memory location in the display file in turn. When it is RUN the screen fills with horizontal bars, which cover the screen gradually as the loop proceeds.</p>
+
+<p>The first line appears at the top of the screen, the second appears eight locations below it, and so on until there are eight bars on the screen. The ninth bar appears below the first, the tenth bar below the second, and then the seventeenth appears below the tenth. That method of stepping down the screen is repeated until the top one-third is filled completely. The second third and the final third are drawn in the same way.</p>
+
+<center><img src="../shared/images/helplne2.gif" width=500 height=199 vspace=10 border=0 alt="Sinclair printout"></center>
+
+<p>The same effect can be seen if a copy of the display is LOADed from cassette using the SCREEN$ command. The display file controls only the illumination of each pixel. The colour information is held in the attributes file, which occupies locations 22528 to 23295 inclusive in RAM. Thus the attributes file immediately follows the display file.</p>
+
+<p>POKEing a number into the attributes file will cause the status of the INK, PAPER, FLASH and/or BRIGHT of a entire character position to alter. The following routine fills the screen with characters and then sets them one by one to flash in magenta on red:</p>
+
+<pre>10 FOR I=1 TO 22
+20 FOR J=1 TO 32
+30 PRINT CHR$(J+47);
+40 NEXT J
+50 NEXT I
+60 FOR I=22528 TO 23295
+70 POKE I,147
+80 NEXT I</pre>
+
+<p>The order in which the attributes are mapped to the screen is as one might expect, starting at the top left and working from left to right down the screen. In that respect the Spectrum attributes file resembles the full ZX-81 display file but without an extra byte to terminate each line. Thus it is a straightforward matter to write a Basic program to scroll the attributes. An example is shown in table four.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre> 10 FOR I=0 TO 767
+ 20 POKE 22528 +I,INT(I/3)
+ 30 NEXT I
+100 LET A=22528
+110 LET B=23295
+120 LET D=1
+130 FOR I=A TO B STEP D*32
+140 LET S=PEEK I
+150 FOR J=I TO I+D*30
+160 POKE J,PEEK(J+D)
+170 NEXT J
+180 POKE I+D*31,S
+190 NEXT I
+
+<b>Table 4. A Basic program to scroll the Spectrum
+attributes from right to left. To scroll the attributes
+from left to right alter lines 100, 110 and 120 as follows:</b>
+
+100 LET B=22528
+110 LET A=23295
+120 LET D=-1</pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>Scrolling the Spectrum display file is more difficult and while it is possible to write routines in Basic they would have little practical value, because the large number of memory locations to be manipulated would make them very slow. Hence machine code routines are more or less essential.</p>
+
+<p>If a fast but rather jerky scroll is acceptable, each byte of a display line can be transferred to left or right in an analogous manner to the method used for scrolling the attributes. Remember, however, that eight bytes are used to determine the form of each character position.</p>
+
+<p>If a smooth scroll is required, the contents of each byte must be rotated, one bit at a time to right or left. After each rotation the final bit is displaced altogether and can be transferred to the next byte via the carry flag. Fortunately the Z-80 machine language is well supplied with suitable byte rotation instructions.</p>
+
+<p>Thus there are at least 12 ways of scrolling the Spectrum display; both the attributes and the display file can be scrolled, character by character, and the display file can also be scrolled pixel by pixel. Each mode can also be scrolled in all four directions and by calling two routines one after the other diagonal scrolling can be achieved.</p>
+
+<p>It is not practicable to list all 12 routines and so I have included just two examples as listed in table five. The examples are taken from a book I wrote with John Hardman, <i>40 Best Machine Code Routines for the ZX Spectrum</i>. Hence you can either study the examples to determine the remaining nine or buy the book.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre><b>Assembly       Numbers           Comment
+code           to enter</b>
+                                 Right scroll by
+                                 one character
+ld hl,22527    33 255 87         End of display
+ld d,0         22 0
+ld a,192       62 192            No. of lines
+ld b,31        6 31              32 characters per
+                                 line
+dec hl         43                Previous byte
+ld e,(hl)      94                into e
+inc hl         35                and back to
+ld(hl),e       115               display
+dec hl         35                Repeat for entire
+djnz-7         16 249            line
+ld (hl),d      114               Fill final byte
+dec hl         43                Repeat for
+dec a          61                each line
+jr nz,-14      32 242
+ret            201               Return
+                                 Left scroll by
+                                 one pixel
+ld hl,22527    33 255 87         End of display
+ld c,192       14 192            No of lines
+ld b,32        6 32              32 characters per
+                                 line
+or a           183               Clear carry
+rl (hl)        203 22            Rotate left
+dec hl         43                Previous byte
+djnz -5        16 251            Next byte
+dec c          13
+jr nz,-11      32 245            Next line
+ret            201               Return
+
+<b>Table 5. Two machine code routines to scroll the display
+file right by one character and left by one pixel respectively.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The routines can be loaded using an assembler or a simple decimal loader, such as the following, which POKEs each number in turn into the printer buffer:</p>
+
+<pre>10 LET I=23296
+20 INPUT J
+30 PRINT I,J
+40 POKE I,J
+50 LET I=I+1
+60 GO TO 10</pre>
+
+<p>To call the routine enter:</p>
+
+<pre>RAND USR 23296</pre>
+
+<p>It appears that there are Sinclair users scattered all over the globe. Mel Carter has a Spectrum and says: <b>When an input line goes over to a second or subsequent line, sometimes the machine deletes the bottom display line and sometimes it scrolls the display. Is there a way of predicting and controlling which event occurs?</b></p>
+
+<p>That effect is dependent entirely on the current PRINT position. If the last line PRINTed appeared at the bottom of the screen on line 21 the display will be scrolled upwards. Thus a PRINT AT statement immediately before the INPUT statement will provide the control required.</p>
+
+<p>Finally, Spectrum owners may like to try the Kaleidoscope program listed in table six. It works entirely by POKEing the attributes file and shows what can be achieved in a few lines. Be warned that its effect is rather hypnotic.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre> 10 LET D=0
+ 20 LET S=22928
+ 30 LET L=0
+ 40 FOR I=1 TO 12
+ 50 FOR J=0 TO L
+ 60 LET D=D+.03
+ 70 LET K=INT (127*SIN D)
+ 80 POKE S+J,K
+ 90 POKE S-J-1,K
+100 POKE S+32-31*I+32*J,K
+110 POKE S-31*I-32*J,K
+120 POKE S-33*I+31+32*J,K
+130 POKE S-33*I-1-32*J,K
+140 POKE S-64*I+31-J,K
+150 POKE S-64*I+32+J,K
+160 NEXT J
+170 LET L=L+1
+180 LET S=S+32
+190 NEXT I
+200 GO TO 20
+
+<b>Table 6. A Kaleidoscope program for the Spectrum.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="ssimon.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Sinclair Simon"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 15 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>June 1983</h6>
+
+</body>
+</html>

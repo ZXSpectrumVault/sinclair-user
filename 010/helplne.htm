@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 10 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, January 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="books.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Books"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 10 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<table width="320" border="0" cellpadding="10" align="right">
+<tr align="center"><td><img src="../shared/images/hewson2.gif" width=300 height=288 border=0 alt="">
+<br>
+<p class="first"><b><font size="-1">Andrew Hewson</font></b></p>
+</td></tr>
+</table>
+
+<p class="first"><b><font size="+1">Andrew Hewson looks at ways of programming at the limits of memory</font></b></p>
+
+<h1>Taking the modular approach to storing information</h1>
+
+<p class="first">THIS MONTH I answer some questions concerned with the storage of data on ZX computers. The word data means information of any kind which the user might wish to store, for example, names and addresses of friends, details of a bank account, extracts from a train time-table or a diary of events.</p>
+
+<p>It is important to realise that much more memory is required to store and manipulate data than for other computing tasks. That is partly because suitable programs tend to be lengthy, as many tasks are involved. It is a good idea to break such programs into so-called modules, where each module executes a particular task. A program, for example, might consist of modules to:</p>
+
+<p>Declare the nature of be data to be stored and define the amount of memory to be allocated to each item.</p>
+
+<p>Read the data from the keyboard.</p>
+
+<p>Display the data in a logical fashion so that the user may check that it has been entered correctly.</p>
+
+<p>Correct erroneous values.</p>
+
+<p>Print all or part of the data on request.</p>
+
+<p>Sort the data alphabetically or numerically.</p>
+
+<p>SAVE, VERIFY and LOAD the data.</p>
+
+<p>More modules could be added if required. Memory is also required to store the data and I explain how the user can calculate how much he requires. It is obvious that it is worth using a computer only if the amount of data to be stored exceeds that which can conveniently be noted using more conventional systems, so it is safe to assume that the memory requirement will be substantial.</p>
+
+<center><img src="../shared/images/helplne2.gif" width=500 height=199 vspace=10 border=0 alt="Sinclair printout"></center>
+
+<p>The first question is from Henry Evanson. He has just obtained a 48K Spectrum and writes: <b>I now wish to to use 48K software packs but the first I purchased will not load. How can I check that I have received a 48K Spectrum and not a 16K machine by mistake?</b></p>
+
+<p>The answer is to check the high byte P-RAMT pointer at address 23733 by entering:</p>
+
+<pre>PRINT INT(PEEK 23733/4)-15;&quot;K&quot;</pre>
+
+<p>The machine sets the contents of 23733 to 255 - or 127 on the 16K Spectrum - when it is plugged in and the line above performs a simple calculation and PRINTs 16K or 48K as appropriate.</p>
+
+<p>At any particular time a user may run out of memory. Michael Fawcett has a problem with his ZX-81 in that regard. He writes: <b>When I get near to the end of entering a particular program the cursor disappears and whenever a key is pressed subsequently, a letter disappears. What is wrong?</b></p>
+
+<p>Many ZX-81 users will recognise in Fawcett's remarks that he is running out of memory. The only guaranteed solution is to buy an add-on RAM pack, although a certain amount of space can be saved by deleting REM statements and shortening PRINT statements. The Spectrum, incidentally, emits a low-pitched buzz when memory is short.</p>
+
+<p>A check on the amount of memory left can be made at any time by entering the following REM at line 1:</p>
+
+<p>1 REM RESERVE SOME SPACE and POKEing the following numbers:</p>
+
+<pre>33, 0, 0, 57, 237, 91, 28, 64, 167, 237, 82, 68, 77, 201</pre>
+
+<p class="first">into locations 16514, 16515 ... 16527 (on the ZX-81).</p>
+
+<p>The equivalent locations on the Spectrum are 23760, 23761 ... 23773 and the numbers to be POKEd are the same except that 101, 92 should be substituted for 28, 64. In each case a short machine code routine is loaded into the space reserved in the REM statement and then the amount of memory left can be PRINTed by entering:</p>
+
+<pre>PRINT USR 16514-24;&quot;BYTES&quot;</pre>
+
+<p class="first">or in the case of the Spectrum:</p>
+
+<pre>PRINT USR 23760-24;&quot;BYTES&quot;</pre>
+
+<p>Norman Disley has a collection of about 50 music cassettes which he wishes to catalogue on a Spectrum. He writes: <b>Each tune would require six or more entries - title name, soloist, and as each cassette contains about 30 titles the collection would use almost all of the 9999 lines of the Spectrum, leaving little room for later insertions. What can I do?</b></p>
+
+<p>Several people have written outlining the same idea of using the 9999 program lines available to store up to 9999 items of information. The technique has the merit of simplicity in use but there is no possibility of writing a program to search, sort or PRINT the information.</p>
+
+<p>The conventional technique is to store the information in a numeric or string array. The length of a numeric array is 4+2*number of dimensions+5*total number of elements.</p>
+
+<p>Thus, for example, the two-dimensional array N(2,5) which contains 10 elements occupies 4+2*2+5*10 = 58 bytes.</p>
+
+<p>A string array occupies 4+2*number of dimensions+total number of elements and so Z$(2,5) uses 4+2*2+10 = 18 bytes.</p>
+
+<p>Disley wishes to store string data and so allowing 10 characters per entry, six entries per tune, 30 tunes per cassette and 50 cassettes, he would need to declare a string array:</p>
+
+<pre>Z$(50,30,6,10)</pre>
+
+<p>This would occupy</p>
+
+<pre>4+2*4+50*30*6*10=90012 bytes.</pre>
+
+<p>There are about 10,000 bytes available to the user in the 16K Spectrum and about 42,000 bytes in the 48K machine. Clearly Disley will not be able to hold all the data in the machine at the same time in that manner. The problem would still arise even if he were to use program lines, as each character in the line occupies one byte and there is an overhead of six bytes per line.</p>
+
+<p>Space could be saved by using fewer than 10 characters per entry, perhaps by using abbreviations. Alternatively, the six entries per tune of 10 characters each - 60 characters in all - could be combined into a single entry of, say, 30 characters so that less space was wasted on trailing blanks.</p>
+
+<p>A more sophisticated solution would be to hold all the information in one long string array and to use a second, numeric, array to point to the location in the string array at which each entry began. The slicing technique described in ZX Spectrum Basic Programming could then be used to select a given entry. The following program demonstrates the method:</p>
+
+<pre>10 DIM P(101): REM DECLARE POINTER ARRAY
+20 LET PZ=1
+30 DIM Z$(1000): REM DECLARE STRING ARRAY
+40 INPUT &quot;ENTER DATA&quot;;A$
+50 IF P(PZ)+LEN A$&gt;1000 GO TO 100
+60 LET P(PZ+1)=P(PZ+LEN A$)
+70 LET Z$(TO P(PZ +1))=Z$(TO P(PZ))+A$
+80 LET PZ=PZTO+1
+90 IF PZ&lt;102 THEN GO TO 40</pre>
+
+<p>Finally, Robert Redrup asks: <b>I want to store sensitive information. How can I prevent unauthorised access?</b></p>
+
+<p>Ultimately there is no way to prevent the determined intruder from reading your cassettes into a suitable computer and then PEEKing at memory to determine what is there. There are two simple tricks, however, to make life more difficult. The first is to use some kind of encoding/decoding technique, such as those described in all the best spy stories. You can build the encoding into a program but omit a vital line and enter it from the keyboard before you RUN the program.</p>
+
+<p>An alternative is to find the address of the beginning of the variables area held in the VARS system variable by using:</p>
+
+<pre>PRINT PEEK 23627+256*PEEK 23628</pre>
+
+<p class="first">on the Spectrum, or</p>
+
+<pre>PRINT PEEK 16400+256*PEEK 16401</pre>
+
+<p class="first">on the ZX-81. Then PEEK at the first few bytes of the area, jot down their content and then POKE in some random numbers instead. You will find that you can SAVE and LOAD as usual but your program will not work unless you POKE the correct numbers back into place. If you RUN the program it will work but all the variables will have been deleted.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="books.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Books"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 10 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>January 1983</h6>
+
+</body>
+</html>

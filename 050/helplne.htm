@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 50 - Hewson's Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Hewson's Helpline from Sinclair User, May 1986">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="adventh.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Adventure Helpline"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 50 Contents"></a>
+<a href="qlink.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="QLink"></a></p>
+
+<h2 class="blackback"><i>HEWSON'S HELPLINE</i></h2>
+
+<br clear=all>
+
+<img src="../shared/images/hewson7.jpg" width=156 height=300 hspace=10 vspace=10 border=0 align="right" alt="Mr Hewson">
+
+<h1><i>The Sinclair Story</i></h1>
+
+<p class="first"><b><font size="+1">For the benefit of new users, Andrew Hewson takes a trip down memory lane</font></b></p>
+
+<p class="first">A SIMPLE question to start with from Frank Woolton. He writes: <b>I have a Spectrum Plus. Can I use Spectrum 48K games on my computer?</b></p>
+
+<p>Yes, you can. It is now nearly four years since Sinclair launched his first Spectrum home computer, so it is worth reviewing the history of the machine for recent purchasers.</p>
+
+<p>The Spectrum was originally launched in two versions-16K and 48K. The design was, incidentally, based on the ZX80 and the ZX81 which preceded it, and there were some distinct features of the Spectrum carried forward unnecessarily from the earlier computers.</p>
+
+<p>The 16K and 48K machines differed only in the amount of RAM memory. The amount of RAM available determines the length and therefore, to some extent, the complexity of the programs which the computer can run.</p>
+
+<p>The public soon demonstrated that the 48K machine was preferred. The manufacturers and others offered upgrades to 16K purchasers, and before too long the 16K machine was withdrawn. Independent software suppliers upgraded or withdrew their 16K programs.</p>
+
+<p>That situation continued until late 1984 when Sinclair launched the Spectrum Plus. The keyboard of the original Spectrum 16K and 48K, while far superior to the plastic sheet of the ZX80 and ZX81, was unsatisfactory and a source of criticism from all quarters.</p>
+
+<p>With the Spectrum Plus the manufacturers discarded the original case and keyboard and brought in a few cosmetic changes, such as the provision of a reset switch. They also redesigned the internal printed circuit board - not for the first time - but the operation of the machine, so far as the user was concerned, was unchanged from the 48K computer. Thus all software written for the Spectrum 48K will run on the Spectrum Plus and vice versa.</p>
+
+<p>The same cannot be said of the recently introduced Spectrum 128K. For reasons which I will not go into here, 48K of RAM is the maximum amount which the Spectrum can drive without going into some fairly complex jiggery-pokery. In bringing in the 128K computer Sinclair has had a go at the jiggery-pokery by designing the machine to operate in two distinct modes.</p>
+
+<p>In 128K mode some use can be made of the extra 80K of memory onboard, although it is not as convenient to get at as it might be. In 48K mode the computer is supposed to operate as an ordinary 48K/Plus machine. In fact, because of the jiggery-pokery, the operation is not quite identical. Some commercial software, especially that written before the design of the 128K became widely known, makes assumptions about the state of the 48K machine which do not hold true for the 128K machine.</p>
+
+<p>Fortunately, not too much software is affected by the changes. The official Sinclair estimates is that 98 per cent of 48K/Plus programs also run on the 128K.</p>
+
+<p>Thus, in summary, 16K programs run on the 48K machines but not necessarily vice versa; all 48K programs run on the Plus and vice versa; Plus programs probably run on the 128K but not necessarily vice versa.</p>
+
+<br clear=all>
+
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<h2><i>Controlling PRINT AT</i></h2>
+
+<p class="first">Continuing our tour of the system variables, this month we stop off to have a look at the way in which the PRINT and PRINT AT commands are co-ordinated.</p>
+
+<p>These two commands are amongst the most complex available from the ROM because you are able to print single or multiple characters and the contents of several types of variable. The system also uses the commands internally to list programs to the screen, printer or microdrive etc.</p>
+
+<p>Hence we shall only look at a couple of the controlling variables - those used to monitor the Printing position on the screen. The first is called DF CC, and is held at 23684 and 23685, which together give the address in the display file to be used by the top byte of the next character to be printed. To see this, turn your Spectrum off and on again, or hit the reset button if you have a Spectrum Plus. Then enter</p>
+
+<pre>LET disp = PEEK 23684 + 256*PEEK 23685 : PRINT disp</pre>
+
+<p class="first">The value printed is 16384 - the address of the beginning of the display file, corresponding to the top left corner of the screen.</p>
+
+<p>You have to be careful when Peeking at the value of system variables, because you are using the system to look at itself. Sometimes the values can change as a result of your using the system. Try entering the same Basic line again without resetting first. This time the value printed is 16416, corresponding to the top byte of the first character of the second line on the screen.</p>
+
+<p>There are 32 characters on a single screen line, so at first sight it is not surprising that the two values for DF CC corresponding to the beginning of the first and second lines, 16384 and 16416, differ by 32. Not surprising that is, until it is remembered that each character displayed on the screen requires eight bytes in the display file to store the corresponding information. Hence we might expect the two values to differ not by 32 but by 32*8 = 256 but that is not the case because of the unusual layout of the Spectrum display.</p>
+
+<p>I have written at length about the Spectrum display file before, most recently in the January issue, so I won't repeat the detail here. Suffice it to say that the value of DF CC increases by one as the Print position moves along a line and by 32 as it moves down the screen. That holds true except when moving from eighth to ninth line and from the sixteenth to the seventeenth line. In these two cases DF CC increases by 1824 bytes, not 32.</p>
+
+<p>The other two system variables which we shall look at are called S POSN and are held at 23688 and 23689. Those two addresses each hold an integer number. The first is related to the column number to be used by the next Print instruction - or set by a PRINT AT instruction - and the second is related to the line number.</p>
+
+<p>Remember that the Sinclair convention in the PRINT AT is to label the top line as line 0, the next line as line 1, the next as line 2 and so on up to 21 for the bottom line of the display. Just to make life a little difficult, the value stored at address 23689 is not the line number but the value obtained when the line number is subtracted from 24.</p>
+
+<p>Similarly the Sinclair convention is to label the display column at the far left as column 0, the next as column 1 and so on up to column 37 for the rightmost column. The value stored at address 23688 is, however, the number obtained when the column number is subtracted from 33.</p>
+
+<p>To see how these values vary RUN the following program:</p>
+
+<pre> 10 FOR i=0 TO 21
+ 20 LET col=PEEK 23688 : LET line = PEEK 23689 : PRINT col, line
+ 30 NEXT i</pre>
+
+<p class="first">The value of &quot;col&quot; is always 33 because each printed line is placed at the left side of the display. The value of &quot;line&quot; goes down by one each time from its initial value of 24.</p>
+
+<p>The program listed in table one demonstrates how the values of the relevant system variables change as the Print position moves around the screen. It allows you to select PRINT AT position. The program then calculates the values required for the system variables so that a test message commences at the chosen position. The test message is printed, followed by the values of the system variables. The second part of the program, starting at line 2000, is triggered when you press a key. The screen is cleared and a PRINT AT command is then used to print an identical message at the same position and the system variables are displayed again, proving that the correct values were calculated originally.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre> 100 INPUT &quot;ENTER LINE NUMBER&quot; : LINE
+ 110 IF LINE &lt; 0 OR LINE &gt; 21 THEN BEEP .5,1 : GO TO 100
+ 120 INPUT &quot;ENTER COLUMN NUMBER&quot; : COLUMN
+ 130 IF COLUMN &lt; 0 OR COLUMN &gt; 21 THEN BEEP .5,1 : GO TO 120
+ 140 POKE 23688,(33 - COLUMN)
+ 150 POKE 23689,(24 - LINE)
+ 160 LET P = 16384 + 32 * LINE + 1792 * (LINE &gt; 7) + 1792 * (LINE &lt; 15) + COLUMN
+ 170 POKE 23684, P - 256 * INT (P / 256)
+ 180 POKE 23685,INT (P / 256)
+ 190 LET C = PEEK 23688
+ 200 LET L = PEEK 23689
+ 210 LET DISP = PEEK 23684 + 256 * PEEK 23685
+ 300 PRINT &quot; THIS MESSAGE IS PRINTED AT LINE &quot; : LINE : &quot; AND COLUMN &quot; : COLUMN
+ 310 PRINT C,L,DISP
+2000 REM DEMONSTRATION THAT CALCULATIONS ARE CORRECT
+2010 PAUSE 0 : CLS
+2020 PRINT AT LINE,COLUMN
+2030 LET C = PEEK 23688
+2040 LET L = PEEK 23689
+2050 LET DISP = PEEK 23684 + 256 * PEEK 23685
+2060 PRINT &quot; THIS MESSAGE IS PRINTED AT LINE &quot; : LINE : &quot; AND COLUMN &quot; : COLUMN
+2070 PRINT C,L,DISP
+
+<b>Table 1. A Spectrum program which shows how the system variables at addresses 23684,
+23685, 23688 and 23689 are used to control and monitor the display position on the
+screen.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+</td></tr></table>
+</td></tr></table>
+
+<br clear=all>
+<br>
+
+<h2><i>A plug for games</i></h2>
+
+<p class="first">Gerald Bishop bought a Spectrum Plus for his son, thinking that the only thing you could use a home computer for was to play games. Now he's a convert to the Sinclair User cause and is busily devouring back issues of the magazine, library books and so forth. He's even attempted to set up his own local user group.</p>
+
+<p>His question concerns the use and meaning of Peek and Poke, which I shall come to in a minute, but because his letter is so contemptuous of the games-playing fraternity let me make one point before I start. While the average game may be fairly frivolous at best and totally mindless at worst, the sophistication of the computing which lies behind it is deadly serious.</p>
+
+<p>Hence there is a great deal the average Sinclair user can learn about the capabilities of the home computer from studying commercial programs. Remember that the commercial programmer, whatever advantage he may have over the amateur in terms of the environment in which he develops his programs, has no advantage in terms of the equipment on which his product must eventually run. There is no secret ingredient available only to a few privileged workers.</p>
+
+<p>Thus you too, given time and patience, can learn how to do anything which appears in a commercial program, whether it be super high-speed graphics in an absurdly trivial game, or compressed script and fancy window techniques in a sophisticated word processor.</p>
+
+<p>Returning to Gerald Bishop's question he asks: <b>'What are Peek and Poke for?'</b></p>
+
+<p>I'm not sure that they are 'for' anything, but they are certainly useful if you are interested in scrabbling around inside the memory to find out what is going on and how your machine works. Taking Peek first, it is a function which takes the form:</p>
+
+<pre>PEEK address</pre>
+
+<p class="first">The address can be any positive whole number between zero and 65535 inclusive. Alternatively, it can be a positive number which when evaluated yields such a positive number.</p>
+
+<p>The Peek function returns the value which is currently held at the address in memory referred to. In the Spectrum the first 16K of memory is so-called Read Only Memory, or ROM, which is fixed and immutable. Peeking into this area, between addresses zero and 16383 inclusive, always gives the same result. Try it and see - you can't do any harm. Use a command such as</p>
+
+<pre>PRINT PEEK 1000</pre>
+
+<p>It is this area of ROM memory which gives the Spectrum its distinctive character. The execution of the Peek function, together with all the other Basic functions and commands, is controlled by the contents of the ROM.</p>
+
+<p>If you execute lots of PRINT PEEK commands you will observe that the result is always a positive number between zero and 255 inclusive. That is because there are 256 arrangements only of the eight bits which comprise each byte of memory at each address. The number of arrangements which the 16 bits constituting two adjacent bytes can take is 256*256=65536. For reasons which are not at all coincidental there are 65536 bytes of memory - 65536 different addresses in the 48K Spectrum and Spectrum Plus.</p>
+
+<p>So much for Peek. If you Peek the addresses in RAM -those between 16384 and 65535 inclusive - you will find that they, too, only take values between zero and 255. Mostly the values discovered will be zero, corresponding to unused memory.</p>
+
+<p>The Peek function is fairly bland. The Poke command, in comparison, is much more fun because it is used to alter the contents of memory. It takes the form:</p>
+
+<pre>POKE address, number</pre>
+
+<p class="first">where the address ties between zero and 65535 inclusive as before, and the number lies between zero and 255 inclusive.</p>
+
+<p>If you Poke a number into an address less than 16384 you will have no effect - because you are attempting to Poke ROM which is fixed and immutable - remember? Try:</p>
+
+<pre>PRINT PEEK 1000
+POKE 1000,47
+PRINT PEEK 1000</pre>
+
+<p class="first">You will find that the contents of the address remain unchanged despite all your efforts.</p>
+
+<p>Not so if you Poke a number into RAM. For the most part your change will be permanent, unless your Spectrum has other ideas for the memory location in question. Try a number of RAM addresses to see what happens but be careful - you are sticking a spanner in the works. You cannot do any permanent damage but you may cause some unexpected effects, and if the worst comes to the worst you may have to unplug or reset and start again.</p>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="adventh.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Adventure Helpline"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 50 Contents"></a>
+<a href="qlink.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="QLink"></a></p>
+
+<h6 align="center">Sinclair User<br>May 1986</h6>
+
+</body>
+</html>

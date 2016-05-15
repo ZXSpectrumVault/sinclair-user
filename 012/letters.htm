@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 12 - Letters</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Letters page from Sinclair User, March 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="news.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="News"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 12 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>letters</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><table width="75%"><tr><td>
+
+<center><img src="../shared/images/letters1.gif" width=400 height=185 border=0 alt=""></center>
+
+<h1>Logical statements</h1>
+
+<p class="first">THIS INFORMATION on string arrays and logical arithmetic may be of interest.</p>
+
+<p>Sinclair ZX-81 Basic lacks an IF ... THEN ... ELSE statement. In one specialised context, however, this can be mimicked with the use of string arrays, thus saving program space.</p>
+
+<p>Since one cannot have, for example:</p>
+
+<pre>IF N=1 THEN PRINT A$(7) ELSE PRINT A$(8)</pre>
+
+<p class="first">one might seem to need two statements:</p>
+
+<pre>IF N=1 THEN PRINT A$(7)
+IF N &lt;&gt; 1 THEN PRINT A$(8)</pre>
+
+<p class="first">In fact, they can both be replaced by the single statement PRINT A$(NOT N-1).</p>
+
+<p>A similar effect can also be produced, so long as N is not zero or negative, by PRINT A$(7 + SGN(N-1)); but that prints A$(6) if N is zero or negative and in any case needs an extra pair of brackets.</p>
+
+<p>The idea can be extended, provided always that the choice is between strings in the same array. For example;</p>
+
+<pre>IF N&gt;8 AND N&lt;13 THEN PRINT A$(25)
+IF NOT (N&gt;8 AND N&lt;13) THEN PRINT A$(6)</pre>
+
+<p class="first">can be replaced by</p>
+
+<pre>PRINT A$(25-19*NOT (N&gt;8 AND N&lt;13).</pre>
+
+<p class="first">The same can even be done for more than two conditional statements; for example, the four lines</p>
+
+<pre>IF A=3 AND B&gt;4 THEN PRINT A$(7)
+IF A=3 AND B&lt;=4 THEN PRINT A$(8)
+IF A&lt;&gt;3 AND B&gt;4 THEN PRINT A$(23)
+IF A&lt;&gt;3 AND B&lt;=4 THEN PRINT A$(24)</pre>
+
+<p class="first">can all be replaced by the single</p>
+
+<pre>PRINT A$(7+16*(NOT A-3)+NOT B&gt;4)</pre>
+
+<p class="first">with a considerable saving of space.</p>
+
+<p class="first"><b>R W Sharples</b></p>
+
+<h2>Improving printer</h2>
+
+<p class="first">WITH THE FLEX coming out of the edge connector on the left instead of the normal right-hand side, my ZX printer is now non-standard. I believe it is an improvement on the Sinclair orientation. It takes up less space and does not interfere with the keyboard accessibility, either visually or manually. It also has an extremely desirable side effect, in that the RAM pack stability has improved. I do not know why.</p>
+
+<p>The method of alteration is to undo the two screws on the printer connector terminal and carefully remove the two case halves, keeping the terminal card in the same position. Put the main cable to the opposite side of the terminal card and refold the wires neatly, then reverse the case halves and turn upside down, screwheads uppermost, fit over terminal card and replace screws.</p>
+
+<p class="first"><b>A Wood</b></p>
+
+<h2>User in a bind</h2>
+
+<p class="first">HAS <i>Sinclair User</i> any plans to sell binders for the magazine? I have bought the magazine from its first issue and I feel that a binder would transform my collection of magazines into a useful text.</p>
+
+<p class="first"><b>Simon Stockdale</b></p>
+
+<p class="first"><i>There are no plans to sell binders at the moment. If a decision is taken in the future we will keep readers informed.</i></p>
+
+<h2>Pascal convert</h2>
+
+<p class="first">COULD YOU tell me if there is a Pascal converter on sale for the Spectrum and if it is possible to purchase a colour printer for the Spectrum?</p>
+
+<p class="first"><b>Kevin Hardy</b></p>
+
+<p class="first"><i>A BOOK called Pascal for Human Beings is produced by Interface. It contains a compiler which turns a subset of Pascal into Basic.</i></p>
+
+<p class="first"><i>A colour printer is available for certain microcomputers but unfortunately an interface for the Spectrum to use the printer is not available yet.</i></p>
+
+<h2>Protecting software</h2>
+
+<p class="first">THANK YOU for <a href="../009/hardwre.htm#softprot">the write-up</a> in the <i>Sinclair User</i> December issue regarding the Software Protection Unit. We also, in fact, had an advertisement in that issue concerning the same unit.</p>
+
+<p>Unfortunately there was a rather damaging error in the write-up which had very serious effects. The protection unit uses only six batteries - as indicated in the instruction sheet. That gives a total battery price of &#163;2.14 using Duracells or &#163;1.50 using HP cells. The price you quoted was for eight batteries at &#163;3.34 per set.</p>
+
+<p>The price of the batteries is of vital significance to the success of the sales drive, as the competition uses nickel cadmium batteries.</p>
+
+<p class="first"><b>R J Schmid, Microbyte</b></p>
+
+<h2>RAMTOP problem</h2>
+
+<p class="first">HENRY EVANSON's question - Helpline, January 1983 - highlights a problem which the Sinclair manual does not make clear. If a program has been loaded into the Spectrum which moves RAMTOP - for example if the machine code in a program is stored above RAMTOP and the space already reserved for UDG is not sufficient - then even if NEW is pressed RAMTOP is not re-set.</p>
+
+<p>In some cases the program, though written entirely in Basic, will require the whole of the RAM - including the area reserved for UDG. If that is the case the error report 4 OUT OF MEMORY will appear after the leader has been read.</p>
+
+<p>To the uninitiated that can be baffling. While all our Spectrum educational software clears sufficient memory automatically to allow the program to load and run irrespective of where RAMTOP was set, not every software house is so helpful. If, therefore, a program which is supposed to fit into your machine does not but displays error 4 you will doubtless find that, clear 32767 (16K) or clear 65535 (48K) will, if entered in immediate mode before loading the offending tape, cure the problem.</p>
+
+<p class="first"><b>Peter Forbes, Kingfisher Software</b></p>
+
+<h2>Listing is stumped</h2>
+
+<img src="letters.gif" width=150 height=135 hspace=10 vspace=10 border=0 align="right" alt="Cricket">
+<p class="first">AS A KEEN cricket enthusiast, I was interested to see the program submitted by Peter Horlock. Being a newcomer to the world of microcomputing, I should like to know if that program could be modified to run on my recently received 16K Spectrum. If so, could you publish a program for cricketing Spectrum owners, of whom there must be a great many among your readers?</p>
+
+<p class="first"><b>Frank Kilburn</b></p>
+
+<p class="first"><i>The program would be too big to run on the 16K Spectrum. If, however, any reader has written a cricket program for the machine we would be interested to see it.</i></p>
+
+<h2>Publisher seeks sports programs</h2>
+
+<p class="first">THE EDITORS of a new book to be published soon on <i>Microcomputers in Sport</i> are looking for specimen programs which demonstrate the use of computers in sport, recreation and physical education. If you have written, or are prepared to write, suitable programs and would like to submit them for publication, please send them to Dr David Brodie, Liverpool.</p>
+
+<p>The editors are interested in both simple and complex programs, so do not consider that a straightforward program is not worth submitting. All programs selected for inclusion will have full author acknowledgment in the text and frontispiece. Many readers, young and old, experienced and inexperienced, amateur and professional, must have some programming ideas which could easily be applied or adapted to sport, recreation or physical education. Please respond quickly, as publishing deadlines have to be met, even if only to say that you are working on an idea and need a little more time to develop it.</p>
+
+<p class="first"><b>David Brodie</b></p>
+
+<h2>Firms receive pat on back</h2>
+
+<p class="first">ONE READS constantly of complaints by the public against both hardware and software manufacturers. My son owns a Spectrum and has suffered bad service, in common with many others, but I felt I should write in praise of the following:</p>
+
+<p>Campbell Systems, for keeping its word and sending goods by return.</p>
+
+<p>Kempston Electronics, for rushing an order for Christmas. It could easily have written for extra money but sent the product first.</p>
+
+<p>JRS Software, for redeeming me and supplying an upgrade on Christmas Eve after I had been let down elsewhere.</p>
+
+<p class="first"><b>M D Pritchard</b></p>
+
+<img src="../shared/images/minfuti9.jpg" width=149 height=119 hspace=10 vspace=10 border=0 align="left" alt="Futurology issue 9">
+<h2>Home computing is not harmful</h2>
+
+<p class="first">RECENTLY I read with amazement <a href="../009/futrlgy.htm">the article in the December issue</a> of <i>Sinclair User</i> by Chris Reynolds putting forward the view that children using computers will not increase their job prospects. While I would agree that the use of a micro will not enhance a child's prospects in the so-called computer industry, it will be very useful in almost any other job which requires management.</p>
+
+<p>I am a sales manager and find a personal computing capacity invaluable, despite having a mainframe in the company. My programs may not be elegant but they get results in a practical situation.</p>
+
+<p>Do not be misled; an introverted child is an introverted child whatever happens and no-one ever became introverted by using a computer. The real danger is of academics becoming isolated from the world of work.</p>
+
+<p class="first"><b>R Fowle</b></p>
+
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="news.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="News"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 12 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<h6 align="center">Sinclair User<br>March 1983</h6>
+
+</body>
+</html>

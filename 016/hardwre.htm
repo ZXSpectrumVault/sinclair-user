@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 16 - Hardware World</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Hardware news from Sinclair User, July 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 16 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Hardware World</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1>Timex makes a clearer printer</h1>
+
+<img src="hardwre1.jpg" width=400 height=177 hspace=10 vspace=10 border=0 align="right" alt="Timex 2040 printer">
+<p class="first">THE TIMEX 2040 thermal printer is the standard printer used with the American version of the ZX-81. The U.S. version of the Spectrum had yet to appear at the time of writing. It works with a different paper, 4&#189; in. wide plain white paper with a special coating sprayed on to the top of it. The coating turns black when heated, giving the impression of ink on the paper. It is much clearer and there is no difficulty with the paper sticking.</p>
+
+<p>The case is 7&#190;x5&#190;x3&#189; in. high in moulded black ABS plastic and has a 6in. long cable at the back on the left-hand side. The connector to the end of the cable is bigger and more solid than the Sinclair version, having a half-inch hump at the top.</p>
+
+<p>That hump contains two ferrite rings around the cable to reduce TV and radio interference and an interface IC - 74LS10. That IC helps to decode A7 and A2 instead of only A2 on the Sinclair version.</p>
+
+<p>The case also has a metal comb protruding under the edge connector which prevents the edge connector wobbling and, presumably, the RAM pack, too.</p>
+
+<p>Also on the back of the case is a power socket like that of the Spectrum but it requires 25V AC to run the printer. A transformer is supplied in a plastic case 2&#189;x3&#189;x2&#188;in. with American-type power prongs on the back. There is no fuse or ventilation on the power pack and thus it becomes reasonably hot but it has not failed yet. The Sinclair printer is, of course, supplied through the computer and thus needs no extra power supply.</p>
+
+<p>Inside the printer there are two regulators, one a transistor arrangement for the 25V DC supply to the heated pads which do the printing and a 7805 IC of the ZX-81 type fitted into a large heatsink and situated under a ventilation slot in the top. The power supply is set for 110V AC and therefore should not be used without a stepdown auto-transformer to convert the voltage from 240V supply.</p>
+
+<p>There are two switch pads mounted in the top of the box which push two flat switches mounted on the PCB underneath; they turn the printer on and off. Pushing the off button while holding-down the on button puts the printer into a self-test mode, printing alternate lines of 1s and 8s independent of the computer.</p>
+
+<p>The other electronics inside the printer are five driver ICs, one for the motor and four for the heated pads. There is also a pre-programmed ROM 8741 which controls all the printer operations.</p>
+
+<p>The pads on which the printer depends are spring-loaded on to a rubber platen, like a typewriter, and are made of some ceramic material on which 20 copper wires have been plated. There are two pads and each wire will print over one character area, so theoretically there should be 40 characters but you get only 32. The pads move from side to side while printing, controlled by a nylon gear arrangement, so that 32 dots are printed at one time.</p>
+
+<p>The printing head is then moved on to the next 32 until all eight dots on each character line have been printed before moving to the next line. The printing speed is very fast; on self-test you can print 124 lines a minute.</p>
+
+<p>The paper roll used in the printer is inside a perspex cover and the start of the paper is pushed under the platen; the on button is then pushed to feed through the paper. The paper appears on the outside of the paper-holder on the other side of the &#188;in. platen. The platen cannot be pushed in reverse, so the only way to free jammed paper is first to cut it and then push the platen forward, using the motor drive if possible.</p>
+
+<p>The printer is considerably easier to use than the Sinclair one and the paper is much cheaper at $1.50 (&#163;1). The printer costs $99. The one tested was sent by a friend in the U.S. and it cost $99 plus $23.90 postage - &#163;81.67 - plus &#163;14.13 Customs duty, a total of &#163;95.80.</p>
+
+<h2>Spectrum 32K rampack</h2>
+
+<p class="first">CHEETAH MARKETING has produced a 32K RAM pack for the Spectrum. It allows the 16K user to add 32K of memory without having to go inside the computer. The front of the RAM pack is designed to fit tightly on to the back of the Spectrum and an expansion connector is provided at the back for Microdrives and printers. You must plug in the RAM pack only when the power is off.</p>
+
+<p>When you turn on the power again you have a full 48K just as if it was inside. The RAM pack does not wobble and apart from the fact that it protrudes over the back of the Spectrum, you would not know it was there. Cheetah gives only a three-month guarantee and you must pay a handling charge of &#163;1.50 if you return the unit for repair.</p>
+
+<p>Cheetah Marketing is at London WC2. The cost of the RAM pack is &#163;39.95.</p>
+
+<h2>EPROM toolkit</h2>
+
+<p class="first">ROM V is the latest in a salvo of solid state software as the Americans call it - EPROMs - from Eprom Services. It contains a disassembler in a 2K EPROM for the ZX-81. It requires an EPROM board to fit it into but any one will do so long as it allows the EPROM to reside between 8K and 10K.</p>
+
+<p>On RAND USER 10000, it displays a menu of the six commands. All the commands have a description of its use and the letter to use for that command. It can disassemble from any address, including that of its own ROM, print-out or COPY the disassembled program - the printout goes on past a full screen - or jump back to the start of disassembly.</p>
+
+<p>Pressing any key brings up a new screen full of disassembled mnemonics with their hex equivalent and address on each line. All information is put in as hex numbers; decimal is not accepted.</p>
+
+<p>It provides a very useful facility in ROM which is a good aid when faulting or checking a program. It uses no memory apart from the screen and therefore can be used on a 1K machine or a 16K version; being EPROM it is also crash-proof.</p>
+
+<p>A break or Q key can be used to return to Basic at any time. Eprom Services is at Leeds. The ROM V costs &#163;10.</p>
+
+<a name="lightpen"></a>
+<h2>Writing in light makes input easier</h2>
+
+<img src="hardwre2.jpg" width=400 height=175 hspace=10 vspace=10 border=0 align="right" alt="dk'Tronics light pen">
+<p class="first">THE SPECTRUM Lightpen by dK'tronics is a kit consisting of a tape, light pen with a 3.5mm plug on the end and a black plastic box. First you run the tape into the Spectrum; the 48K side unfortunately has the 16K version on it and vice versa so if you get out of memory, pull out the plug and start again on the opposite side of the tape.</p>
+
+<p>The program loads a Basic instruction program which then loads a machine code program above RAMTOP. All goes well to that point. The instructions on the screen then warn you to plug the light pen via the control box into the computer. The power lead must be diverted through the box when you power-up the computer but the light pen must be disconnected while LOADing or SAVEing. The list of instructions is vast and all letter-coded.</p>
+
+<p>Choosing a letter from the menu gives the instructions associated with that letter. Having gone through the instructions, you have to set up the delay for the screen. That is the first bit of machine code and immediately crashes the program on the 48K version. On the 16K version there is no list of instructions - they are listed in the manual.</p>
+
+<p>The light pen works well; it reacts with the instructions satisfactorily. The position of its reaction can be adjusted up or down by a knob on the top of the unit. That varies the pulse sent to the EAR socket by the black box.</p>
+
+<p>dK'tronics light pen costs &#163;21.20.</p>
+
+<h2>ZON-X is now fully-decoded</h2>
+
+<p class="first">BI-PAK says that its Spectrum version is fully-decoded and checks that none of the Sinclair devices is working before operating the ZON-X sound board, including the Microdrive. The confusion arose because of the manual description, which was out-of-date.</p>
+
+<h2>Versatile controller</h2>
+
+<p class="first">THE PICKARD controller is a plastic box through which you can connect an Atari-type joystick to the Spectrum or ZX-81 keyboard. That allows you to specify which key the joystick will operate by a set of plugs on the top of the unit which represent the joystick position.</p>
+
+<p>They plug into a socket - just like a MIC socket - which represents the key you want to operate. That permits you to work a program through the joystick now, or in the future. It also provides you with other uses such as quick editing, having the computer react to outside events by plugging-in a switch instead of the joystick plug, and many other things.</p>
+
+<p>The unit plugs into the keyboard sockets of the computer and into the power socket of the ZX-81 or Spectrum - you must state which when ordering. The power unit then plugs into the joystick box. The keyboard leads plug into a keyboard socket on the top of the keyboard plug but that may be changed so that you do not have to remove the keyboard leads.</p>
+
+<p>Difficulties with the unit were caused by what appeared to be careless construction.</p>
+
+<p>According to the supplier those checks will be tightened and the review unit appeared to be a rogue one. The unit is also being changed to make it easier to construct, which at present is a time-consuming operation. It is a very good idea; once the unit was soldered-up it worked perfectly. Once the construction problems have been solved, it should be a winner.</p>
+
+<p>The unit is marketed by Success Services, West Midlands and costs &#163;20.45 for the controller and &#163;7.50 for the joystick. You must state on which machine you want to use it.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 16 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<h6 align="center">Sinclair User<br>July 1983</h6>
+
+</body>
+</html>
+

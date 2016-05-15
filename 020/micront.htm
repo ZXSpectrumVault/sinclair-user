@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 20 - Micronet Adaptor</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL, Micronet">
+<meta name="description" content="Micronet adaptor review from Sinclair User, November 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="softwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 20 Contents"></a>
+<a href="microdv.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Microdrive"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Micronet Adaptor</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1 align="center">Adaptor opens up the Micronet world</h1>
+
+<p align="center" class="first"><img src="../shared/images/micrntad.jpg" width=425 height=150 border=0 alt="Prism VTX5000"></p>
+
+<p align="center" class="first"><b><font size="+1">Spectrum users can now take advantage of a growing database. Stephen Adams reports on the hardware which makes it possible</font></b></p>
+
+<p class="first">THE PRISM VTX 5000 modem has been designed to give Spectrum users access to the Micronet 800 closed-user database on Prestel. It consists of a flat, black box slightly bigger than the Spectrum on which the Spectrum rests, connected to the modem via a three-plug ribbon cable. The cable connects the Spectrum and modem and provides an expansion connector for other peripherals like the printer. If you are using Interface 1, connect it to the interface connector.</p>
+
+<p>On the front of the modem are two switches and two LEDs. The red LED is the power-on light and the green LED indicates to the user that the modem is connected via the line switch to the telephone line. The second switch allows you to select the mode to be used - Micronet terminal, half-duplex transmitting terminal with echo, or receiving terminal. The Micronet terminal works at 1,200 baud receive and 75 baud transmit to Prestel. The other terminals work at 1,200 baud both ways.</p>
+
+<p>The connection to the telephone line is via a new-style jack plug and socket fitted by British Telecom. At present the cost of fitting it is being included in the price of the adaptor. The telephone is fitted with a plug on the end which plugs into the back of the modem or the wall socket.</p>
+
+<p>The modem is approved by British Telecom but has no auto-dial facility, so the telephone must be used to dial the Prestel computer before the modem is switched-in. As long as the LINE switch is in the correct position it will not effect the use of the telephone and the unit can be left connected all the time.</p>
+
+<p>The unit has two printed circuit boards, one to interface to the microcomputer and one containing the modem and isolation circuit. The modem is a Texas one-chip modem type TCX3101 controlled by a 4.4MHz PAL colour frequency crystal. It has two amplifiers between it and the line and provides various handshaking signals to the communications interface chip via a 10-wire interface cable.</p>
+
+<p>The board also contains an isolation transformer and a reed relay to hold a telephone call when the handset is replaced on the telephone.</p>
+
+<p>The Spectrum interface board contains an 8251 communications chip, 8K EPROM, baud rate oscillator and various decoding chips which allow it to switch-out the 16K Sinclair Basic ROM and replace it with its own.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'Instructions with the packages are simple and easy to understand'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>Various speeds are available, the RS232-type interface being marked from 75 to 2,400 baud, but the board is connected to work only at 1,200 or 75 baud. The chip is operated by a 0 on bit 7 of an I/O address but checks the lower five bits to see if a Sinclair device is requested. That may affect some other devices like joysticks, which also use that method of addressing.</p>
+
+<p>On powering-up the modem and Spectrum - the modem is powered from the Spectrum via a voltage regulator by turning it on at the mains plug - the modem switches in the 8K EPROM and loads a Basic and machine code program from the ROM into RAM. It also loads a new Prestel graphics set above RAMTOP. A warning is printed in the front of the manual about not powering-up by plugging-in the power socket to the back of the Spectrum when using Interface 1 - the Microdrive interface. Do not ignore it as some damage may occur if you do.</p>
+
+<p>The Basic program then RUNs and presents the user with the Micronet 800 logo, which also gives the software version number and date. Pressing a key will then get you on to the main menu, one of five used to control the system.</p>
+
+<p>That gives seven functions and is returned to for SAVEing and LOADing software from Prestel, saving, printing or viewing frames - each page is called a frame - entering other menus or entering or leaving Prestel.</p>
+
+<p>Option one lets you log-on to Prestel after inserting your identity number and password into the computer. That may be done before or after obtaining Prestel. The number is issued by Prestel via Micronet and is the one by which you are charged, so do not let anyone else have the number or they could incur large bills which you would have to pay.</p>
+
+<p>To contact Prestel dial the number for the local Prestel computer - it will always be a local number to save cost to the user - and wait for the computer to answer with a high-pitched tone. Then throw the line switch on the modem and replace the handset on the telephone; that prevents noise from the telephone corrupting the data.</p>
+
+<p>The control of the telephone line is then with the Spectrum. You are then ready to use Micronet 800, from whose page you start, or other open Prestel facilities. Micronet and other closed databases are restricted to members who pay a subscription to join. In the case of Micronet it is &#163;52 per year.</p>
+
+<p>Micronet 800 provides facilities for exchanging messages with other users, including the Information Providers; ordering goods; downloading free programs; or buying programs which are downloaded to you over the telephone. There are also various news and information pages on BBC and Spectrum machines.</p>
+
+<p>The present database of free programs seems to be made up of programs seen in <i>Sinclair User</i> and the amount of programs for sale is limited. There are two 16K programs and about 10 48K programs and none of the famous names is among them either.</p>
+
+<p>None of the major software houses for Spectrum software seem to want to use Prestel to sell their programs but that may change as more users log-on from Spectrums.</p>
+
+<p>The Prestel page is 40 columns by 24 lines and so the character set has been altered to give the smaller characters required, as well as re-defining the graphics characters. Various features also allow you to specify colours and use FLASH or REVEAL functions.</p>
+
+<p>The page number is always printed at the top with the price of the page and what kind of page it is - in this case Micronet 800. At the bottom of the page is anything you type-in at the keyboard.</p>
+
+<p>Only numbers, the two SHIFT keys, and ENTER are recognised. To get out of any frame press CAPS SHIFT and ENTER, which will return you to the main menu, from which you can get back to Basic by pressing 7.</p>
+
+<p>Any of the frames can be copied to the Sinclair printer, stored in RAM or on tape. The screens are stored as a single DIMensioned variable B$(600) and are SAVEd and LOADed as DATA. The terminal software uses normal 32-character Spectrum screens for the menus.</p>
+
+<p>The frames for programs have the first two pages as an introduction and from page number c onwards they consist of the data stored in CET format at about 850 bytes per frame. Micronet always starts loading from page c until the last page unless it is told by the user from the downloading menu.</p>
+
+<p>When LOGging OFF Prestel, a response page is printed if there are any messages in the mailbox for you. You then have a choice of reading them, erasing them or storing them on tape like any other page.</p>
+
+<p>Using Prestel can become very boring, as the only facilities you have are the numbers 0-9, the SYMBOL SHIFT key - used as * and the ENTER key - used as #. To work your way through to a particular page you can either go direct to the page, if you know it, by * Page number #, or by using one key to select from a menu the next descending menu, until you reach the page you want.</p>
+
+<p>All the time you are doing that you will be charged for the price of a local telephone call. If you intend to use Prestel a good deal it is worth storing some of the index pages on tape via the Save Frame facility, as they can allow you to pick up the correct page immediately.</p>
+
+<p>As the control program is written in Basic it would not be too difficult to alter it to do a search of Prestel for the information you want, or to call a certain page automatically.</p>
+
+<p>That would certainly speed the access to the information and save money on telephone bills. That kind of program would have to be SAVEd on tape, as the original program would be installed on switch-on.</p>
+
+<p>You do not have to be connected to Prestel to view pages stored on tape and the terminal software allows you to leave Prestel and do something on the computer and then return to it where you left off. That will happen also when you download software as it over-writes the Basic program.</p>
+
+<p>To return to Prestel you type RAND USER and then a number, which depends on whether you own a 16K or 48K Spectrum. The only way to leave Prestel is to LOG OFF on the main menu or by changing the LINE switch. For this a computer can be connected between 8am and 6pm from Monday to Friday and between 8am and 1pm on Saturday. An additional fivepence a minute will be added to the normal local telephone charge. More details can be found on page 123 on Prestel.</p>
+
+<p>The instructions with the package are simple and easy to understand, with plenty of pages reproduced by a Sinclair printer. The only facility not mentioned is the two terminal facilities, TX and RX. TX allows you to send data and programs at 1,200 baud to another user using a 1,200 baud modem. Any data sent is also echoed to the Spectrum for printing on the screen, which is a useful way of checking it is working. You can transmit only in this mode and cannot see anything sent to you.</p>
+
+<p>The RX mode is the same as the TX mode, except that any characters typed-in are not echoed, but are lost. So to talk to another user you must move the switch constantly from TX to RX and back again. There is a software switch for it but at the moment there is no software to run it.</p>
+
+<p>Micronet 800 and the Prism VTX 5000 modem allow you access to the database, at a price. The cost of the modem is &#163;74.95 plus &#163;13.15 per quarter plus VAT.</p>
+
+<p>For that you get access to Prestel and Micronet 800; a free jack socket is fitted within 72 hours by British Telecom where your telephone was sited. Also the telephone has a new cord to allow it to plug into the socket.</p>
+
+<p>Those charges are made quarterly, so it would be better to keep a note of how much time you spend and when, as you go along, so you do not receive a massive bill.</p>
+
+<p>The usefulness of having all this information on tap 24 hours a day, seven days a week, will depend on how much it costs to get it and what is available. On Micronet the information side is just getting started for the Spectrum and the cost is high.</p>
+
+<p>Prestel has more information in it, as it has been operating longer, and information on airlines, railways, pubs, clubs, theatres in any area of the country could be very useful if you want to make a reservation.</p>
+
+<p>The more people who use the system, of course, the better the system becomes and possibly the cheaper it becomes.</p>
+
+<p>The VTX modem provides the key to the door and I had no problems using it which were attributable to the modem. It is for users of the system to explore this new world like an adventure game, publishing the interesting pieces - and the annoying ones - for everyone else to see.</p>
+
+<p>Using the mailbox facility, messages could arrive by Micronet and not by post in the near future, taking seconds instead of days. It could also solve the commuting problem by you doing your work from home via a Prestel terminal.</p>
+
+<p>Micronet 800 is at London EC1.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="softwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 20 Contents"></a>
+<a href="microdv.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Microdrive"></a></p>
+
+<h6 align="center">Sinclair User<br>November 1983</h6>
+
+</body>
+</html>
+

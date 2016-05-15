@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 21 - Letters</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Letters page from Sinclair User, December 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="news.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="News"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 21 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>letters</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><table width="75%"><tr><td>
+
+<center><img src="../shared/images/letters1.gif" width=400 height=185 border=0 alt=""></center>
+
+<h1>More serious applications</h1>
+
+<p class="first">I READ <a href="../019/letters.htm">G A Rooker's letter</a> in the October edition and I support his view that the market is ready for a change in emphasis from programs on games to programs with a useful application.</p>
+
+<p>I have already contacted him proposing my calorie-reducing program Dieta for his directory which, I expect, will be very interesting to consult.</p>
+
+<p>I understand the reluctance with which your magazine may greet some programs on serious applications because, judging from the few reviews published so far, many of them offer little else than information which would be more adequately arranged in a book.</p>
+
+<p>I am sure that there are many readers who bought the Spectrum initially to play games but have realised subsequently that the machine is capable of a range of diverse applications at home, in school and at the office, and who would welcome regular information on what is being done in the field of useful application.</p>
+
+<p class="first"><b>L Cavalieri Dunbar</b></p>
+
+<h2>Odd things in Comlogs</h2>
+
+<p class="first">SINCE SENDING you my program Comlogs, which you published in October, I have discovered some odd things which can happen after a number of repeats and rubouts have been used. They can be remedied by the following corrections:</p>
+
+<p>Lines 450-530: substitute j$ for i$ throughout.</p>
+
+<p>Line 444 should read:</p>
+
+<pre>444 IF ff THEN LET g$=&quot;(2sp)&quot;+g$(m TO)</pre>
+
+<p class="first">Line 962 should read:</p>
+
+<pre>962 IF ff THEN LET g$=g$ ( 6 TO).</pre>
+
+<p class="first"><b>David Bye</b></p>
+
+<h2>Useful ROM routines</h2>
+
+<p class="first">OWNERS OF 48K Spectrums might be interested in the following ROM routines which I have found useful:</p>
+
+<p>I think most of the routines will work with 16K Spectrum.</p>
+
+<p>Has anyone found how to eliminate &quot;Start cassette, then press any key&quot; useful when making multiple SAVES?</p>
+
+<p class="first"><b>A Field</b></p>
+
+<center><table width="100%" border="1"><tr>
+<th align="left">Typical line</th><th align="left">Operation</th></tr>
+<tr><td>PRINT USR 7962</td><td>Address of free RAM</td></tr>
+<tr><td>PRINT BIN 010</td><td>Prints decimal equivalent of any binary number</td></tr>
+<tr><td>10 LET scroll=USR 3330</td><td>Scrolls whole page to top line</td></tr>
+<tr><td>10 LET scroll=USR 3583</td><td>Scroll bottom half of page up one line</td></tr>
+<tr><td>10 LET scroll=USR 3652</td><td>Clears top half of screen</td></tr>
+<tr><td>10 POKE 23617,236</td><td>Changes cursor to ?. Useful for questioned inputs</td></tr>
+<tr><td>10 LET cap=USR 4317</td><td>Changes caps to lower case, and vice versa</td></tr>
+<tr><td>10 POKE 23606,8</td><td>Renders program lines unreadable. Use with care</td></tr>
+</table></center>
+
+<h2>Unanswered questions</h2>
+
+<p class="first">ALMOST every month a letter is printed stating what a wonderful magazine <i>Sinclair User</i> is. It is the letters page I want to complain about.</p>
+
+<p>People write constantly asking questions but where are the answers? The latest example was in the October issue, when a man from Spain <a href="../019/letters.htm#yeats">wrote explaining about his deaf granddaughter</a> and how computers might help her.</p>
+
+<p>He asked desperately if there were programs to help a deaf but intelligent girl further her education. Now that is a question and the man wants an answer, as do the readers, especially those who know deaf children.</p>
+
+<p>What is the point of printing letters with questions if there are no answers?</p>
+
+<p class="first"><b>Dietmar Osman (16)</b></p>
+
+<p class="first"><i>We hoped that some of our readers might be able to offer helpful suggestions.</i></p>
+
+<h2>Interesting discovery</h2>
+
+<p class="first">FOOLING AROUND with the DRAW statement I found an interesting bug. If you type in:</p>
+
+<pre>10 BORDER 0: PAPER 0: INK 2
+20 PLOT 70,120: DRAW 4,4,4040</pre>
+
+<p class="first">it draws a kind of circle which can be changed if you change the number 4040 to almost anything.</p>
+
+<p class="first"><b>Jeremy Henderson</b></p>
+
+<h2>Games errors unforgiveable</h2>
+
+<p class="first">I HAVE used a Spectrum at school for six months and was thrilled when I at last saved enough money to buy a 48K model. I was also pleased at the offer of five software tapes with my computer at Rumbelows, which meant I could get my software collection off to a flying start.</p>
+
+<p>Eagerly I loaded my acquisitions into my Spectrum and was soon blasting asteroids and flying light aircraft on my television screen. Then it came to two tapes produced by the relatively new company Visions and I read the instructions carefully on their tapes. Both said 'load &quot;&quot;' and so that is what I typed into my keyboard.</p>
+
+<p>The first game, Sheer Panic - a version of what on the BBC computer is called Monsters - refused to load until in desperation I typed 'load &quot;&quot; code' after which I was treated to a very good version of the game.</p>
+
+<p>The second, Pitman 7, involved saving the lives of two groups of seven miners trapped underground. The title screen was impressive and I was treated to several screens of instructions, followed by a graphical demonstration of the control keys 'PRESS &quot;T&quot; TO PLAY' said the instructions, so I did and was disappointed to find that having done so and being given such a good display of graphics, or so I think, the game refused to work.</p>
+
+<p>The game also refused to work back at the shop and at a second branch, as did three other copies. In my view the first mistake was sloppy and if common to other copies a note should have been made on the tape box. The second example is unforgiveable, especially as it is from what is obviously a new company facing the fierce competition of the computer software scene.</p>
+
+<p>Keep up the good work. <i>Sinclair User</i> is one of the best computer publications on the market.</p>
+
+<p class="first"><b>Dean Gaygan</b></p>
+
+<h2>Unfortunate experiences</h2>
+
+<p class="first">I BOUGHT my first computer in July and joined the growing trend. I plugged-in, switched-on and nothing happened. I changed the faulty one for another ZX-81. To my horror it did not work. Then I swapped it for a Sinclair starter pack which included 16K RAM pack and Backgammon cassette, saving &#163;29.</p>
+
+<p>I ran the short memory test program and 1K appeared on the screen instead of 16K. I changed the RAM pack and now have a working computer and RAM pack. A friend of mine has also had the same trouble - only he is on his sixth ZX-81 and third RAM pack. Even now he has had to stick pieces of polystyrene in to hold the RAM pack still because of severe wobble.</p>
+
+<p>Are we the only unfortunate ones or is the Sinclair standard falling?</p>
+
+<p class="first"><b>Simon Pearce</b></p>
+
+<h2>Repetitions avoided</h2>
+
+<p class="first">I OFTEN see listings with five or more IF ... THEN statements after one another. The same thing can be accomplished by this:</p>
+
+<pre>IF A=5 THEN GO TO 1000
+IF B=7 THEN GO TO 1500
+GO TO (1000 and A=5)+ (1500 AND B=7)+ ...
+IF Z=9 THEN PRINT &quot;A&quot;
+IF A=10 THEN PRINT &quot;B&quot; PRINT
+(&quot;A&quot; AND Z=9)+(&quot;B&quot; AND A= 10)+ ...</pre>
+
+<p class="first">With a little experimenting almost everything can be handled.</p>
+
+<p>To <a href="../018/letters.htm#hodgett">Alistair Hodgett's question</a> my answer is: LET X=VAL INKEY$</p>
+
+<p class="first"><b>Max Berle</b></p>
+
+<h2>No fault with ZX printer</h2>
+
+<p class="first">I ENJOY the pleasure of reading <i>Sinclair User</i> and often I read about people having great problems with their ZX printers. Recently I bought one for &#163;39.95 plus a free offer of five rolls of printer paper and I am very impressed with it. I do not see anything wrong with it and I feel it must be the fault of the users mishandling them. So far as I am concerned it is well worth its price and more.</p>
+
+<p class="first"><b>P Groenewald</b></p>
+
+<h2>Surviving criticism</h2>
+
+<p class="first">I WILL NOT beat about the bush with &quot;Thanks for a great magazine&quot;. Fifty percent of <i>Sinclair User</i> is trash. Hewson and Mind Games are its only redeeming features. Worst of all are the reviews. You could gain just as unbiased an opinion if you read the side of the cassette in which the game is supplied.</p>
+
+<p>Believe it or not, the computer industry, including periodicals, will survive if you criticise software, rather than your 'rush out and buy' attitude.</p>
+
+<p>What is it I see in <i>Sinclair User</i> two months or so ago? <a href="../016/softwre.htm#arcadia">A slanging of Arcadia</a>. That - and I am sure the people which made Imagine profits top a quarter of a million pounds would agree - was and is in the top three space attack games for the 16K Spectrum.</p>
+
+<p>We are not mindless idiots, so don't treat us like them.</p>
+
+<p class="first"><b>David Mitchell</b></p>
+
+<h2>Listing any program</h2>
+
+<p class="first">I FOUND that you can list any program with a simple method.</p>
+
+<pre>Type FAST N/L
+RAND USR 836 N/L</pre>
+
+<p class="first">then press play and load the tape you cannot list.</p>
+
+<p>You will find when the loading has finished you will get an error report C/0.</p>
+
+<pre>Type LIST 1. N/L</pre>
+
+<p class="first">You will find that you can list any program.</p>
+
+<p class="first"><b>P W Borgerson</b></p>
+
+<h2>Geometrical patterns</h2>
+
+<p class="first">IT SEEMS that the geometrical figures drawn by <a href="../019/letters.htm#wysocki">R Wysocki's program</a></p>
+
+<pre>10 PLOT 100,50: DRAW 100,100,x</pre>
+
+<p class="first">are a series of 252 straight lines, each turned an angle of x/252 radians to the one before.</p>
+
+<p>Some regular polygons can be drawn, e.g., five-sided (x=100.8*PI), eight-sided (x=63*PI), 10-sided (x=50.4*PI). Polygons of 3,4,6,7,9 sides do not work, since those numbers divide exactly into 252, which means the series of lines would start and end at the same point, in contradiction to the DRAW command. They can be drawn fairly well by changing, say, to DRAW 3,3,x and making x/252 slightly different from the required angle.</p>
+
+<p>Other interesting shapes include a five-pointed star (x=201.6*PI) and an interlaced polygon with 15 apexes (x=67.2*PI).</p>
+
+<p>In some cases it is necessary to change the PLOT position or alter the DRAW to, say, 50,50,x to avoid the pattern going off the screen.</p>
+
+<p>Changing x slightly, by 0.1 or so, gives a less perfect shape and alters the length of the side. Can anyone find how the computer chooses the length of the sides it draws?</p>
+
+<p class="first"><b>Don Hinson</b></p>
+
+<h2>Simple way of making shorter statements</h2>
+
+<p class="first">IN REPLY to <a href="../018/letters.htm#hodgett">Alistair Hodgett's letter</a> - <i>Sinclair User</i>, September - there is a simple way of replacing the lengthy &quot;IF INKEYS=&quot;25&quot; THEN LET X=2&quot; statements. The easiest way is to use the line &quot;LET X=VAL INKEYS&quot;. The only problem with it is that pressing any key other than keys 0-9 will cause the program to crash. The problem can be circumvented by using this line: &quot;IF INKEYS&gt;=&quot;1&quot; AND INKEYS &lt;=&quot;9&quot; THEN LET X = VAL INKEYS&quot;.</p>
+
+<p>I would also like to comment on the chess article in the same issue. I found it very helpful but I would have appreciated more information and wonder if that may be planned for a future issue.</p>
+
+<p>I have been reading <i>Sinclair User</i> since January and I find it extremely interesting. Keep up the good work.</p>
+
+<p class="first"><b>Ciaran Gultnieks (12)</b></p>
+
+<h2>Helpful POKE commands</h2>
+
+<p class="first">WHILE messing around on my Spectrum I found a few useful POKE commands. If you type POKE 23756,0 the first line of your program will become 0.</p>
+
+<p>If you type POKE 23755,100 it will act like the NEW command on the BBC computer. By typing POKE 23755,0 your old program will appear just as it was when you typed it in.</p>
+
+<p>If you type POKE 23658,8 the computer will be set to CAPS LOCK. By typing POKE 23658,0 the CURSOR will be reverted to NORMAL mode.</p>
+
+<p>I hope you find these commands helpful.</p>
+
+<p class="first"><b>N M Fletcher</b></p>
+
+<h2>Educational self-help</h2>
+
+<p class="first">WE NEED educational programs for our <i>Educational Computing Newsletter</i>. We are Education Otherwise, a self-help group run by parents for parents, who have taken their children out of state school to teach them at home.</p>
+
+<p>To help our members make the best use of home computers in teaching children we invite programmers everywhere to donate any educational programs they think may be of use to us.</p>
+
+<p>Providing we are not swamped by too many enquiries, our newsletter is available to non-members. Please send a SAE for details.</p>
+
+<p class="first"><b>J E Rupik</b></p>
+
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="news.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="News"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 21 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<h6 align="center">Sinclair User<br>December 1983</h6>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 51 - SuperSpectrum</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair Spectrum, Sinclair Loki">
+<meta name="description" content="An article on the prospective Loki computer from Sinclair User, June 1986">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FFFF00" vlink="#660099">
+
+<p align="center" class="first"><a href="index.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Issue 51 Contents"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 51 Contents"></a>
+<a href="sincbow.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Sinclair bows out"></a></p>
+
+<hr noshade>
+<br clear=all>
+
+<center><h1><font color="#FF0000">Super</font>Spectrum!</h1>
+
+<img src="loki1.jpg" width=500 height=160 vspace=10 border=0 alt="Artist's impression of the Loki">
+
+<br>
+
+<h3><font color="#0000FF">Amstrad has Sinclair's secret weapon - the &#163;200 SuperSpectrum. It's everything the Amiga should have been</font></h3></center>
+
+<p class="first">At the time of the Amstrad deal Sinclair was well advanced with development plans for a new Spectrum micro - the SuperSpectrum - and Sinclair User has now uncovered the full details.</p>
+
+<p>Designed to replace the Spectrum 128 at under &#163;200, the SuperSpectrum - codenamed 'Loki' after the Norse 'gamesplayer' God - is an entertainment software computer with graphics and sound the likes of which have never been seen even at five times the price.</p>
+
+<p>Inspiration for the SuperSpectrum undoubtedly comes from Commodore's incredible Amiga machine. The key to the startling power of the SuperSpectrum - as with the Amiga - lies in its special custom chips. The SuperSpectrum has two sophisticated chips handling the video screen (Rasterop device) and sound synthesis, both with direct memory access. This gives the machine the potential to produce incredibly fast 3D graphics manipulations and sound of hi-fi quality.</p>
+
+<p>But where the Amiga costs over &#163;1500, the SuperSpectrum will scrape in under &#163;200.</p>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr valign="middle"><td width="33%">
+<table border="0" cellpadding="0" cellspacing="10">
+<tr><td bgcolor="#FF0000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#00FF00">
+
+<h2><b><i>Keyboard</i></b></h2>
+
+<p class="first">One feature that will mark out the SuperSpectrum as different from every Sinclair micro before, will be a keyboard suitable for the fastest of typists. With word-processing such a major attraction to people who would not consider buying a computer for games, a good keyboard is essential. Another change will be the lack of keyword legends associated with 48K Spectrum Basic. The Basic is a development of the QL's SuperBasic and additional method of entering information will be via a light pen, supplied as standard.</p>
+</td></tr></table>
+</td></tr></table>
+</td><td width="33%">
+
+<table border="0" cellspacing="10" cellpadding="0">
+<tr><td bgcolor="#FF0000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#CCCCCC">
+
+<h2><b><i>Memory</i></b></h2>
+
+<p class="first">In standard form there will be 128K of Ram. With half of it taken up by video and sound bit maps this may not seem too generous, but bank switching is provided to allow expansion.</p>
+
+<p>It is intended that most software will be stored in Rom - up to 1Mbyte on special softcards - leaving plenty of free Ram for workspace. SuperBasic, text, animation graphics, sound and music editors as well as CP/M will be built-in, and the SuperSpectrum Softcard Rom slot will also be standard, giving instant program loading for users and piracy protection for software houses.</p>
+</td></tr></table>
+</td></tr></table>
+
+</td><td width="33%">
+
+<table border="0" cellspacing="10" cellpadding="0">
+<tr><td bgcolor="#FF0000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#99CCCC">
+
+<h2><b><i>Z80H microprocessor</i></b></h2>
+
+<p class="first">Sinclair computers before and after the QL have used the Zilog Z80A CPU, triggered by clock pulses to run at 3.5 MHz. The Z80H allows the SuperSpectrum to run at 7Mhz so that all processing functions run in half the time, whether they are number crunching, data handling or screen printing.</p>
+
+<p>The additional speed not only means faster programs - a powerful interrupt facility will keep pace with the screen display without slowing down the CPU to any appreciable extent. Games programmers will delight in being able to change screen mode on every line of the display.</p>
+</td></tr></table>
+</td></tr></table>
+
+</td></tr></table>
+
+<p>The trick is that the SuperSpectrum is still an 8-bit machine. In fact, it even has a Spectrum 48K compatible mode if you want it. The processor it uses is a special up-rated version of the old Spectrum's Z80A. Called the Z80H, the new chip runs twice as fast, at an incredible 7 MHz. At this speed there is time to provide a fast interrupt handler that keeps pace with the video display, still leaving time to run programs faster than the Spectrum 48.</p>
+
+<p>But the real power of the micro comes from the two custom chips. Because they have direct access to the memory, during time which would otherwise be wasted, large amounts of screen data can be moved about at speeds that the CPU couldn't manage, even if it had nothing else to do.</p>
+
+<p>To match the CPU, fast-access Ram is required, and the SuperSpectrum will be equipped with two 64K banks each made up of two 256K-bit chips. One bank will be connected to both the CPU and custom-built Rasterop video hardware and will normally hold the video information and sound waveform tables. Bank switching is required to enable the 16-bit address bus access to all the Ram. A 4-bit system allows a total address space of 1Mbyte. At least two banks will be occupied by Roms but the rest can befitted with Ram expansion.</p>
+
+<p>The display quality relies on using a 53Kbyte video Ram table. Even at 7Mhz a Z80 could not manipulate this amount of data quickly enough to give reasonable animation, so the custom-designed graphics Rasterop device is essential. It transfers 8-bit data in the video area from one address to another, and in the process can carryout logical functions using data from the destination and source addresses and its own masking registers. Animation and selective screen scrolling becomes an automatic process with the CPU only sending a few instructions during each line interrupt.</p>
+
+<p>Another idea taken from the Amiga is line drawing hardware - the SuperSpectrum will be capable of remarkable 3D wire-frame graphics. The screen mode that will produce the best games has a 756 by 212 pixel resolution and 64 colours. A single byte is used for each pixel, leaving two bits spare for the Rasterop chip to use for Bobs (blitter objects) that give sprite-like animation and collision detection for multi-coloured graphic shapes.</p>
+
+<p>The same principle of Ram sharing will allow sound synthesis of a high quality as waveforms are stored in memory. Sound output, produced by an 8-bit digital to analogue converter, can be heard through a TV speaker, stereo headphones or fed into a hi-fi system. An optional sound sampler will allow you to 'record' any sound that has a pitch and use it as a musical voice. A music keyboard for the SuperSpectrum will be available as an add-on.</p>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr valign="top"><td width="33%">
+
+<table border="0" cellspacing="10" cellpadding="0">
+<tr><td bgcolor="#FF0000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFCC66">
+
+<h2><b><i>Spectrum compatible</i></b></h2>
+
+<p class="first">The machine will be Spectrum 48 compatible. Inside the SuperSpectrum will be faithful copies of the old Roms. The video hardware can switch to the old format and the CPU clock will slow down to 3.5Mhz. With the same cassette interface available, it seems likely then that a high proportion of Spectrum software will run in a special compatible mode which can be selected. You will not be able to write Spectrum Basic programs as the old Basic Rom will be hidden from the user (do you want to write half-speed programs?) though programs which use it will be able to access it when loaded. What may concern some people will be the lack of a Microdrive interface. Microdrives it would seem are well out of favour. Also there are no plans to include the sound chip from the 128, so true 128 compatibility seems unlikely.</p>
+</td></tr></table>
+</td></tr></table>
+
+</td><td width="33%">
+
+<table border="0" cellpadding="0" cellspacing="10">
+<tr><td bgcolor="#FF0000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FF9999">
+
+<h2><b><i>Video display</i></b></h2>
+
+<p class="first">If you think that some remarkable effects have been achieved on the Spectrum screen, you've seen nothing yet - the SuperSpectrum can rival the state-of-the-art graphics handling of the Amiga. With nearly six times more memory devoted to video Ram, the display has the same horizontal resolution as a QL (512 pixels) - but 16 colours are available! Cut the number of pixels per line to 256 and you have two options: 256 colours, or 64 colours and four sprite planes. To handle this vast potential, custom graphics, blitter technology in the form of custom graphics handling, sprite and collision detection hardware - the Rasterop chip (similar to the Amiga's blister chip) will be built in. This can access the screen Ram directly, so graphic operations can be performed very quickly. Rasterop will also contain a light-pen interface.</p>
+</td></tr></table>
+</td></tr></table>
+
+</td><td width="33%">
+
+<table border="0" cellspacing="10" cellpadding="0">
+<tr><td bgcolor="#FF0000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+
+<h2><b><i>Input and output</i></b></h2>
+
+<p class="first">The list of connections to the new machine is very impressive. A fully buffered Z80 expansion bus, RGB, composite and TV video, floppy disc, serial printer, twin joystick light pen, network and cassette ports should keep most people happy. Specialists will welcome the Midi In, Out and Thru and stereo sound input, output and Walkman-type headphone interfaces. Also the genlock input which will lock the SuperSpectrum's video hardware to video recorders. Laservision optical disc players and a frame grabber light pen is fitted as standard.</p>
+
+<p>Peripherals options include floppy disc drive, music keyboard and Ram expansions. Hard disc, compact disc optical Rom drive, mouse, modem and audio and video grabbers are also supported.</p>
+</td></tr></table>
+</td></tr></table>
+
+</td></tr></table>
+
+<p>While it's easy to be blinded by the SuperSpectrum's startling graphics and sound qualities there are two other features which could be just as important to the machine's success.</p>
+
+<p>Although the SuperSpectrum will support cassettes - and Amstrad may well build a cassette player into the main box - Softcards could become the new medium for program storage. These credit card size Rom cards can hold a program up to 1Mbyte in size and they are cheap to manufacture.</p>
+
+<p>The other feature which may attract Amstrad to the SuperSpectrum is the built-in CP/M operating system - add a controller and disc drive and the SuperSpectrum fits neatly into the Amstrad range, running the same utilities as the Amstrad CPC and PCW computers.</p>
+
+<p>To give an idea of what might be achievable with the SuperSpectrum take a look at what the Amiga can do. Nearly everyone who has seen an Amiga has had to completely rethink their expectations of other machines. lt can perform lightning fast solid 3D tumbling, animation approaching true cartoon quality and produce digitally sampled sound - real voices, real jet engine roar.</p>
+
+<p>The SuperSpectrum won't equal the Amiga for speed but it will come pretty close, and be able to produce very similar effects at a fraction of the cost.</p>
+
+<table width="100%" border="0" cellspacing="10" cellpadding="0">
+<tr><td bgcolor="#FF0000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFCC66">
+
+<h2><b><i>Sound generation</i></b></h2>
+
+<p>Rather than rely on a standard sound chip, the SuperSpectrum will have custom-built synthesiser hardware, so it won't sound like any other computer, Amiga excepted. What it will sound like is a Fairlight synth - in other words, virtually anything you want. Waveforms are held in Ram and read out at various speeds with filtering and envelope control. There will also be a Midi interface, stereo inputs and outputs (Walkman style) and built-in music composing software.</p>
+</td></tr></table>
+</td></tr></table>
+
+<p>The big question is: Will Amstrad market the SuperSpectrum now they have the rights to it?</p>
+
+<p>They'd be crazy not to. With the Sinclair technology and Amstrad's marketing the SuperSpectrum - Loki 'the gamesplayer' - would take the world by storm.</p>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="index.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Issue 51 Contents"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 51 Contents"></a>
+<a href="sincbow.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Sinclair bows out"></a></p>
+
+<h6 align="center">Sinclair User<br>June 1986</h6>
+
+</body>
+</html>

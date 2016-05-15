@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 16 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, July 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="ssimon.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Sinclair Simon"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 16 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson4.gif" width=275 height=290 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1>Switching between complementary displays on the ZX-81</h1>
+
+<p class="first"><b><font size="+1">Queries on the way in which Sinclair machines use the screen continue to flood in. Andrew Hewson returns to the subject in his column this month with more routines for your programs</font></b></p>
+
+<p class="first">HAVING ANSWERED a number of questions about ZX-81 and Spectrum displays last month, I return to a similar theme. The first question is from Keith Ratcliffe, who asks: <b>How can I switch rapidly between two different but complementary displays on my 16K ZX-81?</b></p>
+
+<p>As I explained last month, the display on the 16K ZX-81 occupies 793 bytes, starting at the address pointed to by the D-FILE system variable. Thus to save the current display and replace it by a new one it is necessary first to copy the current contents of the 793 bytes to a storage area, probably above RAMTOP, and then to copy the new display into place.</p>
+
+<p>Table one shows a Basic program which demonstrates the principles of the procedure. It creates a display, copies it above RAMTOP, overwrites the display and then copies the original version back again. The loops in lines 10 to 50 and lines 210 to 250 are for demonstration purposes only.</p>
+
+<p>Before using the program, RAMTOP must be reset from its original value of 32768, which is the highest address available on the 16K ZX-81, to some lower figure so that the memory locations above it can be used to store the display information. The value of RAMTOP is determined by the contents of addresses 16388 and 16389 see page 177 of ZX-81 Basic Programming.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre> 10 FOR I=0 TO 21
+ 20 FOR J=32 TO 63
+ 30 PRINT CHR$ J;
+ 40 NEXT J
+ 50 NEXT I
+100 LET D=PEEK 16396+256*PEEK 16397
+105 LET R=PEEK 16388+256*PEEK 16389
+110 FOR I=0 TO 792
+120 POKE R+I,PEEK(D +I)
+130 NEXT I
+200 PRINT AT 0,0;
+210 FOR I=0 TO 21
+220 FOR J=63 TO 32 STEP -1
+230 PRINT CHR$ J;
+240 NEXT J
+250 NEXT I
+300 FOR I=0 TO 792
+310 POKE D+I,PEEK (R+I)
+320 NEXT I
+
+<b>Table 1. A ZX-81 program to demonstrate how
+to save a display above RAMTOP and retrieve it
+again. Before using the program enter:</b>
+
+POKE 16389,121 NEW</pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The calculation used - all system addresses are calculated in an analogous fashion - is RAMTOP = Contents of 16388 + 256* Contents of 16389. Initially 16388 is set to 0 and 16389 is set to 128 because 0 + 256*128 = 32768.</p>
+
+<p>The minimum requirement to store two complete pages is 793*2 = 1,586 bytes. That amount of space can be reserved, with some to spare, by entering POKE 16389,121.</p>
+
+<p>Doing so resets RAMTOP to 0 + 256*121 = 30,976 and then entering NEW causes the ZX-81 to move the stack to take account of the new RAMTOP value.</p>
+
+<p>The Basic program serves to demonstrate the technique but it is very slow and so I have given two machine code routines in table two, which together perform the same task. The routines both make use of LDIR, the machine code instruction for copying items from one area of memory to another.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre><b>Assembly code            Hexadecimal              Comment</b>
+                                                  Store
+LD HL,(RAMTOP)           2A 04 40                 RAMTOP to HL
+LD BC,(16514)            ED 4B 82 40              Offset to BC
+ADD HL,BC                09                       Add
+EX DE,HL                 EB                       Destination to DE
+LD HL,(D-FILE)           2A 0C 40                 Source to HL
+LD BC,793                01 19 03                 Length of display to BC
+LDIR                     ED B0                    Block move DE to HL
+RET                      C9                       End
+                                                  Recover
+LD HL,(RAMTOP)           2A 04 40                 RAMTOP to HL
+LD BC,(16514)            ED 4B 82 40              Offset to BC
+ADD HL,BC                09                       Add
+LD DE,(D-FILE)           ED 5B 0C 40              Destination to DE
+LD BC,793                01 19 03                 Length of display to BC
+LDIR                     ED B0                    Block move DE to HL
+RET                      C9                       End
+
+<b>Table 2. Two routines for the ZX-81 to store a display page above RAMTOP and recover it.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The routines should be entered into a REM statement occupying the first line of a program starting at location 16516, using an assembler program or a simple hexadecimal loader such as:</p>
+
+<pre>10 REM AT LEAST 38 CHARACTERS
+20 FOR I=16516 TO 16551
+30 INPUT Z$
+40 POKE 1,16*CODE Z$+CODE Z$(2)-476
+50 NEXT I</pre>
+
+<p>Before loading the routines, reset RAMTOP and enter NEW as before.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'Two simple machine code loops could be used to transfer the data in a similar manner to the loops in table two - a reader exercise'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>Many display pages can be stored and recovered, provided RAMTOP is set low enough, using those routines. Their operation is controlled by the contents of locations 16514 and 16515, i.e., the first two locations of the REM statement. If the locations both contain zero the display is stored/recovered from the area immediately above RAMTOP. If the locations together contain 793 - the length of a single display page - 793 bytes is left between the RAMTOP and the beginning of the display storage.</p>
+
+<p>The routine to store the display is located at 16516 and the recovery routine is at 16534. Thus, for example, to store and then recover a single page, enter:</p>
+
+<pre>POKE 16514,0
+POKE 16515,0
+RAND USR 16516 (store the page)
+RAND USR 16534 (recall the page)</pre>
+
+<p>Similarly to store a second page and recover the first enter:</p>
+
+<pre>POKE 16514,25 (793-256*INT (793/256))
+POKE 16515,3 (INT (793/256))
+RAND USR 16516
+POKE 16514,0
+POKE 16515,0
+RAND USR 16534</pre>
+
+<p>Similar routines can be written for the Spectrum but it must be borne in mind that the Spectrum display file is very large - nearly 7K when the colour information in the attributes is included. There is just sufficient room in the 16K machine to store one extra page and a small program. With 48K of RAM there is sufficient room for six extra display pages.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'Spectrum display file is nearly 7K when the colour information in the attributes is included'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>Richard Mellor poses a question which does not concern the display file but the solution involves saving information above RAMTOP in a similar manner to storing the display. He asks: <b>Is it possible, on the ZX-81, to load and save variables only from within a program so that they can be loaded in at a later date and reused?</b></p>
+
+<p>The ZX-81 LOAD and SAVE routines transfer to and from cassette all the information between address 16384 and the address held in the system variable called STKEND. Inspection of the memory map on page 171 of ZX-81 Basic Programming shows that most of the active contents of memory - the system variables, the program, the display and the variables and the like - lie between 16384 and STKEND. Hence those items are transferred automatically by the LOAD and SAVE commands.</p>
+
+<p>It is unfortunate that the starting address is fixed at 16384. If it was determined by the contents of an extra system variable it would be possible, by POKEing suitable values into the system variable, to LOAD or SAVE portions of memory as can be done on the Spectrum. An alternative would be to copy the SAVE and LOAD routines into RAM, alter them and then use the new routines instead of the originals.</p>
+
+<p>A simpler solution is to copy the contents of the memory area which is required separately - in this case the variables area - above RAMTOP, SAVE the program, copy the variables back again and then SAVE them separately. The reverse procedure is used when LOADing the program and the variables.</p>
+
+<center><img src="../shared/images/helplne2.gif" width=500 height=199 vspace=10 border=0 alt="Sinclair printout"></center>
+
+<p>Supposing a two-dimensional array P(5,2 3) is to be SAVEd separately from the program. The first task is to determine how much memory is required in the variables area, and therefore also above RAMTOP, to store the array. It is possible to calculate the space requirements using the information in chapter 27 of ZX-81 Basic Programming but it is probably easier to let the machine do the work for you. First clear the ZX-81 by entering NEW and define the array by entering:</p>
+
+<pre>DIM P(5,23)</pre>
+
+<p>Then calculate the length of the variables area by checking the value of the two systems variables VARS - which points to the beginning of the area - and E-LINE - which points to one more than the end of the variables area. The difference between E-LINE and VARS less one, i.e. PEEK 16404 + 256*PEEK 16405-1-PEEK 16400-256*PEEK 16401 is the length of the variables area and, as the array P is the only variable, it is also the length of P. In this case P proves to be 583 bytes long - five bytes for each of the 5*23 = 115 elements of the array plus another eight bytes to hold various ancillary information as shown on page 173 of the manual.</p>
+
+<p>Thus at least 583 bytes of memory are required above RAMTOP to provide temporary storage for the array. Reducing the contents of 16389 from 128 to 125 reserves 3*256 = 768 bytes, hence enter POKE 16389,125 followed by NEW.</p>
+
+<p>The program can then be LOADed from cassette and the two routines listed in table three can be added to it. The two routines transfer the first 583 bytes of the variables area to and from the space above RAMTOP in much the same way as the display was transferred previously. There is one more requirement of the program. That is that the array must be the first variable declared by the program. That ensures that the array lies at the bottom of the variables area.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>100 REM STORE P(5,23) ABOVE RAMTOP
+110 LET I=PEEK 16400+256*PEEK 16401
+120 LET J=PEEK 16388+256*PEEK 16389
+130 FOR K=0 TO 582
+140 POKE J+K, PEEK(I+K)
+150 NEXT K
+200 REM RECALL P(5,23) FROM ABOVE RAMTOP
+210 LET I=PEEK 16400+256*PEEK 16401
+220 LET J=PEEK 16388+256*PEEK 16389
+230 FOR K=0 TO 582
+240 POKE I+K, PEEK(J+K)
+250 NEXT K
+
+<b>Table 3. Two ZX-81 routines to store an array p(5,23)
+above RAMTOP and to retrieve it.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>That final requirement makes it difficult to use the technique with ordinary string variables because they can move up the variables area when they are redefined by the program. It is therefore best to use the technique only with numeric variables, arrays and string arrays.</p>
+
+<p>Two simple machine code loops could be used to transfer the data in a similar manner to the loops in table two. That is left as an exercise for the reader.</p>
+
+<p>My next letter is from Ulrich Myska. He writes: <b>The advertisement for the Spectrum states that software can be used to generate 40 characters per line or more. Is there a simple Basic program which can do this?</b></p>
+
+<p>Unfortunately there is not. The Spectrum character set is designed on an eight-by-eight matrix of pixels giving a maximum of 32 characters on each of 25 lines, because the resolution of the screen is 192 by 256 pixels. I explained the somewhat complicated format of the Spectrum display last month, so I shall restrict my comments to an outline of how 40 characters per line might be obtained, given time and patience to write the software.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'The printer buffer forms a useful temporary store and in this case it is the correct length'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>Imagine that you wish to PRINT the contents of a 40-character string called z$ on a single line. The steps might be:</p>
+
+<p>Use the LOOKVARS routine in the ROM - at address 10418 - to find the location in the variables area of the first byte of z$.</p>
+
+<p>Find the CODE of the first character in z$ and locate the eight bytes of data in the character table - starting at 15616 in ROM - which determine the form of the character. The calculation is: Address of first byte = 15360+8*CODE(z$(1))</p>
+
+<p>Store the contents of each of the eight bytes in the first, 33rd, 65th and the like bytes of the printer buffer starting at 23296. The printer buffer forms a useful temporary store and in this case it is exactly the correct length to store a single line of characters.</p>
+
+<p>Find the CODE of the next character and the eight corresponding bytes in the character table as previously. Store the contents of the eight bytes in the second, 34th, 66th bytes of the printer buffer and then rotate each byte to the left by two bits. It is that procedure which will cause the characters to overlap so that 40 characters can be squeezed into the space normally used by 32. Repeat for the next character and rotate to the left by four bits.</p>
+
+<p>You can see that the task is complicated but the difficulties do not end when all 40 characters have been transferred correctly to the printer buffer. Each line of 32 bytes must then be transferred to the correct position in the display file and, as I explained last month, that task is not straightforward.</p>
+
+<p>Michael Boyd wants to know how to write a program which can read two keys which have been pressed simultaneously. He writes: <b>I have tried using INKEYS but if two keys are pressed at the same time the result is zero, not the code of either key.</b></p>
+
+<p>The solution is to make use of the IN command as described in chapter 23 of the manual. There are eight versions of the command, each of which reads five of the 40 keys on the keyboard. The command returns a whole number between 224 and 225 inclusive, depending on which combination of five keys is pressed. For most programs it will be sufficient to test for each of the legitimate results in turn. The most efficient way is to use a routine similar to the following:</p>
+
+<pre>100 LET I=IN 65022
+110 PRINT I;
+120 IF I=2*INT (I/2) THEN PRINT &quot;A&quot;;
+130 IF I=4*INT (I/4)&lt;2 THEN PRINT &quot;S&quot;;
+140 IF I=8*INT (I/8)&lt;4 THEN PRINT &quot;D&quot;;
+150 IF I=16*INT (I/16)&lt;8 THEN PRINT &quot;F&quot;;
+160 IF I=32*INT (I/32)&lt;16 THEN PRINT &quot;G&quot;;
+170 PRINT
+180 PAUSE 99
+190 GO TO 100</pre>
+
+<p>This routine uses the IN 65022 instruction to scan the five keys A, S, D, F, G.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="ssimon.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Sinclair Simon"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 16 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>July 1983</h6>
+
+</body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 22 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX-81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, January 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="books.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Books"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 22 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson4.gif" width=275 height=290 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1>A simple way to save string variables on tape</h1>
+
+<p class="first"><b><font size="+1">Our expert Andrew Hewson offers some hints on storing and tells you how to create new user-defined graphics characters</font></b></p>
+
+<p class="first">ONE OF the many useful facilities present on the Spectrum but not on the ZX-81 is the extension to the SAVE command which enables the programmer to SAVE not only programs on cassette but also the screen display, machine code and Basic variables. Unfortunately the syntax of the SAVE command is not so sophisticated as it might be, so that it is possible to SAVE only one variable at a time. It is always possible to SAVE variables one after the other on the same cassette but, as Alex Randall points out, that is most inconvenient because the &quot;Start tape, then press any key&quot; message appears each time a new variable is to be SAVEd.</p>
+
+<p>There are several ways round the problem but probably the simplest is to manipulate the variables area in RAM before SAVEing so that it appears to the relevant ROM routines to consist of one large string variable.</p>
+
+<p>Load and RUN the Basic routine listed in table one and enter &quot;HELPLINE&quot; in response to the input request. The program illustrates the method used to store string variables in memory. The resulting display is shown in table two.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>10 INPUT &quot;ENTER A STRING&quot;;Z$
+20 LET VARS = PEEK 23627 + 256*PEEK 23628
+30 FOR I = VARS TO VARS + 11
+40 PRINT PEEK I,CHR$ PEEK I
+50 NEXT I
+
+<b>Table 1. A Spectrum program which looks at
+the first few bytes of the variables area
+of memory.</b>
+
+90	Z
+9
+0	?
+72	H
+69	E
+76	L
+80	P
+45	-
+76	L
+73	I
+78	N
+69	E
+
+<b>Table 2. The display which results when
+the program in table one is RUN and
+&quot;HELP-LINE&quot; is entered in response to
+the input request.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The program works by using the VARS system variable held at 23627 and 23628 to identify the beginning of the variables area in memory. Provided that the program is invoked by entering RUN, the string entered by the user, Z$, lies at the bottom of that area because it is the first variable assigned in the routine. Thus the FOR-NEXT loop PEEKS and PRINTS the memory locations which hold the contents of Z$.</p>
+
+<p>It is clear that strings are stored in memory in straightforward fashion. The first byte of the appropriate area contains the character code of the letter which identifies the string, in this case Z. The next two bytes together specify the length of the string in the form:</p>
+
+<pre>String length = PEEK first byte + 256*PEEK second byte</pre>
+
+<p>In that case the string contains nine characters and so the first byte is 9 and the second is 0. Hence if we ensure that the first character in the variables area is a string, POKE the length of the entire variables area into the two locations which define the length of the string, and use the SAVE command to store the string on cassette, we will have succeeded in SAVEing all the current variables.</p>
+
+<p>The program in table three demonstrates the technique. Line 10 and lines 110 to 160 are the functional part of the SAVEing routine and lines 210 to 240 are the functional part of the LOADing routine. I have included the remaining lines only to prove that the method works.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>10  LET Z$=&quot;&quot;
+20  REM CREATE SOME DATA TO BE SAVED
+30  DIM A(2)
+40  LET A(1)= 32767
+50  LET A(2)= 65536
+60  LET A$=&quot;SINCLAIR USER&quot;
+100 REM ROUTINE TO SAVE ALL VARIABLES
+110 LET V=PEEK 23627+256*PEEK 23628
+120 LET L=PEEK 23641+256*PEEK 23642+2-V
+130 POKE 23296,INT (L/256)
+140 POKE V+1,L-256*INT (L/256)
+150 POKE PEEK 23627+256*PEEK 23628+2, PEEK 23296
+160 SAVE &quot;ALLVARS&quot; DATA Z$()
+170 CLEAR
+200 REM ROUTINE TO LOAD ALL VARIABLES
+210 LOAD &quot;ALLVARS&quot; DATA Z$()
+220 POKE PEEK 23627+256*PEEK 23628,90
+230 POKE PEEK 23627+256*PEEK 23628+1,0
+240 POKE PEEK 23627+256*PEEK 23628+2,0
+300 REM PRINT VARIABLES
+310 PRINT &quot;Z$=&quot;;Z$
+320 PRINT &quot;A(1)= &quot;; A(1)
+330 PRINT &quot;A(2)= &quot;; A(2)
+340 PRINT &quot;A$= &quot;;A$
+350 PRINT &quot;V=&quot;;V
+360 &quot;L=&quot;;L
+
+<b>Table 3. Spectrum routines which demonstrate a technique
+for SAVEing and LOADing all variables.</b>
+
+<b>
+Decimal         Assembly        Comment</b>
+42 75 92        LD HL,(23627)   Load HL with address in VARS
+126             LD A,(HL)       Copy first byte to A
+254 90          CP 90           Compare with 90 (code for Z)
+40 2            JR Z,2          Jump if code is 90
+207             RST 8           Error detected-return to Basic
+27              DEFB 27         with error code &quot;S&quot;
+235             EX DE,HL        Copy VARS to DE
+42 89 92        LD HL,(23641)   Load HL with address in E_LINE
+140             LD BC,4         Load BC with 4
+167             AND A           Clear carry flag
+237 82          SBC HL,DE       Calculate new length
+237 66          SBC HL,BC       for Z$
+235             EX DE,HL        and store in DE
+35              INC HL          Copy new length
+115             LD (HL),E       to the appropriate
+35              INC HL          pair of bytes
+114             LD (HL),D       in Z$
+201             RET             End
+42 75 92        LD HL,(23627)   Load HL with address in VARS
+126             LD A,(HL)       Copy first byte to A
+254 218         CP 218          Compare with code for Z+ 128
+40 2            JR Z,2          and jump if correct value
+207             RST 8           Otherwise return to Basic
+26              DEFB 26         with error code R
+54 90           LD (HL),90      Reset byte to code for Z
+35              INC HL          Reset
+54 0            LD (HL),0       length
+35              ICN HL          of Z$
+54 0            LD (HL),0       to zero
+201             RET             End
+
+<b>Table 4. Two Spectrum matching code routes for SAVEing and
+LOADing all variables.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The new length for Z$ is calculated by subtracting the value in VARS from the address of the beginning of the Edit Line area, held in the system variable E_LINE at 23641 and 23642. The result is adjusted to take account of the byte occupied by the string identifier, the two bytes occupied by the string length, the byte containing 128 which marks the end of the variables area, and the six bytes which will be required for the variable L which does not exist at the time the calculation takes place.</p>
+
+<p>A circuitous route via a temporary store - I have chosen to use the printer buffer - must be taken to POKE the result into the appropriate locations, because the routine causes all the Basic variables except Z$ to become temporarily inaccessible.</p>
+
+<p>Spectrum Basic permits only numeric or string arrays to be SAVEd see page 208 of the Spectrum manual and so the syntax checker will not permit the entry of a line such as:</p>
+
+<pre>SAVE &quot;ALLCHARS&quot; DATA Z$</pre>
+
+<p>Hence the program SAVES Z$ as if it were a string array, i.e., in the form Z$(). It is surprising that the SAVE routine in the ROM does not halt with an error report when that line is encountered. The Spectrum distinguishes string arrays from strings in the variables area by adding 128 to the code for the identifying letter. For example, the code for the string Z$ is 90 and the code for the string array Z$() is 90+128 = 218.</p>
+
+<p>So an inconvenient consequence of SAVEing Z$ as if it were an array is that the contents of the identifying byte is increased by 128. Line 220 in the LOADing routine corrects the value to 90 and lines 230 and 240 reset the length of Z$ to zero. The remainder of the program demonstrates that the data has all been recovered.</p>
+
+<p>I seem often to receive a number of letters all on broadly the same topic. This month several readers have expressed interest in the use of graphics characters on the Spectrum. Emmanuel Willems wants to know: <b>How can one redesign the Spectrum letters?</b> whereas Garry Baker asks: <b>How do you get more than 21 high-resolution graphics characters?</b></p>
+
+<p>John Row has a specific application in mind. He writes: <b>How can I call up as many as 200 Egyptian hieroglyphs?</b> I might mention in passing that I never cease to be amazed at the uses to which the million or so Sinclair users are putting their machines. Egyptian hieroglyphs - whatever next?</p>
+
+<p>There are two methods for creating new characters, apart from using the DRAW, PLOT and CIRCLE commands which are too slow and cumbersome for most purposes. The simplest is to make use of the user-defined graphics facility in which up to 21 new characters can be defined and assigned, one to each of the letter keys A to U.</p>
+
+<p>The form of each new character is stored in eight bytes of the 168 bytes reserved for the purpose at the top of memory above RAMTOP. The character assigned to a given key can be obtained by pressing the graphics key CAPS SHIFT 9 - before and after pressing the letter key.</p>
+
+<p>The method of encoding and decoding the eight bytes can be understood with the help of some knowledge of binary numbers. Every character in the Spectrum character set, and every new character created by the user, is defined relative to an eight-by-eight grid. Each element in the grid is called a pixel. Each pixel can be set to either the INK or the PAPER colour and it is the precise arrangement of INK- or PAPER-coloured pixels in the eight-by-eight grid which creates each character.</p>
+
+<p>Each of the eight bytes devoted to a character defines the setting of one horizontal line of eight pixels using the following system. The contents of a byte, which necessarily lies in the range 0 to 255 in decimal, is read as an eight-digit binary number so that there is a one-to-one correspondence between pixels and binary digits. A binary number consists of zeros and ones only. All pixels for which the corresponding binary digit is zero are set to the PAPER colour, whereas all pixels for which the corresponding digit is one are set to the INK colour.</p>
+
+<p>Very often the first and last bytes of the group of eight controlling a given character are zero. Those two bytes determine the top and bottom of the character respectively and a zero setting ensures that all the corresponding pixels are set to the PAPER colour; thus, when the character appears on the screen, it is well-separated from other items on the lines above and below.</p>
+
+<p>For a similar reason each byte usually contains an even number which is also less than 128. As a result, all pixels at the right and left are also set to the PAPER colour, so that the character is distinguished easily from its fellows on either side.</p>
+
+<p>When the Spectrum is first switched on the user-defined graphics characters are set to a copy of the capital letters on the corresponding key, it is a simple matter to alter the characters. Table five lists a Basic program which does the job. I have also listed in table six the numeric codes for the letters in the Greek alphabet.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>10 INPUT &quot;ENTER THE LETTER TO BE REDEFINED&quot;; A$
+20 LET A$=CHR$(CODE A$-32*(A$&gt;&quot;&#163;&quot;))
+30 IF A$&gt;&quot;A&quot; OR A$&gt;&quot;U&quot; THEN BEEP .2,24: GOTO 10
+40 FOR I=0 TO 7
+50 INPUT &quot;ENTER BYTE NUMBER&quot;; J
+60 IF J&lt;0 OR J&gt;255 THEN BEEP .2,24: GOT0 50
+70 POKE USR A$+I,J
+80 NEXT I
+
+<b>Table 5. A Spectrum program for defining new user-defined
+graphics characters.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The system is designed to provide a set of, at most, 21 new characters but additional sets can be defined by altering the UDG systems variable which is held at 23675 and 23676. The number in UDG is the address of the first byte of the first graphics character, i.e., the character assigned to the A key. When the Spectrum is switched on it is set to 32600 - 16K machine - or 65368 - 48K machine - thus reserving 168 bytes for the 21 characters between the UDG address and the top of RAM.</p>
+
+<p>In principle, UDG can be changed to point to any address in RAM but the simplest approach is to reduce it by 168 for each additional character set required. It is also necessary to reduce RAMTOP by a similar amount so that the graphics characters do not interfere with the stack, thereby causing the machine to crash.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<center><table border="0" cellpadding="4">
+
+<tr>
+<td><b>Letter</b></td>
+<td colspan="8"><b>Lower-case codes</b></td><td>&nbsp;&nbsp;</td>
+<td colspan="8"><b>Upper-case codes</b></td>
+</tr>
+
+<tr>
+<td>Alpha</td><td>0</td><td>0</td><td>0</td><td>56</td><td>72</td><td>72</td><td>60</td><td></td><td>&nbsp;</td><td>0</td><td>16</td><td>40</td><td>68</td><td>124</td><td>68</td><td>68</td><td>0</td>
+</tr>
+<tr>
+<td>Beta</td><td>0</td><td>112</td><td>72</td><td>112</td><td>72</td><td>112</td><td>64</td><td>64</td><td>&nbsp;</td><td>0</td><td>120</td><td>68</td><td>120</td><td>68</td><td>68</td><td>120</td><td>0</td>
+</tr>
+<tr>
+<td>Gamma</td><td>0</td><td>0</td><td>72</td><td>48</td><td>32</td><td>32</td><td>32</td><td>0</td><td>&nbsp;</td><td>0</td><td>124</td><td>68</td><td>64</td><td>64</td><td>64</td><td>64</td><td>0</td>
+</tr>
+<tr>
+<td>Delta</td><td>48</td><td>64</td><td>32</td><td>48</td><td>72</td><td>72</td><td>48</td><td>0</td><td>&nbsp;</td><td>0</td><td>64</td><td>96</td><td>80</td><td>72</td><td>68</td><td>124</td><td>0</td>
+</tr>
+<tr>
+<td>Epsilon</td><td>0</td><td>0</td><td>56</td><td>64</td><td>48</td><td>64</td><td>56</td><td>0</td><td>&nbsp;</td><td>0</td><td>124</td><td>64</td><td>120</td><td>64</td><td>64</td><td>124</td><td>0</td>
+</tr>
+<tr>
+<td>Zeta</td><td>0</td><td>56</td><td>32</td><td>64</td><td>64</td><td>112</td><td>8</td><td>48</td><td>&nbsp;</td><td>0</td><td>124</td><td>8</td><td>16</td><td>32</td><td>64</td><td>124</td><td>0</td>
+</tr>
+<tr>
+<td>Eta</td><td>0</td><td>0</td><td>0</td><td>112</td><td>72</td><td>72</td><td>72</td><td>8</td><td>&nbsp;</td><td>0</td><td>68</td><td>68</td><td>124</td><td>68</td><td>68</td><td>68</td><td>0</td>
+</tr>
+<tr>
+<td>Theta</td><td>0</td><td>48</td><td>72</td><td>120</td><td>72</td><td>72</td><td>48</td><td>0</td><td>&nbsp;</td><td>0</td><td>56</td><td>68</td><td>124</td><td>68</td><td>68</td><td>56</td><td>0</td>
+</tr>
+<tr>
+<td>Iota</td><td>0</td><td>32</td><td>0</td><td>32</td><td>32</td><td>32</td><td>48</td><td>0</td><td>&nbsp;</td><td>0</td><td>56</td><td>16</td><td>16</td><td>16</td><td>16</td><td>56</td><td>0</td>
+</tr>
+<tr>
+<td>Kappa</td><td>0</td><td>0</td><td>72</td><td>80</td><td>96</td><td>80</td><td>72</td><td>0</td><td>&nbsp;</td><td>0</td><td>72</td><td>80</td><td>96</td><td>80</td><td>72</td><td>68</td><td>0</td>
+</tr>
+<tr>
+<td>Lamda</td><td>0</td><td>64</td><td>32</td><td>16</td><td>16</td><td>40</td><td>72</td><td>0</td><td>&nbsp;</td><td>0</td><td>64</td><td>96</td><td>80</td><td>72</td><td>68</td><td>68</td><td>0</td>
+</tr>
+<tr>
+<td>MU</td><td>0</td><td>0</td><td>0</td><td>72</td><td>72</td><td>80</td><td>32</td><td>0</td><td>&nbsp;</td><td>0</td><td>68</td><td>108</td><td>84</td><td>68</td><td>68</td><td>68</td><td>0</td>
+</tr>
+<tr>
+<td>Nu</td><td>0</td><td>0</td><td>0</td><td>72</td><td>72</td><td>80</td><td>32</td><td>0</td><td>&nbsp;</td><td>0</td><td>68</td><td>100</td><td>84</td><td>76</td><td>68</td><td>68</td><td>0</td>
+</tr>
+<tr>
+<td>Xi</td><td>0</td><td>56</td><td>64</td><td>112</td><td>64</td><td>112</td><td>8</td><td>48</td><td>&nbsp;</td><td>0</td><td>124</td><td>0</td><td>56</td><td>0</td><td>0</td><td>124</td><td>0</td>
+</tr>
+<tr>
+<td>Omicron</td><td>0</td><td>0</td><td>0</td><td>48</td><td>72</td><td>72</td><td>48</td><td>0</td><td>&nbsp;</td><td>0</td><td>56</td><td>68</td><td>68</td><td>68</td><td>68</td><td>56</td><td>0</td>
+</tr>
+<tr>
+<td>Pi</td><td>0</td><td>0</td><td>0</td><td>248</td><td>80</td><td>80</td><td>80</td><td>0</td><td>&nbsp;</td><td>0</td><td>252</td><td>72</td><td>72</td><td>72</td><td>72</td><td>72</td><td>0</td>
+</tr>
+<tr>
+<td>Rho</td><td>0</td><td>0</td><td>0</td><td>48</td><td>72</td><td>112</td><td>64</td><td>64</td><td>&nbsp;</td><td>0</td><td>120</td><td>68</td><td>68</td><td>120</td><td>64</td><td>64</td><td>0</td>
+</tr>
+<tr>
+<td>Sigma</td><td>0</td><td>0</td><td>0</td><td>60</td><td>72</td><td>72</td><td>48</td><td>0</td><td>&nbsp;</td><td>0</td><td>124</td><td>32</td><td>16</td><td>16</td><td>32</td><td>124</td><td>0</td>
+</tr>
+<tr>
+<td>Tau</td><td>0</td><td>0</td><td>0</td><td>120</td><td>32</td><td>32</td><td>32</td><td>0</td><td>&nbsp;</td><td>0</td><td>124</td><td>16</td><td>16</td><td>16</td><td>16</td><td>16</td><td>0</td>
+</tr>
+<tr>
+<td>Upsilon</td><td>0</td><td>0</td><td>0</td><td>72</td><td>72</td><td>72</td><td>48</td><td>0</td><td>&nbsp;</td><td>0</td><td>68</td><td>40</td><td>16</td><td>16</td><td>16</td><td>16</td><td>0</td>
+</tr>
+<tr>
+<td>Phi</td><td>16</td><td>16</td><td>56</td><td>84</td><td>84</td><td>56</td><td>16</td><td>16</td><td>&nbsp;</td><td>16</td><td>56</td><td>84</td><td>84</td><td>84</td><td>84</td><td>56</td><td>16</td>
+</tr>
+<tr>
+<td>Chi</td><td>0</td><td>0</td><td>68</td><td>40</td><td>16</td><td>40</td><td>68</td><td>0</td><td>&nbsp;</td><td>0</td><td>68</td><td>40</td><td>16</td><td>16</td><td>40</td><td>68</td><td>0</td>
+</tr>
+<tr>
+<td>Psi</td><td>0</td><td>0</td><td>16</td><td>84</td><td>84</td><td>56</td><td>16</td><td>16</td><td>&nbsp;</td><td>0</td><td>84</td><td>84</td><td>84</td><td>56</td><td>16</td><td>16</td><td>0</td>
+</tr>
+<tr>
+<td>Omega</td><td>0</td><td>0</td><td>0</td><td>0</td><td>84</td><td>84</td><td>40</td><td>0</td><td>&nbsp;</td><td>0</td><td>56</td><td>68</td><td>68</td><td>68</td><td>40</td><td>108</td><td>0</td>
+</tr></table></center>
+
+<br>
+<b>Table 6. Eight-byte codes for forming lower- and upper-case Greek characters.</b>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>RAMTOP normally is set to one less than the value of UDG and the CLEAR instruction must be used to alter it. Thus the procedure to create space for one additional set of graphics characters on the 16K machine is to enter:</p>
+
+<pre>CLEAR 32431
+POKE 23675,176
+POKE 23676,126</pre>
+
+<p>The CLEAR command moves RAMTOP down to 32431 and the two POKES reset UDG to UDG =176 + 256*126 = 32432.</p>
+
+<p>That leaves 32768 - 32432 = 336 bytes between the address pointed to by UDG and the top of RAM, which is sufficient space for two tables each 168 bytes long.</p>
+
+<p>The user-defined graphics facility is flexible enough for most purposes, despite the limitation to 21 characters per set, but the user should also be aware of the technique for redefining the ordinary character set. A number of the programs on the market for the Spectrum make use of that facility, because it gives the program more style, including <b>Star Trek</b> by Silversoft, <b>Timegate</b> by Quicksilva and <b>3D Space Wars</b> by - yes, you guessed it - Hewson Consultants.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<pre>10 CLEAR 64599
+20 FOR I=0 TO 767
+30 POKE 64600+I, PEEK (15616+I)
+40 NEXT I
+50 POKE 23606,88
+60 POKE 23607,251
+
+<b>Table 7. A 48K Spectrum program
+to move the character table above
+RAMTOP and reset the CHARS system
+variable to point to the new table.
+For use on a 16K machine, alter the
+following lines:</b>
+
+10 CLEAR 31831
+60 POKE 23607,123</pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>There are 96 characters in the ordinary Spectrum character set. The set starts with character code 32 - the space or blank character - and ends with the copyright symbol = code 127. They are defined in an analogous fashion to the user-defined characters by a table which is held in ROM at address 15616. Each definition is held in eight bytes and so the table is 768 bytes long.</p>
+
+<p>The address of the beginning of the table is 256 more than the value held in the CHARS system variable which is located at 23606 and 23607. Bearing in mind that the code of the first character in the table is 32 it can be seen that the address of the first of the eight bytes defining a given character is PEEK 23606 + 256*PEEK 23607 + 8*character code.</p>
+
+<p>Creating a new character set from scratch is a complicated task because the shape of each letter or digit must be worked out in detail. The best technique is probably to move RAMTOP down by 768 bytes, copy the entire Sinclair character table into the area above RAMTOP, and then re-set CHARS to point to the new area. That is the function of the program in table seven. New characters can then be created as modifications of the Sinclair originals.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="books.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Books"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 22 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>January 1984</h6>
+
+</body>
+</html>

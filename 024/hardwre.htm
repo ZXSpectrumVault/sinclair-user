@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 24 - Hardware World</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Hardware news from Sinclair User, March 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="ssimon.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Sinclair Simon"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 24 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Hardware World</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1>Disc interface takes the waiting out of wanting</h1>
+
+<p class="first">OWNERS of the Spectrum who want a fast method of data storage have, until recently, had to wait for the chance to buy the elusive Microdrive. Technology Research Ltd, however, has now taken the waiting out of wanting by announcing the latest version of its floppy disc interface.</p>
+
+<p>It will accept up to two 5&#188;in. drives in either 40- or 80-track, single- or double-sided format and is complete with a utility disc.</p>
+
+<p>The interface is in the inevitable black box which fits into the user port at the back of the computer and has a through port for other add-ons. A socket on one side takes the cable to the disc and in the back left-hand corner is a socket for the Spectrum power supply. Unusually the box lies flat and out from the computer rather than standing up; that presumably is to aid stability but if, as is the case with this reviewer, your Spectrum is housed in a full-size keyboard, you could find that the interface ends up being about 1.5cm. off the desk. An empty matchbox placed under the back edge of the interface solves the problem.</p>
+
+<p>Inside the box are two PCBs; the lower one takes the signals across the board to the extension at the back and also houses the power socket and associated chips. The other contains the majority of the electronics, the disc operating chip - a 1771 - a 4K EPROM and the socket to the disc. The socket is suitably buffered so that the disc lead can be removed without crashing the system, a useful feature for BBC computer owners as it is wired to the same standard.</p>
+
+<p>On power-up, the interface loads the contents of the EPROM into the upper 4K of memory and re-sets RAMTOP to below that. In the version for the 16K Spectrum the program, or more accurately the disc operating system, remains in the interface, but otherwise the two versions operate in much the same manner.</p>
+
+<p>There is a complete range of commands which all have to be typed-in in full; you cannot use Sinclair keywords. The DOS gives a temporary C cursor automatically and will not recognise lower-case commands as it differentiates between the two.</p>
+
+<p>SAVE will save either Basic or machine code but not variables. If the program name is preceded by a $ sign a Basic program is saved; when loaded back it will RUN from line 1. For machine code the name must be followed by three hex numbers which denote the start, finish and autostart addresses of the code.</p>
+
+<p>The only time the system was made to crash was when trying to save a Basic program with the $ sign omitted; all other errors were trapped successfully by the system.</p>
+
+<p>Two levels of protection exist for the user. First there is a password, which is held on the disc. After a new disc has been formatted, using the program on the utility disc, the directory must be initialised using the UNIT command. The disc will then take the name of the current password. That name cannot be changed without erasing the disc.</p>
+
+<p>Second, every interface contains its own code number, and while initialising or later using the LOCK command it is possible, if required, to store it on the disc so that only the interfaces used to save a program can load it back.</p>
+
+<p>The interface proved to be very easy to use and also reliable, apart from the instance mentioned. Almost any Basic program can be saved; only machine code programs which use the upper 4K of memory present a problem and they are fairly rare. Business software is being written to use the interface.</p>
+
+<p>Priced at &#163;85, the interface is rather expensive but it allows the use of disc drives which are not dedicated to one machine. Also if used with an 80-track double-sided drive it can give 390K per disc at less than &#163;2 a time.</p>
+
+<a name="telesound"></a>
+<h2>Intricate connection to Compusound board</h2>
+
+<p class="first">COMPUSOUND has announced a new version of its Tele-Sound sound board. As with previous models it is a small printed circuit board which fits inside the Spectrum case and outputs sound through the TV. Now, however, the unit will also work on the new Issue 3 Spectrums.</p>
+
+<p>Fitting the unit is fairly straightforward, provided that you have the courage to open your Spectrum, and should present no difficulties. Three wires have to be connected to the Spectrum PCB and detailed instructions are given with the unit.</p>
+
+<p>It is an intricate procedure, the connection to the speaker being particularly so. Once fitted, the unit can be stuck down and the case screwed back together. In some cases the unit may have to be tuned to get the best sound and vision on your TV and, depending on the make of your set, may degrade the picture slightly. If the picture is not particularly good to start, the degradation will probably not be noticed.</p>
+
+<p>If you are looking for an inexpensive sound amplifier and are prepared to open your Spectrum, this unit, priced at &#163;9.95 inc., is worth considering.</p>
+
+<center><p class="first">The Tele-Sound was re-issued as the Soundboost in 1985 - <a href="../046/hardwre.htm#soundboost">see issue 46</a></p></center>
+
+<h2>Tapes under control</h2>
+
+<img src="hardwre1.jpg" width=300 height=183 hspace=10 vspace=10 border=0 align="right" alt="NMS Tape Controller">
+<p class="first">ONE OF the major omissions of the Spectrum design was its inability to control external devices such as a tape cassette deck. The Tape Controller from Ness Micro Systems remedies the failing and also provides an in-built BEEP amplifier.</p>
+
+<p>The controller is housed in a small black box which can be placed alongside the computer and has leads to the EAR and MIC sockets of the tape deck and Spectrum. Another lead connects to the Spectrum power socket, and two more leads connect to the remote sockets on two tape decks.</p>
+
+<p>If you do not want to use two separate decks for loading and saving, a connector is provided to join both leads to one deck. On the front of the controller are two switches. One controls whether the unit is to be used as a tape controller or as an amplifier. The other has three positions; up and down are used to load and save programs - without the need to remove leads as is normally the case; in the middle position the controller will control the cassette motor of the relevant deck by detecting a pre-set BEEP frequency. Also provided is a volume control and two LEDs which show how the unit is set up.</p>
+
+<p>Inside the case are two tone-decoding circuits, one for LOAD and one for SAVE, which are pre-set to respond to different BEEP frequencies. Those pre-sets can be changed if more than one controller is being used. Each decoder controls a relay, toggling it on and off as required, so that only one can be on at any time.</p>
+
+<p>Priced at &#163;19.95, or &#163;16.95 in kit form, both plus &#163;1.50 p&amp;p, the controller represents good value.</p>
+
+<img src="hardwre2.jpg" width=150 height=189 hspace=10 vspace=10 border=0 align="left" alt="Pinnacle Sound Amplifier">
+<h2>No stopping the Add-On amplifier</h2>
+
+<p class="first">Users who struggle to hear the Spectrum BEEP may well consider the new Pinnacle sound amplifier marketed by Add-On Electronics. The battery-powered unit plugs into either the EAR or MIC socket and provides enough sound to annoy the whole family.</p>
+
+<p>The unit is housed in an attractive 80mm. x 55mm. x 90mm. silvery plastic casing which contains a large 8ohm speaker, four HP7 batteries and a small amplifier board which gives up to 800mW output. A LED on the front gives an indication of battery strength.</p>
+
+<p>The major disadvantage is the lack of any volume control. The only control you have is that the EAR socket gives more volume than the MIC socket. It appears to be a case of spoiling the ship for a ha'p'oth of tar. Apart from that the unit worked satisfactorily and one set of batteries lasted for 100 hours of continuous use. A side product is that two of the units could be used to amplify a personal stereo.</p>
+
+<p>The Pinnacle is obtainable, for &#163;9.95, from Add-On Electronics, Essex.</p>
+
+<h2>Generating the sound of music</h2>
+
+<p class="first">FOR THOSE with a musical bent who have a Sinclair machine, help is at hand. Not a musical bent straightener but the Trichord from Petron Electronics, a stereo programmable sound generator board, available in two versions, with and without an internal amplifier and speaker, for both the ZX-81 and Spectrum. The Spectrum version can also have a BEEP amplifier built-in.</p>
+
+<p>The Trichord has three basic modes of operation. First, using an inbuilt PROM, it can reproduce any of 255 sound effects ranging from one described as a 'low bong' to a steam engine and whistle, plus many indescribable ones. Second, it can be used to play three-part harmony and, finally, the internal registers of the PSG chip can be accessed to produce your own sound effects. Programs on a tape supplied with the unit demonstrate those features.</p>
+
+<p>Once the information about a sound has been fed to the PSG it will maintain that sound without continuous computer updating, making it ideal for use in games.</p>
+
+<p>All versions of the Trichord are in the same-sized black plastic box which has a ZX-81 connector and through port. On a Spectrum that means only a Sinclair printer could be plugged into the back of it.</p>
+
+<p>With prices ranging from &#163;24.95 for the ZX-81 version to &#163;29.95 for the Spectrum version with BEEP amplifier, the Trichord is probably the most versatile sound generator on the market at the price. The manual is available separately at &#163;1.25.</p>
+
+<h2>Interface has useful features</h2>
+
+<img src="hardwre3.jpg" width=300 height=110 hspace=10 vspace=10 border=0 align="right" alt="Kempston Model E Interface">
+<p class="first">NEW from Kempston Electronics is the Model E Centronics interface for the Spectrum. It contains an EPROM which enables it, on power-up, to direct the commands LPRINT and LLIST direct to the printer without the need for additional software. Also built into the EPROM are routines which allow the use of COPY for the Epson and Seikosha ranges of printers.</p>
+
+<p>Housed in the standard Kempston case, the interface plugs into the user port of the Spectrum and is complete with a cable to connect to the printer. The interface is dead-ended in that it does not have a through port for other add-ons; that may be a problem if you want to use it at the same time as the Kempston joystick interface or any other dead-ended device. A problem which may arise with full-size keyboards is that the case is shaped with a lip to fit on top of the standard Spectrum. The lip may prevent the case fitting snugly.</p>
+
+<p>Inside the case is a 2K EPROM which houses the printer software and a handful of chips which detect when the Spectrum is using the LPRINT, LLIST and COPY commands. It does that with the COPY command by monitoring an address and when the Spectrum uses it to do a COPY the interface takes over and directs output to the printer.</p>
+
+<p>Using the interface is very simple. If only text is to be printed, no setting-up is needed, apart from POKEing an address with the number of columns required if that is other than the default setting of 80. That address is one of the unused ones in the system variables area.</p>
+
+<p>To use the COPY command the interface must be set up for your type of printer. By entering as a direct command COPY:REM? the interface displays a menu page which shows its current status. You can then set it up for the Epson range, Seikosha 100 or 250 printers, or add your own routines.</p>
+
+<p>Once you have set it up in that way any user-defined characters or graphics characters which appear in a listing will be printed as shown on the screen. An annoying feature is that those characters are wider than normal characters and make the listing appear untidy.</p>
+
+<p>For computer artists there is an enlarged setting. When that is turned on COPY will produce a double-sized copy, about 180mm. x 145mm. on an Epson, suitable for hanging on the wall. Other settings are available to control the tokens, escape characters and automatic line feeds.</p>
+
+<p>At &#163;55 inc. the interface is by no means inexpensive - but it contains many useful features.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="ssimon.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Sinclair Simon"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 24 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<h6 align="center">Sinclair User<br>March 1984</h6>
+
+</body>
+</html>
+

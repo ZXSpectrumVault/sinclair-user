@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 6 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, September 1982">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 6 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<table width="320" border="0" cellpadding="10" align="right">
+<tr align="center"><td><img src="../shared/images/hewson2.gif" width=300 height=288 border=0 alt="">
+<br>
+<p class="first"><b><font size="-1">Andrew Hewson</font></b></p>
+</td></tr>
+</table>
+
+<h1>Data handling can be achieved on ZX-81</h1>
+
+<p class="first">I CANNOT claim that the column has a theme this month, as the letters in my postbag have been too varied; it must be something to do with the weather. John Perry writes: <b>&quot;I have been trying to convert a program written for the TRS-80 but the program uses DATA and READ statements which are not available on the ZX-81. I am considering jumping on the machine because if it cannot handle data it is useless.&quot;</b></p>
+
+<p>There is a solution to the problem but first let me explain that DATA and READ statements provide a method for declaring the value of variables at the time the program is written, to save the user from entering the items at run-time. For example, the lines:</p>
+
+<pre>10 DATA 1,2,3
+20 READ A,B,C</pre>
+
+<p class="first">will assign the values 1, 2 and 3 to A, B and C respectively every time the program is RUN. The same effect could, of course, be achieved by using</p>
+
+<pre>10 LET A=1
+15 LET B=2
+20 LET C=3</pre>
+
+<p>The real power of DATA and READ statements is that they allow the programmer to change the values of variables during execution. For example:</p>
+
+<pre>10 DATA 1,2,3,4,5,6
+20 READ A,B,C
+.
+.
+.
+.
+1000 READ A,B,C</pre>
+
+<p class="first">will cause A, B, C to take the values 1, 2, 3 initially and then 4,5,6 at line 1000. Once again, the same effect could be achieved using LET statements and so the ZX-81 Basic programming manual is correct in pointing out on pages 145 and 146 that READ and DATA are more or less superfluous instructions.</p>
+
+<p>To prevent Perry jumping on his ZX-81, here is a method of simulating READ and DATA:</p>
+
+<pre>  10 PRINT &quot;INITIALISE, CALCULATE OR SAVE*(I,C,S)?&quot;
+  20 INPUT Z$
+  30 GO TO 10+40*(Z$=&quot;I&quot;)+190*(Z$=&quot;C&quot;)+1990*(Z$=&quot;S&quot;)
+  50 PRINT &quot;INITIALISE&quot;,,&quot;ENTER TEN SETS OF THREE CONSTANTS&quot;
+  60 DIM B(3,10)
+  70 FOR I=1 TO 10
+  80 FOR J=1 TO 3
+  90 INPUT B(J,I)
+ 100 NEXT J
+ 110 NEXT I
+ 120 PRINT &quot;INITIALISATION COMPLETE&quot;
+ 130 GO TO 10
+.
+.
+.
+.
+2000 PRINT &quot;SAVE ROUTINE&quot;,,&quot;ENTER PROGRAM NAME&quot;
+2010 INPUT Z$
+2020 SAVE Z$
+2030 GO TO 10</pre>
+
+<p>For the purposes of the demonstration I have assumed that the important part of the program lies between lines 200 and 1999. The initialising routine at lines 50 to 130 asks the user to enter the values which simulate the DATA statement. Those values need only be entered once, because the save routine at line 2000 saves both the program and the variables on cassette and then jumps back to the beginning of the program.</p>
+
+<p>Next time the program is loaded from cassette it will &quot;come in running&quot; and jump back to line 10 with the values of all the variables, in particular the values in array B, still intact. He is then free to transfer the values out of the array later in his program.</p>
+
+<p>In fact, once the values of B are established, lines 50 to 130 are redundant and could be deleted by entering each line number in turn in the usual way - see my answer to Mike Chandler later for a more interesting method. It is important, however, not to start a program by using RUN if you want to retain the variables. You should use GO TO 1 or some other appropriate line number instead.</p>
+
+<p>John Randall should note the use of GO TO instead of RUN. He writes: <b>&quot;Can you suggest a programming technique so that initials and a score are keyed in and retained during saves to enable a best-score system to operate for games?&quot;</b></p>
+
+<p>I have been asked that kind of question a surprising number of times. The answer is that so long as you do not use RUN, NEW or CLEAR, all your variables are retained. They are also copied on to cassette during SAVE and copied back into memory during LOAD.</p>
+
+<p><b>&quot;Deleting lines by entering their line numbers in turn is a nuisance. Is there a method for deleting blocks of lines?&quot;</b> asks Mike Chandler of Glasgow.</p>
+
+<p>There is, because the length in bytes of each line is held in two locations immediately following the line number and we can manipulate them to our advantage. To see the line length, clear your ZX-81 by entering NEW and then enter the following line:</p>
+
+<pre>10 REM</pre>
+
+<p>Then PEEK at the first few bytes in the program area which starts at 16509 and you will see:</p>
+
+<table>
+<tr align="center"><th width="33%">Address</th><th width="33%">Contents</th><th width="33%">Meaning</th></tr>
+<tr align="center"><td>16509</td><td>0</td><td>line number=</td></tr>
+<tr align="center"><td>16510</td><td>10</td><td>256*0+10=10</td></tr>
+<tr align="center"><td>16511</td><td>2</td><td>line length=</td></tr>
+<tr align="center"><td>16512</td><td>0</td><td>2+256*0=2</td></tr>
+<tr align="center"><td>16513</td><td>234</td><td>code for REM</td></tr>
+<tr align="center"><td>16514</td><td>118</td><td>code for newline</td></tr>
+</table>
+
+<p>Notice that the line length excludes the four bytes required for the line number and the line length. The following routine finds the address of the first byte of two lines entered by the user:</p>
+
+<pre>9000 DIM B(2)
+9101 LET START=16509
+9020 PRINT &quot;ENTER FIRST AND LAST LINE NOS&quot;
+9030 INPUT B(1)
+9040 INPUT B(2)
+9050 IF B(1)&lt;0 OR B(2)&lt; OR B(1)&gt;9999 OR B(2)9999 THEN GO TO 9020
+9100 FOR I=1 TO 2
+9110 LET L=PEEK (START+2)+256*PEEK(START+3)
+9120 LET LINEND=256*PEEK START+PEEK (START+1)
+9130 LET START=START+L+4
+9140 IF LINEND&lt;B(I)THEN GO TO 9110
+9150 LET B(1)=START(L+4)*(I=1)
+9160 NEXT I</pre>
+
+<p>The routine finishes with the two addresses held in B(1)and B(2).The next trick is to fool the ZX-81 into thinking that all the lines between and including the two line numbers are just one monster line by POKEing the difference between B(2)and B (1) less 4 into the slot for the line length of the first line. That is achieved by adding the lines:</p>
+
+<pre>9200 LET B(2)=B(2)-B(1)-4
+9210 POKE B(1)+2,B(2)-256*INT(B(2)/256)
+9220 POKE B(1)+3,INT (B(2)/256)</pre>
+
+<p>The monster line can then be deleted in the usual way, by entering the line number alone.</p>
+
+<center><img src="../shared/images/helplne2.gif" width=500 height=199 vspace=10 border=0 alt="Sinclair printout"></center>
+
+<p>Derek Chadwick has an interesting question. He asks: <b>&quot;Is there any way of lining up figures by the right? I am calculating interest amounts to two decimal places.&quot;</b></p>
+
+<p>The following routine will round to two decimal places the data entered at line 20 and right-justify the figure printed at line 80. Notice that 0.5 is added in the calculation to round the number in line 30 because the INT function always rounds down. If the 0.5 were not present, then 9.877, for example, would be rounded down to 9.87 when it should be rounded up to 9.88.</p>
+
+<p>The print position is determined by converting the value of I to a string and then calculating where the decimal point occurs; it functions correctly even if I is an integer and hence has no decimal point.</p>
+
+<pre> 10 LET D$=&quot;.&quot;
+ 20 INPUT I
+ 30 LET I=INT(100*I+5)/100
+ 40 LET ZS=STR$I
+ 60 IF ZS(J)=D$ THEN GO TO 80
+ 70 NEXT J
+ 80 PRINT AT 21,16-J;Z$
+ 90 SCROLL
+100 GO TO 20</pre>
+
+<p>Janet Peterson asks: <b>&quot;Is it possible for a cassette tape to wear out? I am a teacher and my class has used a commercial cassette of games many times but I am finding it increasingly difficult to load.&quot;</b></p>
+
+<p>Yes, magnetic tape will fail eventually. There are several problems. First, simply reading a cassette degrades the signal stored on it by a small amount so if you LOAD from it many times the signal will become weak. Second, if you leave a cassette untouched the signal from each layer of tape will print through on to the next, causing an eventual degradation of the tape. Finally, if you always stop the cassette at the same place and then re-wind it, the tape will stretch.</p>
+
+<p>My advice is always to make a second copy of important cassettes. If you have a commercial cassette which you cannot copy because you cannot break the program while it is running, then &quot;exercise&quot; the cassette regularly by re-winding it completely. That will help to avoid print-through and stretch.</p>
+
+<center><p>&copy; Copyright Hewson Consultants 1982</p></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 6 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<h6 align="center">Sinclair User<br>September 1982</h6>
+
+</body>
+</html>
+

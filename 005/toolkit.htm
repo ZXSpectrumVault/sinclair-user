@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 5 - Toolkit Routines</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="ZX-81 Toolkit packages reviewed in Sinclair User, August 1982">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 5 Contents"></a>
+<a href="zx99.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="ZX-99"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>toolkit routines</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="toolkit.gif" width=350 height=244 hspace=10 vspace=10 border=0 align="right" alt="">
+<p class="first"><b><font size="+1">Phil Garrett looks at routines which can assist in writing tidier systems.</font></b></p>
+
+<h1>Basic toolkits can help put polish on programs</h1>
+
+<p class="first">WHEN I discussed reviewing ZX-81 utility programs with the editor, he was disappointed that all the debug programs operate only in machine code and that the Basic programmer is left to sink or swim. While it is true that there is nothing available to help unravel the mess of tortured logic in which my Basic programs finish, there are several programs which add extra facilities as they are written, and can make them look neater afterwards.</p>
+
+<p>Even a program which is a jumble of embedded subroutines and GO TOs every other statement looks well-planned when all the line numbers increase in tens. Renumbering is probably the main reason for the purchase of a toolkit program and is the only function included in every one at which I looked. The range of other functions offered is very wide and some of them seem to have been put in just to make a program appear more substantial, rather than because they are useful.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'All re-numbering programs have to cope with the very useful, but very non-standard, Sinclair GO TO and GO SUB.'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>Hewson Consultants offers two programs, a straightforward <b>Renumber</b> and a more sophisticated <b>Toolkit</b>. Both can be used on ZX-81s with either the standard 16K RAM or with the increasingly-popular 48K and 64K RAM packs. They require the user to re-set RAMTOP before the program is loaded, which can be annoying, especially when you forget to do it.</p>
+
+<p>Renumber takes 1K and a USR call re-numbers your Basic program in steps of five, starting from 5. Other values for the step size and starting number can be POKEd in and it will always re-number to the end of the program. The routine took about 50 seconds in Fast mode to renumber 5K of Basic.</p>
+
+<p>A problem with which all the renumbering programs have to cope somehow is the very useful but very non-standard Sinclair GO TO - and GO SUB. Our GO TO 1000+100*A and GO SUB X are seen in few, if any, other dialects of Basic, and are too sophisticated for a re-numbering program to cope with, so have to be tinkered with afterwards.</p>
+
+<p>Another non-standard feature is the jump to a non-existent line number; Sinclair Basic simply continues looking until it finds a line, whereas most Basics will stop with an error if the line does not exist. A measure of the usefulness of a renumbering program is what assistance it gives to the programmer in resolving those difficulties.</p>
+
+<p>To return to the Hewson Renumber, computed GO TOs and jumps to non-existent lines are highlighted in reverse video after renumbering. The arithmetic expressions - e.g., GO SUB 1000+INT (10*RND+1) - can appear rather distorted, so it would be as well to have a copy of the original program to which to refer.</p>
+
+<p>Hewson's Programmers' Toolkit requires 3K above RAMTOP and includes routines to copy or delete blocks of Basic lines and a number of machine code monitor functions. The re-number works in much the same way as the previous program, except that an end number can also be given; the numbers are prompted for, rather than having to be POKEd in. The Toolkit seems to consist mainly of lines of Basic starting from 9000, which are added to your own Basic program with a USR call. RUN 9000 will then run the Toolkit, which displays a menu of functions. There is a hexadecimal loader and lister and a routine to copy bytes from one place to another. More useful are the functions which can display the line numbers of lines containing a particular string of characters or tokens you want to find - e.g., computed GO TOs - and REPLACE, which allows a string of characters to be exchanged for another of equal length. Both routines are slow to execute.</p>
+
+<p>I did not find the program very robust; the hex lister did not work, the re-number duplicated line numbers when I set the increment too large, and the program crashed several times. The instructions for both programs are brief, but adequate. Renumber costs &#163;4.95 and Programmers' Toolkit &#163;6.50.</p>
+
+<p>The JRS Software Toolkit also requires the user to re-set RAMTOP and takes 1K. A great deal has been packed into that 1K but ease of use seems to have fallen by the wayside. The re-number requires all statements such as GO TO 25 to be changed to GO TO 0025 before it will work. Computed GO TOs and jumps to non-existent lines are ignored completely. Starting line and increment can be changed with POKEs and the routine took eight seconds to re-number 5K.</p>
+
+<p>There is a search-and-list function which could be used to find all occurrences of GO TOs and GO SUBs, so that they could be changed to the required format. There are also search and replace and memory left routines, plus three graphics routines, Hyper graphics mode alters the start address of the ZX-81 ROM character table and produces interesting but useless effects; Fill fills a specified number of lines with a chosen character; and Reverse inverts as many lines on the screen as required.</p>
+
+<p>At &#163;4.95 the program demands a great deal of care and effort from the user, which surely is not the purpose for which utility programs are intended.</p>
+
+<p>The ACS Software <b>Progstore</b> allows a small - fewer than 2,750 bytes - Basic program to be stored above RAMTOP. The program can then be called, with USR, and acts rather like a subroutine. Any variables used in the stored program must already exist.</p>
+
+<p>On the other side of the tape are four small Toolkit programs which can be used with Progstore. <b>Hexloader</b> and <b>Hexlister</b> are obviously fillers and a waste of time; no addresses are shown, so it is difficult to interpret what appears on the screen. <b>Progmod-1</b> allows larger programs to be stored above RAMTOP by modifying Progstore. <b>Renumber</b> works only in steps of 10 from line 10 and, incredibly, the entire program will crash - and I mean a complete crash, not just stop - if it encounters a computed GO TO or jump to a non-existent line number.</p>
+
+<p>The other ACS cassette contains <b>Progmerge</b>, which allows all or part of a Basic program to be stored above RAMTOP and then merged with a second program, the whole lot then being re-numbered. The instructions did not indicate what size of program could be stored and a 3K program I tried was too big. The renumbering, which can be run on its own, has the same limitations as the toolkit Renumber.</p>
+
+<p>I was impressed with the ACS assembler and disassembler programs and so I was surprised at the poor quality of its re-number routine, which could be used only with the utmost care. The instructions are clear, with helpful examples. Progstore/Toolkit costs &#163;7.50, and Progmerge &#163;5.50.</p>
+
+<p>ACS, however, has now brought out <b>Progmerge (version two)</b> which is said to have overcome the problems. The program costs &#163;5.50 and anyone with the first version who wants it updating can have it done by ACS at a cost of &#163;1 plus 25p for postage and packing.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'ZXED is a most impressive program, fast in execution, with clear and full instructions and helpful error codes'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>At 4K, the dK'tronics <b>ZXED</b> toolkit is bigger than the others and re-sets RAMTOP automatically. The program is controlled from six lines of Basic 9990-9996 which are added to your program with a USR call; RUN 9990 starts the toolkit and gives an inverse E prompt, waiting for one of 11 commands. Whichever is chosen, full prompts are given and, if anything goes wrong, 10 special error codes will identify why and where it happened.</p>
+
+<p>Renumber prompts for start and end line numbers, new base and increment. It then looks through the Basic and if it encounters a computed GO TO it will stop with report &quot;Q/line no.&quot;. The user can then insert a REM into the offending line and continue with the renumbering. Impressively, jumps to non-existent line numbers will be re-numbered correctly e.g., 5 REM 15 REM 25 GO TO 10 will become 10 REM 20 REM 30 GO TO 20. It took less than one second to re-number 5K of Basic.</p>
+
+<p>Find will display the lines - not just the line numbers - containing a specified string, so it can be used to find the REM GO TO X lines after renumbering, and Alter will replace a string. Blocks of lines can be copied, moved or deleted, stored above RAMTOP and re-inserted into another program. Bytes tells you the amount of free memory remaining.</p>
+
+<p>It is a most impressive program, fast in execution, with clear and full instructions, and helpful error codes. At &#163;6.95 for the cassette version and &#163;9.95 for an EPROM version, it stands out from the rest of the field.</p>
+
+<p>Unfortunately I was unable to load the last program, the Bug-Bytes <b>ZXTK</b> and the replacement copy arrived too late to be included in this review, which is a pity as it has some unusual functions. Sniff displays the file names of programs on a ZX-81 tape - that is useful if you've forgotten them; Where gives the address where a Basic line starts in memory; Rem creates a REM statement of specified length; Check generates a check number to ensure a program has loaded correctly. In addition, it has Renumber - which highlights computed and non-existent line GO TOs - Copy, Move, Extract - place above RAMTOP - and merge blocks of Basic. ZXTK costs &#163;6.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 5 Contents"></a>
+<a href="zx99.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="ZX-99"></a></p>
+
+<h6 align="center">Sinclair User<br>August 1982</h6>
+
+</body>
+</html>
+

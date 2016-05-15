@@ -1,0 +1,202 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 9 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, December 1982">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="softwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 9 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<table width="320" border="0" cellpadding="10" align="right">
+<tr align="center"><td><img src="../shared/images/hewson2.gif" width=300 height=288 border=0 alt="">
+<br>
+<p class="first"><b><font size="-1">Andrew Hewson</font></b></p>
+</td></tr>
+</table>
+
+<h1>Talking direct to the machine improves uses</h1>
+
+<p class="first">MANY PEOPLE are interested in using machine code but find it difficult to master. Books on the market include <i>Mastering Machine code on your ZX-81</i> by Toni Baker and several by Ian Logan. The best, in my opinion, on the Z-80 microprocessor is <i>How to Program the Z-80</i> by Rodney Zaks.</p>
+
+<p>One of the easiest ways to learn is to copy a few examples and to try and see how they work. This month I have written two machine code routines in response to requests from readers. The first request is from Chris Chatwin, who asks:</p>
+
+<p><b>&quot;Is there any way in which an interval timer can be incorporated into a program for the ZX-81 and displayed on the screen?&quot;</b></p>
+
+<p>The best way to run a clock on both the ZX-81 and the Spectrum is to monitor the FRAMES system variable. In the ZX-81 it is held at 16436 and 16437 and is decremented every time a frame is sent to the TV screen - see page 179 of ZX-81 Basic Programming. Provided the ZX-81 is in SLOW mode, intervals of up to 10 minutes or so can be measured to reasonable accuracy without difficulty. The following Basic routine displays the elapsed time:</p>
+
+<pre>10 PAUSE 0
+20 LET T=65279-PEEK 16436-256*PEEK 16437
+30 PRINT AT 0,0;INT (T/3000); &quot;MINS&quot;; INT(T/50);&quot;SECS&quot;
+40 GO TO 20</pre>
+
+<p>Line 10 resets the FRAMES variable to its starting value, effectively 65279. Line 20 loads the number of frames displayed into T and line 30 converts the results to minutes and seconds. After about 10 minutes the FRAMES variable has been decremented to its final value and it is reset automatically to the starting value.</p>
+
+<p>The routine takes about half a second to execute, so that a program which called it at a number of separate points, so that the display of elapsed time was more or less continuous, would be slowed considerably. The only solution to the problem is to use a machine code routine to monitor the FRAMES counter and display the current value on the screen. Here are two routines which together perform the task.</p>
+
+<p>The first routine listed in table one is called initially to save the current PRINT position in the display file in the printer buffer. That permits the second routine to PRINT the current elapsed at the same point in the display without using the PRINT AT command.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre><b>
+Hex code         Assembler code</b>
+2A OE 40         LD HL (16398)
+22 3C 40         LD(16444),HL
+C9               RET
+
+<b>Table 1. The initialising routine.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The second routine is called whenever the elapsed time is to be displayed and is shown in table two. The routine works by restoring the value of DP-CC from the printer buffer and writing blank characters over the previous display. It then loads the value of FRAMES into HL and divides by 50 by repeated subtraction, because 50 frames are displayed per second.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#FFFFFF">
+<pre><b>Hex code        Assembler code     Comment</b>
+
+2A 3C 40        LD HL,(16444)      Restore DP-CC
+22 0E 40        LD(16398),HL
+3E 00           LD A,0             Clear previous display
+77              LD(HL),A           of elapsed time
+23              INC HL
+77              LD (HL),A
+23              INC HL
+77              LD(HL),A
+23              INC HL
+77              LD(HL),A
+23              INC HL
+77              LD(HL),A
+21 FF FE        LD HL,65279        load FRAMES
+ED 5B 34 40     LD DE,(16436)      into HL
+A7              AND A
+ED 52           SBC HL, DE         Calculate seconds
+11 32 00        LD DE, 50
+01 FF FF        LD BC,65535        by dividing by 50
+A7              AND A
+ED 52           SBC HL,DE
+03              INC BC
+30 FB           JRNC -5
+60              LD H,B             Transfer elapsed
+69              LD L,C             seconds to HL
+01 FF FF        LD BC,65535        Calculate minutes
+11 3C 00        LD DE,60           by dividing by 60
+A7              AND A
+ED 52           SBC HL,DE
+03              INC BC
+30 FB           JRNC -5
+CD 98 0A        CALL 2712          Call ROM
+19              ADD HL,DE          routine to display minutes
+44              LD B,H             Save seconds
+4D              LD C,L             in BC
+2A 0E 40        LD HL,(16398)      Leave one space between
+23              INC HL             minutes and seconds
+22 0E 40        LD(16398),HL
+CD 98 0A        CALL 2712          Call ROM routine
+C9              RET                to display seconds
+
+<b>Table 2. Routine to display elapsed time.</b></pre>
+</td></tr></table>
+</td></tr></table></center>
+
+<p>The number of seconds elapsed is transferred from BC to HL and the number of minutes elapsed is calculated by dividing by 60. The ROM routine at 2712 is used to PRINT the number of minutes at the current position. The PRINT position is incremented and then the ROM routine is called again to PRINT the number of seconds. The routines can be loaded using a simple hex loader, for example:</p>
+
+<pre>10 REM AT LEAST 80 CHARACTERS
+20 FOR I=16514 TO 16600
+30 INPUT Z$
+40 IF Z$=&quot;S&quot; THEN STOP
+50 PRINT Z$;&quot; &quot;;
+60 POKE I,16-CODE Z$+CODE Z$(2)-476
+70 NEXT I</pre>
+
+<p>The REM statement in line 10 must contain at least 80 characters.</p>
+
+<p>The routines are loaded by running the program and entering each two-character hex code in turn. The following program demonstrates the elapsed time counter in action:</p>
+
+<pre>2000 PRINT AT 10,14;
+2010 RAND USR 16514
+2020 PAUSE 0
+2030 RAND USR 17621
+2040 GO TO 2030</pre>
+
+<p>The following Basic routine is slow to execute but it illustrates the use of the OUT command to generate a buzz and flash the BORDER:</p>
+
+<pre>10 LET a=0
+20 FOR b=255 TO 0 STEP -1
+30 OUT 245,a
+40 LET a=a+15-256*(a&gt;238)
+50 NEXT b</pre>
+
+<p>Line 40 increases the value of a by 15 so that bit 4 changes almost every time and the colour of the BORDER is altered.</p>
+
+<p>There is also an OUT command in Z-80 machine code. The following program loads a machine code routine from the DATA statement and calls it at line 200:</p>
+
+<pre> 10 DATA 6,10,197,6,192,197,16,254,211,254,198,15,193,16,246,193,16,240,201
+100 FOR T=0 TO 18
+110 READ a
+120 POKE 32600 +i,a
+130 NEXT i
+140 RANDOMIZE USR 32600</pre>
+
+<p>The machine code routine in the DATA statement is as follows:</p>
+
+<pre>        LD B,10
+Repeat  PUSH BC
+        LD B,192
+Pulse   PUSH BC
+Delay   DJNZ,-2 Delay
+        OUT 254,(A)
+        ADD 15
+        POP BC
+        DJNZ,-10 Pulse
+        POP BC
+        DJNZ,-16 Repeat
+        RET</pre>
+
+<p>It works by outputting the value of A to the port a decreasing number of times as determined by the value in register B - initially 192. The number of pulses is determined by the value first loaded into B, i.e., 10. The characteristics of the routine can be varied by altering those two values, i.e., by altering the second and fifth items in the DATA statement.</p>
+
+<p>Philip Evans has a Spectrum. He writes: <b>&quot;I have found the BEEP command very limited. How could I make proper explosions - &quot;Booomms&quot; and &quot;Whhhamms&quot; - in machine code?&quot;</b></p>
+
+<p>I do not think it is possible to produce a sound like an explosion with the simple tone generator in the Spectrum. Nevertheless, it is certainly possible to generate more interesting sounds than the simple BEEP using the OUT command.</p>
+
+<p>Chapter 23 of ZX Spectrum Basic Programming gives a brief introduction to the IN and OUT commands. It states in particular that the loudspeaker is driven from data line D4 of port 254. In other words, the Basic command</p>
+
+<pre>OUT 254,a</pre>
+
+<p class="first">where a is an integer between 0 and 255, drives the loudspeaker. There are a number of important points about this command.</p>
+
+<p>The first, that the speaker is driven from data line D4, means that it is bit 4 of the binary equivalent of a which is important. Bits are counted from the right, starting at zero, so that if, for example, a is 37 which is 00100101 in binary, then bit 0 is 1, bit 1 is 0, bit 2 is 1, bit 3 is 0, bit 4 is 0. A few minutes' work with pencil and paper shows that numbers in the range 0 to 15 have bit 4 set to zero, 16 to 31 have bit 4 set to one, 32 to 47 have bit set to zero.</p>
+
+<p>The second point is that the port is latched. That means that the loudspeaker clicks only if the value on D4 changes. If the OUT command leaves D4 unaltered, no sound is produced. Thus the following loop does not produce 100 clicks:</p>
+
+<pre>10 FOR T=1 TO 100
+20 OUT 254,16
+30 NEXT I</pre>
+
+<p>It produces a click the first time the OUT command is executed, because D4 is set to one, whereas previously it was zero but subsequently D4 remains set to one and so no click is produced.</p>
+
+<p>The final point is that port 254 is also used to output data to the MIC socket and to determine the BORDER colour and so the value of a will effect the BORDER colour temporarily. Certain commands, e.g., LIST, will restore the BORDER to its original colour using the value stored in BORDER at 23624.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="softwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 9 Contents"></a>
+<a href="mindgms.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Mind Games"></a></p>
+
+<h6 align="center">Sinclair User<br>December 1982</h6>
+
+</body>
+</html>

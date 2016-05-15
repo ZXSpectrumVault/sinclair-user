@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 35 - Helpline</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX-81, Spectrum, QL">
+<meta name="description" content="Andrew Hewson's Helpline from Sinclair User, February 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="books.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Books"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 35 Contents"></a>
+<a href="../036/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 36"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>helpline</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="../shared/images/hewson6.jpg" width=300 height=275 hspace=10 vspace=10 border=0 align="right" alt="Andrew Hewson">
+
+<h1>Rubber numbers in the Spectrum ROM</h1>
+
+<p class="first"><b><font size="+1">Computer arithmetic does not always tell the truth. Andrew Hewson makes those recalcitrant digits dance to his tune</font></b></p>
+
+<p class="first">OCCASIONALLY I have thought of arranging your letters into a 'Top Ten' of the topics which occur most frequently. The following letter, from Stan Merrifield, is on a subject which would definitely figure in the list. He writes: <b>Just for fun I set up a loop in my Spectrum to print all the integer square roots between one and 100 as follows:</b></p>
+
+<pre>10 FOR N = 1 TO 100
+20 IF SQR N = INT(SQR N) THEN PRINT N
+30 NEXT N</pre>
+
+<p class="first"><b>I felt quite chuffed when it printed 1, 4, 9, 16, but after a slight delay it added 64 and finished. I cannot understand why it missed 25, 36, 49, 81 and 100. What is going wrong?</b></p>
+
+<p>I first answered a question of this type in the second issue of Sinclair User in May 1982 and I have covered it at least once since then. I make no apology for tackling it yet again because, like a bad penny, it keeps on turning up.</p>
+
+<p>It is noticeable that the question always comes from the older sort of Sinclair user. That might be because young people generally have a much deeper understanding than their elders of the rounding errors that occur when the form of a number is changed from one representation to another. For that we ought to thank the Nuffield pioneers who radically altered the Maths curriculum in schools in the late '60s and early '70s.</p>
+
+<p>Those of us who went to school before 'New Maths' was established are familiar with only one example of a rounding error and it is buried so deep in our knowledge of arithmetic that we cannot look at it in an objective fashion without considerable effort. The example to which I refer is that one third cannot be exactly represented by a finite number of digits in the decimal system.</p>
+
+<p>As we all know the following statements are all incorrect: 1/3 = 0.3; 1/3 = .33; 1/3 = 0.333. No matter how many trailing threes we place at the end of the number the result is still incorrect, even if only slightly. We are so familiar with that example that we no longer consider it worthy of comment or investigation. We are no different from the Romans of ancient times who no doubt knew that their system of numerals was cumbersome and slow but were happy to persist with it despite its deficiencies.</p>
+
+<p>Unfortunately, because the decimal representation serves us well in everyday life we somehow assume that the inaccuracy in one third is a property of the number itself rather than the method by which we choose to represent it. In fact it is easy to show that it is the method of representation which is at fault, not the number.</p>
+
+<p>If we had been created with six fingers on each hand rather than five then we would presumably count in groups of twelve, that is we would count to base twelve. When counting to base twelve the following statement is true: 1/3 = 0.4. That is easy to understand if you remember that the column following the point is the twelfths column and four twelfths equals one third.</p>
+
+<p>However, counting to base twelve is not immune to problems. The fraction one fifth, for example, which is equal to 0.2 in the decimal system can only be exactly represented in base twelve by an endless repetition of the four digits 2497, after the point. The crux of the problem is that no matter what base you choose there will always be some fractions which cannot be represented exactly. There even some numbers - iT, the ratio of the circumference of a circle to its diameter, is one example - which cannot be exactly represented in any base.</p>
+
+<p>Those inexactitudes do not normally matter because we are happy to accept that a number which is correct to an arbitrary number of significant figures is exact for all human purposes. The trick then when writing your programs is to build in acceptance of tiny but irrelevant differences. In particular you should not, as Stan Merrifield has done in line 20 of his program, demand exact equality in any comparison.</p>
+
+<p>It may seem surprising when considering Stan's program that rounding errors creep in because he is searching for whole number solutions only, which can be exactly represented in any base. However, in order to find the square root of a number N the computer converts it to binary 'floating point' form because the calculator in the ROM will only perform calculations on such numbers. Floating point numbers are necessarily fractions and so it is at the conversion stage that the errors occur.</p>
+
+<p>Stan's program will work as planned if the following line is substituted for line 20:</p>
+
+<pre>20 IF ABS (SQR N - INT(SQR N)) &lt; .0000001 THEN PRINT N</pre>
+
+<p>That discussion about the calculator in the Spectrum ROM leads me into the following letter from Norman Strong. He writes: <b>I am interested in mathematical problems. How can you perform calculations in machine code using logs, powers and trig functions?</b></p>
+
+<p>Accessing the calculator in the Spectrum ROM from a machine code routine is very straightforward because it is only necessary to call RST 28h, following the instruction with a single digit code to tell the calculator what you want it to do. The system is designed around a calculator 'stack', a method used by most computers and calculators. Readers who have used one of the range of Hewlett-Packard calculators - which use so-called Reverse Polish Notation - or who are familiar with the Forth programming language will recognise the mechanism immediately.</p>
+
+<p>The mechanism is mostly easily understood by way of an example. Suppose we require to subtract the Basic variable B from the Basic variable A and to PRINT the result. In other words we wish to execute the following Basic statement in a machine code program:</p>
+
+<pre>PRINT A - B</pre>
+
+<p class="first">The steps are as follows:</p>
+
+<p class="first">1 - use a ROM routine called LOOKVAR to locate variable B in the Basic variables area; 2 - transfer the value of B to the calculator stack using the ROM routines called INTSTOR; 3 - find the variable A in the Basic variables area using LOOKVAR; 4 - transfer the value of A to the calculator stack using INTSTOR; 5 - call the ROM calculator using RST 28h and follow the instruction by a byte containing 03h which is the code for subtraction and a byte containing 38h which is the code to end calculation; 6 - PRINT the value on the top of the calculator stack using the routine FPPRINT.</p>
+
+<p>A stack system is very flexible because any number of items, up to the limit of the size of the stack, can be manipulated in one operation. Similarly any number of operations can be strung together. If you wanted to divide one number by a second, multiply by a third and then find the square root of the result it would be necessary merely to place the numbers on the stack in the correct order and then call the calculator with the codes for division (05h), multiplication (04h) and square root (28h) followed by the termination code (38h).</p>
+
+<p>Some of the routines which can be used to manipulate numbers on the stack have been extracted by my colleague Rob Banks, and they are named and described in table one together with their address in the Spectrum ROM. Some of the control codes are listed in table two. Neither table is comprehensive because a full study of the calculator is beyond the resources of this column. The interested reader is referred to some of the specialist books on the Spectrum including The Complete Spectrum ROM Disassembly by Ian Logan.</p>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<table border=0 cellspacing="5" cellpadding="5">
+<tr><td colspan="4"><b>ROM ROUTINES</b></td></tr>
+<tr align="left"><th>Routine</th><th>Dec</th><th>Hex</th><th>Function</th></tr>
+<tr valign="top"><td>EXPTNUM</td><td>7289</td><td>1C82</td><td>Evaluates in part the numerical expression currently pointed to by CHADD. During syntax-time the routine confirms the presence of a valid numerical expression. In run-time it places the evaluated expression onto the calculator stack, to be fetched by STKTOA or STKTOBC.</td></tr>
+<tr valign="top"><td>EXPT2NM</td><td>7290</td><td>IC7A</td><td>As for EXPTNUM, but searches for two numbers separated by a comma.</td></tr>
+<tr valign="top"><td>NEXT2NM</td><td>7289</td><td>1C79</td><td>CHADD is incremented before jumping to EXPT2NM.</td></tr>
+<tr valign="top"><td>EXPTSTG</td><td>7308</td><td>1C8C</td><td>Performs a similar function to EXPTNUM except that a string is expected rather than a number.</td></tr>
+<tr valign="top"><td>STKTOA</td><td>7828</td><td>1E94</td><td>Fetches the last value from the calculator stack and compresses it into the A register.</td></tr>
+<tr valign="top"><td>STKTOBC</td><td>7833</td><td>1E99</td><td>Compresses the last value on the calculator stack into the BC register pair.</td></tr>
+<tr valign="top"><td>STKFTCH</td><td>11249</td><td>2BF1</td><td>Fetches the various parameters relating to the last string entry on the stack. DE points to the first character of the string whilst BC holds the length of the string.</td></tr>
+<tr valign="top"><td>LOOKVAR</td><td>10418</td><td>28B2</td><td>A search of the variables area is made for the variable whose name is currently pointed to by CHADD. If the variable is found, the carry flag is reset and HL returns pointing to the last letter in the variable name; otherwise the carry flag is set and HL will point to the first letter of the name.</td></tr>
+<tr valign="top"><td>INTSTOR</td><td>11660</td><td>2D8C</td><td>On entry HL points to the first of five locations whose contents are to be stored on the calculator stack.</td></tr>
+<tr valign="top"><td>STACKBC</td><td>11563</td><td>2D2B</td><td>The number currently held in BC is stacked in floating point form.</td></tr>
+<tr valign="top"><td>FPPRINT</td><td>11747</td><td>2DE3</td><td>Prints the last value on the calculator stack. Calling STACKBC and then FPPRINT therefore provides an easy method of printing any 16 bit number.</td></tr>
+
+<tr><td colspan="4"><b>Table 1. A list of ROM routines concerned with using the Spectrum calculator together with their entry points.</b></td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+
+<br>
+
+<center><table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC">
+<table border=0 cellspacing="5" cellpadding="5">
+<tr align="left"><th>Code</th><th>Mnemonic</th><th>Result</th><th>Result</th></tr>
+<tr align="left"><th>&nbsp;</th><th>&nbsp;</th><th>(first item)</th><th>(second item)</th></tr>
+<tr><td>01h</td><td>SWOP</td><td>SECOND</td><td>FIRST</td></tr>
+<tr><td>02h</td><td>REMOVE</td><td>SECOND</td><td>&nbsp;</td></tr>
+<tr><td>03h</td><td>SUBTRACT</td><td>FIRST - SECOND</td><td>&nbsp;</td></tr>
+<tr><td>04h</td><td>MULTIPLY</td><td>FIRST * SECOND</td><td>&nbsp;</td></tr>
+<tr><td>05h</td><td>DIVIDE</td><td>FIRST / SECOND</td><td>&nbsp;</td></tr>
+<tr><td>06h</td><td>POWER</td><td>FIRST ^ SECOND</td><td>&nbsp;</td></tr>
+<tr><td>18h</td><td>VAL$</td><td>VAL$ FIRST</td><td>&nbsp;</td></tr>
+<tr><td>19h</td><td>USR</td><td>USR FIRST</td><td>&nbsp;</td></tr>
+<tr><td>1Bh</td><td>NEGATE</td><td>-FIRST</td><td>&nbsp;</td></tr>
+<tr><td>1Dh</td><td>VAL</td><td>VAL FIRST</td><td>&nbsp;</td></tr>
+<tr><td>1Eh</td><td>LEN</td><td>LEN FIRST</td><td>&nbsp;</td></tr>
+<tr><td>1Fh</td><td>SIN</td><td>SIN FIRST</td><td>&nbsp;</td></tr>
+<tr><td>20h</td><td>COS</td><td>COS FIRST</td><td>&nbsp;</td></tr>
+<tr><td>21h</td><td>TAN</td><td>TAN FIRST</td><td>&nbsp;</td></tr>
+<tr><td>38h</td><td>EXIST</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr><td colspan="4"><b>Table 2. A sample of some of the codes used to control the Spectrum calculator.</b></td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="books.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Books"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 35 Contents"></a>
+<a href="../036/index.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Issue 36"></a></p>
+
+<h6 align="center">Sinclair User<br>February 1985</h6>
+
+</body>
+</html>

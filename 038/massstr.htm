@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 38 - Mass Storage</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Review of the Opus Discovery disc system from Sinclair User, May 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="sftwreb.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Spectrum Software Scene 2"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 38 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Mass Storage</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<img src="massstr.jpg" width=350 height=260 hspace=10 vspace=10 border=0 align="right" alt="Spectrum+ with Discovery attached">
+<h1><i>A voyage of Discovery</i></h1>
+
+<p class="first"><b><font size="+1">John Lambert looks at a disc system which could become a standard</font></b></p>
+
+<p class="first">OPUS SUPPLIES has just released its Discovery disc system and it has the distinction of being the first to be supported by major software houses, endorsed by a disc manufacturer, and sold through a high street chain. It could, consequently, become the standard system.</p>
+
+<p>The level of support is due to four factors. The Discovery, at is lowest level, is completely compatible in Basic with the microdrive, and many existing programs will run on it without modification. It is supplied with a drive, so software houses can sell discs and know they will fit. The unit has both a printer port - Centronics - and a joystick port - Kempston - negating the need for at least some interfaces. Lastly, it uses very little of the Spectrum memory, making program conversion easier.</p>
+
+<p>Moreover, the Discovery has improved on the Interface One microdrive set up, by including random access files and the option to set aside part of the Spectrum memory as a RAM disc, which works like an ordinary disc drive but is much faster. All the Basic errors in Interface One have been corrected and the syntax can be simplified.</p>
+
+<p>The Discovery range comprises three units: Discovery One, which has a single sided, 40 track, 3&#189;in drive (178K formatted); Discovery Two, which has two drives - the maximum possible; and Discovery Plus which is the upgrade from One to Two.</p>
+
+<p>Users with full-sized keyboards need not worry as the drives are high enough to clear the keyboard and those with a base similar to the Spectrum - Saga, Lo Profile and so on - fit easily.</p>
+
+<p>The unit has a built-in power supply which is used to power the drives and the Spectrum, through the edge connector. That means the on/off switch can be used to reset the computer. It also has the obligatory through port and, for the serious user, a monitor socket. That is taken from the edge connector and so will work only on issue three Spectrums onwards.</p>
+
+<p>All internal hardware is memory mapped within the lower 16K and so should not clash with other add-ons which tend to be I/0 mapped. It is compatible with the VTX5000 modem, something about which Interface One was temperamental. Naturally, it is not compatible with Interface One.</p>
+
+<p>One feature not detailed in the otherwise comprehensive manual is that, with the upgrade, a RAM chip which fits in the interface is supplied. Once fitted that allows you to alter the disc settings of the number of tracks, sectors, and sides, the interleave, skew, and even the density. By playing with those I managed to get a system which gave 196K formatted and was 25 percent faster but which used 1K sectors. The RAM disc, which normally occupies the upper 32K, can also be moved around. For dedicated hackers that will provide hours of amusement: software houses need not worry as there are protection systems built in which, even with that information, are secure.</p>
+
+<p class="first"><center><table width="90%" border="1" cellspacing="0" cellpadding="5"><tr><td>
+<table border="0" cellspacing="0">
+<tr><td colspan="4"><b>Benchmarks</b> - all times in seconds.</td></tr>
+<tr><td>&nbsp;</td><td width="15%"><b>Microdrive</b></td><td width="15%"><b>Disc</b></td><td width="15%"><b>RAM disc</b></td></tr>
+<tr><td><b>Capacity</b></td><td>95K</td><td>178K</td><td>31K</td></tr>
+<tr><td><b>FORMAT</b></td><td>25</td><td>18</td><td>0</td></tr>
+<tr><td><b>SAVE</b></td><td>231</td><td>37</td><td>9.5</td></tr>
+<tr><td><b>LOAD in order</b></td><td>15</td><td>23</td><td>5</td></tr>
+<tr><td><b>LOAD out order</b></td><td>212</td><td>23</td><td>5</td></tr>
+<tr><td><b>ERASE in order</b></td><td>238</td><td>35</td><td>12</td></tr>
+<tr><td><b>ERASE out order</b></td><td>238</td><td>23</td><td>4.5</td></tr>
+<tr><td colspan="4">&nbsp;</td></tr>
+<tr><td colspan="4"><b>Program used:</b>
+<pre>10 FOR n=1 TO 30
+20 SAVE *&quot;m&quot;;1;&quot;test&quot;+STR$nCODE 30000,200
+30 NEXT n</pre></td></tr>
+<tr><td colspan="4"><b>Filing:</b></td></tr>
+<tr><td><b>PRINT</b></td><td>200</td><td>59</td><td>29</td></tr>
+<tr><td><b>INPUT in order</b></td><td>68</td><td>83</td><td>64</td></tr>
+<tr><td><b>INPUT out order</b></td><td>199</td><td>83</td><td>64</td></tr>
+<tr><td colspan="4">&nbsp;</td></tr>
+<tr><td colspan="4"><p class="first">Line 20 was changed as required and line 10 to 30 TO 1 STEP -1 for the reverse order. The filing program opened a file, printed 1000 10-character strings and closed the file 15 times. A compatible Basic program with no disc access took 23 seconds.</p>
+
+<p>As microdrives do not handle random access the reverse input gives a comparable timing. The cartridge/disc was reformatted before each test to optimise performance; in normal usage a microdrive cartridge uses odd blocks which effectively doubles the time taken per operation.</p></td></tr></table>
+</td></tr></table></center></p>
+
+<p>As with Interface One, Discovery works by using a system of channels and streams. A channel sends and receives information and a stream is the path along which it passes. For instance, the 'p' channel is the printer which usually has stream three assigned to it. With Discovery fitted a number of channels are created - 'm' for microdrive (in this case disc drive) and 't' and 'b' for the parallel port. The 't' channel is for text with options for printer width, ZX printer emulation, control of carriage returns and line feeds; 'b' is the binary channel and will accept information without modification.</p>
+
+<p>The 'j' channel is for the joystick, which can be turned on and off; the 'd' channel is the drive and is used for commands which relate to the whole disc, such as backup and compact; the 'CAT' channel is the disc directory and can be treated as a file; the 'CODE' channel allows you to send information to, or from, memory.</p>
+
+<p>Discovery normally uses 256 byte blocks - the RAM disc uses 32 bytes and so when loading and saving it takes about 300 bytes. Once the disc has finished, however, that memory is reclaimed and the system takes up no memory. Interface One takes 600 bytes and does not give them back.</p>
+
+<p>To be compatible with the microdrive the system will accept all, its commands, using the same finger knotting syntax; however, unless specified otherwise, the 'm' channel is assumed and can be omitted.</p>
+
+<p>The few differences have been added to make the system more versatile. SAVE will automatically overwrite an existing file of the same name; the long version of MERGE - including the 'm' - will not auto-run but the short version, if not the end of a line, will; and INKEY$# returns a null string at the end of a file (the microdrive stops with an error message). Files can be specified as read or write files by adding the keywords IN and OUT.</p>
+
+<p>The extra random access commands, which can be applied to any file, make ingenious use of existing Spectrum keywords. A random access file is opened using RND, the position is set with POINT and a file can be expanded using EXP. Provision has been made for End of File detection with a simple USR call.</p>
+
+<p>The Discovery One costs &#163;199.95. Compared to an Interface One and microdrive that might seem expensive, but taking into account the printer, joystick and monitor ports, which would cost you around &#163;50.00, it is a far better deal. Discovery Two is priced at &#163;329.95, Discovery Plus at &#163;139.95 and a printer lead at &#163;9.95.</p>
+
+<p>The Discovery range will be available from larger branches of Boots. Further details from Opus Supplies Ltd, London.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="sftwreb.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Spectrum Software Scene 2"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 38 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<h6 align="center">Sinclair User<br>May 1985</h6>
+
+</body>
+</html>
+

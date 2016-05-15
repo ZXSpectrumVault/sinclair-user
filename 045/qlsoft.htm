@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 45 - QL Software Scene</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="QL software reviews from Sinclair User, December 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#CCCCCC" text="#000000" link="#00FFFF" alink="#FF0000" vlink="#FF66FF">
+
+<p align="center" class="first"><a href="top30.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Top 30"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 45 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>QL Software Scene</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table width="100%" border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC"><font size="+2"><b><i>QL C Development Kit</i></b></font></td></tr></table>
+</td></tr></table>
+
+<img src="qlsoft1.gif" width=250 height=315 hspace=10 vspace=10 border=0 align="right" alt="Sinclair User Classic">
+
+<p class="first">THE LAUNCH of the QL C Development Kit was a quiet affair, but it is likely to have a profound effect on the software market. The package is aimed at the professional programmer as well as the hobbyist.</p>
+
+<p>It is the first full Kernighan and Richie implementation for the QL and produces true, relocatable, machine code. The package consists of a lengthy manual, three microdrive cartridges and a ROM.</p>
+
+<p>The first cartridge contains the runtime editor and the Sinclair standard linker. The full screen editor will take any ASCII input and is standard to all the Metacomco products. The linker is used to chain together modules of compiled code.</p>
+
+<p>Compilation is a two phase operation, although the passage between the phases is easily accomplished. Each phase is on a separate microdrive.</p>
+
+<p>Phase one is invoked using the SuperBasic procedure name LC1. It reads in the source you have produced using the screen editor, and creates an intermediate compilation which is stored on microdrive or disc using the same file name as the source.</p>
+
+<p>Different types of file are distinguished by using file name extensions in a similar way to those used by the Psion business suite. For instance, the source code is labelled, _C; first phase compilation, _Q; and final phase, 0. In that way the computer knows the type of file it is dealing with.</p>
+
+<p>The command format for phase one includes a number of optional specifiers. Those will change the number of bytes used by the execution stack - from a default value of 2048 - and allow the entry of compile time options. The basic load command consists of the instruction followed by drive specifiers. For instance:</p>
+
+<center><b>LC1 &quot;mdv1_ flp2_sinclair&quot;</b></center>
+
+<p class="first">would load the first phase code from microdrive one, load your source from disc drive two, produce an intermediate compilation and save the file.</p>
+
+<p>The second phase of compilation reads in the file created by the first, and produces object code in the Sinclair standard format. That object file must then be turned into an executable job using the linker.</p>
+
+<p>In comparison with the GST compiler, reviewed in August, the Metacomco Development Kit is far superior in performance and standard. It is a full Lattice implementation, whereas GST is manufacturing a version of RATC. That is in the public domain - anyone can use it - and is to C what mini-LOGO is to LCSI LOGO.</p>
+
+<p>The compilation process is slightly easier with the Metacomco package. GST QC changes the source into assembly language and converts that into machine code. While both packages use a similar process the QC components are run separately. Compilation can be automated with the Metacomco package by using the QLC command which loads in phase one and then phase two.</p>
+
+<p>The library routines, which make up the bulk of most C packages, highlight the differences between the Metacomco and GST packages. Metacomco has produced a version of the language which is portable - meaning that the source you write can be used on other machines. For that reason the library functions which can be linked into your programs do not deal with QL screen or sound. They include routines to deal with memory allocation, mathematics and files.</p>
+
+<p>The GST package is tailored to the QL. It too has a standard input/output library, but it contains routines to interface with QDOS and produces window and graphics effects. For that reason, and because of the low price, it was recommended for C beginners.</p>
+
+<p>Metacomco's package will provide the standard for system development. It will be used by professionals and those who are already expert in the use of C.</p>
+<br clear=all>
+
+<table width="100%" border="0"><tr><td>
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellspacing="0" cellpadding="5">
+<tr><td bgcolor="#CCCCCC"><b>Publisher</b> Metacomco <b>Price</b> &#163;99.95<br>
+<font size="+2"><b>*****</b></font></td></tr></table>
+</td></tr></table></td><td align="right" valign="top"><b><i>John Gilbert</i></b></td></tr></table>
+
+</td></tr></table>
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table width="100%" border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC"><font size="+2"><b><i>Crazy Painter</i></b></font></td></tr></table>
+</td></tr></table>
+
+<img src="qlsoft2.gif" width=190 height=250 hspace=10 vspace=10 border=0 align="right" alt="">
+
+<p class="first">YOU ARE invited, brush in hand, to give this old game a new lick of paint.</p>
+
+<p>No prizes for guessing what you have to do, but I'll explain for those who have been in the wilderness for the past three years. Use the brush to paint the screen while being plagued by dogs, space invaders, bursting bubbles, snakes and a man who is intent on stopping your work.</p>
+
+<p>You can drive some of the crudely animated sprites off by colliding with them but others, such as the snake and paint snatcher, will strip you of your tools.</p>
+
+<p>Once you have plastered the whole screen with paint you must stop it dripping. If you are persistent, and lucky, you will move on to another colour paint and earn a bonus. Remember, you must keep the paint gleaming until your pot luck runs out.</p>
+
+<p>Although the sprite graphics are not satisfactory and the game repetitive you may find it addictive - I didn't. If you are still willing to pay nearly &#163;13.00 for a game, Crazy Painter should keep you happy for at least three minutes. If, however, the standard of games software throws you into a fit of manic depression then don't buy it, you'll have another attack.</p>
+<br clear=all>
+
+<table width="100%" border="0"><tr><td>
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellspacing="0" cellpadding="5">
+<tr><td bgcolor="#CCCCCC"><b>Publisher</b> Microdeal <b>Price</b> &#163;12.99<br>
+<font size="+2"><b>**</b></font></td></tr></table>
+</td></tr></table></td><td align="right" valign="top"><b><i>John Gilbert</i></b></td></tr></table>
+
+</td></tr></table>
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table width="100%" border="0" cellpadding="10"><tr><td bgcolor="#000000">
+
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC"><font size="+2"><b><i>Cosmos</i></b></font></td></tr></table>
+</td></tr></table>
+
+<p class="first"><font color="#FFFFFF">STARRY-EYED astronomers will immediately fall for Cosmos, from Talent.</font></p>
+
+<p><font color="#FFFFFF">The package contains everything you will need to keep track of the constellations, whether you keep an observatory at the bottom of the garden or a pair of binoculars in the study.</font></p>
+
+<p><font color="#FFFFFF">The main menu allows you to set up a star map for a particular position, time and date. Any time or date can be used and position is specified by longitude and latitude.</font></p>
+
+<img src="qlsoft3.gif" width=550 height=157 border=0 align="right" alt="Earth from the Moon">
+
+<p><font color="#FFFFFF">Once the map data has been fed in you can select your viewpoint. For instance, you can look towards any compass point or get Cosmos to plot a map of the whole night sky.</font></p>
+
+<p><font color="#FFFFFF">When the view you require has been plotted you can take an even closer look at the stars and planets. The quickest way to do that is to call up the Direct Select option. A list of planets is displayed together with an option to take a closer look at the stars.</font></p>
+
+<p><font color="#FFFFFF">If you select the Moon - OK, I know it's really a satellite - a data sheet will appear on the screen showing its location, size and distance in light years from earth.</font></p>
+
+<p><font color="#FFFFFF">Cosmos will also show you what some of the planets look like to the naked eye if viewed at a selected time of the year. The display is educational, especially as far as the moon, Mercury and Venus are concerned. You could not get that sort of detail in a book.</font></p>
+
+<p><font color="#FFFFFF">The star data option on the menu gives you information about any star you care to mention. Just type in its magnitude and Cosmos will provide all the other data including type, position, luminosity and colour.</font></p>
+
+<p><font color="#FFFFFF">You can call up star data using a circular cursor. Position it over the star of your choice and press ENTER.</font></p>
+
+<p><font color="#FFFFFF">If no star exists at that point the cursor will jump to the nearest star location and display its data.</font></p>
+
+<p><font color="#FFFFFF">Cosmos will also help those who are following Halley's Comet. Talent has incorporated the comet into the display. If you want to locate it between November 1985 and May 1986, at any time or place on Earth, then just ask Cosmos. Unfortunately, it will not plot its position for the last sighting period or the next one but it is unlikely that anyone would be around when the comet next appears.</font></p>
+
+<p><font color="#FFFFFF">Although the program is in Basic the enormous amount of data is handled with near machine code speed. The speed at which star charts are constructed is also very respectable.</font></p>
+
+<p><font color="#FFFFFF">Cosmos is one of the best astronomical packages on the market. The mass of information, simplicity of use, and graphics make it ideal for professional and amateur astronomers. It almost tempts me to go out and buy a telescope.</font></p>
+<br clear=all>
+
+<table width="100%" border="0"><tr><td>
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellspacing="0" cellpadding="5">
+<tr><td bgcolor="#CCCCCC"><b>Publisher</b> Talent <b>Price</b> &#163;14.95<br>
+<b>Joystick</b><br>
+<font size="+2"><b>*****</b></font></td></tr></table>
+</td></tr></table></td><td align="right" valign="top"><b><i>John Gilbert</i></b></td></tr></table>
+
+</td></tr></table>
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table width="100%" border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="5" cellspacing="0"><tr><td bgcolor="#CCCCCC"><font size="+2"><b><i>Sketchpad</i></b></font></td></tr></table>
+</td></tr></table>
+
+<p class="first">SOFTWARE manufacturers must think that all QL owners want to do is draw pictures judging by the number of design packages on the market.</p>
+
+<p>Sketchpad has been around for nearly a year but Sigma has finally released a significantly improved version, 2.00, which works to specification. It has been converted from SuperBasic into BCPL and machine code. The increase in speed is noticeable, particularly when you are drawing, and the presentation is of a higher standard than the previous version.</p>
+
+<p>The facilities are almost identical to those in GraphiQL, from Talent, but the layout is different. There are three windows on the screen. The first provides status information such as file name, bytes used for the drawing and the X,Y co-ordinates for the pen cursor.</p>
+
+<p>The second window displays one of the three menus, giving a choice of drawing methods, an overlay grid option, and two types of fill. Finally, the third window is the drawing pad. Sketchpad optimises storage by only storing the objects you draw in RAM, it does not make a copy of the whole screen.</p>
+
+<p>Option selection is easy. Just use the function keys to call the required menu and highlight the option using the cursor keys.</p>
+
+<p>The easiest drawing option to use is the elastic line command. Press the space bar to set the point of the origin and use the cursor to stretch the line to the desired destination.</p>
+
+<p>Other shapes, such as circles, ellipses, rectangles and triangles have their own options. The ellipse command is the most interesting to use. Use the cursor to draw a line then press the space bar and it turns into an ellipse.</p>
+
+<p>The cursor can then be moved to increase or decrease the curvature of the shape. Complex helix patterns can be drawn in a matter of minutes with only a few key presses.</p>
+
+<p>The one advantage that Sketchpad has over GraphiQL is that text of differing sizes can be put onto the screen and moved around using the cursor. Text and different shaped objects can be cloned and cut out of a picture if required.</p>
+
+<p>Sketchpad is less flexible than the Talent package. It only allows four colours on the screen - black, red, green, white - and four textures. There is no option to change either of those aspects of the display.</p>
+
+<p>If Sigma's first version of Sketchpad had been as good as GraphiQL the company would be at the leading edge of QL software. Unfortunately, it made a mess of the product and version 2.00 is a desperate attempt to save face.</p>
+<br clear=all>
+
+<table width="100%" border="0"><tr><td>
+<table border="0" cellpadding="1"><tr><td bgcolor="#000000">
+<table border="0" cellspacing="0" cellpadding="5">
+<tr><td bgcolor="#CCCCCC"><b>Publisher</b> Sigma Research <b>Price</b> &#163;14.90<br>
+<b>Joystick</b><br>
+<font size="+2"><b>***</b></font></td></tr></table>
+</td></tr></table></td><td align="right" valign="top"><b><i>John Gilbert</i></b></td></tr></table>
+
+</td></tr></table>
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="top30.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Top 30"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 45 Contents"></a>
+<a href="hardwre.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a></p>
+
+<h6 align="center">Sinclair User<br>December 1985</h6>
+
+</body>
+</html>

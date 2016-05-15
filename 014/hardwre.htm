@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 14 - Hardware World</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Hardware news from Sinclair User, May 1983">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 14 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Hardware World</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<h1>Spectrum can now link to Centronics</h1>
+
+<img src="hardwre1.jpg" width=350 height=192 hspace=10 vspace=10 border=0 align="right" alt="LPRINT interface">
+<p class="first">LPRINT is not only a Sinclair keyword but the name of a printer interface for the Spectrum. The small black box, 2&#189;in. by 2in., plugs into the expansion port on the Spectrum. Thereafter all LLIST and LPRINT commands are converted to a Centronics parallel interface on the back. By plugging in a standard 20-way cable to its pins a standard plain-paper printer can be used.</p>
+
+<p>Any Centronics printer can be used, as any graphics, user-defined characters and the like have to be programmed in by the user each printer has ways of doing graphics and special characters. The instructions are so simple that they are printed on the bottom of the unit.</p>
+
+<p>The same firm can also supply a tape with a program for using the COPY command. GP100 was used to reproduce every dot on the screen using a routine of only 76 bytes stored above RAMTOP.</p>
+
+<p>A modification must be made before using LPRINT, as the printer would normally output a new line after every carriage return - ENTER character. That facility must be removed so that it gives a new line only when the printer interface tells it to do so. The printer manual will undoubtedly cover that and there is a warning built into the Copy program. Sometimes all that is required is to throw a switch or insert a wire between two terminals.</p>
+
+<p>The LPRINT graphics routine for COPYing the screen is its best feature. Its worst is that you cannot set the line length on LLIST, so it prints the line until it reaches the end of the line or exceeds the length of the printer paper.</p>
+
+<p>The other thing about LLIST and LPRINT is that it ignores graphics and other non-recognisable characters. So a string with three graphics characters will print as an empty string - no spaces. It would be much better to print a space so that the graphics could be filled-in later by hand.</p>
+
+<p>All the control for the printer is stored in a 2K ROM inside the box along with seven ICs. No user RAM is used unless the COPY command is required.</p>
+
+<p>The LPRINT module costs &#163;41.40, plus the printer cable at &#163;12.08. The COPY tape costs &#163;5.</p>
+
+<a name="spool"></a>
+<h2>Printer improved</h2>
+
+<p class="first">THE ZX Printer Spool solves a problem which bedevils Sinclair users. The aluminium spindle and two end-pieces are fitted to the paper roll and allow it to turn easily. The plastic ends on the printer are often loose and cause it to wander from side to side, preventing the printer motor pulling through the paper.</p>
+
+<p>It solved the problem but only after tapping one end of the paper reel on a hard surface to get it back into line.</p>
+
+<p>The results are much better printout both for graphics and text, plus a great saving in printer paper.</p>
+
+<p>The ZX Printer Spool costs &#163;4 and can be obtained from Sadlers Developments, Surrey.</p>
+
+<a name="ramlok"></a>
+<h2>Kit prevents the wobbles</h2>
+
+<p class="first">ADAPT ELECTRONICS has produced a RAMLOK kit to prevent the Sinclair RAM pack wobbling on the ZX-81. It consists of a female edge connector plug which has to be soldered on to the expansion port of the ZX-81 and a mounting bracket which is attached to both the ZX-81 and the RAM pack by double-sided sticky tape.</p>
+
+<p>There are two plastic blocks included in the kit, one for the Sinclair type and one for other types. The two pads stuck on to the ZX-81 have holes so that a steel pin can bolt all three blocks together firmly. The RAM pack can be the only item used on the back of the ZX81 but you can detach it by removing the pin. The edge connector is gold-plated to prevent corrosion.</p>
+
+<p>The system seems to work well but does not allow for the printer or any other device to be used. It also invalidates your Sinclair guarantee. If you have that problem and you want to use only the RAM pack the RAMLOK kit costs &#163;8 from Adapt Electronics, Essex.</p>
+
+<h2>Atari joystick interface</h2>
+
+<p class="first">AGF has now modified its joystick interface to accept standard Atari joysticks. The interface allows you to simulate the cursor keys on a Spectrum or ZX-81 plus a second set of keys for a second player.</p>
+
+<p>Much software uses cursor keys and AGF provides some demonstration software with each unit so you can look for the cheapest joysticks which can be used on Ataris - there is a range from Le Stick to Competition Pro.</p>
+
+<p>AGF sells the interface at &#163;20 and the address is West Sussex. You should indicate which machine you have.</p>
+
+<h2>Easy-to-use printer link</h2>
+
+<p class="first">KEMPSTON MICRO-ELECTRONICS has produced a Centronics printer interface which plugs on the back of the Spectrum. There is nothing spectacular in the box as it is an 8255 chip used as a port to access the printer cable.</p>
+
+<p>The printer cable is a full 35-way type, and is about one metre long. The plug at the end which fits on the printer seemed a little too thick to put the securing clips around but it was a tight fit in the socket.</p>
+
+<p>All the hard work is done in 650 bytes of machine code stored above RAMTOP; a different program is provided for each computer. That may seem a great deal but the accompanying Basic program allows you to specify a number of options on the printer. Once those options are set, the program will save the machine code only to allow you to use all the rest of the RAM yourself.</p>
+
+<p>Line length, changing the character codes for individual characters, special features such as the line feed and carriage return, can be set in software. All those commands affect only LPRINT and LLIST as COPY is ignored.</p>
+
+<p>Any of the options can be ignored by pressing ENTER in response to the question. In that way a printing routine can be personalised and if, say, the line length is limited to 32, LLIST would produce a duplicate of that listed on the screen.</p>
+
+<p>Hilderbay, the company which produced the software, must be congratulated on providing a fine, easy-to-use piece of software.</p>
+
+<p>The only way to COPY a screen suggested in the instructions is to use the Basic Point command in a loop to assemble the required graphic bytes to put out to the printer. That is useful but slow and the routine applies only to Epson printers. Looking through the printer manual is the only answer if you do not have one of those.</p>
+
+<p>A machine code program for at least two of the popular printers to simulate, if not use the COPY command, would have been useful. That seems preferable to the LPRINT, is it allows you control of the printer with as much ease as possible.</p>
+
+<p>The printer interface costs &#163;45 and is available from Kempston Microelectronics, Bedford.</p>
+
+<h2>Cheaper keyboard</h2>
+
+<img src="hardwre2.jpg" width=292 height=216 hspace=10 vspace=10 border=0 align="right" alt="Filesixty keyboard">
+<p class="first">THE FILESIXTY button set is cheaper than a real keyboard and yet offers the same advantages. The keys move and the Sinclair keyboard has a positive keypress. The button set is the same size as the Sinclair keyboard and is stuck over the top of it with double-sided sticky tape. It does not invalidate the guarantee, require soldering, or need you to go inside the case.</p>
+
+<p>The buttons have on the underside a nylon flap with a knob on it. The knob is centred over the Sinclair key and when not being pressed holds the button above the keyboard. When the button is pressed the key moves down about 2mm. and the knob strikes the keypad. That works very well.</p>
+
+<p>The keyboard has a black surround to blend with the ZX-81 and the keys are nearly all white with black lettering, making them easy to see. The number keys are coloured blue, SHIFT and NEW LINE keys orange. The keys are only 8mm. square, which makes them easy to use.</p>
+
+<p>The graphics on the keys, however, have been changed, so that solid blocks of black are represented by lines indicating the area covered. That and the fact that some of the key symbols have been changed may create initial difficulty, but should be no problem after use for a week or so. The cost of the Filesixty button set is &#163;10 and it should last as long as the Sinclair keyboard. Filesixty can be obtained from Fox Electronics, Hampshire and some shops.</p>
+
+<h2>Telford offers ZX-81 upgrade</h2>
+
+<p class="first">FOR &#163;42.40 Telford Electronics and Computing will fit your ZX-81 into a Fuller 42-key keyboard and case. It will also add reverse video switch, re-set button, repeat key - on a separate key and power-on LED. The price includes fitting and postage.</p>
+
+<p>Optional extras include a monitor socket, joysticks and fitting the power pack and 16K RAM inside the case.</p>
+
+<h2>Better angle on Spectrum</h2>
+
+<p class="first">WARP FACTOR EIGHT sells the Hi-Stak, plastic blocks to raise a ZX-81 or Spectrum to an angle suitable for typing. They raise the Spectrum by about 30 degrees and stick on the bottom of the case at the back by double-sided sticky pads. They are a little expensive at &#163;3.95 inc. VAT and postage but if you want to have style and do not wish to add anything at the back - the edge connector finishes 1&#189;in. off the table and can cause wobble - use it.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="letters.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Letters"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 14 Contents"></a>
+<a href="softwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Software Scene"></a></p>
+
+<h6 align="center">Sinclair User<br>May 1983</h6>
+
+</body>
+</html>
+

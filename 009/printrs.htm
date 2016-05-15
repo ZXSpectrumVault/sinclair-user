@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 9 - Printers</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="ZX-81 printer/interface survey from Sinclair User, December 1982">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 9 Contents"></a>
+<a href="insinc.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Inside Sinclair"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>printer survey</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<p class="first"><b><font size="+1">Ap Pandaal sorts his way through the serials and the parallels to get copies</font></b></p>
+
+<h1>Getting the better of the ZX printer</h1>
+
+<p class="first">WHEN the Sinclair printer was introduced, it was regarded as a real breakthrough both in design and price. Since then, the price has been increased from &#163;49.95 to &#163;59.95 - perhaps to offset the price reduction of the 16K RAM pack and because the special metallised paper has proved to be expensive to use.</p>
+
+<table width="360" border="0" cellpadding="10" align="right">
+<tr><td><img src="printrs1.jpg" width=340 height=179 border=0 alt="">
+<br>
+<p align="right" class="first"><b><font size="-1">Memopak interface with Seikosha GP-100A printer
+</font></b></p>
+</td></tr>
+</table>
+<p>Since the printer draws its power from the ZX-81 power supply, that has caused problems due to the heavier current consumption, even though a bigger transformer capable of providing 1-2 amps is provided free by Sinclair with every printer sold; sometimes, a helping hand has to be given to pull through the paper while it is printing.</p>
+
+<p>Those shortcomings prompted several independent companies to find other ways of providing hard copy. Before examining them it is worthwhile looking at the problems involved in transferring information or data from the ZX-81 to a printer.</p>
+
+<p>The keywords LPRINT, LLIST and COPY are subroutines contained in the ROM, so entering one of those keywords from the keyboard is a jump to the relevant section in the ROM.</p>
+
+<p>The LLIST command looks at the section of memory where your Basic program is stored and transfers the contents for forwarding to the printer. That process is very complex, since the program is not stored as simple characters but in a much shorter form using tokens to represent the keywords.</p>
+
+<p>Those tokens have to be 'blown up' by the ROM to form a keyword before they can be sent to the printer. Sinclair uses a nonstandard way of representing characters which would not be recognised by a printer other than its own. The industry standard, ASCII, ensures that the alphabet, numbers and other characters are each represented by a fixed number, for instance A to Z have the numbers 65 to 90.</p>
+
+<p>There are also standards for connections to printers, two of the popular ones being Centronics parallel and RS232C serial.</p>
+
+<p>In simple terms, a parallel data transfer means that the eight data bits which comprise a character are transferred all at once, while in serial transfer the bits are sent one after another. Parallel transfer therefore is much faster but fewer wires are required for hooking-up a printer with a serial transfer method. Not surprisingly, Sinclair has its own standard which is largely the result of economies in design.</p>
+
+<p>At present there are four companies which have designed interfaces for linking the ZX-81 to a printer:</p>
+<br clear=all>
+
+<center><table width="50%" border="1" cellpadding="5">
+<tr><th>Company	</th>	<th>Interface</th>	<th>Handshake</th>	<th>Price</th></tr>
+<tr><td>Cobra	</td>	<td>RS232C</td>	<td>Yes</td>		<td>&#163;29.95</td></tr>
+<tr><td>Data-Assette</td><td>RS232</td>	<td>No</td>			<td>&#163;49.95</td></tr>
+<tr><td>Memotech</td>	<td>Centronics</td><td>Yes</td>		<td>&#163;39.90</td></tr>
+<tr><td>Capital Computers</td><td>RS232/Centronics</td><td>Yes</td><td>&#163;39.95</td>
+</tr>
+</table></center>
+
+<p>The significance of the handshake column is that the speed of data transfer is restricted - up to 300 baud - if handshake is not provided.</p>
+
+<p>The Cobra interface is contained in a neat black box which plugs into the back of the ZX-81. There are two jack sockets on the side of the interface, the bigger one being the serial output while the smaller one is for handshaking. The interface contains a 2716 EPROM, located between 2000 hex and 2FFF hex. In the EPROM are the routines which provide program and data listings. A four-page instruction manual is provided by Cobra which describes how to connect it to a printer.</p>
+
+<p>The interface does not use the Sinclair keywords LLIST and LPRINT but uses a USR call to its own EPROM. Before a program can be listed, the format of the output has to be set by using a table or the manual. It is possible to list a program, list a string of data and also to type in lower-case by using the inverse characters. Unfortunately, there is no way of obtaining a screen copy.</p>
+
+<p>The ZX-99 made by Data-Assette works in a similar way but is not a true RS232C, as it is not capable of monitoring the status of the printer, since it has no handshake facilities and can therefore operate only at up to 300 baud on most printers. Although more expensive than the Cobra, it provides extra facilities for tape handling.</p>
+
+<p>Capital Computers also markets a combined RS232C and Centronics interface for use with its motherboard system. It has not been possible to test the interface for this survey but it operates on the Sinclair keywords LLIST, LPRINT and COPY. The interface is said to be bi-directional, thus allowing full communication between other intelligent devices.</p>
+
+<p>The Memotech interface is neatly-packaged in a black aluminium case which is similar to RAM modules. The version supplied was designed to be used exclusively with a Seikosha GP100A 80-column printer but the later versions have a small hardware modification to allow them to work any Centronics-type printer.</p>
+
+<p>As well as providing listings in upper- and lower-case, using inverse characters, the interface also allows double-width printing, which is achieved by sending control characters to the printer.</p>
+
+<p>It is also possible to print up to 80 characters on a line by sending out the relevant control character. A flat 34-way ribbon cable connects the interface to the printer, the two ends plugging in. It is not possible to print the Sinclair graphics since they are not standard ASCII but the high-resolution module can be used with the interface to print graphs plotted in high resolution.</p>
+
+<p>The unit is easy to use, since the standard keywords are used to list, print and copy and that is a great advantage over some of the other interfaces which have to make use of variables for their operation.</p>
+
+<table width="363" border="0" cellpadding="10" align="right">
+<tr><td><img src="printrs2.jpg" width=343 height=220 border=0 alt="">
+<br>
+<p align="right" class="first"><b><font size="-1">Dean Electronics thermal printer</font></b></p>
+</td></tr>
+</table>
+<p>Other than the Sinclair printer, there are only three known printers which have been designed for use on the ZX-81. Dean Electronics markets the model 81 thermal printer which costs &#163;110.97 including the purpose-built interface, a roll of paper, postage and VAT. The printer uses 4.2in. wide thermal sensitive paper and is capable of printing up to 40 columns. The only controls on the printer are power and paper advance.</p>
+
+<p>The interface is contained in a rather over-sized black case. That seems strange, since the interface printed circuit board is populated largely with empty IC sockets, perhaps to allow future use with other computers.</p>
+
+<p>Another annoying feature is that the cable from the interface to the printer is so short that it is difficult to plug or unplug the power, cassette and TV leads to the ZX-81, since the computer has to be to the right of the printer, which gets in the way of the leads.</p>
+
+<p>That apart, the instructions provided with the printer are clear and easy to follow. It is possible to list, print a string of characters and perform a screen copy, both in normal mode and enhanced mode, which means that the characters are printed at twice their height. The printer prints faithfully all the Sinclair character set, including inverse and graphics. That is achieved by using variables in conjunction with USR calls.</p>
+
+<p>It is not possible to copy the screen directly from the keyboard, since the display file is cleared. The only way to deal with that problem is to put the USR call in the program in such a position that the screen is filled first.</p>
+
+<p>The Amber 2400 is a plain-paper dot matrix printer costing &#163;105.24 including interface cable, paper, postage and VAT. The paper rolls are 2&#188;in. wide, which allows up to 24 characters to be printed in normal mode. The printer can be used in serial or parallel mode with a variety of computers but, sadly, it is extremely difficult to use with a ZX-81.</p>
+
+<center><table border="0">
+<tr><td><hr noshade></td></tr>
+<tr><td align="center"><b>'As the printer draws its power from the ZX-81 power supply that has caused problems due to the heavier consumption'</b></td></tr>
+<tr><td><hr noshade></td></tr>
+</table></center>
+
+<p>Amber is the first to concede that the interface provided is not the complete package you need for use on ZX-81. The main reason is that the driving software is not provided in an EPROM as it is on the other interfaces mentioned, but has to be loaded separately from a cassette.</p>
+
+<p>That software has the task of converting the non-standard internal character codes into ASCII and also checking the status of the printer. It is not possible to obtain listings or a screen copy. There are, however, routines to allow the printer to be used with a Spectrum, which is much easier to interface, since it uses ASCII codes.</p>
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 9 Contents"></a>
+<a href="insinc.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Inside Sinclair"></a></p>
+
+<h6 align="center">Sinclair User<br>December 1982</h6>
+
+</body>
+</html>
+

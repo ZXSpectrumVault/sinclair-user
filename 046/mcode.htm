@@ -1,0 +1,369 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 46 - Machine Code</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Z80 machine code programming feature from Sinclair User, January 1986">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#CCCCCC" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 46 Contents"></a>
+<a href="books.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Books"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Machine Code</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><img src="mcode1.jpg" width=550 height=227 vspace=10 border=0 alt="Framing facts with figures">
+
+<h2><i>Marcus Jeffery creates windows with rectangles,<br>
+and shows where to store machine code</i></h2></center>
+
+<p class="first">In the penultimate article of this series, we're going to take a more detailed look at the CALL and RETurn statements, and also be looking at places to store machine code programs.</p>
+
+<p>This month's routine allows you to clear rectangles to a particular colour, either for simple graphics or pseudo windowing.</p>
+
+<p>CALL and RET statements have been included in past programs, but we haven't discussed how and where to use them. Those statements effectively create a subroutine program in much the same way as GO SUB and RETURN are used in Basic. AH that is connected with the theories of program structure and top-down programming.</p>
+
+<p class="first">Suppose you want to develop a line drawing routine for the Spectrum using a top-down design, we would have the main program looking like:</p>
+
+<pre><b>main    CALL crds</b>
+        ; Get start and end
+        ; coordinates of the line
+        <b>CALL draw</b>
+        ; Draw the line on screen
+        <b>RET</b>
+        ; Return to the calling code
+        ; or Basic</pre>
+
+<p>The next step is to move down a level, and divide the two routines into further sub-divisions. If we were inputting the coordinates from the keyboard, then the ~get_coords' routine would look something like:</p>
+
+<pre><b>crds    CALL get</b>
+        ; Get first x-coordinate
+        <b>CALL store</b>
+        ; Store first x-coordinate
+        <b>CALL get</b>
+        ; Get first y-coordinate
+        <b>CALL store</b>
+        ; Store first y-coordinate
+        <b>CALL get</b>
+        ; Get second x-coordinate
+        <b>CALL store</b>
+        ; Store second x-coordinate
+        <b>CALL get</b>
+        ; Get second y-coordinate
+        <b>CALL store</b>
+        ; Store second y-coordinate
+        <b>RET</b></pre>
+
+<p class="first">Similarly, the 'get' routine will be divided:</p>
+
+<pre><b>get     CALL print</b>
+        ; Print the input message
+        <b>CALL input</b>
+        ; Input the coordinate
+        <b>RET</b></pre>
+
+<p class="first">and so on.</p>
+
+<p>There are a number of advantages to this method of programming - you are less likely to make mistakes if you split the program into a number of menial tasks. However, you still have to take care of those registers which are corrupted, where the results will be stored, and so on. One failsafe method of handling the registers is to stack - PUSH - the registers which will be corrupted at the start of each routine, then POP them again at the end.</p>
+
+<p>Another advantage is that it is easy to build a library of subroutines for general use, especially if you have documented them properly. If PUSHing takes too long, you could always try using the alternative registers, which we covered <a href="../045/mcode.htm">last month</a>.</p>
+
+<p>When you come to develop the actual line-drawing part of this routine, you're going to need a subroutine which plots points. Easy, just pinch the plotting routine which was used in the shape-filling program - August issue. Having got a completed line-drawing routine, it can be placed in the library, and used again if you want to draw squares, or build an adventure graphics program.</p>
+
+<p>Now that you know how the CALL and RET statements should be used, let's look at the tricks which can performed with them. One obvious space- saving device which many programmers overlook is adding conditions to CALL and RET statements. It's all too easy to write something like:</p>
+
+<pre>                .
+                .
+        CP    byte
+        JR    Z,loc1
+        CALL  routine
+loc1            .
+                .
+        CP    (HL)
+        JR    Z,loc2
+                .
+                .
+loc2    RET</pre>
+
+<p class="first">when it would be far easier to write:</p>
+
+<pre>                .
+                .
+        CP    byte
+        CALL  NZ,routine
+loc1            .
+                .
+        CP    (HL)
+        RET   Z
+                .
+                .
+loc2    RET</pre>
+
+<p>Hardened structuralists would have a fit if they saw that kind of programming, arguing that routines should have only single input and output locations to avoid mistakes and making the program more readable. That is reminiscent of the GO TO spaghetti programming arguments. Although those jumbled programs should be avoided, multiple input/output locations should be used. After all, when using machine code, you'll have to make a jump at some point.</p>
+
+<p>There are quite a number of conditions which may be attached to CALL and RETurn statements, listed in <a href="#fig5">figure five</a>.</p>
+
+<p>In previous articles, machine code routines have been stored from location 60000 upwards. That isn't necessarily the best place to hold machine code. All you have to do is choose a series of locations, starting at 'loc' near the top of memory, sufficient to hold your machine code program and data. Then use the Basic CLEAR 'loc'-1 instruction to ensure that the area of memory is safe. You can still corrupt machine code in that area using POKEs, but Basic won't affect it, nor will the NEW instruction erase any of your code.</p>
+
+<p>The major disadvantage with this method of lowering RAMTOP with the CLEAR instruction, is that the machine code is separate to any Basic program which uses it. You either have to include a loader in the Basic program, as we have in previous articles, or save the machine code separately using a SAVE &quot;name&quot; CODE location, length instruction. If you don't want to load it separately each time you use it, then it must be saved on tape after the Basic program, which should include the instructions:</p>
+
+<pre>  CLEAR location-1
+  LOAD &quot;name&quot; CODE</pre>
+
+<p class="first">to load the machine code into memory.</p>
+
+<p>There are alternatives to that method of storing machine code programs. One of the most popular of those is to embed the code inside a Basic REMark statement. REM statements are typically of the form:</p>
+
+<pre>  10 REM This is line ten of the Basic program.
+  20 REM REM statements allow programmers to
+  30 REM add comments to their programs, and
+  40 REM are ignored by the Basic interpreter</pre>
+
+<p>Any information which appears after a REM statement is ignored when the program is running. That information can be anything you like, including machine code. The only problems are putting the machine code after the REM statement to begin with, and knowing where the machine code routine starts so that you can call it from Basic.</p>
+
+<p>Those are both solved by a handy couple of bytes in the system variables area. If you type</p>
+
+<pre>  PRINT 256 * PEEK 23636 + PEEK 23635</pre>
+
+<p class="first">you'll get a figure telling you where your Basic program starts. If we add five to that number, we'll get the location of the first character after a REM statement, assuming that the REM is the first statement of the program. We can check that with the program:</p>
+
+<pre>  10 REM ABCDEFG
+  20 LET bc = 256 * PEEK 23636 + PEEK 23635 + 5
+  30 FOR i=0 TO 6
+  40 PRINT CHR$(PEEK (loc + i));
+  50 NEXT i</pre>
+
+<p class="first">which should pick the characters out of the REM statement and print them.</p>
+
+<p>We'll now store this month's routine in the same way. The assembly code, shown in <a href="#fig1">figure one</a>, is 96 bytes long. If you look carefully, you'll notice that nowhere in the code does it refer to any specific locations in other parts of the code. That means that we can easily place the code anywhere in memory without having to change any bytes, as would be the case with a CALL or JP instruction.</p>
+
+<p>This relocatable Z80 is more useful than location specific machine code. For instance, it allows you to build up libraries of routines and load them anywhere in memory, tying them together with CALLs from the main routine.</p>
+
+<p>The Basic loader program, <a href="#fig2">figure two</a>, shows how that method can be used. The Hex Load Routine - lines 1000 onwards - is slightly different from normal. Instead of reading the start location, it assigns it the first location after the initial REM - line one - in line 1040. Be careful when typing line one, to ensure that there are at least 96 characters after the REM statement, not including the automatic space, otherwise you'll find the machine code overwriting your program.</p>
+
+<p>When you run the program, it will initially cover the screen with X characters then overwrite those with pseudo windows. True windows will clear an area of the screen to a particular colour, then allow you to write specifically to that window without affecting anything outside the window. That program simply does the clearing and you must be careful where you print. You could just as easily use the routine to draw coloured rectangles very quickly, as when drawing a bar chart. If you want to see how fast the program really is, just take out line 60.</p>
+
+<p>Having run the program once, try listing it. You may have a few problems. The initial REM will be followed by garbage, and possibly a system error. That is due to the machine code now embedded in the program. The advantage is that you can now delete lines 1000 onwards, and type 'RUN 10' to run the program as before - no need to reload the machine code routine. By typing 'LIST 2', you'll be able to list the program normally. You can also SAVE and LOAD the program with the routine still embedded.</p>
+
+<p>When using the routine in your own programs, delete everything but lines one and two. To call the machine code use FN w, of the form: FN w(x,y,w,h,i) where x - the x-coordinate of the top-left of the rectangle; y - the y-coordinate of the top-left of the rectangle; w - width of rectangle; h - height of rectangle. i - the new ink and paper attribute - see figures <a href="#fig3">three</a> and <a href="#fig4">four</a>.</p>
+
+<p>The 'FN w ...' can be preceded by a number of commands, such as RANDOMIZE, RESTORE, or just LET X=. You should ensure that the window fits onto the screen - 0 to 31 columns, and 0 to 23 lines, inclusive.</p>
+
+<p>Although you may have set the INK and PAPER in a window to particular colours when specifying a value for 'i', you'll still have to set those colours when PRINTing. Otherwise, you'll merely alter the attributes in the PRINTed character squares. That is shown quite clearly in the included Basic program.</p>
+
+<p>In the final article, <a href="../047/mcode.htm">next month</a>, we'll take an in-depth look at how to use the Spectrum ROM.</p>
+
+<h2><i>Figures</i></h2>
+
+<a name="fig1"></a>
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 1. Assembly code</b></p>
+<pre>                     ORG   60000
+                     LOAD  60000
+
+EA60 DD2A0B5C WINDOW LD    IX,(23563) ;IX = function arguments
+EA64 DD5E04          LD    E,(IX+4)   ;E = X-coord (top left)
+EA67 DD560C          LD    D,(IX+12)  ;D = Y-coord (top left)
+EA6A DD4E14          LD    C,(IX+20)  ;C = Width of rectangle
+EA6D DD461C          LD    B,(IX+28)  ;B = Height of rectangle
+EA70 DD7E24          LD    A,(IX+36)  ;A = New attribute value
+EA73 F5              PUSH  AF
+
+EA74 7A              LD    A,D        ;Calculate value for
+EA75 E618            AND   18H        ;    HL = Display file
+EA77 F640            OR    40H        ;    location for
+EA79 67              LD    H,A        ;    top left of
+EA7A 7A              LD    A,D        ;    rectangle
+EA7B E607            AND   7
+EA7D 1F              RRA
+EA7E 1F              RRA
+EA7F 1F              RRA
+EA80 1F              RRA
+EA81 83              ADD   A,E
+EA82 6F              LD    L,A
+
+EA83 C5              PUSH  BC         ;Clear display rectangle ...
+EA84 E5              PUSH  HL
+EA85 C5       HT1    PUSH  BC         ;Loop down each character
+EA86 E5              PUSH  HL
+EA87 0608            LD    B,8
+EA89 C5       LN1    PUSH  BC         ;Loop down pixel lines
+EA8A E5              PUSH  HL
+EA8B AF              XOR   A          ;A = 0 for clearing display
+EA8C 41              LD    B,C
+EA8D 77       WD1    LD    (HL),A     ;Loop along lines
+EA8E 23              INC   HL
+EA8F 10FC            DJNZ  WD1
+EA91 E1              POP   HL
+EA92 24              INC   H
+EA93 C1              POP   BC
+EA94 10F3            DJNZ  LN1
+EA96 E1              POP   HL
+EA97 3E20            LD    A,32
+EA99 85              ADD   A,L
+EA9A 6F              LD    L,A
+EA9B 3004            JR    NC,NOGAP   ;Check for screen thirds
+EA9D 3E08            LD    A,8
+EA9F 84              ADD   A,H
+EAA0 67              LD    H,A
+EAA1 C1       NOGAP  POP   BC
+EAA2 10E1            DJNZ  HT1
+
+EAA4 E1              POP   HL         ;Use HL = Display file
+EAA5 7C              LD    A,H        ;    address to calculate
+EAA6 0F              RRCA             ;    corresponding attribute
+EAA7 0F              RRCA             ;    file address
+EAA8 0F              RRCA
+EAA9 E603            AND   3
+EAAB F658            OR    58H
+EAAD 67              LD    H,A
+EAAE C1              POP   BC
+EAAF F1              POP   AF         ;Restore  A = Attribute
+EAB0 112000          LD    DE,32
+EAB3 C5       HT2    PUSH  BC         ;Loops to place new
+EAB4 E5              PUSH  HL         ;    attribute value into
+EAB5 41              LD    B,C        ;    screen rectangle
+EAB6 77       WD2    LD    (HL),A
+EAB7 23              INC   HL
+EAB8 10FC            DJNZ  WD2
+EABA E1              POP   HL
+EABB 19              ADD   HL,DE
+EABC C1              POP   BC
+EABD 10F4            DJNZ  HT2
+
+EABD C9              RET
+                     END</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig2"></a>
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 2. Basic loader/Application program</b></p>
+<pre>   1 REM 123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456
+   2 DEF FN w(x,y,w,h,i)=USR (256*PEEK 23636+PEEK 23635+5)
+   3 GO SUB 1000
+  10 CLS: FOR i=1 TO 703: PRINT &quot;X&quot;;: NEXT i
+  20 LET x=INT (19*RND): LET y=INT (19*RND)
+  30 LET a=INT (7*RND)+1
+  40 LET z=FN w(x,y,13,5,8*a)
+  50 PRINT AT y+1,x+1; PAPER a;&quot;This is yet&quot;;AT y+2,x+3;&quot;another&quot;;AT y+3,x+3;&quot;WINDOW!&quot;
+  60 PAUSE 50
+  70 GO TO 20
+  80:
+  90:
+1000 REM HEX LOAD ROUTINE
+1010 DEF FN p(x)=CODE h$(x)-48-7*(CODE h$(x)&gt;=65)
+1020 LET byte=0
+1030 RESTORE 2000
+1040 LET start=256*PEEK 23636+PEEK 23635+5
+1050 READ h$
+1060 IF h$=&quot;*&quot; THEN GO TO 1160
+1070 IF LEN h$&lt;&gt;2*INT (LEN h$/2) THEN PRINT &quot;Odd number of hex digits in: &quot;;h$: STOP
+1080 FOR i=1 TO LEN h$
+1090 IF NOT((h$(i)&gt;=&quot;0&quot; AND h$(i)&lt;=&quot;9&quot;) OR (h$(i)&gt;=&quot;A&quot; AND h$(i)&lt;=&quot;F&quot;)) THEN PRINT &quot;Illegal hex digit: &quot;;h$(i): STOP
+1100 NEXT i
+1110 FOR i=1 TO LEN h$ STEP 2
+1120 POKE start+byte,16*FN p(i)+FN p(i+1)
+1130 LET byte=byte+1
+1140 NEXT i
+1150 GO TO 1050
+1160 PRINT &quot;Code entered&quot;
+1170 PAUSE 150
+1180 RETURN
+2000 DATA &quot;DD2A0B5C&quot;,&quot;DD5E04&quot;
+2010 DATA &quot;DD560C&quot;,&quot;DD4E14&quot;
+2020 DATA &quot;DD461C&quot;,&quot;DD7E24&quot;,&quot;F5&quot;
+2030 DATA &quot;7A&quot;,&quot;E618&quot;,&quot;F640&quot;
+2040 DATA &quot;67&quot;,&quot;7A&quot;,&quot;E607&quot;,&quot;1F&quot;
+2050 DATA &quot;1F&quot;,&quot;1F&quot;,&quot;1F&quot;,&quot;83&quot;
+2060 DATA &quot;6F&quot;,&quot;C5&quot;,&quot;E5&quot;,&quot;C5&quot;
+2070 DATA &quot;E5&quot;,&quot;0608&quot;,&quot;C5&quot;,&quot;E5&quot;
+2080 DATA &quot;AF&quot;,&quot;41&quot;,&quot;77&quot;,&quot;23&quot;
+2090 DATA &quot;10FC&quot;,&quot;E1&quot;,&quot;24&quot;,&quot;C1&quot;
+2100 DATA &quot;10F3&quot;,&quot;E1&quot;,&quot;3E20&quot;
+2110 DATA &quot;85&quot;,&quot;6F&quot;,&quot;3004&quot;
+2120 DATA &quot;3E08&quot;,&quot;84&quot;,&quot;67&quot;,&quot;C1&quot;
+2130 DATA &quot;10E1&quot;,&quot;E1&quot;,&quot;7C&quot;,&quot;0F&quot;
+2140 DATA &quot;0F&quot;,&quot;0F&quot;,&quot;E603&quot;
+2150 DATA &quot;F658&quot;,&quot;67&quot;,&quot;C1&quot;,&quot;F1&quot;
+2160 DATA &quot;112000&quot;,&quot;C5&quot;,&quot;E5&quot;
+2170 DATA &quot;41&quot;,&quot;77&quot;,&quot;23&quot;,&quot;10FC&quot;
+2180 DATA &quot;E1&quot;,&quot;19&quot;,&quot;C1&quot;,&quot;10F4&quot;
+2190 DATA &quot;C9&quot;,&quot;*&quot;</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig3"></a>
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 3.</b></p>
+<img src="mcode2.gif" width=397 height=229 hspace=10 vspace=10 border=0 alt="">
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig4"></a>
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 4.</b></p>
+<img src="mcode3.gif" width=348 height=219 hspace=10 vspace=10 border=0 alt="">
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<a name="fig5"></a>
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 5. Additional CALL and RET options</b></p>
+<pre>CALL        NZ,label        - Call if Zero flag not set.
+CALL        Z,label         - Call if Zero flag set.
+CALL        NC,label        - Call if Carry flag not set.
+CALL        C,label         - Call if Carry flag set.
+CALL        PO,label        - Call if Parity odd.
+CALL        PE,label        - Call if Parity even.
+CALL        P,label         - Call if positive.
+CALL        M,label         - Call if negative.
+RET                         - as for CALL.</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><p class="first"><a href="../045/mcode.htm"><b>Previous article in series (issue 45)</b></a><br>
+<a href="../047/mcode.htm"><b>Next article in series (issue 47)</b></a></p></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 46 Contents"></a>
+<a href="books.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Books"></a></p>
+
+<h6 align="center">Sinclair User<br>January 1986</h6>
+<h6 align="center">Another Fine Product transcribed by Jim Grimwood at <a href="http://www.users.globalnet.co.uk/~jimg/">YRUA?</a></h6>
+
+</body>
+</html>

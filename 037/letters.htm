@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 37 - Letters</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Letters page from Sinclair User, April 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="gremlin.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Gremlin"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 37 Contents"></a>
+<a href="sftwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Spectrum Software Scene"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>letters</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><table width="75%"><tr><td>
+
+<h1>Yet more bugs found in free booklet</h1>
+
+<p class="first">BROWSING through the free booklet '50 Tips for Better Sinclair Computing' I noticed an unfortunate error which may send some beginner potty.</p>
+
+<p>Item 33 states that POKE 23617,8 will give you Caps Lock and the 'C' cursor. This does as you say but that's as far as it goes. Your example program will corrupt the keyboard entries and, funnily enough, disables the BREAK key.</p>
+
+<p>The proper POKE to use is POKE 23658,8.</p>
+
+<p class="first"><b>Paul Calleja-Gera</b></p>
+
+<p class="first">THE USER-definable graphics are not always stored at address 32600 - this is true for 16K Spectrums only. The address of the first byte of UDG 'a' is found by: PRINT USR &quot;a&quot;, which on a 48K Spectrum is normally 65368.</p>
+
+<p>The simplest way of finding the amount of free memory is by using the ROM free memory routine: PRINT 65536-USR 7962 which works for both 16K and 48K Spectrums.</p>
+
+<p class="first"><b>Kevin R Browne</b></p>
+
+<a name="north"></a>
+<p class="first">ITEM 25 was misleading when it stated that there were no codes to alter the paper colour. There is - go into extended mode and then press the number for the required colour.</p>
+
+<p>Item 26 introduced programmers to character codes, but the example given was enough to put anybody off using them for life! Why print &quot;HELLO&quot; when you can simply type PRINT CHR$(72) + CHR$(69) + CHR$(76) + CHR$(76) + CHR$(79) instead?</p>
+
+<p>Item 50 was completely wrong. The formula 'PRINT INT (RND * end of range) + start or range' is a load of rubbish. Any Sinclair programmer should have known that using random numbers is nowhere near as simple as the author suggests. PRINT INT (RND*7)+3 does not select a number between 3 and 7 as stated, but between 3 and 9.</p>
+
+<p>The correct formula is: INT (RND*b-a)+a, where 'a' is the start of the range, and 'b' is one more than the end of range.</p>
+
+<p>These major mistakes apart, I thought the booklet was very interesting.</p>
+
+<p class="first"><b>Simon North</b></p>
+
+<p class="first"><i>We apologise for the errors in the booklet, some of which were corrected last month. Most occurred from typing the programs and then having them set, instead of using printer listings. Other problems occur with items 34, 36, 44 and 47.</i></p>
+
+<p class="first">Tip 34: Line 60 should read LET DEC = DEC + VAL(A$(N))*2 [to the power of] (x-n)</p>
+
+<p class="first">Tip 44: Line 70 should read LET B=B-(B&gt;64)*55(B&lt;58)*48</p>
+
+<p class="first">Tip 47: Lines 130 and 220. The last part of both lines should read A$(X+ 1, 1 TO)</p>
+
+<p class="first">Tip 36 contained a major error. It is listed in proper form below without the errors.</p>
+
+<pre> 10 LET sub=1: LET dec=0
+ 20 INPUT &quot;hex&quot;;h$
+ 30 LET n$-h$(LEN h$)
+ 40 LET h$=h$( 1 TO ( LEN h$-1))
+ 50 GO TO 120
+ 60 IF LEN h$=0 THEN GO TO 70
+ 65 LET sub=sub*16: GO TO 30
+ 70 PRINT &quot;denary:&quot;;dec
+110 GO TO 10
+120 LET f=CODE n$
+130 IF f&lt;58 THEN LET l=f-48
+140 IF (f&lt;71) AND (f&gt;64) THEN LET l=f-55
+150 IF (f&gt;96) AND (f&lt;103) THEN LET l=f-87
+160 LET dec=dec+l*sub
+170 GO TO 60</pre>
+
+<a name="osman"></a>
+<h2>Ludicrous Clivemobile</h2>
+
+<p class="first">WHATEVER will Sir Clive think of next? The Spectrum was his peak but now he is rapidly going downhill.</p>
+
+<p>It started with the QL and the microdrives. We all heard of them, about a year later we saw them and now I see hardly any. Then came the Spectrum Plus. This a touch too expensive for a plastic jigsaw puzzle.</p>
+
+<p>Clive's latest idiocy is the C5. This mobile deathtrap should not be allowed. It cannot be put alongside fast cars in heavy traffic. It is much too slow and small.</p>
+
+<p>As for 14 year olds driving it without tax, licence or insurance, it is ludicrous.</p>
+
+<p>Sir Clive reckons that by the 1990s he will have a range of 'fast, quiet, astonishing family vehicles' on the road. He is in a dream world. By the 1990s no one will have any faith in him at all.</p>
+
+<p class="first"><b>Dietmar Osman</b></p>
+
+<h2>Ghost in the machine</h2>
+
+<p class="first">AS A member of the Association for the Scientific Study of Anomalous Phenomena I am interested in cases of anomalous computer effects.</p>
+
+<p>Can I appeal to readers for any information, at first or second hand, no matter how bizarre, concerning unexplainable malfunction or unexpected output?</p>
+
+<p>All accounts will be treated in strictest confidence.</p>
+
+<p class="first"><b>Roger C Morgan</b></p>
+
+<h2>Vicious propaganda</h2>
+
+<p class="first">I HAVE been a reader of <i>Sinclair User</i> for some time and I find it a very useful and well written magazine.</p>
+
+<p>I was very disturbed, however, to see the advertisements on pages 14 and 109 of the February issue. That on page 14 seems a typical move to dump a load of American rubbish on the British market and I take particular exception to the game <b>Raid Over Moscow</b>. Imagine the uproar if a Soviet firm produced a game called Raid Over New York.</p>
+
+<p><b>Afghan Attack</b> is equally objectionable. Perhaps Grenada or El Salvador would make good sequels?</p>
+
+<p>I do not intend to buy this vicious propaganda nor the magazine it is advertised in.</p>
+
+<p class="first"><b>J H Leatt</b></p>
+
+<p class="first"><i>Rob Cameron, advertisement manager, replies: It seems to me that such games are symptoms of an ill greater than we could put right through</i> Sinclair User. <i>All shoot-'em-ups are inherently violent and whether the enemy is the USSR or greenies from outer space makes little difference in the final analysis.</i></p>
+
+<p class="first"><i>Bill Scolding, editor, replies: Neatly side-stepped, Rob. What price scruples, eh?</i></p>
+
+<h2>Software turkey call</h2>
+
+<p class="first">BEING a regular reader of your mag I thought it would be a good idea for people who have bought an awful game to write in.</p>
+
+<p>For instance, I have purchased a game called <b>Auf Wiedersehen Pet</b> by Tyne Software. At first the graphics and playability were quite high but after reaching a score of 47000 the game just crashes in the bier keller.</p>
+
+<p>I think that the companies concerned spend more time on the packaging than sorting bugs in the programs. Maybe it would be a good idea if there were a black-list of games which are just not worth the money - <b>Hungry Horace, Planetoids</b> and <b>The Black Hole</b>.</p>
+
+<p>Games like <b>Booty</b> will give you more enjoyment at half the price.</p>
+
+<p class="first"><b>Billy Weir, George Gibson</b></p>
+
+<h2>Are software houses missing the point?</h2>
+
+<p class="first">I WOULD like to add my comments to your excellent article <a href="../035/sreport.htm">Software Chainstore Massacre</a> - <i>Sinclair User</i>, Feb 1985.</p>
+
+<p>Games in the &#163;10 to &#163;20 bracket are common, and whilst some are of reasonable quality, the price of many is difficult to justify.</p>
+
+<p>There are other practical points which software houses seem to be missing. Games for which joystick control is advantageous should support all three of the common Spectrum interfaces. Sound effects may not suit all users all the time, so why not allow sound to be switched off? A pause facility is essential, and how about being able to save and reload league tables?</p>
+
+<p>As stated in the article, software should whenever possible be in a standard cassette box, making storage easier, as well as tidying display stands in the shops. This should not be at the expense of proper documentation, however - <b>Fighter Pilot</b> shows how it should be done.</p>
+
+<p>Software houses still seem to be producing what they think customers want, rather than finding out what the demand really is. In time, they must produce more original products and not just games - at realistic prices, or more will suffer the inevitable.</p>
+
+<p class="first"><b>Peter Biss</b></p>
+
+<h2>Christian micro users</h2>
+
+<p class="first">THERE is a great need to discover the few individuals and companies producing Christian software and even more to share the expertise and ideas of the many individuals who have sought to use micros within their church activities.</p>
+
+<p>Anyone sending a large SAE to the Christian Micro Users Association at the address below will receive a sample magazine and further details.</p>
+
+<p class="first"><b>P A Clark</b></p>
+
+<h2>Clive is misinformed</h2>
+
+<p class="first">THE remark about Indian villages <a href="../035/sirclve.htm">made by Sir Clive Sinclair</a> in your February issue reveals that he is not only patronising but sadly misinformed.</p>
+
+<p>India's food production has been rapidly increasing over recent years and she is now a net exporter of grain. Her manufacturing base is also growing, and her people hardly need looking after.</p>
+
+<p>Perhaps an 'intellectual machine' should be dropped in Camberley to teach Sinclair Research how to 'look after' their customers.</p>
+
+<p class="first"><b>Dr T Lewis</b></p>
+
+<h2>How to save Columbus</h2>
+
+<p class="first">MAY I congratulate Nicholas Holgate on his stimulating program <b>Columbus</b>, published in the January issue. I did, however, have to delete line 6700 LET b(k,7)=z to get it running correctly.</p>
+
+<p>As the game takes a very long time to play I have added a Save Game routine, which might be of interest to other colonists.</p>
+
+<p>Change line 7900 to:</p>
+
+<pre>7900 INPUT &quot;SAVE GAME? (Y/N)&quot; ;x$
+7910 IF x$=&quot;y&quot; THEN GO TO 9800
+7920 GO TO 200</pre>
+
+<p class="first">and add</p>
+
+<pre>9800 SAVE &quot;Columbus&quot; LINE 7000
+9810 INPUT &quot;CONTINUE? (Y/N)&quot;; x$
+9820 IF x$=&quot;y&quot; THEN GO TO 200
+9830 STOP</pre>
+
+<p class="first">- though lines 9810 and 9820 are not necessary.</p>
+
+<p>To play a SAVEd game, load the graphics program - Listing 1 - as usual, but when told to restart the tape, play your saved tape instead. You will be brought to the yellow 'all decisions made' page to recap on your position.</p>
+
+<p class="first"><b>Patricia Richardson</b></p>
+
+<h1>Arcade action</h1>
+
+<h2>Rocketman</h2>
+
+<p class="first">I HAPPENED to notice <a href="../035/letters.htm#morris">Ashley Morris' letter</a> in the February issue about his problems with flying the vulture in <b>Rocketman</b>.</p>
+
+<p>As the vulture follows the stages in which the player has to use a rocket pack where the 'thrust' key can be depressed to provide rocket power - it seems to be assumed that the vulture will operate likewise. However, it is unlikely to be jet-propelled. The vulture rises a little with every flap of its wings, so the more you flap the higher you fly!</p>
+
+<p>The wings move downwards when the FLAP key is pressed, lifting the bird slightly and will return to the up position when the key is released. By repeatedly pressing and immediately releasing this key the vulture can be made to happily flap around the screen.</p>
+
+<p class="first"><b>J N Chappell, Software Farm</b></p>
+
+<h2>Monty Mole</h2>
+
+<p class="first">IN REPLY to <a href="../035/letters.htm#scott">Alan Scott's letter</a> on <b>Wanted: Monty Mole</b>, in February.</p>
+
+<p>If you collect all the pieces of coal, including the one in the room, the wall will disappear. Also collect the axe and go up the rope until you are level with the floor and wait until the genie is just past you, then jump onto the floor and run along and rush down the rope. If you kill the genie you cannot get past the cartwheel. Then you can get into the next screen.</p>
+
+<p class="first"><b>Mark Harrison</b></p>
+
+<h2>Skool Daze</h2>
+
+<p class="first">FOR ANY of you having trouble with <b>Skool Daze</b> here are the dates of some of the battles:</p>
+
+<p class="first">Hastings 1066; Waterloo 1815; San Jacinto 1265; Trafalgar 1805; Balaclava 1854; Flodden 1513; Yorktown 1781; Shrewsbury 1403; Poitiers 1356; Sedgemore 1685; Evesham 1265; Lexington 1775; Borodino 1812; Lepanto 1571.</p>
+
+<p>You often get lines for being knocked off your seat because there are too many pupils. To stop that happening in Geography, follow Mr Withit to the end of the room and he will turn round and start teaching the class without noticing you. In the reading room sit at the back as no-one else tries to sit there.</p>
+
+<p>There are two timetables, parts of which are detailed below:</p>
+
+<p class="first">Playtime / Map room / Revision - Library / White room / Playtime / Reading room / White room / Playtime / Dinner / Playtime /?</p>
+
+<p class="first">Playtime / Exam room / Map room / Playtime / White room / Reading room / Playtime / Dinner / Playtime / White room / Revision - Library / Playtime / White room / ?</p>
+
+<p class="first"><b>T S Nicholson</b></p>
+
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="gremlin.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="Gremlin"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 37 Contents"></a>
+<a href="sftwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="Spectrum Software Scene"></a></p>
+
+<h6 align="center">Sinclair User<br>April 1985</h6>
+
+</body>
+</html>

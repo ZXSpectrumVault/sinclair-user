@@ -1,0 +1,542 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 43 - Machine Code</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Z80 machine code programming feature from Sinclair User, October 1985">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#CCCCCC" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 43 Contents"></a>
+<a href="piracy.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Piracy"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>Machine Code</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<table cellpadding="10" align="right"><tr><td><font size="7"><b><i>Adding up<br>
+bit by bit</i></b></font>
+
+<p class="first"><b><font size="+1">Marcus Jeffery waves his binary wand<br>
+and before you can say &quot;RST 28H&quot; you<br>
+have got a screen magnification utility</font></b></p></td></tr></table>
+
+<p class="first">This month we are going to look at the more advanced arithmetic instructions available on the Z80, and employ them in a screen magnify and reduce utility. You could easily add this routine to the alternate screen and fill utilities from the last two months.</p>
+
+<p>We have already seen how to add and subtract bytes, using the ADD and SUB instructions. If we want to add 16-bit numbers together, we have looked at the 'ADD HL,rp' instruction which will add a 16-hit register pair to the HL register pair.</p>
+
+<p>What happens, however, if we want to add two 16-bit numbers without using the HL register pair, or even add 24-bit and 32-bit numbers together? Z80 handles that in much the same way as we perform calculations. Imagine that you were performing the following addition:</p>
+
+<pre>    987
++   456
+    ----
+    1443
+    ----</pre>
+
+<p class="first">You first add the seven and six, giving 13, and then consider that as the digit three with a carry of one. That is then added to the eight and five, giving four with a carry of one, and so on.</p>
+
+<p>We can do exactly the same thing when adding binary numbers together. The ADD instruction will correctly add the two bytes. If the addition of the two most significant bit gives a carry - that can only be zero or one - then the carry bit in the Flag register is set.</p>
+
+<p>If we convert the above calculation to binary we would get the following:</p>
+
+<pre>    987 = 0000 0011 and 1101 1011
++   456 = 0000 0001 and 1100 1000</pre>
+
+<p class="first">We can now do that by ADDing the lowest two bytes to give:</p>
+
+<pre>    (1) 1010 0011</pre>
+
+<p class="first">and then ADC the top two bytes to give:</p>
+
+<pre>    (0) 0000 0101</pre>
+
+<p class="first">If we convert that to decimal, we get 256 * 5 + 163 = 1443.</p>
+
+<p>Using that method, we could effectively add any number of bytes together. Suppose that we had two numbers, each being made up of a large number of bytes. We could hold the number of bytes in B, the location of the lowest byte of the first number in DE and the location of the first byte of the second number in HL. We could place the result into the locations presently used for the second number - HL onwards. The code would look something like figure one.</p>
+
+<p>With this sort of routine you must ensure that you do not corrupt the carry flag between one ADC instruction and the next. We have made a couple of assumptions with this routine. Firstly, we would be in a mess if the carry flag was set before entering the routine, and would add an extra digit to the lowest byte.</p>
+
+<p>An easy method of clearing the carry flag is to perform an ADD instruction which could not possibly set it; 'ADD A,0' - Add zero to the accumulator - works well.</p>
+
+<p>The other assumption is that the most significant digits are higher in memory. We can compensate for that by changing the INC instructions to DEC, neither of which affect the carry flag. Figure seven shows all the ADC instructions, together with their equivalent SBC - SuBtract with Carry - instructions.</p>
+
+<p>We have seen how to multiply a number by two, either by adding it to itself, or by shifting one bit to the left. Division by two is similarly performed by shifting one bit to the right.</p>
+
+<p>A more general multiplication algorithm can be performed as a series of additions, in the same way as you would do long multiplication by hand. Imagine the calculation:</p>
+
+<pre>    19
+x   34
+    ---
+    76
++   57
+    ---
+    646
+    ---</pre>
+
+<p class="first">You first multiply 19 by four to give 76. Moving to the next digit, you multiply 19 by three, placing the result, 57, one digit to the left. Adding those gives the final result of 646.</p>
+
+<p>The same calculation is even easier in binary. At each stage, the digit in the multiplier (34) will be either zero or one, so we just add either zero or the multiplicand (19) respectively, remembering to shift the final product one bit left after each step in the calculation. So. in binary, that would look like:</p>
+
+<pre>           00010011        (19)
+x          00100010        (34)
+    ----------------
++          00000000        [0]
++         00010011         [1]
++        00000000          [0]
++       00000000           [0]
++      00000000            [0]
++     00010011             [1]
++    00000000              [0]
++   00000000               [0]
+    ----------------
+
+    000001010000110       (646)</pre>
+
+<p class="first">If you look at the digits in square brackets, you will see that, read from bottom to top, they exactly match the multiplier. Using that technique, we can develop a simple multiplication algorithm. That will multiply two eight-bit numbers into a 16-bit result. Assume that the E register contains the multiplicand and the A register contains the multiplier. We can then use the code in figure two to return the result in the HL register pair. Division is performed in a similar way, by a series of subtractions, just as you would perform long division.</p>
+
+<p>You should be warned to avoid multiplication and division in programs wherever possible. Fortunately, few machine code programmers will ever find a need for such complex calculations. After all, how often are we going to need multiplication and division algorithms for moving space invaders around at fantastic speed?!</p>
+
+<p>If you do need to perform more complex calculations, Spectrum programmers have an extra advantage Have you ever wondered how Basic can evaluate such expressions a.' 'INT(19 * SIN(5 * angle)^2)' which includes all the operations integer, multiplication, sine, and power? Obviously, Sinclair must have written the code to perform all of those functions into the Spectrum operating system, and it has been kind enough to make them all easily accessible to the distraught machine code programmer. They are all accessed using the RST 28H instruction.</p>
+
+<p>We will examine that and similar instructions in a later article, so don't worry about exactly how it works just now, but meanwhile here is how to use it. The RST 28H instruction expects to be followed by a list of numbers, terminating with the number 38H. That list of numbers tells the processor which operations to perform on the numbers in the calculator stack. All those codes are shown in figure three.</p>
+
+<p>If we want to multiply the two numbers at the top of the calculator stack, and then take the integer of the square root, we can write the code:</p>
+
+<pre>RST  28H  : Start calculation
+DEFB 04H  : Do multiplication
+DEFB 28H  : Take square root
+DEFB 27H  : Want an integer result
+DEFB 38H  : End calculation</pre>
+
+<p class="first">The only remaining problem is to place numbers onto the calculator stack and retrieve the result. That is done by calling the appropriate ROM routines:</p>
+
+<pre>2D28H - transfer integer A to calculator stack;
+2D2BH - transfer integer BC to calculator stack;
+2AB6H - transfer AEDCB to calculator stack;
+2DD5H - transfer top of stack to integer A;
+2DA2H - transfer top of stack to integer BC;
+2BF1H - transfer top of stack to AEDCB.</pre>
+
+<p>To see more clearly how this works, look at the routine DIVIDE in this month's program shown in figure four. As usual, we have included a Basic loader and application program in figure five. Due to the length of the program, there is an extra feature to the Hex Loader routine. That is a checksum, which adds up to the total value of all the bytes, and then checks that against the total at the end of the data. The lines to add are 1025, 1125, 1161, 1162 and 1164.</p>
+
+<p>The routine will allow you to define a rectangle on the screen as (x1,y1) and (x2,y2). That will be magnified or reduced to a second rectangle (x3,y3) and (x4,y4), as shown in figure six. The new rectangle will replace the corresponding picture - if any - on the present screen, and the final merged version will be displayed. In order to magnify and reduce without corrupting the original data, the routine uses an alternate screen, the start location of which should be stored in the two locations 23728 and 23729 (line 20).</p>
+
+<p>The routine works by stepping through every pixel in the second rectangle and checking the associated pixel in the first rectangle. The non-integer stepping factors for the first rectangle are held in DX and DY. Those values are sufficiently flexible for you to multiply one pixel to the complete screen, or vice versa, although that would not be particularly interesting.</p>
+
+<p><a href="../044/mcode.htm">Next month</a> we will look at the powerful Z80 instructions which allow you to manipulate large sections of memory quickly and easily, and assess the potential they have for interesting graphics.</p>
+
+<h2><i>Figures</i></h2>
+
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 1.</b></p>
+<pre>next   LD    A,(DE)     ;get byte from first number
+       ADC   A,(HL)     ;add (with carry) byte from second number
+       LD    (HL),A     ;place result in second number position
+       INC   DE         ;move to next byte of first number
+       INC   HL         ;move to next byte of second number
+       DJNZ  NEXT       ;continue until addition complete</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 2.</b></p>
+<pre>        LD    D,0        ;make multiplicand 16-bits
+        LD    HL,0       ;set result to zero
+        LD    B,8        ;perform 8-bit multiplication
+nextbit ADD   HL,HL      ;we use this to shift HL one bit left
+        RLA              ;shift multiplier one bit left into the carry flag
+        JR    NC,NOADD   ;if no carry, then no addition, else
+        ADD   HL,DE      ;add the multiplicand
+noadd   DJNZ  NXTBIT     ;do remaining bits</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 3.</b></p>
+<pre>Operand Operation       Description     
+00h     Jump-True       Conditional jump based on value at top of stack
+01h     Exchange        Swap the two values at the top of the stack
+02h     Delete          Delete the value at the top of the stack
+03h     Subtract        Delete top two values and stack subtraction result
+04h     Multiply        Delete top two values and stack multiplication result
+05h     Division        Delete top two values and stack division result
+06h     Power           Delete top two values and stack power result
+07h     X-or-Y          Give X if Y=0 and one otherwise
+08h     X-and-Y         Give X if Y&lt;&gt;0 and one otherwise
+09h     X&lt;=Y            Gives true if X&lt;=Y else false
+0Ah     X&gt;=Y            Gives true if X&gt;=Y else false
+0Bh     X&lt;&gt;Y            Gives true if X&lt;&gt;Y else false
+0Ch     X&gt;Y             Gives true if X&gt;Y else false
+0Dh     X&lt;Y             Gives true if X&lt;Y else false
+0Eh     X=Y             Gives true if X=Y else false
+0Fh     Addition        Delete top two values and stack addition result
+10h     X$-and-Y        Gives X$ if Y=0 and &quot;&quot; otherwise
+11h     X$&lt;=Y$          Gives true if X$&lt;=Y$ else false
+12h     X$&gt;=Y$          Gives true if X$&gt;=Y$ else false
+13h     X$&lt;&gt;Y$          Gives true if X$&lt;&gt;Y$ else false
+14h     X$&gt;Y$           Gives true if X$&gt;Y$ else false
+15h     X$&lt;Y$           Gives true if X$&lt;Y$ else false
+16h     X$=Y$           Gives true if X$=Y$ else false
+17h     X$+Y$           Concatenate X$ and Y$
+18h     Value$          Replace top of stack with VAL$ of item
+19h     Usr$            Replace top of stack with USR of string item
+1Ah     Read-in         Read (INKEY$) from a channel
+1Bh     Negate          Negate the value at the top of the stack
+1Ch     Code            Replace top of stack with CODE of string
+1Dh     Value           Replace top of stack with VAL of string
+1Eh     Length          Replace top of stack with LEN of string
+1Fh     Sine            Replace top of stack with SIN of value
+20h     Cosine          Replace top of stack with COS of value
+21h     Tangent         Replace top of stack with TAN of value
+22h     Arcsine         Replace top of stack with ASN of value
+23h     Arccosine       Replace top of stack with ACS of value
+24h     Arctangnt       Replace top of stack with ATN of value
+25h     Logarithm       Replace top of stack with LN of value
+26h     Exponent        Replace top of stack with EXP of value
+27h     Integer         Replace top of stack with INT of value
+28h     Sq-root         Replace top of stack with SQR of value
+29h     Sign            Replace top of stack with SGN of value
+2Ah     Absolute        Replace top of stack with ABS of value
+2Bh     Peek            Replace top of stack by PEEKing value
+2Ch     In-port         Replace top of stack with IN value
+2Dh     Usr             Replace top of stack with USR of value
+2Eh     String$         Replace top of stack with STR$ of value
+2Fh     Char$           Replace top of stack with CHR$ of value
+30h     Not             Gives one if top of stack is zero and zero otherwise
+31h     Duplicate       Make duplicate of top of stack at top of stack
+32h     X-mod-Y         Replace two top values with INT(X/Y) and remainder
+33h     Jump            Unconditional jump based on top of stack
+34h     Stk-data        Stack list of literals following '34h' code
+35h     Dec-jr-nz       Perform DJNZ on BREG system variable
+36h     X&lt;0             Gives true if top of stack &lt; 0 else false
+37h     X&gt;0             Gives true if top of stack &gt; 0 else false
+38h     End-calc        End the RST 28H calculation
+39h     Get-oper        This routine converts a function operand to a value
+3Ah     Truncate        Replace top of stack with truncation (towards zero)
+3Bh     Sgle-calc       Perform single calculation (Code in B)
+3Ch     E-convert       Convert a number in the form 'numEm' to top of stack
+3Dh     Restack         Restack number
+3Eh     Series          Series generator for SIN, COS, LN, etc
+3Fh     Stk-lit         Stack a literal zero, one, half, half-Pi or ten
+40h     Store-mem       Store in memory 0 to 5 (codes C0h to C5h)
+41h     Get-mem         Get a memory 0 to 5 (codes C0h to C5h)</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 4.</b></p>
+<pre>                     ORG   60000
+                     LOAD  60000
+
+EA60 CDA5EA          CALL  COPY1      ;Copy alternate screen
+EA63 2143EB          LD    HL,XCOORD  ;Get X-multiple and place
+EA66 CD7EEA          CALL  DIVIDE     ;    into (DX)
+EA69 ED434BEB        LD    (DX),BC
+EA6D 2147EB          LD    HL,YCOORD  ;Get Y-multiple and place
+EA70 CD7EEA          CALL  DIVIDE     ;    into (DY)
+EA73 ED434DEB        LD    (DY),BC
+EA77 CDBEEA          CALL  MAG        ;Perform magnify/reduce
+EA7A CDB2EA          CALL  COPY2      ;Copy back to main screen
+EA7D C9              RET              ;Exit to BASIC
+
+EA7E 46       DIVIDE LD    B,(HL)     ;B = x1
+EA7F 23              INC   HL
+EA80 7E              LD    A,(HL)     ;A = x2
+EA81 90              SUB   B          ;A = x2 - x1
+EA82 47              LD    B,A        ;Transfer A to 16-bit BC
+EA83 0E00            LD    C,0
+EA85 E5              PUSH  HL
+EA86 CD2B2D          CALL  2D2BH      ;Stack BC
+EA89 0601            LD    B,1
+EA8B 0E00            LD    C,0
+EA8D CD2B2D          CALL  2D2BH      ;Stack '1'
+EA90 EF              RST   28H        ;Calculation ...
+EA91 0F              DB    0FH        ;    Addition
+EA92 38              DB    38H        ;    End of calculation
+EA93 E1              POP   HL
+EA94 23              INC   HL
+EA95 46              LD    B,(HL)     ;B = x3
+EA96 23              INC   HL
+EA97 7E              LD    A,(HL)     ;A = x4
+EA98 90              SUB   B          ;A = x3 - x4
+EA99 CD282D          CALL  2D28H      ;Stack A
+EA9C EF              RST   28H        ;Calculation
+EA9D A1              DB    00A1H      ;    Stack '1'
+EA9E 0F              DB    0FH        ;    Addition
+EA9F 05              DB    05H        ;    Division
+EAA0 38              DB    38H        ;    End of calculation
+EAA1 CDA22D          CALL  2DA2H      ;Unstack to BC (C=frac)
+EAA4 C9              RET
+
+EAA5 210040   COPY1  LD    HL,16384   ;Copy main screen to
+EAA8 ED5BB05C        LD    DE,(23728) ;    reserve screen
+EAAC 010018          LD    BC,6144
+EAAF EDB0            LDIR
+EAB1 C9              RET
+
+EAB2 2AB05C   COPY2  LD    HL,(23728) ;Copy reserve screen
+EAB5 110040          LD    DE,16384   ;    to main screen
+EAB8 010018          LD    BC,6144
+EABB EDB0            LDIR
+EABD C9              RET
+
+EABE DD2143EB MAG    LD    IX,XCOORD  ;IX = start of coords
+EAC2 DD5600          LD    D,(IX+0)   ;D = x1 (xa)
+EAC5 1E00            LD    E,0        ;E = frac inc to x1
+EAC7 DD6E02          LD    L,(IX+2)   ;L = x3 (xb)
+EACA DD4604   XLOOP  LD    B,(IX+4)   ;B = y1 (ya)
+EACD 0E00            LD    C,0        ;C = frac inc to y1
+EACF DD6606          LD    H,(IX+6)   ;H = y3 (yb)
+EAD2 E5       YLOOP  PUSH  HL
+EAD3 D5              PUSH  DE
+EAD4 C5              PUSH  BC
+EAD5 4A              LD    C,D
+EAD6 110040          LD    DE,16384   ;Get screen coords for
+EAD9 E5              PUSH  HL         ;    location (xa,ya)
+EADA CD13EB          CALL  FCOORD     ;    on main screen
+EADD C1              POP   BC
+EADE ED5BB05C        LD    DE,(23728)
+EAE2 A6              AND   (HL)
+EAE3 2807            JR    Z,RESET    ;Jump to reset pixel
+EAE5 CD13EB          CALL  FCOORD     ;Set screen coords for
+EAE8 B6              OR    (HL)       ;    location (xb,yb)
+EAE9 77              LD    (HL),A     ;    on reserve screen
+EAEA 1806            JR    NEXT
+EAEC CD13EB   RESET  CALL  FCOORD     ;Reset screen coords for
+EAEF 2F              CPL              ;    location (xb,yb)
+EAF0 A6              AND   (HL)       ;    on reserve screen
+EAF1 77              LD    (HL),A
+EAF2 C1       NEXT   POP   BC
+EAF3 2A4DEB          LD    HL,(DY)    ;Increment ya by DY
+EAF6 09              ADD   HL,BC
+EAF7 44              LD    B,H
+EAF8 4D              LD    C,L
+EAF9 D1              POP   DE
+EAFA E1              POP   HL
+EAFB 24              INC   H          ;Increment yb by one
+EAFC DD7E07          LD    A,(IX+7)
+EAFF 94              SUB   H
+EB00 30D0            JR    NC,YLOOP   ;Loop along y-axis
+EB02 E5              PUSH  HL
+EB03 2A4BEB          LD    HL,(DX)    ;Increment xa by DX
+EB06 19              ADD   HL,DE
+EB07 54              LD    D,H
+EB08 5D              LD    E,L
+EB09 E1              POP   HL         ;Increment xb by one
+EB0A 2C              INC   L          ;RETurn if x-axis wraps
+EB0B C8              RET   Z
+EB0C DD7E03          LD    A,(IX+3)
+EB0F 95              SUB   L
+EB10 30B8            JR    NC,XLOOP   ;Loop along x-axis
+EB12 C9              RET
+
+EB13 D5       FCOORD PUSH  DE         ;Variation on previous
+EB14 79              LD    A,C        ;    PBYTE routine.
+EB15 E607            AND   7          ;    Returns HL screen
+EB17 5F              LD    E,A        ;    location and A bit,
+EB18 CB39            SRL   C          ;    for coords (C,B)
+EB1A CB39            SRL   C          ;    on screen starting
+EB1C CB39            SRL   C          ;    at location DE.
+EB1E 3EAF            LD    A,175
+EB20 90              SUB   B
+EB21 47              LD    B,A
+EB22 E638            AND   56
+EB24 CB27            SLA   A
+EB26 CB27            SLA   A
+EB28 B1              OR    C
+EB29 6F              LD    L,A
+EB2A 78              LD    A,B
+EB2B E607            AND   7
+EB2D 67              LD    H,A
+EB2E 78              LD    A,B
+EB2F E6C0            AND   192
+EB31 CB3F            SRL   A
+EB33 CB3F            SRL   A
+EB35 CB3F            SRL   A
+EB37 84              ADD   A,H
+EB38 67              LD    H,A
+EB39 43              LD    B,E
+EB3A 04              INC   B
+EB3B AF              XOR   A
+EB3C 37              SCF
+EB3D 1F       FLOOP  RRA
+EB3E 10FD            DJNZ  FLOOP
+EB40 D1              POP   DE
+EB41 19              ADD   HL,DE
+EB42 C9              RET
+
+EB43 01020304 XCOORD DB    1,2,3,4    ;x1,x2,x3,x4
+EB47 01020304 YCOORD DB    1,2,3,4    ;y1,y2,y3,y4
+EB4B 0000     DX     DB    0,0        ;DX = frac.int
+EB4D 0000     DY     DB    0,0        ;DY = frac.int
+
+                     END
+
+Workarea = ACEA to AEA7
+ORG  end = EB4F
+LOAD end = EB4F</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 5.</b></p>
+<pre>  10 CLEAR 53759
+  20 POKE 23728,0: POKE 23729,210
+  30 GO SUB 1000
+  40 CLS: PRINT AT 1,1;&quot;SINCLAIR&quot;
+  50 PLOT 6,159: DRAW 67,0:  DRAW 0,9: DRAW -67,0: DRAW 0,-9
+  60 LET x1=6: LET y1=159: LET x2=74: LET y2=168
+  70 LET x3=200*RND: LET y3=120*RND
+  80 LET x4=255*RND: IF x3&gt;=x4 THEN GO TO 80
+  90 LET y4=158*RND: IF y3&gt;=y4 THEN GO TO 90
+ 100 POKE 60227,x1: POKE 60228,x2
+ 110 POKE 60229,x3: POKE 60230,x4
+ 120 POKE 60231,y1: POKE 60232,y2
+ 130 POKE 60233,y3: POKE 60234,y4
+ 140 RANDOMIZE USR 60000
+ 150 GO TO 70
+ 160 STOP
+1000 REM HEX LOAD ROUTINE
+1010 DEF FN p(x)=CODE h$(x)-48-7*(CODE h$(x)&gt;=65)
+1020 LET byte=0
+1025 LET chbyte=0
+1030 RESTORE 2000
+1040 READ start
+1050 READ h$
+1060 IF h$=&quot;*&quot; THEN GO TO 1160
+1070 IF LEN h$&lt;&gt;2*INT (LEN h$/2) THEN PRINT &quot;Odd number of hex digits in: &quot;;h$: STOP
+1080 FOR i=1 TO LEN h$
+1090 IF NOT((h$(i)&gt;=&quot;0&quot; AND h$(i)&lt;=&quot;9&quot;) OR (h$(i)&gt;=&quot;A&quot; AND h$(i)&lt;=&quot;F&quot;)) THEN PRINT &quot;Illegal hex digit: &quot;;h$(i): STOP
+1100 NEXT i
+1110 FOR i=1 TO LEN h$ STEP 2
+1120 POKE start+byte,16*FN p(i)+FN p(i+1)
+1125 LET chbyte=chbyte+PEEK (start+byte)
+1130 LET byte=byte+1
+1140 NEXT i
+1150 GO TO 1050
+1160 PRINT &quot;Code entered&quot;
+1161 PRINT chbyte
+1162 READ checksum
+1164 IF checksum&lt;&gt;chbyte THEN PRINT &quot;Wrong Checksum&quot;: STOP
+1170 PAUSE 150
+1180 RETURN
+2000 DATA 60000,&quot;CDA5EA&quot;
+2010 DATA &quot;2143EB&quot;,&quot;CD7EEA&quot;
+2020 DATA &quot;ED434BEB&quot;,&quot;2147EB&quot;
+2030 DATA &quot;CD7EEA&quot;,&quot;ED434DEB&quot;
+2040 DATA &quot;CDBEEA&quot;,&quot;CDB2EA&quot;,&quot;C9&quot;
+2050 DATA &quot;46&quot;,&quot;23&quot;,&quot;7E&quot;,&quot;90&quot;
+2060 DATA &quot;47&quot;,&quot;0E00&quot;,&quot;E5&quot;
+2070 DATA &quot;CD2B2D&quot;,&quot;0601&quot;,&quot;0E00&quot;
+2080 DATA &quot;CD2B2D&quot;,&quot;EF&quot;,&quot;0F&quot;
+2090 DATA &quot;38&quot;,&quot;E1&quot;,&quot;23&quot;,&quot;46&quot;
+2100 DATA &quot;23&quot;,&quot;7E&quot;,&quot;90&quot;
+2110 DATA &quot;CD282D&quot;,&quot;EF&quot;,&quot;A1&quot;
+2120 DATA &quot;0F&quot;,&quot;05&quot;,&quot;38&quot;
+2130 DATA &quot;CDA22D&quot;,&quot;C9&quot;
+2140 DATA &quot;210040&quot;,&quot;ED5BB05C&quot;
+2150 DATA &quot;010018&quot;,&quot;EDB0&quot;,&quot;C9&quot;
+2160 DATA &quot;2AB05C&quot;,&quot;110040&quot;
+2170 DATA &quot;010018&quot;,&quot;EDB0&quot;,&quot;C9&quot;
+2180 DATA &quot;DD2143EB&quot;,&quot;DD5600&quot;
+2190 DATA &quot;1E00&quot;,&quot;DD6E02&quot;
+2200 DATA &quot;DD4604&quot;,&quot;0E00&quot;
+2210 DATA &quot;DD6606&quot;,&quot;E5&quot;,&quot;D5&quot;
+2220 DATA &quot;C5&quot;,&quot;4A&quot;,&quot;110040&quot;
+2230 DATA &quot;E5&quot;,&quot;CD13EB&quot;,&quot;C1&quot;
+2240 DATA &quot;ED5BB05C&quot;,&quot;A6&quot;
+2250 DATA &quot;2807&quot;,&quot;CD13EB&quot;,&quot;B6&quot;
+2260 DATA &quot;77&quot;,&quot;1806&quot;,&quot;CD13EB&quot;
+2270 DATA &quot;2F&quot;,&quot;A6&quot;,&quot;77&quot;,&quot;C1&quot;
+2280 DATA &quot;2A4DEB&quot;,&quot;09&quot;,&quot;44&quot;
+2290 DATA &quot;4D&quot;,&quot;D1&quot;,&quot;E1&quot;,&quot;24&quot;
+2300 DATA &quot;DD7E07&quot;,&quot;94&quot;,&quot;30D0&quot;
+2310 DATA &quot;E5&quot;,&quot;2A4BEB&quot;,&quot;19&quot;
+2320 DATA &quot;54&quot;,&quot;5D&quot;,&quot;E1&quot;,&quot;2C&quot;
+2330 DATA &quot;C8&quot;,&quot;DD7E03&quot;,&quot;95&quot;
+2340 DATA &quot;30B8&quot;,&quot;C9&quot;
+2350 DATA &quot;D5&quot;,&quot;79&quot;,&quot;E607&quot;,&quot;5F&quot;
+2360 DATA &quot;CB39&quot;,&quot;CB39&quot;,&quot;CB39&quot;
+2370 DATA &quot;3EAF&quot;,&quot;90&quot;,&quot;47&quot;
+2380 DATA &quot;E638&quot;,&quot;CB27&quot;,&quot;CB27&quot;
+2390 DATA &quot;B1&quot;,&quot;6F&quot;,&quot;78&quot;,&quot;E607&quot;
+2400 DATA &quot;67&quot;,&quot;78&quot;,&quot;E6C0&quot;
+2410 DATA &quot;CB3F&quot;,&quot;CB3F&quot;,&quot;CB3F&quot;
+2420 DATA &quot;84&quot;,&quot;67&quot;,&quot;43&quot;,&quot;04&quot;
+2430 DATA &quot;AF&quot;,&quot;37&quot;,&quot;1F&quot;,&quot;10FD&quot;
+2440 DATA &quot;D1&quot;,&quot;19&quot;,&quot;C9&quot;
+2450 DATA &quot;01020304&quot;,&quot;01020304&quot;
+2460 DATA &quot;0000&quot;,&quot;0000&quot;,&quot;*&quot;
+2470 DATA 27156 : REM Checksum</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><table cellpadding="5"><tr><td>
+<table border="0" cellpadding="0"><tr><td bgcolor="#000000">
+<table border="0" cellpadding="10"><tr><td bgcolor="#FFFFFF">
+<p class="first"><b>Figure 7.</b></p>
+<pre>ADC  A,byte  - Add the value byte to the accumulator, including the carry.
+ADC  A,reg   - Add the contents of the register to the accumulator with carry.
+ADC  A,(HL)  - Add the contents of the location addressed by the HL register
+               pair to the accumulator, with carry.
+ADC  HL,rp   - Add the register pair (BC, DE or HL) to the HL register pair,
+               with carry.
+SBC  A,byte  - Subtract the value byte from the accumulator, with carry.
+SBC  A,reg   - Subtract the contents of the register from the accumulator
+               with carry.
+SBC  A,(HL)  - Subtract the contents of the location addressed by the
+               HL register pair from the accumulator, with carry.
+SBC  HL,rp   - Subtract the register pair (BC, DE or HL) from the 
+               HL register pair, with carry.
+CCF          - Complement carry flag (0 to 1, 1 to 0).
+SCF          - Set carry flag to one.
+DAA          - Convert contents of the accumulator into binary-coded
+               decimal form.</pre>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></center>
+<br clear=all>
+
+<center><p class="first"><a href="../042/mcode.htm"><b>Previous article in series (issue 42)</b></a><br>
+<a href="../044/mcode.htm"><b>Next article in series (issue 44)</b></a></p></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="hardwre.htm"><img src="../shared/images/tlbutton.gif" width=15 height=19 border=0 alt="Hardware World"></a>
+<a href="index.htm"><img src="../shared/images/thbutton.gif" width=15 height=19 border=0 alt="Issue 43 Contents"></a>
+<a href="piracy.htm"><img src="../shared/images/trbutton.gif" width=15 height=19 border=0 alt="Piracy"></a></p>
+
+<h6 align="center">Sinclair User<br>October 1985</h6>
+<h6 align="center">Another Fine Product transcribed by Jim Grimwood at <a href="http://www.users.globalnet.co.uk/~jimg/">YRUA?</a></h6>
+
+</body>
+</html>

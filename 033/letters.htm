@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Sinclair User 33 - Letters</title>
+<link rel="stylesheet" type="text/css" href="../shared/general.css">
+<meta name="keywords" content="Sinclair, ZX80, ZX81, Spectrum, QL">
+<meta name="description" content="Letters page from Sinclair User, December 1984">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF" alink="#FF0000" vlink="#660099">
+
+<p align="center" class="first"><a href="news.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="News"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 33 Contents"></a>
+<a href="zsftwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="ZX-81 Software Scene"></a></p>
+
+<table border="1" cellpadding="10" align="right">
+<tr><td><font size="+2"><b>letters</b></font></td></tr>
+</table>
+
+<hr noshade>
+<br clear=all>
+<br>
+
+<center><table width="75%"><tr><td>
+
+<h1>A change of cursors</h1>
+
+<p class="first">ALTHOUGH I AM an ardent follower of Andrew Hewson's Helpline articles his reply to Peter Groenewald is not entirely correct. It is possible to force a cursor change, and such changes can prove quite useful.</p>
+
+<p>System Variable MODE (23617) can be POKEd with 1 to force a cursor change to E mode or 2 to produce G mode. The latter is of little practical value as it is just as convenient to use CAPS SHIFT 8 as G mode stays until cancelled.</p>
+
+<p>Not so with E mode. To enter user-defined graphics bytes in BINary is helpful but tedious as it is necessary to go into E mode to produce the BIN token for each byte. This short routine will force an E cursor so only the B key need be pressed to generate the BIN:</p>
+
+<pre>1000 INPUT &quot;How many udgs (starting at A)?&quot;;n:
+ FOR f=USR &quot;a&quot; TO USR &quot;a&quot;+8*n-1:
+POKE 23617,1: INPUT i: POKE f,i: NEXT f</pre>
+
+<p class="first">Changing between L and C modes is quite easy under software control. The System Variable which goes under the cryptic name of MORE FLAGS (23658) is the key. Bit 3 holds 0 for L mode or 1 for C mode so POKEing with 8 (BIN 00001000) forces a C cursor. This can be very useful when checking responses in programs. For example, the rather clumsy line:</p>
+
+<pre>1000 PRINT &quot;Press Y to play again&quot;:
+ PAUSE 0: IF INKEY$ = &quot;y&quot; OR INKEy$ = &quot;Y&quot;
+ OR INKEY$ = &quot; AND &quot; OR INKEY$=&quot;STR$ OR
+ INKEY$ = &quot;&quot; THEN RUN</pre>
+
+<p class="first">necessary to check all the possible responses to key Y, can be replaced by:</p>
+
+<pre>1000 PRINT &quot;Press Y to play again&quot;:
+ POKE 23658,8: PAUSE 0: IF INKEY$=&quot;Y&quot;
+ THEN RUN</pre>
+
+<p class="first">as, with CAPS LOCK set the response must be &quot;Y&quot;. Of course the user could cancel the C mode before answering but this would have to be a conscious act of sabotage and such people deserve all the crashes they get. POKE 23658,0 will reset to the L cursor.</p>
+
+<p class="first"><b>Clyde Bish</b></p>
+
+<h2>You better believe it</h2>
+
+<p class="first">I HAVE REACHED level 79 on <b>3D Cosmic Ghost Cockerel</b>, for the ZX-Quantum-86. When you bang the rats on the head, I have found you score no points at all, unless you have fitted a dk'tronics 40 key full-moving keyboard with separate numeric keypad.</p>
+
+<p>Please tell me why.</p>
+
+<p class="first"><b>Simon Godfrey</b></p>
+
+<p class="first"><i>Your problem is to do with the non-standard 287-pin DIN connection. To correct the fault, solder a Megahype 3-way RS232 Q-drive Interface to the ninth pin. That will of course invalidate your guarantee.</i></p>
+
+<h2>Please, more adventures</h2>
+
+<p class="first">I AM A FAN of <i>Dungeons and Dragons</i> so my only complaint is there is not enough on adventure games.</p>
+
+<p>Software Directory is a great idea. Before I buy a game I always look to see how many marks it got. Other than the one complaint, your magazine is number one. Keep up the good work <i>Sinclair User</i>.</p>
+
+<p class="first"><b>Alan Jones</b></p>
+
+<h2>Compiler in reverse?</h2>
+
+<p class="first">IS THERE a program available on the market which will change machine code into Basic. Also, are you able to advise me of the code which will take you onto any part of <b>Jet Set Willy</b>?</p>
+
+<p class="first"><b>Richard Burnett</b></p>
+
+<p class="first"><i>There is no program which can translate machine code into Basic. Indeed, such a program would be impossible to write because of the nature of machine code, although it is possible to compile Basic into code. Even if there were, what would anybody want one for?</i></p>
+
+<p><i>The relevant POKE for Jet Set Willy, along with all sorts of other wacky routines for the game, can be found in <a href="../029/letters.htm#jetset">the August issue of Sinclair User</a>.</i></p>
+
+<h2>Turkey is no chicken</h2>
+
+<p class="first">I WOULD LIKE to comment on <a href="../030/sftcntc.htm#riverres">your review</a> of <b>River Rescue</b> by Creative Sparks. I think the game is worth more than a Gilbert Factor of three since in later levels planes, bridges and mines come into play which makes the game much more exciting to play.</p>
+
+<p class="first"><b>Colin Campbell</b></p>
+
+<h2>Self-starter programming</h2>
+
+<p class="first">CAN YOU tell me how to get programs to auto-run on the ZX-81?</p>
+
+<p>I would like to add that everyone seems to complain about ZX-81s not working. I have had mine for almost two years and I have not had one complaint. That applies to my friends who own ZX-81s as well.</p>
+
+<p class="first"><b>Mark Homans</b></p>
+
+<p class="first"><i>To make your ZX-81 programs auto-run, incorporate the usual SAVE command within the program, e.g. 900 SAVE &quot;name&quot;. Type RUN 900, start the tape recorder and then press NEWLINE.</i></p>
+
+<h2>Venetian connection</h2>
+
+<p class="first">I AM AN ITALIAN boy and I would like to exchange my programs with anybody reading my letter.</p>
+
+<p class="first"><b>Scarpa Mauro</b></p>
+
+<h2>Suffering Sabreman</h2>
+
+<p class="first">I AM VERY impressed with <b>Sabre Wulf</b> from Ultimate but have found two problems which I cannot understand. Firstly there are the native warriors, who get on my nerves by being indestructible. I am always getting killed by them, and it puts me off.</p>
+
+<p>Secondly, I have seen a map of the Sabre Wulf jungle and I cannot figure out why there are tracks which are cut off from the others. Is there any way to get into them as there are often totem poles and rings and diamonds there? I thought there might be a secret passage to get into them but unfortunately I cannot seem to find one.</p>
+
+<p class="first"><b>Adrian Ford</b></p>
+
+<h2>Daley in defeat</h2>
+
+<p class="first">DECATHLON, by Ocean, is a brilliant game and has excellent graphics, but is almost impossible to load. I have had nothing but problems and I am sure I am not the only one. You need at least half an hour to load it, and then it is not guaranteed to work. Ocean should improve the loading.</p>
+
+<p>By saying this I would not want to discourage anyone from buying it. When it works, it is the best game I have seen for the Spectrum.</p>
+
+<p class="first"><b>Peter Davis</b></p>
+
+<h2>Gilbert is innocent</h2>
+
+<p class="first">STEVEN ROBBIE, <a href="../030/letters.htm">in the September issue</a>, complained that Halls of the Things was not worth a Gilbert Factor of 9, and that you needed six hands to play it.</p>
+
+<p>I think the graphics are very good and smooth moving. The point of having so many commands and keys is that you pick the ones you think are the best to use. You do not use all of them. If you get tangled up with the keys, you can press 'I', which pauses the game.</p>
+
+<p>Also Steven thought that <b>Maziacs</b> was not worth a Gilbert Factor of 8. Has Steven tried level four a few times? If you complete that, it is probably because you got an easier maze - each one is different.</p>
+
+<p>To top all of that, he complained that John Gilbert should be sacked. Do not worry, Gilbert, someone still supports you.</p>
+
+<p class="first"><b>Suzanne Madison</b></p>
+
+<a name="tempest"></a>
+<h2>Never forget the ZX-81</h2>
+
+<p class="first">I AM WRITING to say how disappointed I am with ZX81 Software Scene. This usually features only two games. I then looked at Spectrum Software Scene, which contained a satisfying eight games. In future editions could you please review a few more games please.</p>
+
+<p>I also noticed in the September edition a small mistake in the program <b>Caves of Doom</b> for the ZX-81. In line 10 it reads &quot;10 FOR X=16514 TO 16560&quot;. It should read &quot;10 FOR X=16514 TO 16559&quot;.</p>
+
+<p class="first"><b>Robert Tempest</b></p>
+
+<p class="first"><i>The amount of space devoted to ZX-81 software reviews is a direct reflection of the number of games we receive compared to Spectrum software. We would dearly like to review more, but can only write about what is being produced by the industry.</i></p>
+
+<h2>Theodora's fan club</h2>
+
+<p class="first">I'M MISSING Theodora Wood's comments on educational programs. Why?</p>
+
+<p>Why also are there not more educational programs for the Spectrum? It seems that the BBC can make them. That degrades the Spectrum almost to a toy.</p>
+
+<p class="first"><b>Rosa Wieloely</b></p>
+
+<p class="first"><i>Theo's many fans will be delighted to know she is still alive and kicking. In recent months we have not received enough educational software to justify a full article, but will continue to review such programs in the Software Scene section of the magazine. There are certainly no plans for dropping the education content.</i></p>
+
+<h2>Subtle tip for bikers</h2>
+
+<p class="first">I RECENTLY BOUGHT <b>Full Throttle</b> by Micromega. It is an excellent game but I seem to have found a bug in it. It is useful if you are in the tail of the field.</p>
+
+<p>At the end of the last lap of the race when the word FINISH flashes on the screen, stop your bike just in front of the finishing line. Wait until the first of the other bikers appears on the screen, then accelerate over the line.</p>
+
+<p class="first"><b>David Morgan</b></p>
+
+</td></tr></table></center>
+
+<br clear=all>
+
+<center><hr width="50%" noshade></center>
+
+<p align="center" class="first"><a href="news.htm"><img src="../shared/images/lbutton.gif" width=15 height=19 border=0 alt="News"></a>
+<a href="index.htm"><img src="../shared/images/hbutton.gif" width=15 height=19 border=0 alt="Issue 33 Contents"></a>
+<a href="zsftwre.htm"><img src="../shared/images/rbutton.gif" width=15 height=19 border=0 alt="ZX-81 Software Scene"></a></p>
+
+<h6 align="center">Sinclair User<br>December 1984</h6>
+
+</body>
+</html>
