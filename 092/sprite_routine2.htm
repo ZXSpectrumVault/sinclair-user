@@ -1,0 +1,377 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
+
+  <title>Sinclair User 92 - How The Hell ... Do we design a Sprite
+  Routine?</title>
+  <link rel="stylesheet" type="text/css" href="../shared/general.css">
+  <meta name="keywords" content="Sinclair, Spectrum, flicker, shear">
+  <meta name="description" content=
+  "Techniques for a machine code sprite machine to eliminate flicker and shear. Andrew Hewson's column from Sinclair User, November 1989">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body bgcolor="#CCCCCC" text="#000000" link="#0000FF" alink="#FF0000" vlink=
+"#660099">
+
+  <p align="center" class="first">
+    <a href="../091/index.htm">
+      <img src="../shared/images/tlbutton.gif" width="15" height="19" border="0" alt="Issue 91">
+    </a>
+    <a href="index.htm">
+      <img src="../shared/images/thbutton.gif" width="15" height="19" border="0" alt="Issue 92 Contents">
+    </a>
+    <a href="../093/index.htm">
+      <img src="../shared/images/trbutton.gif" width="15" height="19" border="0" alt="Issue 93"></a>
+  </p>
+
+  <center>
+    <h1><i>HOW the HELL ... Do we design a Sprite Routine?</i></h1>
+  </center>
+
+  <p class="first"><a href=
+  "../091/sprite_routine1.htm">Last month</a> we discussed sprite routines and the associated
+  problems such as flicker and shear. One solution to the problems came in the
+  form of a routine designed around two ‘workspace’ screens which were used in
+  preparing our updated frame before updating the main screen. This system has
+  been used in many games for the Spectrum in one form or another. Let us just
+  review the system before examining a full demo routine.</p>
+
+  <p>The two workspace screens are byte for byte equivalents of the normal
+  Spectrum screen stored at 16334 (6144 bytes long not including the colour
+  attributes). I say byte for byte equivalents but because they are internal
+  and not displayed, they can be a more sensible layout. In the demo routine
+  following, the two workscreens are arranged as 192 lines each of 32 bytes per
+  line. In order to step down 1 pixel row on the normal Spectrum screen we have
+  to do a fairly slow calculation. To step down 1 pixel row in our workscreens
+  we only have to add 32 to our pointer — anywhere on the workscreen. To
+  summarise then, the two workspace screens are just temporary stores for the
+  sprite routine.</p>
+
+  <h2>WORKSPACE SCREEN OPERATION</h2>
+
+  <p>At game initialisation, workspace A is initialised with a copy of the
+  background picture information. Workspace B is ignored at this stage. At the
+  start of each game loop, the contents of workspace A are copied as quickly as
+  possible to workspace B. This effectively erases workspace B. Now we draw in
+  to workspace B our sprites and other dynamic features. Finally, we copy as
+  fast as possible the contents of workspace B to the visible screen where our
+  eyes can see the newly updated frame.</p>
+
+  <p>1 WORKSPACE A — WORKSPACE B<br>
+  2 DRAW SPRITES TO WORKSPACE B<br>
+  3 WORKSPACE B — SCREEN!</p>
+
+  <p>The system is very easy to use and very simple. The negative points are
+  that a) There is a time penalty with moving data and b) We need more memory
+  for the workcreens, which is wasteful. Speed is always a problem but the
+  memory being wasted is not so much of a problem with 128K available. On the
+  plus side, we can do some clever tricks quite easily with this system such as
+  scrolling the background. The demo program does just this. Type in the
+  machine code program with your assembler (what do you mean, you haven't got
+  one yet?!) and assemble it to the ORG address supplied i.e. 45056 (0B000H).
+  Save the assembled code with a SAVE "M-CODE" 45056,3287. To run the code type
+  in RANDOMIZE USR 45056 from BASIC and just watch. To return to BASIC you
+  press Shift + Space or Break.</p>
+
+  <h2>ROUTINE OPERATION</h2>
+
+  <p>On entry to the routine, the sub-routine INIT_DIR sets the direction flags
+  for each of the 12 sprites into random directions. Bit 7 of the flag bytes
+  controls the Up/Down direction while Bit 0 controls the Left/Right direction.
+  The next routine — MOVE_SCRN — copies the Spectrum screen to workspace A. For
+  this reason, do not run the routine following a CLS — or you will not see the
+  sprites running over a background. Preferably do a LIST of some BASIC text
+  before running the routine. At the label LOOP, we call the BREAK key test
+  routine in the ROM. This returns No Carry if it is being pressed. If it is,
+  then the program will return to BASIC.</p>
+
+  <p>Next comes the copying of workscreen A to workscreen B coupled with the
+  scrolling of the background. For this demo, I am doing the scroll in a slight
+  cheat — I am copying the data from workscreen A from a varying base address
+  each loop — see if you can work it out for yourself how it scrolls! We now
+  call the routines MOVE_SPR and DRAW_SPR, which jointly update the new sprite
+  positions (random of course) and draw them into workscreen B. Finally, the
+  contents of workscreen B are copied to the Spectrum screen at MOVE_WKSP.</p>
+
+  <p>With the program are a few points of interest. I have often received
+  letters from people asking ‘how do you get several sprites on the screen all
+  at the same time?’ In a routine as simple as this, the principle is still the
+  same as a larger complicated game. We have a set of variables for each sprite
+  (in this case 3 bytes per sprite) and we execute the same routine 'n' times
+  with different variables each time. The sub-routine in this case is MOVE_SPR.
+  It uses IX as a variable pointer and the ‘B’ register as a counter. There is
+  no mystery as to how we have one sprite or in this case a dozen of them. In a
+  typical game, the sprites may have 40 bytes of variables with various
+  parameters but as I state above, the principle is the same.</p><a name="fig1"
+  id="fig1"></a>
+
+  <center>
+    <table cellpadding="5">
+      <tr>
+        <td>
+          <table border="0" cellpadding="0">
+            <tr>
+              <td bgcolor="#000000">
+                <table border="0" cellpadding="10">
+                  <tr>
+                    <td bgcolor="#FFFFFF">
+                      <center>
+                        <p class="first"><b>DEMONSTRATION PROGRAM</b></p>
+
+                        <p><b>SPRITE OUTPUT SYSTEM USING 2 WORKSPACE SCREENS —
+                        WKSPA AND WKSPB. SEE TEXT FOR OPERATIONAL
+                        DETAILS</b></p>
+                      </center>
+                      <pre>
+0000                            ORG 45056                    ;ASSEMBLY ADDRESS  
+B000                            ;  
+B000                    SPNOS:  EQU 9                        ;NUMBER OF SPRITES  
+B000                    WKSPA:  EQU 32768                    ;WORKSPACE ADDRESS  
+B000                    WKSPB:  EQU WKSPA+6144               ;  
+B000                            ;  
+B000 1826                       JR ENTRY                     ;JUMP PAST VARIABLES TO START  
+B002                            ;  
+B002                      
+B002 00                 COUNT:  DEFB 0                       ;USED FOR SCROLLING BACKGROUND  
+B003                      
+B003 0B                 SEED:   DEFB 11                      ;RANDOM NUMBER SEED  
+B004                      
+B004 000000100000200000 XYPOS:  DEFB 0,0,0,16,0,0,32,0,0     ;12 SPRITE POSITION  
+B00D 300000400000500000         DEFB 48,0,0,64,0,0,80,0,0    ;VARIABLES AND DIRECTION  
+B016 600000700000800000         DEFB 96,0,0,112,0,0,128,0,0  ;FLAGS  
+B01F 900000A00000B00000         DEFB 144,0,0,160,0,0,176,0,0 
+B028                            ;  
+B028                      
+B028 CD44B0             ENTRY:  CALL INIT_DIR                ;INITIALISE SPRITE DIRECTIONS  
+B02B CD60B0                     CALL MOVE_SCRN               ;TRANSFER THE PICTURE TO WKSPA  
+B02E                      
+B02E CD541F             LOOP:   CALL 1F54H                   ;TEST THE BREAK KEY  
+B031 D0                         RET NC                       ;AND RETURN TO BASIC IF PRESSED  
+B032 CD78B0                     CALL TRAN_WKSP               ;TRANSFER WKSPA TO WKSPB  
+B035 CD8AB0                     CALL MOVE_SPR                ;DO SPRITE MOVEMENT CALCULATIONS  
+B038 CDD7B0                     CALL DRAW_SPR                ;DRAW SPRITES INTO WKSPB  
+B03B CD20B1                     CALL MOVE_WKSP               ;NOW MOVE WKSPB TO VISIBLE SCREEN  
+B03E 2102B0                     LD HL,COUNT                  ;INCREMENT LOOP COUNTER  
+B041 34                         INC (HL)                     ;  
+B042 18EA                       JR LOOP                      ;NOW LOOP BACK AND CONTINUE  
+B044                      
+B044                    INIT_DIR:  
+B044 1106B0                     LD DE,XYPOS+2                ;IX+2 IS THE DIRECTION FLAG  
+B047 0609                       LD B,SPNOS                   ;B=NUMBER OF SPRITES TO DO  
+B049                      
+B049 CD53B0             IN10:   CALL RANDOM                  ;GET A RANDOM NUMBER  
+B04C 12                         LD (DE),A                    ;AND STORE IN IX+2  
+B04D 13                         INC DE                       ;INCREMENT DE 3 TIMES TO POINT TO  
+B04E 13                         INC DE                       ;THE NEXT FLAG  
+B04F 13                         INC DE                       ;BIT 0,0-DEC X   BIT 7,0-DEC Y  
+B050 10F7                       DJNZ IN10                    ;1-INC X   1-INC Y  
+B052 C9                         RET                          ;  
+B053                      
+B053 2103B0             RANDOM: LD HL,SEED                   ;GET PRESENT SEED VALUE  
+B056 7E                         LD A,(HL)                    ;MULTIPLY BY 16 AND LOSE TOP 4 BITS  
+B057 87                         ADD A,A                      ;  
+B058 87                         ADD A,A                      ;  
+B059 87                         ADD A,A                      ;  
+B05A 87                         ADD A,A                      ;  
+B05B 86                         ADD A,(HL)                   ;ADD IN ORIGINAL IE SEED * 17  
+B05C C629                       ADD A,41                     ;ADD IN PRIME NUMBER  
+B05E 77                         LD (HL),A                    ;AND SAVE NEW SEED FOR USE AGAIN  
+B05F C9                         RET                          ;RETURN  
+B060                      
+B060                    MOVE_SCRN:  
+B060 210040                     LD HL,4000H                  ;TRANSFER INITIAL SCREEN TO WKSPA  
+B063 110080                     LD DE,WKSPA                  ;  
+B066 01C100                     LD BC,193                    ;192 LINES ON SCREEN  
+B069                      
+B069 E5                 MS10:   PUSH HL                      ;SAVE POINTERS  
+B06A C5                         PUSH BC                      ;  
+B06B 0E20                       LD C,32                      ;MAKE BE=32 BYTES (PER LINE)  
+B06D EDB0                       LDIR                         ;MOVE THE BYTES  
+B06F C1                         POP BC                       ;RESTORE POINTERS  
+B070 E1                         POP HL                       ;  
+B071 CD3AB1                     CALL SD_SCRN                 ;STEP DOWN 1 SCREEN LINE  
+B074 0D                         DEC C                        ;DEC COUNTER AND LOOP BACK IF NOT  
+B075 20F2                       JR NZ,MS10                   ;ZERO  
+B077 C9                         RET  
+B078                      
+B078                    TRAN_WKSP:  
+B078 3A02B0                     LD A,(COUNT)                 ;TO SCROLL THE BACKGROUND WE JUST  
+B07B E61F                       AND 1FH                      ;MOVE THE POINTER TO WKSPA BY USING  
+B07D 6F                         LD L,A                       ;THE VALUE IN 'COUNTER' AS THE LOW  
+B07E 3E80                       LD A,WKSPA/256               ;BYTE AND 'H' IS THE WKSPA HIGH  
+B080 67                         LD H,A                       ;BYTE VALUE  
+B081 110098                     LD DE,WKSPB                  ;DE IS DESTINATION  
+B084 010018                     LD BC,6144                   ;BC=NUMBER OF BYTES TO MOVE  
+B087 EDB0                       LDIR                         ;MOVE THEM  
+B089 C9                         RET  
+B08A                      
+B08A                    MOVE_SPR:  
+B08A DD2104B0                   LD IX,XYPOS                  ;USE IX FOR INDEXING  
+B08E 0609                       LD B,SPNOS                   ;B=NUMBER OF SPRITES  
+B090                      
+B090 2102B0             MP10:   LD HL,COUNT                  ;THESE FEW INSTRUCTIONS CONSTRUCT  
+B093 DD7E02                     LD A,(IX+2)                  ;A NEW RANDOM DIRECTION  
+B096 4F                         LD C,A                       ;FOR EACH SPRITE  
+B097 AE                         XOR (HL)                     ;BY USING THE RANDOM NUMBER  
+B098 CB77                       BIT 6,A                      ;ROUTINE IN CONJUNCTION WITH  
+B09A 2807                       JR Z,MP15                    ;THIS XOR INSTRUCTION  
+B09C CD53B0                     CALL RANDOM                  ;  
+B09F DD7702                     LD (IX+2),A                  ;  
+B0A2 4F                         LD C,A                       ;IX+2 NOW EQUALS THE NEW FLAG  
+B0A3                      
+B0A3 DD6E00             MP15:   LD L,(IX+0)                  ;MAKE HL=OLD CO-ORDINATES  
+B0A6 DD6601                     LD H,(IX+1)                  ;OF SPRITE  
+B0A9 79                         LD A,C                       ;C=DIRECTION FLAG  
+B0AA E601                       AND 1                        ;MAKE NEW X EITHER X+1 OR X-1  
+B0AC 3D                         DEC A                        ;  
+B0AD F601                       OR 1                         ;  
+B0AF 85                         ADD A,L                      ;ADD VALUE TO OLD X CO-ORDINATE  
+B0B0 FEFF                       CP 0FFH                      ;CHECK FOR SCREEN EDGES  
+B0B2 2807                       JR Z,MP20                    ;  
+B0B4 FEF0                       CP 240                       ;  
+B0B6 3003                       JR NC,MP20                   ;  
+B0B8 DD7700                     LD (IX+0),A                  ;IF NEW POSITION OK THEN STORE IT  
+B0BB                      
+B0BB 79                 MP20:   LD A,C                       ;NOW DO THE SAME CHECK ETC  
+B0BC 07                         RLCA                         ;ON THE Y CO-ORDINATE  
+B0BD E601                       AND 1                        ;  
+B0BF 3D                         DEC A                        ;  
+B0C0 F601                       OR 1                         ;  
+B0C2 84                         ADD A,H                      ;  
+B0C3 FEFF                       CP 0FFH                      ;  
+B0C5 2807                       JR Z,MP30                    ;  
+B0C7 FEB0                       CP 176                       ;  
+B0C9 3003                       JR NC,MP30                   ;  
+B0CB DD7701                     LD (IX+1),A                  ;STORE NEW Y CO-ORDINATE IF OK  
+B0CE                      
+B0CE DD23               MP30:   INC IX                       ;MOVE IX ONTO THE NEXT SPRITE  
+B0D0 DD23                       INC IX                       ;  
+B0D2 DD23                       INC IX                       ;(3 BYTES PER SPRITE)  
+B0D4 10BA                       DJNZ MP10                    ;LOOP BACK TO DO OTHERS  
+B0D6 C9                         RET                          ;  
+B0D7                      
+B0D7                    DRAW_SPR:  
+B0D7 DD2104B0                   LD IX,XYPOS                  ;USE IX AS INDEX POINTER AGAIN  
+B0DB 0E09                       LD C,SPNOS                   ;C=NUMBER OF SPRITES  
+B0DD                      
+B0DD DD6E01             DR10:   LD L,(IX+1)                  ;CALCULATE THE WKSPB ADDRESS  
+B0E0 2600                       LD H,0                       ;FROM THE X AND Y CO-ORDINATES  
+B0E2 29                         ADD HL,HL                    ;IE Y*32 + X + WKSPB  
+B0E3 29                         ADD HL,HL                    ;  
+B0E4 29                         ADD HL,HL                    ;  
+B0E5 29                         ADD HL,HL                    ;  
+B0E6 29                         ADD HL,HL                    ;HL=Y*32  
+B0E7 DD7E00                     LD A,(IX+0)                  ;  
+B0EA 47                         LD B,A                       ;SAVE X TEMPORARILY IN B  
+B0EB CB3F                       SRL A                        ;CHARACTER X POSITION = X/S  
+B0ED CB3F                       SRL A                        ;  
+B0EF CB3F                       SRL A                        ;  
+B0F1 B5                         OR L                         ;HL+X  
+B0F2 6F                         LD L,A                       ;  
+B0F3 110098                     LD DE,WKSPB                  ;  
+B0F6 19                         ADD HL,DE                    ;HL+X+WKSPB  
+B0F7 78                         LD A,B                       ;WORK OUT THE PIXEL POSITION  
+B0F8 E607                       AND 7                        ;OF THE SPRITE 'BLOB'  
+B0FA 3C                         INC A                        ;  
+B0FB 47                         LD B,A                       ;B=1 TO 8  
+B0FC 1100FF                     LD DE,0FF00H                 ;DE IS THE SPRITE VALUE  
+B0FF                      
+B0FF CB3A               DR20:   SRL D                        ;SHIFT IT INTO THE CORRECT  
+B101 CB1B                       RR E                         ;POSITION (PIXEL X POSITION)  
+B103 10FA                       DJNZ DR20                    ;  
+B105 0608                       LD B,8                       ;B=8 LINES DEEP PER SPRITE  
+B107                      
+B107 7A                 DR30:   LD A,D                       ;COPY BYTES TO SCREEN  
+B108 B6                         OR (HL)                      ;WITH 'OR' LOGIC  
+B109 77                         LD (HL),A                    ;  
+B10A 23                         INC HL                       ;  
+B10B 7B                         LD A,E                       ;  
+B10C B6                         OR (HL)                      ;  
+B10D 77                         LD (HL),A                    ;  
+B10E 3E1F                       LD A,31                      ;TO STEP DOWN 1 PIXEL LINE IN  
+B110 85                         ADD A,L                      ;WKSPB WE ADD 31 TO THE POINTER  
+B111 6F                         LD L,A                       ;(A MORE LOGICAL SCREEN LAYOUT!)  
+B112 8C                         ADC A,H                      ;  
+B113 95                         SUB L                        ;  
+B114 67                         LD H,A                       ;  
+B115 10F0                       DJNZ DR30                    ;LOOP BACK FOR 8 ROWS  
+B117 DD23                       INC IX                       ;MOVE IX ONTO THE NEXT SPRITE  
+B119 DD23                       INC IX                       ;  
+B11B DD23                       INC IX                       ;  
+B11D 0D                         DEC C                        ;  
+B11E 20BD                       JR NZ,DR10                   ;LOOP BACK UNTIL FINISHED  
+B120                      
+B120                    MOVE_WKSP:  
+B120 210098                     LD HL, WKSPB                 ;THIS ROUTINE MOVES WKSPB TO THE  
+B123 110040                     LD DE, 4000H                 ;VISIBLE SCREEN AFTER THE SPRITES  
+B126 01B800                     LD BC, 192-8                 ;HAVE BEEN DRAWN IN TO IT  
+B129                      
+B129 D5                 MV10:   PUSH DE                      ;SAVE POINTERS  
+B12A C5                         PUSH BC                      ;  
+B12B 0E20                       LD C,32                      ;MOVE 32 BYTES PER LINE  
+B12D EDB0                       LDIR                         ;MOVE THEM  
+B12F C1                         POP BC                       ;RESTORE POINTERS  
+B130 D1                         POP DE                       ;  
+B131 EB                         EX DE,HL                     ;SWAP POINTERS TO STEP HL DOWN  
+B132 CD3AB1                     CALL SD_SCRN                 ;1 SCREEN LINE  
+B135 EB                         EX DE,HL                     ;RESTORE POINTERS  
+B136 0D                         DEC C                        ;DECREMENT COUNTER  
+B137 20F0                       JR NZ,MV10  
+B139 C9                         RET  
+B13A                      
+B13A                    SD_SCRN:  
+B13A 24                         INC H                        ;THIS ROUTINE WILL STEP DOWN HL  
+B13B 7C                         LD A,H                       ;1 PIXEL ROW ON A STANDARD  
+B13C E607                       AND 7                        ;SPECTRUM FORMAT SCREEN  
+B13E C0                         RET NZ  
+B13F 7D                         LD A,L  
+B140 C620                       ADD A,32  
+B142 6F                         LD L,A  
+B143 D8                         RET C  
+B144 7C                         LD A,H  
+B145 D608                       SUB 8  
+B147 67                         LD H,A  
+B148 C9                         RET
+</pre>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </center><br clear="all">
+
+  <center>
+    <p class="first">
+      <a href="../091/sprite_routine1.htm"><b>Previous article in series (issue 91)</b></a> <br>
+
+    </p>
+  </center><br clear="all">
+
+  <center>
+    <hr width="50%" noshade>
+  </center>
+
+  <p align="center" class="first">
+    <a href="../091/index.htm">
+      <img src="../shared/images/tlbutton.gif" width="15" height="19" border="0" alt="Issue 91">
+    </a>
+    <a href="index.htm">
+      <img src="../shared/images/thbutton.gif" width="15" height="19" border="0" alt="Issue 92 Contents">
+    </a>
+    <a href="../093/index.htm">
+      <img src="../shared/images/trbutton.gif" width="15" height="19" border="0" alt="Issue 93"></a>
+  </p>
+
+  <h6 align="center">Sinclair User<br>November 1989</h6>
+
+  <h6 align="center">Transcribed by Richard Milne</h6>
+</body>
+</html>

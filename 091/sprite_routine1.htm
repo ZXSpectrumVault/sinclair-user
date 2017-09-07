@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+
+  <title>Sinclair User 91 - How The Hell ... Does a Sprite Routine work?</title>
+  <link rel="stylesheet" type="text/css" href="../shared/general.css">
+  <meta name="keywords" content="Sinclair, Spectrum, flicker, shear">
+  <meta name="description" content=
+  "Techniques for a machine code sprite machine to eliminate flicker and shear. Andrew Hewson's column from Sinclair User, October 1989">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body bgcolor="#CCCCCC" text="#000000" link="#0000FF" alink="#FF0000" vlink=
+"#660099">
+
+  <p align="center" class="first">
+    <a href="../090/index.htm">
+      <img src="../shared/images/tlbutton.gif" width="15" height="19" border="0" alt="Issue 90">
+    </a>
+    <a href="index.htm">
+      <img src="../shared/images/thbutton.gif" width="15" height="19" border="0" alt="Issue 91 Contents">
+    </a>
+    <a href="../092/index.htm">
+      <img src="../shared/images/trbutton.gif" width="15" height="19" border="0" alt="Issue 92"></a>
+  </p>
+
+  <center>
+    <h1><i>HOW the HELL ... Does a Sprite Routine Work?</i></h1>
+
+    <p><b><i>ASCII code nightmares? Disillusioned with disassemblers? Baffled
+    by bytes? If you’re having problems with programming, whether they
+    alliterate or not, Andrew Hewson is your man. Drop him a line and he’ll be
+    investigating the problem before you can say “Ram Dos Buffer Interface Edge
+    Connector”</i></b></p>
+  </center>
+
+  <p class="first"><b>From</b> the people who write in with questions for this
+  column, a lot frequently ask ‘How do you go about designing a sprite
+  routine’? The problem with sprite routines is that there are many different
+  types of routine that are really specific to the game in which it is
+  operating.</p>
+
+  <p>Take something like ‘URIDIUM', for example. It was based around a scrolling
+  background with sprites moving over the surface of the spaceship. Due to the
+  highly complex nature of the scrolling system, the sprite routine was
+  optimised to work in that game only. A simple platform game, on the other hand,
+  is a lot simpler than a full-blown 3D-type game and correspondingly the
+  sprite routine is different in each case.</p>
+
+  <p>We shall look at the principles involved this month and <a href=
+  "../092/sprite_routine2.htm">next month</a> I will have a super smooth sprite
+  routine for you to try out.</p>
+
+  <h2>FLICKER AND SHEAR</h2>
+
+  <p>Ok! What is flicker or shear? First, I will explain flicker. Your
+  television monitor works on the principle of a raster scan. When you are
+  watching a broadcast programme on TV, the picture you are watching is updated
+  25 times every second through the action of a pin prick of light (an electron
+  beam) which traces out the picture starting at the top left corner and
+  scanning line by line as shown in <a href="#fig1">figure 1</a>.</p>
+
+  <p>When the beam reaches the bottom right corner, the beam is switched off
+  for a fraction of a second and it is directed back to the top left corner
+  ready for the next scan whereupon it is switched back on again. The beam
+  scans at a rate of 64 microseconds per line for 625 lines deep. The Spectrum
+  interrupt incidentally is synchronised to occur at the beam ‘flyback’.</p>
+
+  <p>Before I go into any more detail, please note that the actual TV scan is a
+  little bit more complicated in that the scan is done at a rate of 50 times a
+  second with two scans of 312.5 lines per scan. Also, although there are 625
+  lines in total, only around 575 are visible. As far as our Spectrum is
+  concerned, we can observe the display system like this:</p>
+
+  <ol>
+    <li>At the time of a Spectrum interrupt, the TV beam is at the top left
+    corner of the screen. The first part of the beam outputs is the border at
+    the top of the screen.</li>
+
+    <li>Approximately 3.5 milliseconds later, the beam is scanning the screen
+    memory and is updating our screen. The screen is 192 lines with a piece of
+    border at each end.</li>
+
+    <li>The screen memory scan takes approximately 12.5 milliseconds.</li>
+
+    <li>The beam is now at the bottom border section of the display and is
+    going to take another 3.5 milliseconds or so.</li>
+
+    <li>Once the beam has reached the bottom right corner (after 312.5 lines),
+    it is blanked and flies back to the top left hand comer ready for another
+    frame update.</li>
+  </ol>
+
+  <p>The above five steps are carried out 50 times a second using only 312.5
+  lines unlike the broadcast TV which uses the other ‘in between’ set of 312.5
+  lines. If you get a magnifying glass and look at the monitor screen of your
+  Spectrum while it is displaying something you will be able to see a small
+  black gap in between each pixel row. This rather complicated sounding system
+  is based around the findings of early cinema pioneers who discovered that 25
+  frames per second was enough to convey the appearance of a moving picture
+  without your eye detecting the effect of separate pictures — hence TV evolved
+  along similar lines (no pun intended!)</p>
+
+  <p>Right, back to the plot. If we copy the relevant sprite data to the screen
+  memory very quickly (i.e. we are outputting a sprite) then, providing the TV
+  beam is scanning a part of the screen memory which is after our sprite or
+  well before it, the sprite will be updated perfectly when the beam next
+  reaches it. In other words, the perfect sprite system would be able to write
+  the sprite data to the screen memory in an infinitely short period at time —
+  during frame flyback say. Once the beam starts updating the screen then all
+  the sprites would be output as well.</p>
+
+  <p>However, the ideal sprite system is just a pipe dream on our Spectrum. The
+  cause of flicker is that our eye can see the background poking through all or
+  part of the sprite in between the updating of the next sprite frame. To
+  prevent the background ‘showing through’ we have to design the sprite routine
+  around the principle of ‘never erase the sprite’.</p>
+
+  <p>‘But how can we make a sprite move around the screen if we don’t erase the
+  old frames?’ The answer is that we draw the picture to be output in a
+  separate workspace area of the memory. After the picture is prepared, we
+  output this workspace screen to the main ‘visible’ screen — overwriting what
+  was there before at a rate of anything quicker than about 60 milliseconds. As
+  most of the screen will consist of the some data, the only parts of the
+  screen to change will be the sprites in their new positions. The new
+  positions will typically be no more than 1 character square away from their
+  previous positions and the net change to the screen will be very small. More
+  importantly is the fact that sprites are never erased.</p>
+
+  <p>See <a href="#fig2">figure 2</a> for a graphic illustration of the method.
+  This workspace screen method was used in many games including Manic Miner and
+  Jet Set Willy where the press at the time thought the animation and sprite
+  output was exceptionally good.</p>
+
+  <p>We are getting quite technical this month with talk of rasters and
+  electron beams and have not quite finished yet as we have not looked at
+  shear. If you dig out your grubby copy of Manic Miner and can remember how to
+  play it, look at the sprites very carefully and on some screens you will see
+  the main character ‘Willy’ lean slightly with the appearance that there is a
+  split through his torso with the upper and lower halves slightly skew wiff
+  (<a href="#fig3">figure 3</a>). This effect is shear. The TV scanning system
+  is responsible again but admittedly the effect is less of a problem than
+  flicker.</p>
+
+  <p>What happens here is that the workspace screen is transferred to the main
+  screen as described but the TV beam is racing through outputting the screen
+  faster than the copy-workspace-screen routine. If this happens then any part
+  of the screen which changes after the raster has passed through, will only be
+  output to the TV monitor 20 milliseconds later on the next scan. On the
+  Commodore 64 for example it has a register commonly called the ‘raster
+  compare value’. There is a counter in the video circuitry which is compared
+  with this ‘raster compare’ value. If the two numbers match then an interrupt
+  is generated.</p>
+
+  <p>On the C64 this Is used to split the screen into two or more different
+  modes vertically at a predetermined point. No such luxury on the Spectrum
+  though! So we are really stuck with shear but we can minimise it by doing the
+  copy routine when the beam is just starting its scan i.e. do a HALT
+  immediately before the copy.</p>
+
+  <p>So now we know how to reduce the little ‘bugs’ which spoil sprite routines
+  we can break the actual routine down to several stages:</p>
+
+  <ol>
+    <li>Initialise Workspace A with the background screen.</li>
+  </ol>
+
+  <p>Now we do the following operations in a loop:</p>
+
+  <ol start="2">
+    <li>Copy Workspace A to workspace B.</li>
+
+    <li>Draw in our sprites to Workspace B.</li>
+
+    <li>Copy Workspace B to the main screen.</li>
+
+    <li>Move sprite co-ordinates etc. and loop back to No 2.</li>
+  </ol>
+
+  <p>The only tricky bit is that our sprite draw routine and the copying at
+  various workspaces must be done at lightning speed. All the shuffling of data
+  involved in this system is wasted time in that we want it to happen in zero
+  time. Lots of data are being moved around with this system and most of it
+  doesn’t change - an obvious time waste. However, look on the bright side, all
+  the erasing is done automatically and in converting a program designed this
+  way for other computers, only the final copy routine needs changing. Get your
+  assemblers ready for <a href="../092/sprite_routine2.htm">next month</a> and
+  try out the sprite routine.</p>
+
+  <h2><i>Figures</i></h2>
+
+  <a name="fig1" id="fig1"></a>
+
+  <center>
+    <table border="0" cellpadding="0">
+      <tr>
+        <td bgcolor="#000000">
+          <table border="0" cellpadding="10">
+            <tr>
+              <td bgcolor="#FFFFFF">
+                <p class="first"><b>Figure 1.</b></p><img src="sprite_routine_fig1.jpg"
+                width="178" height="125" hspace="10" vspace="10" border="0"
+                alt="">
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </center><br clear="all">
+
+  <a name="fig2" id="fig2"></a>
+
+  <center>
+    <table border="0" cellpadding="0">
+      <tr>
+        <td bgcolor="#000000">
+          <table border="0" cellpadding="10">
+            <tr>
+              <td bgcolor="#FFFFFF">
+                <p class="first"><b>Figure 2.</b></p><img src="sprite_routine_fig2.jpg"
+                width="355" height="570" hspace="10" vspace="10" border="0"
+                alt="">
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </center><br clear="all">
+
+  <a name="fig3" id="fig3"></a>
+
+  <center>
+    <table border="0" cellpadding="0">
+      <tr>
+        <td bgcolor="#000000">
+          <table border="0" cellpadding="10">
+            <tr>
+              <td bgcolor="#FFFFFF">
+                <p class="first"><b>Figure 3.</b></p><img src="sprite_routine_fig3.jpg"
+                width="391" height="219" hspace="10" vspace="10" border="0"
+                alt="">
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </center><br clear="all">
+
+  <center>
+    <p class="first">
+
+      <a href="../092/sprite_routine2.htm"><b>Next article in series (issue 92)</b></a>
+    </p>
+  </center><br clear="all">
+
+  <center>
+    <hr width="50%" noshade>
+  </center>
+
+  <p align="center" class="first">
+    <a href="../090/index.htm">
+      <img src="../shared/images/tlbutton.gif" width="15" height="19" border="0" alt="Issue 90">
+    </a>
+    <a href="index.htm">
+      <img src="../shared/images/thbutton.gif" width="15" height="19" border="0" alt="Issue 91 Contents">
+    </a>
+    <a href="../092/index.htm">
+      <img src="../shared/images/trbutton.gif" width="15" height="19" border="0" alt="Issue 92"></a>
+  </p>
+
+  <h6 align="center">Sinclair User<br>October 1989</h6>
+
+  <h6 align="center">Transcribed by Richard Milne</h6>
+</body>
+</html>
