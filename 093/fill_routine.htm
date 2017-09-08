@@ -159,7 +159,7 @@ PROGRAM:
                       <pre>
 0000                     ORG 8000H
 8000                     ;
-8000 ED5BB180            LD DE,(XYPOS)
+8000 ED5BB080            LD DE,(XYPOS)
 8004 0100FF              LD BC,0FF00H    ;PUTTING THE STOP CODE OF 0FF00H
 8007 C5                  PUSH BC         ;ON THE STACK
 8008 41                  LD B,C
@@ -285,12 +285,12 @@ PROGRAM:
 80AA 3E01                LD A,1          ;A IS A BIT MASK
 
 80AC 0F        GET10:    RRCA            ;ROTATE MASK INTO CORRECT PLACE
-80AD C2AC80              JP NZ, GET10    ;LOOP BACK UNTIL DONE
-80B0 C9                  RET
+80AD 10FD                DJNZ GET10      ;LOOP BACK UNTIL DONE
+80AF C9                  RET
 
-80B1 7F        XYPOS:    DEFB 127        ;THESE NUMBERS ARE THE SCREEN CENTRE
-80B2 57                  DEFB 87         ;BUT PRE-LOAD THEN WITH THE FIRST PIXEL
-80B3                                     ;CO-ORDINATE THAT YOU WANT FILLING</pre>
+80B0 7F        XYPOS:    DEFB 127        ;THESE NUMBERS ARE THE SCREEN CENTRE
+80B1 57                  DEFB 87         ;BUT PRE-LOAD THEN WITH THE FIRST PIXEL
+80B2                                     ;CO-ORDINATE THAT YOU WANT FILLING</pre>
               </td>
             </tr>
           </table>
