@@ -1,0 +1,328 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+  <title>Sinclair User 93 - How The Hell ... Do we fill the gap?</title>
+  <link rel="stylesheet" type="text/css" href="../shared/general.css">
+  <meta name="keywords" content=  "Sinclair, Spectrum, graphics, fill, recursion">
+  <meta name="description" content=
+  "A recursive machine-code graphical fill routine. Andrew Hewson's column from Sinclair User, December 1989">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body bgcolor="#CCCCCC" text="#000000" link="#0000FF" alink="#FF0000" vlink=
+"#660099">
+
+  <p align="center" class="first">
+    <a href="../092/index.htm">
+      <img src="../shared/images/tlbutton.gif" width="15" height="19" border="0" alt="Issue 92">
+    </a>
+    <a href="index.htm">
+      <img src="../shared/images/thbutton.gif" width="15" height="19" border="0" alt="Issue 93 Contents">
+    </a>
+    <a href="../094/index.htm">
+      <img src="../shared/images/trbutton.gif" width="15" height="19" border="0" alt="Issue 94">
+    </a>
+  </p>
+
+  <center>
+    <h1><i>HOW the HELL ... Do we fill the gap?</i></h1>
+  </center>
+
+  <p class="first">Games programming is very challenging because each new game
+  demands innovation and features which are different from past games. This
+  usually means that we have to come up with new routines that are written
+  from scratch for each game. Business programmers have got it easy - they can
+  draw on stock routines such as calculators, display routines etc. and just
+  tailor the stock routines into a new package with a so called ‘new’ product
+  at the end of the day.</p>
+
+  <p>The subject of this month's discussion is the ‘fill’ routine. It will
+  always be associated with graphical programs by virtue of its task, but it is
+  seldom seen in games because, quite frankly, a ‘fill’ usually runs at a
+  snail's pace. However, a programmer would not usually come up with a new fill
+  algorithm and I have used the same program for years now.</p>
+
+  <p><a href="#fig1">Figure 1</a> has the source code listing in machine code
+  for the basic fill algorithm. It is quite short considering the job it has to
+  do but then again it is fairly efficient in terms of speed. The program is
+  quite complex in operation as it is recursive - i.e. it keeps calling itself
+  until it has finished.</p>
+
+  <h2>RECUSRION</h2>
+
+  <p>This term needs a little explanation. A common routine structure is a
+  <i>LOOP</i>. Loops appear all over the place. <tt>FOR</tt>/<tt>NEXT</tt>
+  instructions in BASIC are probably the type known to most people but the
+  format is nearly always as shown here, using a counter:</p>
+
+  <ol>
+    <li>Set a counter</li>
+    <li>Perform the program task</li>
+    <li>Decrement counter</li>
+    <li>Go back to stage 2 until counter = 0</li>
+    <li>Finished</li>
+  </ol>
+
+  <p>Using a test to terminate the loop:</p>
+
+  <ol>
+    <li>Perform the program task</li>
+    <li>Perform the test - e.g. read keyboard</li>
+    <li>Go back to stage 1 until test fails</li>
+    <li>Finished</li>
+  </ol>
+
+  <p>The first stage in a loop structure can involve setting a counter. This is
+  followed by the program main body and finally there is some form of
+  ‘decrement counter and jump back if not zero’ type of arrangement. The number
+  of loops is determined by a counter or it could be a test - say reading a
+  keyboard to see if a key is being pressed. A loop cannot loop forever or we
+  would have a ‘lock-up’ situation and so there is always some conditional
+  situation for a loop to work successfully. A <i>RECURSIVE</i> program is one
+  whereby it <tt>CALL</tt>s itself from within itself:-</p>
+  <pre>
+PROGRAM:
+        CALL PROGRAM
+        RET
+</pre>
+
+  <p>Yes, it is daft! The code above would just make the machine crash. It is
+  not the same as a lock-up condition that can happen in a bug-ridden loop, but
+  it is making the stack grow to enormous proportions until something gives.
+  Practical recursion is not as daft as this but is typically like this
+  instead:</p>
+  <pre>
+        LD (MEM), SP
+PROGRAM:
+        CALL COMPLICATED_TEST
+        CALL NZ, PROGRAM
+        LD SP, (MEM)
+        RET
+</pre>
+
+  <p>This is only an illustration of what a recursive routine is all about. In
+  the above instance, the sub-routine <tt>COMPLICATED_TEST</tt> has a
+  conditional result - namely, zero or not zero. In the not-zero case the whole
+  lot is called again (with the stack growing by two bytes per call). If we
+  relate this to the fill routine, we can see that the complex task of
+  determining which pixels need ‘filling’ can only be done on a pixel-by-pixel
+  basis. Effectively we check one pixel to see if it is filled and we store the
+  status of the four pixels adjacent to the one we are testing.</p>
+
+  <p>If any of the four adjacent pixels need filling then we will want to
+  re-enter the program again but with a new central pixel forming the basis of
+  the complicated test. This will happen until there are no more pixels to fill
+  and all adjacent ones have been filled - hence the condition to loop back
+  will fail when the program has done its job. The stack pointer can be
+  restored as shown for simplicity. The fill routine in <a href="#fig1">figure
+  1</a> does not actually <tt>CALL</tt> itself from within but jumps back at
+  <tt>FI130</tt>.</p>
+
+  <p>Before you say ‘ah, but that's a conditional loop then’, just look at the
+  couple of <tt>PUSH HL</tt> and <tt>PUSH AF</tt> instructions embedded in the
+  main body of code. These pushes contain a screen co-ordinate and flags for
+  the testing process to determine pixels which need filling. Initially
+  <tt>BC</tt> is used to push <tt>FF00H</tt> on the stack as a stop code. As
+  the various values get ‘popped’ off the stack we only return when this value
+  of <tt>FF00H</tt> crops up. This is our condition that prevents the program
+  going mad and never returning.</p>
+
+  <p>A recursive routine is a very difficult type of routine to design and
+  unfortunately it seems to be cropping up in more and more kinds or
+  programming areas. The printed circuit-board design packages which are being
+  used in the CAD field are a good example of recursive design.</p>
+
+  <p>The routine wants typing into an assembler and basically you can assemble
+  it anywhere convenient but do remember to provide adequate RAM for the stack
+  to grow (downwards, remember!) I have omitted to put a stack check in this
+  program as it only makes it longer and more complicated. In practice I just
+  allow 600 bytes or so of stack space and this is usually enough. Only in this
+  case it is not really a blank but part of the design of a tile pattern.
+  Plotting tile patterns will only succeed in making the routine lock-up, as it
+  would be going around in circles trying to do the job! <a name="fig1" id=
+  "fig1"></a></p>
+
+  <center>
+    <table cellpadding="5">
+      <tr>
+        <td>
+          <table border="0" cellpadding="0">
+            <tr>
+              <td bgcolor="#000000">
+                <table border="0" cellpadding="10">
+                  <tr>
+                    <td bgcolor="#FFFFFF">
+                      <center>
+                       <p class="first"><b>Figure 1 - The fill routine for Spectrum</b></p>
+                      </center>
+                      <pre>
+0000                     ORG 8000H
+8000                     ;
+8000 ED5BB180            LD DE,(XYPOS)
+8004 0100FF              LD BC,0FF00H    ;PUTTING THE STOP CODE OF 0FF00H
+8007 C5                  PUSH BC         ;ON THE STACK
+8008 41                  LD B,C
+8009 62        FI10:     LD H,D          ;HL = DE = SCREEN CO-ORDINATE
+800A 6B                  LD L,E
+800B CD8280              CALL FTEST      ;INITIAL SCREEN TEST
+800E 2808                JR Z,FI30
+8010 C1        FI20:     POP BC          ;POP FLAG OFF STACK
+8011 78                  LD A,B
+8012 37                  SCF
+8013 3C                  INC A
+8014 C8                  RET Z           ;IF = 0FFH THEN RETURN - WORK DONE!
+8015 D1                  POP DE          ;IF NOT THEN GET SCREEN INTO DE
+8016 18F1                JR FI10         ;AND CONTINUE
+8018 CD7880    FI30:     CALL FPLOT      ;THE ACTUAL 'FILL' IE. A PLOT
+801B CB78                BIT 7,B
+801D 2803                JR Z,FI40
+801F 2C                  INC L
+8020 1804                JR FI50
+8022 3E04      FI40:     LD A,4
+8024 2D                  DEC L
+8025 A7                  AND A
+8026 2813      FI50:     JR Z,FI60
+8028 CD8280              CALL FTEST      ;CHECKING A PIXEL TO SEE IF IT
+802B 200E                JR NZ,FI60      ;NEEDS FILLING
+802D CB40                BIT 0,B
+802F 200C                JR NZ,FI70
+8031 CBC0                SET 0,B
+8033 78                  LD A,B
+8034 2F                  CPL
+8035 E680                AND 80H
+8037 E5                  PUSH HL         ;SAVING SCREEN AND FLAG PARAMETERS
+8038 F5                  PUSH AF         ;FOR LATER
+8039 1802                JR FI70
+803B CB80      FI60:     RES 0,B
+803D 6B        FI70:     LD L,E
+803E 0E02                LD C,2
+8040 24                  INC H
+8041 7C                  LD A,H          ;CHECKING TO SEE IF WE ARE GOING OFF
+8042 FEC0                CP 192          ;SCREEN
+8044 2812      FI80:     JR Z,FI90
+8046 CD8280              CALL FTEST      ;TESTING TO SEE IF PIXEL IS ON OR OFF
+8049 200D                JR NZ,FI90
+804B 78                  LD A,B
+804C A1                  AND C
+804D 200D                JR NZ,FI100
+804F 78                  LD A,B
+8050 B1                  OR C
+8051 47                  LD B,A
+8052 E681                AND 81H
+8054 E5                  PUSH HL         ;SAVING PIXEL CO-ORDINATES AND FLAGS
+8055 F5                  PUSH AF         ;ON THE STACK FOR LATER
+8056 1804                JR FI100
+8058 79        FI90:     LD A,C
+8059 2F                  CPL
+805A A0                  AND B
+805B 47                  LD B,A
+805C CB21      FI100:    SLA C
+805E CB51                BIT 2,C
+8060 2806                JR Z,FI110
+8062 62                  LD H,D
+8063 7C                  LD A,H
+8064 25                  DEC H
+8065 A7                  AND A
+8066 18DC                JR FI80
+8068 CB78      FI110:    BIT 7,B
+806A 2003                JR NZ,FI120
+806C 1C                  INC E
+806D 1803                JR FI130
+806F 7B        FI120:    LD A,E
+8070 1D                  DEC E
+8071 A7                  AND A
+8072 C20980    FI130:    JP NZ, FI10     ;THE RECURSIVE BIT - JUMPING BACK TO START
+8075 C31080              JP FI20         ;AGAIN WITH NEW PARAMETERS ON THE STACK
+
+8078           FPLOT:                    ;CALLED TO PLOT A PIXEL
+8078 C5                  PUSH BC         ;SAVE REGISTERS FROM CORRUPTION
+8079 E5                  PUSH HL
+807A CD8B80              CALL GET_SCR    ;CALCULATE SCREEN ADDRESS
+807D B6                  OR (HL)         ;OR IN THE PIXEL - FILLING IT
+807E 77                  LD (HL),A       ;STORE NEW SCREEN BYTE
+807F E1                  POP HL          ;RESTORE REGISTERS
+8080 C1                  POP BC
+8081 C9                  RET
+
+8082           FTEST:                    ;CALLED TO TEST IF A PIXEL IS THERE OR NOT
+8082 C5                  PUSH BC         ;SAVE BC AND HL
+8083 E5                  PUSH HL         ;
+8084 CD8B80              CALL GET_SCR    ;CALCULATE SCREEN ADDRESS
+8087 A6                  AND (HL)        ;TEST RELEVANT BIT ON SCREEN
+8088 E1                  POP HL          ;RESTORE REGISTERS
+8089 C1                  POP BC
+808A C9                  RET             ;RETURN WITH ZERO/NOT ZERO
+
+808B           GET_SCR:                  ;CALLED TO CALCULATE SCREEN ADDRESS
+808B                                     ;FROM CO-ORDINATES IN HL
+808B 7C                  LD A,H          ;SET UP HIGH BYTE FIRST
+808C CB3F                SRL A           ;
+808E 37                  SCF             ;
+808F 1F                  RRA             ;
+8090 CB3F                SRL A           ;A NOW HOLDS 010XXXXX
+8092 AC                  XOR H           ;MERGE IN THE 3 LOWER BITS OF H
+8093 E6F8                AND 0F8H        ;WITH BIT MERGE TECHNIQUE
+8095 AC                  XOR H           ;OF XOR-AND-XOR
+8096 47                  LD B,A          ;B=HIGH BYTE OF SCREEN ADDRESS
+8097 7D                  LD A,L          ;NOW PROCESS LOW BYTE
+8098 07                  RLCA            ;GET BITS INTO RIGHT PLACES
+8099 07                  RLCA            ;
+809A 07                  RLCA            ;
+809B 07                  RLCA            ;
+809C AC                  XOR H           ;BIT MERGE AGAIN
+809D E6C7                AND 0C7H        ;
+809F AC                  XOR H           ;
+80A0 07                  RLCA            ;
+80A1 07                  RLCA            ;
+80A2 4F                  LD C,A          ;BC=SCREEN ADDRESS
+80A3 7D                  LD A,L          ;NOW WE PROCESS PIXEL POSITION WITHIN
+80A4 60                  LD H,B          ;THE BYTE
+80A5 69                  LD L,C          ;HL=BC
+80A6 E607                AND 7           ;WE ARE ONLY CONCERNED WITH BITS 0-2
+80A8 47                  LD B,A          ;USE B AS COUNTER
+80A9 04                  INC B           ;B = 1 - 8
+80AA 3E01                LD A,1          ;A IS A BIT MASK
+
+80AC 0F        GET10:    RRCA            ;ROTATE MASK INTO CORRECT PLACE
+80AD C2AC80              JP NZ, GET10    ;LOOP BACK UNTIL DONE
+80B0 C9                  RET
+
+80B1 7F        XYPOS:    DEFB 127        ;THESE NUMBERS ARE THE SCREEN CENTRE
+80B2 57                  DEFB 87         ;BUT PRE-LOAD THEN WITH THE FIRST PIXEL
+80B3                                     ;CO-ORDINATE THAT YOU WANT FILLING</pre>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </center><br clear="all">
+
+  <center>
+    <p class="first">
+      <a href="../092/sprite_routine2.htm"><b>Previous article in series (issue 92)</b></a><br>
+    </p>
+  </center><br clear="all">
+
+  <center>
+    <hr width="50%" noshade>
+  </center>
+
+  <p align="center" class="first">
+    <a href="../092/index.htm">
+      <img src="../shared/images/tlbutton.gif" width="15" height="19" border="0" alt="Issue 92">
+    </a>
+    <a href="index.htm">
+      <img src="../shared/images/thbutton.gif" width="15" height="19" border="0" alt="Issue 93 Contents">
+    </a>
+    <a href="../094/index.htm">
+      <img src="../shared/images/trbutton.gif" width="15" height="19" border="0" alt="Issue 94">
+    </a>
+  </p>
+
+  <h6 align="center">Sinclair User<br>December 1989</h6>
+
+  <h6 align="center">Transcribed by Richard Milne</h6>
+</body>
+</html>
