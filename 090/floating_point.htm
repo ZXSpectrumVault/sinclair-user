@@ -1,0 +1,315 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+  <title>Sinclair User 90 - How The Hell ... Do we use floating point numbers in machine code?</title>
+  <link rel="stylesheet" type="text/css" href="../shared/general.css">
+  <meta name="keywords" content="Sinclair, Spectrum, machine code, floating point, circle, graphics">
+  <meta name="description" content=
+  "Using the Spectrum's machine code calculator to calculate the co-ordinates of a circle's points, which are themselves plotted from machine code. Andrew Hewson's column from Sinclair User, September 1989">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body bgcolor="#CCCCCC" text="#000000" link="#0000FF" alink="#FF0000" vlink=
+"#660099">
+
+  <p align="center" class="first">
+    <a href="../089/index.htm">
+      <img src="../shared/images/tlbutton.gif" width="15" height="19" border="0" alt="Issue 89">
+    </a>
+    <a href="index.htm">
+      <img src="../shared/images/thbutton.gif" width="15" height="19" border="0" alt="Issue 90 Contents">
+    </a>
+    <a href="../091/index.htm">
+      <img src="../shared/images/trbutton.gif" width="15" height="19" border="0" alt="Issue 91"></a>
+  </p>
+
+  <center>
+    <h1><i>HOW the HELL ... Do we use Floating Point numbers in Machine Code?</i></h1>
+
+    <p><b><i>ASCII code nightmares? Disillusioned with disassemblers? Baffled
+    by bytes? If you’re having problems with programming, whether they
+    alliterate or not, Andrew Hewson is your man. Drop him a line and he’ll be
+    investigating the problem before you can say “Ram Dos Buffer Interface Edge
+    Connector”</i></b></p>
+  </center>
+
+  <p>A couple of letters landed on my desk last month with questions such as,
+  ‘How do you use the ﬂoating point calculator?’ from Frode Tennebo in Norway
+  and ‘How do you draw lines and plot in machine code?’ from Gordon Bissell of
+  Stafford. This month I hope to answer both questions with a few practical
+  examples including circle and plot routines in machine code.</p>
+
+  <p>Machine code is easy once you have learnt the basics and start to use it
+  more frequently, like learning a foreign language in fact. The numbers we
+  deal with are all INTEGERS and there are no complicated decimal numbers or
+  fractions to worry about. This is great for most applications but at some
+  point in time you will want to do something where the odd cosine or square
+  root is required and with integers, we can’t simply round up the result and
+  expect the calculation to work out. In a game, for example, the main
+  character might have a single byte for each of the X and Y co-ordinates of
+  its screen position. Each byte gives us a resolution of 1 pixel but as this
+  is the smallest resolution of movement then it is perfectly adequate. We
+  treat each byte as an integer and there are no problems. In fact, if we had a
+  co-ordinate system with a resolution down to 0.001 or one-thousandth of a
+  pixel it would just mean designing an overly-complicated routine to handle
+  those smaller floating point numbers — hence the reason for shying away from
+  FP.</p>
+
+  <p>This is the standard way of accessing the calculator:</p>
+  <pre>
+RST 28H
+DEFB A2H        ; Stack a half (0.5)
+DEFB A4H        ; Stack ten (10) 
+DEFB 04H        ; Command code for multiply
+DEFB 38H        ; Exit calculator command
+JUMP 2DA2H      ; Exit via floating point to 'BC' 
+</pre>
+
+  <p>The <tt>RST</tt> instruction enters the calculator. The two bytes
+  <tt>A2H</tt> and <tt>A4H</tt> are special commands that deposit the values
+  0.5 and 10 on the stack. There are 5 of these ‘special’ values:</p>
+
+  <ul>
+    <li>A0H — zero</li>
+
+    <li>A1H — one</li>
+
+    <li>A2H — one half</li>
+
+    <li>A3H — one half of PI</li>
+
+    <li>A4H — ten</li>
+  </ul>
+
+  <p>After putting 0.5 and 10 on the stack, we tell the calculator to multiply
+  the two items on the top of the stack with the <tt>O4H</tt> command code.
+  Finally we exit the calculator with the code <tt>38H</tt>. However, to be of
+  any use to us we have to get the result into a register for further use.
+  There is a very useful routine which performs the function ‘Floating point to
+  BC’ at address <tt>2DA2</tt> hex. It rounds the floating point number and
+  puts it into <tt>BC</tt> and the accumulator is a copy of <tt>C</tt>.</p>
+
+  <h2>PUTTING NUMBERS INTO THE CALCULATOR</h2>
+
+  <p>There are a couple of ways to do this. If we are using any of the 5
+  special values above, we just use the commands <tt>A0H</tt> to <tt>A4H</tt>.
+  Typically we would want to be able to put in values from a register pair,
+  say. The routine to do this is at <tt>2D2B</tt> hex. It will place at the top
+  of the calculator stack the value held in the <tt>BC</tt> register pair. This
+  works like so:</p>
+  <pre>
+; We will demonstrate 21x43  
+LD   BC,21        
+CALL 2D2BH      ; First we stack 21
+LD   BC,43
+CALL 2D2BH      ; Now we stack 43
+RST  28H        ; Enter the calculator
+DEFB 04H        ; Multiply 21x43
+DEFB 38H        ; Exit the calculator
+JUMP 2DA2H      ; Result in BC
+</pre>
+
+  <p>The result here in <tt>BC</tt> should be 21 x 43 = 903.</p>
+
+  <h2>THE THREE MODES OF THE CALCULATOR</h2>
+
+  <p>In a calculation, it may be what is called ‘Unary’ meaning functions such
+  as — 1/x, SQR x, SIN x, etc. The actual calculation is just acting on the
+  ‘last value’ on the stack. These are Unary calculations.</p>
+
+  <p>When we perform the calculation 3 x 10, this is known as a binary
+  operation i.e. there are two values on the stack. This use of the word binary
+  is not to be confused with the normal Base 2 ‘1’s and ‘0’s type of binary we
+  all know.</p>
+
+  <p>Finally, the calculator has 6 memories which can be used for temporary
+  storage (as well as the calculator stack). Operations using the memories are
+  termed ‘manipulatory’ as they do not actually calculate anything.</p>
+
+  <p>Although the calculator stack is not to be confused with the Z80 machine
+  code stack, it still has to be treated like one — we use the <tt>DELETE</tt>
+  command in the calculator which has the code <tt>02H</tt> to tidy up the
+  stack — a bit like the <tt>POP</tt> instruction in Z80 code.</p>
+
+  <h2>PRACTICAL USE OF THE CALCULATOR</h2>
+
+  <p>Circles can be drawn with clever algorithms that don’t need ﬂoating point
+  arithmetic but here I will demonstrate a relatively standard trigonometric
+  method of drawing circles. The routine is based around an interactive
+  solution where we only have to use the slow COSINE and SINE calculations once
+  for the whole circle. For avid mathematicians out there, the formulae can be
+  found on page 73 of the book <i>Computer Graphics</i> by John Lansdown and
+  published by Hodder and Stoughton.</p>
+
+  <p>The Spectrum machine code looks like this:</p>
+
+  <center>
+    <table cellpadding="5">
+      <tr>
+        <td>
+          <table border="0" cellpadding="0">
+            <tr>
+              <td bgcolor="#000000">
+                <table border="0" cellpadding="10">
+                  <tr>
+                    <td bgcolor="#FFFFFF">
+                      <pre>
+                        ORG  35000
+88B8 EF                 RST  28H                  ; Enter calculator
+88B9 A3                 DEFB $A3                  ; Stack PI/2
+88BA 34                 DEFB 34H                  ; Stack data (90 decimal)
+88BB 40B0005A           DEFB 40H,$B0,00H,5AH
+88BF 05                 DEFB 05H                  ; Divide (PI/2)/90 = PI/180
+88C0 34                 DEFB 34H                  ; Stack 360 decimal
+88C1 80B0000168         DEFB 80H,$B0,00H,01H,68H
+88C6 34                 DEFB 34H                  ; Stack the number of steps
+88C7 40B00064           DEFB 40H,$B0,00H,64H      ; In this case 100 decimal
+88CB 05                 DEFB 05H                  ; Divide 360/steps
+88CC 04                 DEFB 04H                  ; Multiply PI/180
+88CD 31                 DEFB 31H                  ; Duplicate it
+88CE 1F                 DEFB 1FH                  ; Get the sine of it
+88CF 01                 DEFB 01H                  ; Exchange the top stack items
+88D0 20                 DEFB 20H                  ; Get the cosine of the angle
+88D1 C0                 DEFB $C0                  ; Store it in memo
+88D2 02                 DEFB 02H                  ; Delete from the top of stack
+88D3 C1                 DEFB $C1                  ; Store the sine in Mem1
+88D4 02                 DEFB 02H                  ; Delete to clear the stack
+88D5 34                 DEFB 34H                  ; Stack 77 decimal
+88D6 40B0004D           DEFB 40H,$B0,00H,4DH
+88DA C2                 DEFB $C2                  ; Store it in Mem2
+88DB 02                 DEFB 02H                  ; Delete it
+88DC 34                 DEFB 34H                  ; Stack 87 decimal
+88DD 40B00057           DEFB 40H,$B0,00H,57H
+88E1 C3                 DEFB $C3                  ; Store it in Mem3
+88E2 02                 DEFB 02H                  ; Clear the stack by deleting
+88E3 38                 DEFB 38H                  ; Now exit the calculator
+88E4 0664               LD   B,100                ; Use B as a counter
+
+88E6 C5         CLOOP:  PUSH BC                   ; Save it for later
+88E7 EF                 RST  28H                  ; Enter calculator again
+88E8 E2                 DEFB $E2                  ; Get contents of Mem2
+88E9 34                 DEFB 34H                  ; Stack the X centre of screen
+88EA 40B0007F           DEFB 40H,$B0,00H,7FH      ; Which is 127 decimal
+88EE 03                 DEFB 03H                  ; Subract it from Mem2
+88EF C4                 DEFB $C4                  ; And re-store it in Mem4
+88F0 02                 DEFB 02H                  ; Tidy the stack
+88F1 E3                 DEFB $E3                  ; Get Mem3
+88F2 34                 DEFB 34H                  ; Stack the Y centre of screen
+88F3 40B00057           DEFB 40H,$B0,00H,57H      ; Which is 87 decimal
+88F7 03                 DEFB 03H                  ; Subtract it from Mem3
+88F8 C5                 DEFB $C5                  ; Store result in Mem5
+88F9 02                 DEFB 02H                  ; Tidy up stack
+88FA E4                 DEFB $E4                  ; Get Mem4 - X diff
+88FB E0                 DEFB $E0                  ; Get memo - cos angle
+88FC 04                 DEFB 04H                  ; Multiply
+
+88FD E5                 DEFB $E5                  ; Get Mem5 - Y diff
+88FE E1                 DEFB $E1                  ; Get Mem1 - sin angle
+88FF 04                 DEFB 04H                  ; Multiply
+8900 03                 DEFB 03H                  ; (X diff x cos) - (Y diff x sin)
+8901 34                 DEFB 34H                  ; Stack X centre of screen
+8902 40B0007F           DEFB 40H,$B0,00H,7FH      ; Which is 127 dec
+8906 0F                 DEFB 0FH                  ; Add it to above
+8907 C2                 DEFB $C2                  ; Store for next loop in Mem2
+8908 38                 DEFB 38H                  ; Exit calculator
+8909 CDA22D             CALL 2DA2H                ; Put last value in BC - this
+890C C5                 PUSH BC                   ; is the X co-ordinate of the
+                                                  ; next circle point
+890D EF                 RST  28H                  ; Enter calculator again
+890E 02                 DEFB 02H                  ; Delete last value
+890F E4                 DEFB $E4                  ; Get Mem4 - X diff
+8910 E1                 DEFB $E1                  ; Get Mem1 - sin angle
+8911 04                 DEFB 04H                  ; Multipy
+8912 E5                 DEFB $E5                  ; Get Mem5 - Y diff
+8913 E0                 DEFB $E0                  ; Get memo - cos angle
+8914 04                 DEFB 04H                  ; Multiply
+8915 0F                 DEFB 0FH                  ; (X diff x sin) + (Y diff x cos)
+8916 34                 DEFB 34H                  ; Stack Y centre of screen
+8917 40B00057           DEFB 40H,$B0,00H,57H      ; Which is 87 dec
+891B 0F                 DEFB 0FH                  ; Add to above calculation
+891C C3                 DEFB $C3                  ; Store in Mem3 for next loop
+891D 38                 DEFB 38H                  ; Exit from calculator
+891E CDA22D             CALL 2DA2H                ; Put last value in BC - this
+                                                  ; is the Y co-ordinate of the
+                                                  ; next circle point
+8921 D1                 POP  DE                   ; Retrieve the X cp-ordinate
+8922 51                 LD   D,C                  ; E and Y co-ordinate in D
+8923 CD2A89             CALL PLOT                 ; Plot this point
+8926 C1                 POP  BC                   ; Restore the counter in B
+8927 10BD               DJNZ CLOOP                ; Loop back until finished
+8929 C9                 RET
+
+892A 7A         PLOT:   LD   A,D                  ; Test the Y co-ordinate for
+892B FEC0               CP   192                  ; Off-screen
+892D D0                 RET  NC                   ; Return if it is
+892E E6C0               AND  $C0                  ; Calculate the screen address
+8930 1F                 RRA                       ; from the co-ordinates
+8931 37                 SCF                       ; with a few bit-manipulations
+8932 1F                 RRA
+8933 1F                 RRA
+8934 AA                 XOR  D
+8935 E6F8               AND  $F8
+8937 AA                 XOR  D
+8938 67                 LD   H,A
+8939 7B                 LD   A,E
+893A 07                 RLCA
+893B 07                 RLCA
+893C 07                 RLCA
+893D AA                 XOR  D
+893E E6C7               AND  $C7
+8940 AA                 XOR  D
+8941 07                 RLCA
+8942 07                 RLCA
+8943 6F                 LD   L,A                  ; Screen address now in HL
+8944 7B                 LD   A,E                  ; Now we work out the bit to
+8945 E607               AND  07H                  ; be plotted
+8947 3C                 INC  A
+8948 47                 LD   B,A                  ; Use B as A 1 to B counter
+8949 3E01               LD   A,1                  ; Set bit 0 of A
+
+894B 0F         PLOT10: RRCA                      ; Rotate into required position
+894C 10FD               DJNZ PLOT10
+894E B6                 OR   (HL)                 ; OR it with the screen
+894F 77                 LD   (HL),A               ; and then store it
+8950 C9                 RET                       ; Return to the circle routine
+</pre>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </center><br clear="all">
+
+  <center>
+    <p class="first">
+      <!-- <a href="../089/how_the_hell.htm"><b>Previous article in series (issue 89)</b></a> <br> -->
+      <a href="../091/sprite_routine1.htm"><b>Next article in series (issue 91)</b></a>
+    </p>
+  </center><br clear="all">
+
+  <center>
+    <hr width="50%" noshade>
+  </center>
+
+  <p align="center" class="first">
+    <a href="../089/index.htm">
+      <img src="../shared/images/tlbutton.gif" width="15" height="19" border="0" alt="Issue 89">
+    </a>
+    <a href="index.htm">
+      <img src="../shared/images/thbutton.gif" width="15" height="19" border="0" alt="Issue 90 Contents">
+    </a>
+    <a href="../091/index.htm">
+      <img src="../shared/images/trbutton.gif" width="15" height="19" border="0" alt="Issue 91"></a>
+  </p>
+
+  <h6 align="center">Sinclair User<br>
+  September 1989</h6>
+
+  <h6 align="center">Transcribed by Richard Milne</h6>
+</body>
+</html>
