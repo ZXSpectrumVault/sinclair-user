@@ -1,0 +1,491 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+  <title>Sinclair User 89 - How The Hell ... Did the Technician Ted tape loader work?</title>
+  <link rel="stylesheet" type="text/css" href="./shared/general.css">
+  <meta name="keywords" content="Sinclair, Spectrum, machine code, tape, loaders, game">
+  <meta name="description" content=
+  "Use the delays in the Spectrum's standard tape loading routines to run a game. Andrew Hewson's column from Sinclair User, August 1989">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body bgcolor="#CCCCCC" text="#000000" link="#0000FF" alink="#FF0000" vlink=
+"#660099">
+
+  <center>
+    <h1><i>HOW the HELL ... Did the Technician Ted tape loader work?</i></h1>
+
+    <p><b><i>ASCII code nightmares? Disillusioned with disassemblers? Baffled
+    by bytes? If you’re having problems with programming, whether they
+    alliterate or not, Andrew Hewson is your man. Drop him a line and he’ll be
+    investigating the problem before you can say “Ram Dos Buffer Interface Edge
+    Connector”</i></b></p>
+  </center>
+
+<p class="first"><b>Last</b> <a href="../088/unknown_article.htm">month</a>, we discussed the workings of the special tape loader used in <b>Technician Ted</b>. This game set a precedent for multi-tasking loaders among many other pioneering technical bits and bobs. Basically I explained how short delays are built into loaders for the purpose of timing the electrical signal from the ear socket. These delays are very short—typically 100 microseconds in the standard Spectrum loader. It is this short period which we make use of with our specialist routines.</p>
+
+
+</p>I proposed last month to make use of this delay to run a ‘game’ while the loader was loading data. Obviously a complicated shoot-em-up is out of the question, but a simple ‘patience’ type of game is practically possible. So the program listed here functions exactly the same as the ROM louder routine but with the added ingredient of the old ‘letter shuffle’ game (a simple matrix of letters with one letter missing—you slide the letters around shuffling them and then returning them to their original position.)</p>
+
+<p>Without further ado, type in the machine code using an assembler or the decimal listing alongside it. Note that the decimal listing version of the loader will only work at address <tt>0FC00H</tt> so it is virtually essential that you type it in with an assembler if you want to relocate the loader to be more versatile.<p>
+
+<h2>THE PROGRAM—HOW IT WORKS</h2>
+
+<p>The first part of the program is a few tables with important details such as character codes and print positions etc. ‘<tt>MATRIX</tt>’ is laid out as a 4x5 matrix with an ASCII character code x 8 followed by a low byte of a screen address. This table is for quick printing of the letters of the shuffle game. ‘<tt>OFFTB</tt>’ is used to recalculate the absolute instructions of the ROM loading routine. The ROM loader is moved into RAM just after the code here, and ‘<tt>OFFTB</tt>’ is then used lo modify 8 instructions. ‘<tt>RLIST</tt>’ is a table of  ‘routine’ numbers x 2 i.e. routine <tt>OOH</tt> to routine <tt>26H</tt> are print routines while the others are:</p>
+
+  <ul>
+<li><tt>28H</tt>—Move letter left routine</li>
+<li><tt>2AH</tt>—Move letter right routine</li>
+<li><tt>2CH</tt>—Move letter up routine</li>
+<li><tt>2EH</tt>—Move letter down routine</li>
+<li><tt>30H</tt>—GOTO start of routine list</li>
+<li><tt>32H</tt>—Keyboard scan routine</li>
+<li><tt>34H</tt>—Vector into required MOVE routine ie <tt>28H</tt> to <tt>2EH</tt></li>
+<li><tt>36H</tt>—Keyboard scan routine</li>
+</ul>
+
+<p>‘<tt>JPTAB</tt>’ is a jump table with the routine addresses stored for quick vectoring. The variables used are:</p>
+
+ <ul>
+<li><tt>JVAR</tt>—Stores an address of a routine to vector to (used by routine <tt>34H</tt>above)</li>
+<li><tt>XPO5</tt>—The X co-ordinate of the blank space in the letter matrix</li>
+<li><tt>YPOS</tt>—The Y co-ordinate of the blank space — 0,0 is the top left corner and 3,4 is the bottom right</li>
+<li><tt>PNTR</tt>—Points to the actual byte in ‘<tt>MATRIX</tt>’ which is the blank space character.</li>
+</ul>
+
+The routine <tt>SAVE</tt> uses <tt>IX</tt> as a base address pointer and <tt>DE</tt> as the number of bytes to save. Before we use the loader we must obviously save something to tape with this code vefore we call the loader. Just a few lines down in ‘<tt>LOAD</tt>’ we have a similar load <tt>IX</tt> and load <tt>DE</tt>. The numbers put into these registers should match those in ‘<tt>SAVE</tt>’ above. The rest of the program documentation is fairly self explanatory but essentially, in ‘<tt>LOAD</tt>’ we do the following:</p>
+
+<ol>
+<li>Relocate the ROM routine to sit just after our routine</li>
+<li>Re-calculate instructions in the RAM loader and put a <tt>CALL</tt> intsruction in the delay section of the ‘<tt>EDGE1</tt>’ sub-routine</li>
+<li>Set up <tt>IX</tt> and <tt>DE</tt> and call the RAM loader</li>
+<li>Each time <tt>EDGE1</tt> is called within the loader, it <tt>CALL</tt>s the <tt>GAME</tt> routine in 358T state chunks</li>
+</ol>
+
+<p>Each of the routines in ‘<tt>EDGE1</tt>’ have been written to last approximately 358T states. They also use the exchange registers for quick accessing anD to all intents and purposes, the loader just ‘sees’ the ‘<tt>GAME</tt>’ routine <tt>CALL</tt> as a delay — what was there originally.</p>
+
+<p>It shouldn't be too difficult for keep programmers out there to expand on this idea and if you do come up with anything good then let's hear from you! See you next month.</p>
+
+  <center>
+    <table cellpadding="5">
+      <tr>
+        <td>
+          <table border="0" cellpadding="0">
+            <tr>
+              <td bgcolor="#000000">
+                <table border="0" cellpadding="10">
+                  <tr>
+                    <td bgcolor="#FFFFFF">
+
+                      <center>
+                        <p class="first"><b>DECIMAL LISTING FOR THE JUNE HOW THE HELL CHECKNUM</b></p>
+                      </center>
+
+<pre>
+16    46    72    47    160   48    248   49    16    78 :  780
+200   79    160   80    40    81    96    110   120   111:  1077
+8     112   32    113   152   142   8     143   176   144:  1030
+40    145   104   174   40    175   56    176   8     177:  1095
+23    38    45    60    70    117   128   142   255   50 :  928
+54    0     2     4     6     8     10    12    14    16 :  126
+18    20    22    24    26    28    30    32    34    36 :  270
+38    50    52    48    48    182   253   182   253   182:  1288
+253   182   253   182   253   182   253   182   253   182:  2175
+253   182   253   182   253   182   253   182   253   182:  2175
+253   182   253   182   253   182   253   182   253   182:  2175
+253   182   253   182   253   32    253   47    253   62 :  1770
+253   77    253   239   253   117   253   13    253   224:  1935
+253   0     3     0     6     252   221   33    0     64 :  832
+17    0     27    62    255   55    195   194   4     217:  1026
+229   33    49    252   217   205   176   252   221   33 :  1667
+0     64    17    0     27    62    255   55    205   249:  934
+253   251   217   225   217   201   33    86    5     17 :  1505
+249   253   1     175   0     237   176   33    143   254:  1521
+17    141   254   1     27    0     237   176   33    138:  1024
+254   54    205   33    247   252   34    139   254   33 :  1505
+171   252   34    2     254   1d200 163   248   17    40 :  1182
+252   26    19    254   255   35    213   198   249   111:  1777
+206   253   149   103   94    24    86    43    235   9  :  1213
+235   115   35    114   209   75    230   217   6     252:  1437
+126   79    35    229   198   135   111   206   252   149:  1460
+103   126   35    102   111   195   225   217   235   33 :  1386
+131   252   62    4     150   60    198   40    201   73 :  1095
+252   6     13    16    254   252   10    253   50    132:  1189
+252   254   3     40    71    254   50    132   58    62 :  1176
+2     24    45    58    132   60    254   0     252   56 :  863
+61    50    132   252   62    252   24    30    40    133:  1056
+252   254   4     40    41    248   50    133   58    62 :  1148
+8     24    15    58    133   34    254   0     252   26 :  810
+61    50    133   252   62    34    24    0     42    134:  1006
+252   84    93    133   111   2     134   252   126   18 :  1237
+54    248   6     2     24    219   6     12    16    254:  624
+195   10    253   62    253   24    254   230   1     32 :  1509
+6     62    1     6     12    62    43    62    251   219:  686
+254   230   1     32    6     79    2     6     9     24 :  626
+29    62    223   219   254   14    230   1     32    6  :  1135
+62    3     6     7     24    24    121   230   2     32 :  501
+6     62    4     6     4     195   3     175   6     5  :  295
+16    254   50    131   252   22    10    253   10    3  :  1174
+111   10    95    38    62    126   72    126   18    44 :  598
+20    126   18    44    20    44    18    44    20    126:  562
+18    44    20    126   18    126   20    126   18    44 :  478
+20    126   18    44    20    167   18    195   10    253:  830
+58    131   252   6     14    6     32    9     6     14 :  689
+16    254   195   10    253   0     16    225   16    254:  1245
+33    49    252   217   201         0     0     0     0  :  752
+</pre>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </center><br clear="all">
+
+
+  <center>
+    <table cellpadding="5">
+      <tr>
+        <td>
+          <table border="0" cellpadding="0">
+            <tr>
+              <td bgcolor="#000000">
+                <table border="0" cellpadding="10">
+                  <tr>
+                    <td bgcolor="#FFFFFF">
+
+                      <center>
+                        <p class="first"><b>BASIC PROGRAM TO ENTER THE DECIMAL LISTING FOR THE JUNE HOW THE HELL?</b></p>
+                      </center>
+<pre>
+10  LET M=64512
+20  FOR Z=0 TO 50
+30  LET T=0
+40  FOR N=0 TO 9
+50  INPUT X
+60  LET 5=T+X
+70  POKE M+N+Z*10,X
+80  NEXT N
+90  INPUT "Checksum";C
+100 IF C<>T THEN PRINT "INPUT LINE AGAIN": GOTO 30
+110 PRINT "LINE ENTERED CORRECTLY"
+120 NEXT Z
+130 SAVE "SHUFFLE" CODE M,505
+</pre>
+
+<p class="first">After you have saved the program, you can load it in using </tt>LOAD "SHUFFLE" CODE.</tt> The saver is run at address 64648 while the loader is executed at address 64661. Note that you must really do a <tt>CLEAR 64511</tt> before loading the code as it may corrupt the machine stack. To test the program, load in a suitable screen and do a <tt>RANDOMIZE USER 64648</tt> remembering to set your cassette recorder into record beforehand. Once the data has been saved in this way, rewind the tape and do a <tt>RANDOMIZE USE 64661</tt> to load it back in — using the ‘Q’, ‘A’, ‘O’ and ‘P’ keys you can also play the shuffle game.
+</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </center><br clear="all">
+
+
+  <center>
+    <table cellpadding="5">
+      <tr>
+        <td>
+          <table border="0" cellpadding="0">
+            <tr>
+              <td bgcolor="#000000">
+                <table border="0" cellpadding="10">
+                  <tr>
+                    <td bgcolor="#FFFFFF">
+<pre>
+        EQU 0FC00H             ;THIS MUST BE ON A PAGE BOUNDARY!
+
+MATRIX: DEFB 10H,2EH,4BH,2FH,A0M,30H,F8H,31H,10H,4EH
+        DEFB C8H,4FH,A0H,50H,28H,51H,60H,6EH,78H,6FH
+        DEFB 08H,70H,20H,71H,98H,8EH,08H,8FH,BOH,90H
+        DEFB 28H,91H,68H,AEH,28H,AFH,38H,BOH,08H,B1H
+
+OFFTB:  DEFB 17H,26H,2DH,3CH,46H,75H,80H,8EH,FFH
+
+RLIST:  DEFB 32H,36H,00H,02H,04H,06H,08H,0AH,0CH
+        DEFB 0EH,10H,12H,14H,16H,18H,1AH,1CH,1EH
+        DEFB 20H,22H,24H,26H,32H,34H
+
+RL:     DEFB 30H,30H
+
+JPTAB:  DEFW PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT
+        DEFW PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT
+        DEFW MVLT,MVRT,MVOP,MVDN,GTO,KEYS,VECT,DEBN
+
+JVAR:   DEFW 0
+
+EXPOS:  DEFB 3
+
+YPOS:   DEFB 0
+
+PNTR:   DEFW MATRIX+6
+
+SAVE:   LD IX,4000H            ;THIS IS THE SAVE ROUTINE
+        LD DE,1800H            ;IX-BASE ADDRESS, DE=LENGTH
+        LD A,OFFH
+        SCF                    ;FINALLY JUMP TO THE SAVE ROUTINE IN THE
+        JP 04C2H               ;ROM TO SAVE THE DATA IN HEADERLESS
+                               ;FORMAT
+
+LOAD:   EXX                    ;FIRST SAVE THE AUXILLARY HL REGISTERS
+        PUSH HL
+        LD HL,RLIST            ;SET HL' TO POINT TO THE ROUTINE TABLE
+        EXX
+        CALL RELOC             ;NOW RELOCATE THE ROM LOAD ROUTINE
+        LD IX,4000H            ;LIKE THE SAVE ROUTINE ABOVE, IX=BASE
+        LD DE,1800H            ;AND DE=LENGTH OF THE LOAD ROUTINE
+        LD A,OFFH
+        SCF                    ;NOW CALL OUR MODIFIDED ROM LOAD ROUTINE
+        CALL LSTART            ;WHICH HAS BEEN RELOCATED
+        EXX
+        POP HL                 ;RESTORE THE AUXILLIARY  HL' REGISTERS
+        EXX
+
+EIRET:  EI                     ;ENSURE INTERRUPTS ARE ON
+        RET                    ;BEFORE RETURNING
+
+RELOC:  LD HL,0556H            ;THIS CODE SIMPLY MOVES THE ROM
+        LD DE,LSTART           ;LOADING ROUTINE FROM 0556 TO THE
+        LD BC,0605H-0556H      ;END OF THIS CODE AT THE LABEL
+        LDIR                   ;'LSTART'
+        LD HL,LSTART+150
+        LD DE,LSTART+148
+        LD BC,27
+        LDIR
+        LD HL,LSTART+145       ;A FEW MODIFICATIONS ARE NECESSARY
+        LD (HL),OCDH           ;BECAUSE THERE ARE A FEW LINES OF
+        LD HL,GAME             ;CODE IN THE LOADER THAT REFER TO
+        LD (LSTART+146),HL     ;ABSOLUTE ADDRESSES WITH THE ROM
+        LD HL,EIRET            ;SO THE CODE FROM RELOOP BELOW IS
+        LD (LSTART+9),HL       ;DEDICATED TO RE-CALCULATING THE
+        LD BC,LSTART-0556H     ;INSTRUCTIONS ONCE THE LOADER HAS
+        LD DE,OFFTB            ;BEEN REPOSITIONED. NOTE HOW IT
+
+RELOOP: LD A,(DE)              ;USES THE OFFSET TABLE 'OFFTB'
+        INC DE                 ;A IS THE 8 BIT OFFSET
+        CP 0FFH                ;FF IS THE STOP BYTE
+        RET Z                  ;IF EQUAL TO FF THEN RETURN
+        PUSH DE                ;SAVE DE TEMPORARILY
+        ADD A,LSTART AND 255   ;ADD IN THE OFFSET TO LSTART AND
+        LD L,A                 ;STORE RESULT IN HL
+        ADC A,LSTART/256
+        SUB L
+        LD H,A
+        LD E,(HL)              ;MAKE DE=ABSOLUTE VALUE FROM THE
+        INC HL                 ;OLD INSTRUCTION FROM 0556+
+        LD D,(HL)
+        EX DE,HL
+        ADD HL,BC              ;PUT DE INTO HL FOR THE ADDITION TO
+        EX DE,HL               ;BY AND PUT THE NEWLY CALCULATED
+        LD (HL),E              ;ABSOLUTE ADDRESS BACK
+        INC HL
+        LD (HL),D
+        POP DE                 ;RESTORE DE
+        JR RELOOP              ;AND CONTINUE UNTIL COMPLETE
+
+GAME:   EXX                    ;THE SHUFFLE GAME IS COMPLETELY
+        LD B,MATRIX/256        ;WRITTEN USING THE EXCHANGE
+        LD A,(HL)              ;REGISTERS.
+        LD C,A                 ;A AND C BOTH = ROUTINE NUMBER*2
+        INC HL                 ;STEP ROUTINE POINTER ON FOR NEXT
+        PUSH HL                ;VALUE AND SAVE IT FOR LATER
+        ADD A,JPTAB AND 255    ;VECTOR IN TO THE JUMP TABLE FOR
+        LD L,A                 ;THE REQUIRED ROUTINE WITH THE
+        ADC A,JPTAB/256        ;ADDITION OF A AND HL
+        SUB L
+LD H,A  ;
+        LD A,(HL)              ;USING THE ACCUMULATOR AND HL
+        INC HL                 ;WE NOW GET THE JUMP TABLE VALUE
+        LD H,(HL)              ;FOR THE REQUIRED ROUTINE AND
+        LD L,A                 ;AFTER SETTING HL TO POINT TO IT,
+        JP (HL)                ;WE JUMP TO THE ROUTINE
+
+PRET:   POP HL                 ;ALL BUT ONE ROUTINE JUMPS BACK
+        EXX                    ;HERE WHEN FINISHED
+        RET                    ;NOW RETURN TO THE LOADER 360ish t
+                               ;STATES LATER
+
+VECT:   LD HL,JVAR             ;HL POINTS TO THE SHUFFLE DIRECTION
+        LD A,4                 ;NUMBER.
+        SUB (HL)               ;USING THE ACCUMULATOR, WE NOW DO A
+        ADD A,A                ;SIMPLE CALCULATION TO ARRIVE AT A
+        ADD A,28               ;ROUTINE NUMBER AND 'POKE' IT INTO
+        LD (RL),A              ;THE ROUTINE LIST AT 'RL'
+        LD B,13                ;NOW WE SIT AROUND FOR A WHILE
+
+VE10:   DJNZ VE10              ;TO TOT UP OUR 358 OR SO T STATES
+        JP PRET                ;AND FINALLY RETURN
+
+MVLT:   LD A,(XPOS)            ;AFTER PRESSING 'O', WE ENTER HERE
+        CP 3                   ;FROM THE JP(HL) IN GAME, WE CHECK
+        JR Z,MV20              ;TO SEE IF WE CAN MOVE A LETTER TO
+        INC A                  ;THE LEFT AND IF NOT, WE JUMP TO
+        LD (XPOS),A            ;MV20 OR ELSE WE UPDATE THE XPOS
+        LD A,2                 ;VARIABLE AND JUMP TO MV10
+        JR MV10
+MVRT:   LD A,(XPOS)            ;THIS IS AN IDENTICAL PIECE OF CODE
+        CP O                   ;AS FOR 'MVLT' EXCEPT IT ACTS UPON
+        JR Z,MV20              ;THE PRESSING OF THE 'p' KEY AND IS
+        DEC A                  ;FOR TESTING WHETHER WE CAN MOVE A
+        LD (XPOS),A            ;A LETTER TO THE RIGHT.
+        LD A,-2
+        JR MV10
+
+MVUP:   LD A,(YPOS)            ;TEST FOR MOVING A LETTER UP WITH
+        CP 4                   ;THE 'q' KEY
+        JR Z,MV20
+        INC A
+        LD (YPOS),A
+        LD A,8
+        JR MV10
+
+MVDN:   LD A,(YPOS)            ;TEST FOR MOVING LETTER DOWN WITH
+        CP O                   ;THE 'a' KEY.
+        JR Z,MV20
+        DEC A
+        LD (YPOS),A
+        LD A,-8
+        JR MV10
+
+MV10:   LD HL,(PNTR)           ;IF A LETTER WAS ABLE TO BE MOVED,
+        LD D,H                 ;WE COME IN HERE WITH ACCUMULATOR
+        LD E,L                 ;HOLDING AN OFFSET NUMBER TO ADD TO
+        ADD A,L                ;THE VARIABLE (PNTR) TO UPDATE IT
+        LD L,A                 ;TO POINT TO THE BLANK SPACE
+        LD (PNTR),HL
+        LD A,(HL)
+        LD (DE),A
+        LD (HL),OF8H           ;STORE AN UNDERLINE CHARACTER IN
+        LD B,2                 ;THE BLANK SPACE AND PRESET 'B' FOR
+        JR MV30                ;THE DELAY ROUTINE AT MV30
+
+MV30:   DJNZ MV30              ;WAIT 'B'*13-5 T STATES
+        JP PRET                ;RETURN
+
+KEYS:   LD A,OFDH              ;FIRST WE TEST THE 'a' KEY FOR THE
+        IN A,(OFEH)            ;MOVE LETTER DOWN ROUTINE
+        AND 1
+        JR NZ,KY10             ;JUMP IF NOT PRESSED
+        LD A,1                 ;THE DOWN ROUTINE IS NUMBER 1
+        LD B,12                ;B IS A DELAY
+        JR KY50
+
+KY10:   LD A,OFBH              ;NOW TEST THE 'q' KEY FOR THE MOVE
+        IN A,(OFEH)            ;LETTER UP ROUTINE
+        AND 1
+        JR N2,KY20             ;JUMP IF NOT PRESSED
+        LD A,2                 ;THE UP ROUTINE IS NUMBER 2
+        LD B,9                 ;B IS A DELAY
+        JR KY50
+
+KY20:   LD A,ODFH              ;NOW TEST THE 'p' KEY FOR THE MOVE
+        IN A,(OFEH)            ;LETTER RIGHT ROUTINE
+        LD C,A                 ;SAVE BIT 1 IN C
+        AND 1
+        JR NZ,KY30             ;JUMP IF NOT PRESSED
+        LD A,3                 ;THE RIGHT ROUTINE IS NUMBER 3
+        LD B,7                 ;B IS A DELAY
+        JR KY50
+
+KY30:   LD A,C                 ;FINALLY TEST THE 'o' KEY FOR THE
+        AND 2                  ;MOVE LETTER LEFT ROUTINE
+        JR NZ,KY40             ;JUMP IF NO KEYS PRESSED
+        LD A,4                 ;THE LEFT ROUTINE IS NUMBER 4
+        LD B,4                 ;B IS A DELAY
+        JR KY50
+
+KY40:   XOR A                  ;IF NO KEYS WERE PRESSED, MAKE 'A'
+        LD B,5                 ;EQUAL TO ZERO
+
+KY50:   DJNZ KY50              ;WAIT FOR THE RELEVANT DELAY
+        LD (JVAR),A            ;STORE THE ROUTINE NUMBER IN JVAR
+        JP PRET                ;RETURN
+                               ;THIS ROUTINE PRINTS ONE CHARACTER
+
+PRT:    LD A,(BC)              ;FETCH THE CHARACTER CODE*8 FROM
+        INC BC                 ;MATRIX AND PUT IT INTO 'L'
+        LD L,A
+        LD A,(BC)              ;NOW FETCH THE SCREEN ADDRESS LOW
+        LD E,A                 ;BYTE FROM MATRIX AND PUT IT INTO
+        LD H,3EH               ;'E'. sET UP 'H' AND'D' WITH THEIR
+        LD D,48H               ;RELEVANT HIGH BYTE VALUES
+        DEFB 7EH,12H,2CH,14H   ;THESE BYTES ARE REPEATED INSTRUCTIONS
+        DEFB 7EH,12H,2CH,14H   ;OF THE FORM
+        DEFB 7EH,12H,2CH,14H   ;LD A,(HL)
+        DEFB 7EH,12H,2CH,14H   ;LD (DE),A
+        DEFB 7EH,12H,2CH,14H   ;INC L
+        DEFB 7EH,12H,2CH,14H   ;INC D
+        DEFB 7EH,12H,2CH,14H   ;FOR SPEED, THE INSTRUCTIONS ARE
+        DEFB 7EH,12H           ;REPEATED 8 TIMES
+        JP PRET                ;RETURN
+                               ;DEBOUNCE THE KEY PRESSES
+
+DEBN:   LD A,(JVAR)            ;IF A KEY WAS PRESSED ON THE LAST
+        LD B,14                ;LOOP, (JVAR) WILL BE NON-ZERO
+        AND A                  ;IF NON-ZERO, JUMP TO GO10 TO RESET
+        JR NZ,GO10             ;THE ROUTINE POINTER TO 'RLIST'
+        LD B,14                ;IF NOT, JUST SIT AROUND AND WAIT
+
+DE10:   DJNZ DE10              ;FOR A BIT BEFORE
+        JP PRET                ;RETURNING
+
+GOTO:   LD B,16                ;THIS ROUTINE RE-SETS THE ROUTINE
+
+GO10:   POP HL                 ;POINTER HL' TO 'RLIST' PRIOR TO
+
+GO20:   DJNZ GO20              ;DELAYING FOR A BIT
+        LD HL,RLIST
+        EXX                    ;FLIP REGISTERS BACK AND RETURN
+        RET                    ;DIRECTLY TO THE LOADER AT
+                               ;LSTART+148
+
+LSTART:                        ;THIS IS WHERE THE LOADER IS MOVE
+                               ;TO
+<pre>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </center><br clear="all">
+
+  <center>
+    <p class="first">
+      <!-- <a href="../089/how_the_hell.htm"><b>Previous article in series (issue 89)</b></a> <br> -->
+      <a href="../090/sprite_routine1.htm"><b>Next article in series (issue 90)</b></a>
+    </p>
+  </center><br clear="all">
+
+  <center>
+    <hr width="50%" noshade>
+  </center>
+
+  <p align="center" class="first">
+    <a href="../088/index.htm">
+      <img src="../shared/images/tlbutton.gif" width="15" height="19" border="0" alt="Issue 88">
+    </a>
+    <a href="index.htm">
+      <img src="../shared/images/thbutton.gif" width="15" height="19" border="0" alt="Issue 89 Contents">
+    </a>
+    <a href="../090/index.htm">
+      <img src="../shared/images/trbutton.gif" width="15" height="19" border="0" alt="Issue 90"></a>
+  </p>
+
+  <h6 align="center">Sinclair User<br>August 1989</h6>
+
+  <h6 align="center">Transcribed by Richard Milne</h6>
+</body>
+</html>
