@@ -36,7 +36,7 @@
 
   <p class="first"><b>Last <a href="../088/how_the_hell.htm">month</a></b>, we
   discussed the workings of the special tape loader used in <b>Technician
-  Ted</b>. This game set a precedent for multi-tasking loaders among many other
+  Ted</b>. This game set a precedent for multi-tasking loaders, amongst many other
   pioneering technical bits and bobs. Basically I explained how short delays
   are built into loaders for the purpose of timing the electrical signal from
   the ear socket. These delays are very short—typically 100 microseconds in the
@@ -46,14 +46,14 @@
   <p>I proposed last month to make use of this delay to run a ‘game’ while the
   loader was loading data. Obviously a complicated shoot-em-up is out of the
   question, but a simple ‘patience’ type of game is practically possible. So
-  the program listed here functions exactly the same as the ROM louder routine
+  the program listed here functions exactly the same as the ROM loader routine
   but with the added ingredient of the old ‘letter shuffle’ game (a simple
   matrix of letters with one letter missing—you slide the letters around
   shuffling them and then returning them to their original position.)</p>
 
   <p>Without further ado, type in the machine code using an assembler or the
   decimal listing alongside it. Note that the decimal listing version of the
-  loader will only work at address <tt>0FC00H</tt> so it is virtually essential
+  loader will only work at address <tt>FC00H</tt> so it is virtually essential
   that you type it in with an assembler if you want to relocate the loader to
   be more versatile.</p>
 
@@ -65,9 +65,9 @@
   screen address. This table is for quick printing of the letters of the
   shuffle game. ‘<tt>OFFTB</tt>’ is used to recalculate the absolute
   instructions of the ROM loading routine. The ROM loader is moved into RAM
-  just after the code here, and ‘<tt>OFFTB</tt>’ is then used lo modify 8
+  just after the code here, and ‘<tt>OFFTB</tt>’ is then used to modify 8
   instructions. ‘<tt>RLIST</tt>’ is a table of ‘routine’ numbers x 2 i.e.
-  routine <tt>OOH</tt> to routine <tt>26H</tt> are print routines while the
+  routine <tt>00H</tt> to routine <tt>26H</tt> are print routines while the
   others are:</p>
 
   <ul>
@@ -83,10 +83,10 @@
 
     <li><tt>32H</tt>—Keyboard scan routine</li>
 
-    <li><tt>34H</tt>—Vector into required MOVE routine ie <tt>28H</tt> to
+    <li><tt>34H</tt>—Vector into required MOVE routine i.e. <tt>28H</tt> to
     <tt>2EH</tt></li>
 
-    <li><tt>36H</tt>—Keyboard scan routine</li>
+    <li><tt>36H</tt>—Debounce keys routine</li>
   </ul>
 
   <p>‘<tt>JPTAB</tt>’ is a jump table with the routine addresses stored for
@@ -94,9 +94,9 @@
 
   <ul>
     <li><tt>JVAR</tt>—Stores an address of a routine to vector to (used by
-    routine <tt>34H</tt>above)</li>
+    routine <tt>34H</tt> above)</li>
 
-    <li><tt>XPO5</tt>—The X co-ordinate of the blank space in the letter
+    <li><tt>XPOS</tt>—The X co-ordinate of the blank space in the letter
     matrix</li>
 
     <li><tt>YPOS</tt>—The Y co-ordinate of the blank space — 0,0 is the top
@@ -108,7 +108,7 @@
 
   <p>The routine <tt>SAVE</tt> uses <tt>IX</tt> as a base address pointer and
   <tt>DE</tt> as the number of bytes to save. Before we use the loader we must
-  obviously save something to tape with this code vefore we call the loader.
+  obviously save something to tape with this code before we call the loader.
   Just a few lines down in ‘<tt>LOAD</tt>’ we have a similar load <tt>IX</tt>
   and load <tt>DE</tt>. The numbers put into these registers should match those
   in ‘<tt>SAVE</tt>’ above. The rest of the program documentation is fairly
@@ -118,7 +118,7 @@
     <li>Relocate the ROM routine to sit just after our routine</li>
 
     <li>Re-calculate instructions in the RAM loader and put a <tt>CALL</tt>
-    intsruction in the delay section of the ‘<tt>EDGE1</tt>’ sub-routine</li>
+    instruction in the delay section of the ‘<tt>EDGE1</tt>’ sub-routine</li>
 
     <li>Set up <tt>IX</tt> and <tt>DE</tt> and call the RAM loader</li>
 
@@ -126,13 +126,13 @@
     the <tt>GAME</tt> routine in 358T state chunks</li>
   </ol>
 
-  <p>Each of the routines in ‘<tt>EDGE1</tt>’ have been written to last
+  <p>Each of the routines in ‘<tt>GAME</tt>’ have been written to last
   approximately 358T states. They also use the exchange registers for quick
-  accessing anD to all intents and purposes, the loader just ‘sees’ the
+  accessing and to all intents and purposes, the loader just ‘sees’ the
   ‘<tt>GAME</tt>’ routine <tt>CALL</tt> as a delay — what was there
   originally.</p>
 
-  <p>It shouldn't be too difficult for keep programmers out there to expand on
+  <p>It shouldn't be too difficult for keen programmers out there to expand on
   this idea and if you do come up with anything good then let's hear from you!
   See you next month.</p>
 
@@ -147,8 +147,8 @@
                   <tr>
                     <td bgcolor="#FFFFFF">
                       <center>
-                        <p class="first"><b>DECIMAL LISTING FOR THE JUNE HOW
-                        THE HELL CHECKNUM</b></p>
+                        <p class="first"><b>DECIMAL LISTING FOR THE AUGUST
+                         HOW THE HELL CHECKNUM</b></p>
                       </center>
                       <pre>
 16    46    72    47    160   48    248   49    16    78 :  780
@@ -176,15 +176,15 @@
 252   26    19    254   255   35    213   198   249   111:  1777
 206   253   149   103   94    24    86    43    235   9  :  1213
 235   115   35    114   209   75    230   217   6     252:  1437
-126   79    35    229   198   135   111   206   252   149:  1460
-103   126   35    102   111   195   225   217   235   33 :  1386
-131   252   62    4     150   60    198   40    201   73 :  1095
-252   6     13    16    254   252   10    253   50    132:  1189
-252   254   3     40    71    254   50    132   58    62 :  1176
-2     24    45    58    132   60    254   0     252   56 :  863
-61    50    132   252   62    252   24    30    40    133:  1056
-252   254   4     40    41    248   50    133   58    62 :  1148
-8     24    15    58    133   34    254   0     252   26 :  810
+126   79    35    229   198   233   111   206   252   149:  1460
+103   126   35    102   111   135   225   217   235   33 :  1386
+131   252   62    4     150   195   198   40    201   73 :  1095
+252   6     13    16    254   60    10    253   50    132:  1189
+252   254   3     40    71    252   50    132   58    62 :  1176
+2     24    45    58    132   254   254   0     252   56 :  863
+61    50    132   252   62    60    24    30    40    133:  1056
+252   254   4     40    41    252   50    133   58    62 :  1148
+8     24    15    58    133   248   254   0     252   26 :  810
 61    50    133   252   62    34    24    0     42    134:  1006
 252   84    93    133   111   2     134   252   126   18 :  1237
 54    248   6     2     24    219   6     12    16    254:  624
@@ -226,7 +226,7 @@
                     <td bgcolor="#FFFFFF">
                       <center>
                         <p class="first"><b>BASIC PROGRAM TO ENTER THE DECIMAL
-                        LISTING FOR THE JUNE HOW THE HELL?</b></p>
+                        LISTING FOR THE AUGUST HOW THE HELL?</b></p>
                       </center>
                       <pre>
 10  LET M=64512
@@ -234,7 +234,7 @@
 30  LET T=0
 40  FOR N=0 TO 9
 50  INPUT X
-60  LET 5=T+X
+60  LET T=T+X
 70  POKE M+N+Z*10,X
 80  NEXT N
 90  INPUT "Checksum";C
@@ -277,6 +277,11 @@
                 <table border="0" cellpadding="10">
                   <tr>
                     <td bgcolor="#FFFFFF">
+                      <center>
+                        <p class="first"><b>MACHINE CODE ROUTINE FOR AUGUST
+                         ‘HOW THE HELL?....’</b></p>
+                      </center>
+
                       <pre>
         EQU 0FC00H             ;THIS MUST BE ON A PAGE BOUNDARY!
 
@@ -306,24 +311,24 @@ YPOS:   DEFB 0
 PNTR:   DEFW MATRIX+6
 
 SAVE:   LD IX,4000H            ;THIS IS THE SAVE ROUTINE
-        LD DE,1800H            ;IX-BASE ADDRESS, DE=LENGTH
+        LD DE,1B00H            ;IX=BASE ADDRESS, DE=LENGTH
         LD A,OFFH
         SCF                    ;FINALLY JUMP TO THE SAVE ROUTINE IN THE
         JP 04C2H               ;ROM TO SAVE THE DATA IN HEADERLESS
                                ;FORMAT
 
-LOAD:   EXX                    ;FIRST SAVE THE AUXILLARY HL REGISTERS
+LOAD:   EXX                    ;FIRST SAVE THE AUXILIARY HL REGISTERS
         PUSH HL
         LD HL,RLIST            ;SET HL' TO POINT TO THE ROUTINE TABLE
         EXX
         CALL RELOC             ;NOW RELOCATE THE ROM LOAD ROUTINE
         LD IX,4000H            ;LIKE THE SAVE ROUTINE ABOVE, IX=BASE
-        LD DE,1800H            ;AND DE=LENGTH OF THE LOAD ROUTINE
+        LD DE,1B00H            ;AND DE=LENGTH FOR THE LOAD ROUTINE
         LD A,OFFH
-        SCF                    ;NOW CALL OUR MODIFIDED ROM LOAD ROUTINE
+        SCF                    ;NOW CALL OUR MODIFIED ROM LOAD ROUTINE
         CALL LSTART            ;WHICH HAS BEEN RELOCATED
         EXX
-        POP HL                 ;RESTORE THE AUXILLIARY  HL' REGISTERS
+        POP HL                 ;RESTORE THE AUXILIARY  HL' REGISTERS
         EXX
 
 EIRET:  EI                     ;ENSURE INTERRUPTS ARE ON
@@ -361,7 +366,7 @@ RELOOP: LD A,(DE)              ;USES THE OFFSET TABLE 'OFFTB'
         LD D,(HL)
         EX DE,HL
         ADD HL,BC              ;PUT DE INTO HL FOR THE ADDITION TO
-        EX DE,HL               ;BY AND PUT THE NEWLY CALCULATED
+        EX DE,HL               ;BC AND PUT THE NEWLY CALCULATED
         LD (HL),E              ;ABSOLUTE ADDRESS BACK
         INC HL
         LD (HL),D
@@ -370,7 +375,7 @@ RELOOP: LD A,(DE)              ;USES THE OFFSET TABLE 'OFFTB'
 
 GAME:   EXX                    ;THE SHUFFLE GAME IS COMPLETELY
         LD B,MATRIX/256        ;WRITTEN USING THE EXCHANGE
-        LD A,(HL)              ;REGISTERS.
+        LD A,(HL)              ;REGISTERS
         LD C,A                 ;A AND C BOTH = ROUTINE NUMBER*2
         INC HL                 ;STEP ROUTINE POINTER ON FOR NEXT
         PUSH HL                ;VALUE AND SAVE IT FOR LATER
@@ -387,11 +392,11 @@ LD H,A  ;
 
 PRET:   POP HL                 ;ALL BUT ONE ROUTINE JUMPS BACK
         EXX                    ;HERE WHEN FINISHED
-        RET                    ;NOW RETURN TO THE LOADER 360ish t
+        RET                    ;NOW RETURN TO THE LOADER 360ish T
                                ;STATES LATER
 
 VECT:   LD HL,JVAR             ;HL POINTS TO THE SHUFFLE DIRECTION
-        LD A,4                 ;NUMBER.
+        LD A,4                 ;NUMBER
         SUB (HL)               ;USING THE ACCUMULATOR, WE NOW DO A
         ADD A,A                ;SIMPLE CALCULATION TO ARRIVE AT A
         ADD A,28               ;ROUTINE NUMBER AND 'POKE' IT INTO
@@ -492,7 +497,7 @@ PRT:    LD A,(BC)              ;FETCH THE CHARACTER CODE*8 FROM
         LD L,A
         LD A,(BC)              ;NOW FETCH THE SCREEN ADDRESS LOW
         LD E,A                 ;BYTE FROM MATRIX AND PUT IT INTO
-        LD H,3EH               ;'E'. sET UP 'H' AND'D' WITH THEIR
+        LD H,3EH               ;'E'. SET UP 'H' AND 'D' WITH THEIR
         LD D,48H               ;RELEVANT HIGH BYTE VALUES
         DEFB 7EH,12H,2CH,14H   ;THESE BYTES ARE REPEATED INSTRUCTIONS
         DEFB 7EH,12H,2CH,14H   ;OF THE FORM
@@ -524,7 +529,7 @@ GO20:   DJNZ GO20              ;DELAYING FOR A BIT
         RET                    ;DIRECTLY TO THE LOADER AT
                                ;LSTART+148
 
-LSTART:                        ;THIS IS WHERE THE LOADER IS MOVE
+LSTART:                        ;THIS IS WHERE THE LOADER IS MOVED
                                ;TO
 </pre>
                     </td>
