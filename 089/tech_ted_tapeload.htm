@@ -34,49 +34,107 @@
     Connector”</i></b></p>
   </center>
 
-<p class="first"><b>Last <a href="../088/how_the_hell.htm">month</a></b>, we discussed the workings of the special tape loader used in <b>Technician Ted</b>. This game set a precedent for multi-tasking loaders among many other pioneering technical bits and bobs. Basically I explained how short delays are built into loaders for the purpose of timing the electrical signal from the ear socket. These delays are very short—typically 100 microseconds in the standard Spectrum loader. It is this short period which we make use of with our specialist routines.</p>
+  <p class="first"><b>Last <a href="../088/how_the_hell.htm">month</a></b>, we
+  discussed the workings of the special tape loader used in <b>Technician
+  Ted</b>. This game set a precedent for multi-tasking loaders among many other
+  pioneering technical bits and bobs. Basically I explained how short delays
+  are built into loaders for the purpose of timing the electrical signal from
+  the ear socket. These delays are very short—typically 100 microseconds in the
+  standard Spectrum loader. It is this short period which we make use of with
+  our specialist routines.</p>
 
+  <p>I proposed last month to make use of this delay to run a ‘game’ while the
+  loader was loading data. Obviously a complicated shoot-em-up is out of the
+  question, but a simple ‘patience’ type of game is practically possible. So
+  the program listed here functions exactly the same as the ROM louder routine
+  but with the added ingredient of the old ‘letter shuffle’ game (a simple
+  matrix of letters with one letter missing—you slide the letters around
+  shuffling them and then returning them to their original position.)</p>
 
-<p>I proposed last month to make use of this delay to run a ‘game’ while the loader was loading data. Obviously a complicated shoot-em-up is out of the question, but a simple ‘patience’ type of game is practically possible. So the program listed here functions exactly the same as the ROM louder routine but with the added ingredient of the old ‘letter shuffle’ game (a simple matrix of letters with one letter missing—you slide the letters around shuffling them and then returning them to their original position.)</p>
+  <p>Without further ado, type in the machine code using an assembler or the
+  decimal listing alongside it. Note that the decimal listing version of the
+  loader will only work at address <tt>0FC00H</tt> so it is virtually essential
+  that you type it in with an assembler if you want to relocate the loader to
+  be more versatile.</p>
 
-<p>Without further ado, type in the machine code using an assembler or the decimal listing alongside it. Note that the decimal listing version of the loader will only work at address <tt>0FC00H</tt> so it is virtually essential that you type it in with an assembler if you want to relocate the loader to be more versatile.<p>
+  <h2>THE PROGRAM — HOW IT WORKS</h2>
 
-<h2>THE PROGRAM—HOW IT WORKS</h2>
-
-<p>The first part of the program is a few tables with important details such as character codes and print positions etc. ‘<tt>MATRIX</tt>’ is laid out as a 4x5 matrix with an ASCII character code x 8 followed by a low byte of a screen address. This table is for quick printing of the letters of the shuffle game. ‘<tt>OFFTB</tt>’ is used to recalculate the absolute instructions of the ROM loading routine. The ROM loader is moved into RAM just after the code here, and ‘<tt>OFFTB</tt>’ is then used lo modify 8 instructions. ‘<tt>RLIST</tt>’ is a table of  ‘routine’ numbers x 2 i.e. routine <tt>OOH</tt> to routine <tt>26H</tt> are print routines while the others are:</p>
+  <p>The first part of the program is a few tables with important details such
+  as character codes and print positions etc. ‘<tt>MATRIX</tt>’ is laid out as
+  a 4x5 matrix with an ASCII character code x 8 followed by a low byte of a
+  screen address. This table is for quick printing of the letters of the
+  shuffle game. ‘<tt>OFFTB</tt>’ is used to recalculate the absolute
+  instructions of the ROM loading routine. The ROM loader is moved into RAM
+  just after the code here, and ‘<tt>OFFTB</tt>’ is then used lo modify 8
+  instructions. ‘<tt>RLIST</tt>’ is a table of ‘routine’ numbers x 2 i.e.
+  routine <tt>OOH</tt> to routine <tt>26H</tt> are print routines while the
+  others are:</p>
 
   <ul>
-<li><tt>28H</tt>—Move letter left routine</li>
-<li><tt>2AH</tt>—Move letter right routine</li>
-<li><tt>2CH</tt>—Move letter up routine</li>
-<li><tt>2EH</tt>—Move letter down routine</li>
-<li><tt>30H</tt>—GOTO start of routine list</li>
-<li><tt>32H</tt>—Keyboard scan routine</li>
-<li><tt>34H</tt>—Vector into required MOVE routine ie <tt>28H</tt> to <tt>2EH</tt></li>
-<li><tt>36H</tt>—Keyboard scan routine</li>
-</ul>
+    <li><tt>28H</tt>—Move letter left routine</li>
 
-<p>‘<tt>JPTAB</tt>’ is a jump table with the routine addresses stored for quick vectoring. The variables used are:</p>
+    <li><tt>2AH</tt>—Move letter right routine</li>
 
- <ul>
-<li><tt>JVAR</tt>—Stores an address of a routine to vector to (used by routine <tt>34H</tt>above)</li>
-<li><tt>XPO5</tt>—The X co-ordinate of the blank space in the letter matrix</li>
-<li><tt>YPOS</tt>—The Y co-ordinate of the blank space — 0,0 is the top left corner and 3,4 is the bottom right</li>
-<li><tt>PNTR</tt>—Points to the actual byte in ‘<tt>MATRIX</tt>’ which is the blank space character.</li>
-</ul>
+    <li><tt>2CH</tt>—Move letter up routine</li>
 
-The routine <tt>SAVE</tt> uses <tt>IX</tt> as a base address pointer and <tt>DE</tt> as the number of bytes to save. Before we use the loader we must obviously save something to tape with this code vefore we call the loader. Just a few lines down in ‘<tt>LOAD</tt>’ we have a similar load <tt>IX</tt> and load <tt>DE</tt>. The numbers put into these registers should match those in ‘<tt>SAVE</tt>’ above. The rest of the program documentation is fairly self explanatory but essentially, in ‘<tt>LOAD</tt>’ we do the following:</p>
+    <li><tt>2EH</tt>—Move letter down routine</li>
 
-<ol>
-<li>Relocate the ROM routine to sit just after our routine</li>
-<li>Re-calculate instructions in the RAM loader and put a <tt>CALL</tt> intsruction in the delay section of the ‘<tt>EDGE1</tt>’ sub-routine</li>
-<li>Set up <tt>IX</tt> and <tt>DE</tt> and call the RAM loader</li>
-<li>Each time <tt>EDGE1</tt> is called within the loader, it <tt>CALL</tt>s the <tt>GAME</tt> routine in 358T state chunks</li>
-</ol>
+    <li><tt>30H</tt>—GOTO start of routine list</li>
 
-<p>Each of the routines in ‘<tt>EDGE1</tt>’ have been written to last approximately 358T states. They also use the exchange registers for quick accessing anD to all intents and purposes, the loader just ‘sees’ the ‘<tt>GAME</tt>’ routine <tt>CALL</tt> as a delay — what was there originally.</p>
+    <li><tt>32H</tt>—Keyboard scan routine</li>
 
-<p>It shouldn't be too difficult for keep programmers out there to expand on this idea and if you do come up with anything good then let's hear from you! See you next month.</p>
+    <li><tt>34H</tt>—Vector into required MOVE routine ie <tt>28H</tt> to
+    <tt>2EH</tt></li>
+
+    <li><tt>36H</tt>—Keyboard scan routine</li>
+  </ul>
+
+  <p>‘<tt>JPTAB</tt>’ is a jump table with the routine addresses stored for
+  quick vectoring. The variables used are:</p>
+
+  <ul>
+    <li><tt>JVAR</tt>—Stores an address of a routine to vector to (used by
+    routine <tt>34H</tt>above)</li>
+
+    <li><tt>XPO5</tt>—The X co-ordinate of the blank space in the letter
+    matrix</li>
+
+    <li><tt>YPOS</tt>—The Y co-ordinate of the blank space — 0,0 is the top
+    left corner and 3,4 is the bottom right</li>
+
+    <li><tt>PNTR</tt>—Points to the actual byte in ‘<tt>MATRIX</tt>’ which is
+    the blank space character.</li>
+  </ul>
+
+  <p>The routine <tt>SAVE</tt> uses <tt>IX</tt> as a base address pointer and
+  <tt>DE</tt> as the number of bytes to save. Before we use the loader we must
+  obviously save something to tape with this code vefore we call the loader.
+  Just a few lines down in ‘<tt>LOAD</tt>’ we have a similar load <tt>IX</tt>
+  and load <tt>DE</tt>. The numbers put into these registers should match those
+  in ‘<tt>SAVE</tt>’ above. The rest of the program documentation is fairly
+  self explanatory but essentially, in ‘<tt>LOAD</tt>’ we do the following:</p>
+
+  <ol>
+    <li>Relocate the ROM routine to sit just after our routine</li>
+
+    <li>Re-calculate instructions in the RAM loader and put a <tt>CALL</tt>
+    intsruction in the delay section of the ‘<tt>EDGE1</tt>’ sub-routine</li>
+
+    <li>Set up <tt>IX</tt> and <tt>DE</tt> and call the RAM loader</li>
+
+    <li>Each time <tt>EDGE1</tt> is called within the loader, it <tt>CALL</tt>s
+    the <tt>GAME</tt> routine in 358T state chunks</li>
+  </ol>
+
+  <p>Each of the routines in ‘<tt>EDGE1</tt>’ have been written to last
+  approximately 358T states. They also use the exchange registers for quick
+  accessing anD to all intents and purposes, the loader just ‘sees’ the
+  ‘<tt>GAME</tt>’ routine <tt>CALL</tt> as a delay — what was there
+  originally.</p>
+
+  <p>It shouldn't be too difficult for keep programmers out there to expand on
+  this idea and if you do come up with anything good then let's hear from you!
+  See you next month.</p>
 
   <center>
     <table cellpadding="5">
@@ -88,12 +146,11 @@ The routine <tt>SAVE</tt> uses <tt>IX</tt> as a base address pointer and <tt>DE<
                 <table border="0" cellpadding="10">
                   <tr>
                     <td bgcolor="#FFFFFF">
-
                       <center>
-                        <p class="first"><b>DECIMAL LISTING FOR THE JUNE HOW THE HELL CHECKNUM</b></p>
+                        <p class="first"><b>DECIMAL LISTING FOR THE JUNE HOW
+                        THE HELL CHECKNUM</b></p>
                       </center>
-
-<pre>
+                      <pre>
 16    46    72    47    160   48    248   49    16    78 :  780
 200   79    160   80    40    81    96    110   120   111:  1077
 8     112   32    113   152   142   8     143   176   144:  1030
@@ -157,7 +214,6 @@ The routine <tt>SAVE</tt> uses <tt>IX</tt> as a base address pointer and <tt>DE<
     </table>
   </center><br clear="all">
 
-
   <center>
     <table cellpadding="5">
       <tr>
@@ -168,11 +224,11 @@ The routine <tt>SAVE</tt> uses <tt>IX</tt> as a base address pointer and <tt>DE<
                 <table border="0" cellpadding="10">
                   <tr>
                     <td bgcolor="#FFFFFF">
-
                       <center>
-                        <p class="first"><b>BASIC PROGRAM TO ENTER THE DECIMAL LISTING FOR THE JUNE HOW THE HELL?</b></p>
+                        <p class="first"><b>BASIC PROGRAM TO ENTER THE DECIMAL
+                        LISTING FOR THE JUNE HOW THE HELL?</b></p>
                       </center>
-<pre>
+                      <pre>
 10  LET M=64512
 20  FOR Z=0 TO 50
 30  LET T=0
@@ -182,14 +238,24 @@ The routine <tt>SAVE</tt> uses <tt>IX</tt> as a base address pointer and <tt>DE<
 70  POKE M+N+Z*10,X
 80  NEXT N
 90  INPUT "Checksum";C
-100 IF C<>T THEN PRINT "INPUT LINE AGAIN": GOTO 30
+100 IF C&lt;&gt;T THEN PRINT "INPUT LINE AGAIN": GOTO 30
 110 PRINT "LINE ENTERED CORRECTLY"
 120 NEXT Z
 130 SAVE "SHUFFLE" CODE M,505
 </pre>
 
-<p class="first">After you have saved the program, you can load it in using <tt>LOAD "SHUFFLE" CODE.</tt> The saver is run at address 64648 while the loader is executed at address 64661. Note that you must really do a <tt>CLEAR 64511</tt> before loading the code as it may corrupt the machine stack. To test the program, load in a suitable screen and do a <tt>RANDOMIZE USER 64648</tt> remembering to set your cassette recorder into record beforehand. Once the data has been saved in this way, rewind the tape and do a <tt>RANDOMIZE USE 64661</tt> to load it back in — using the ‘Q’, ‘A’, ‘O’ and ‘P’ keys you can also play the shuffle game.
-</p>
+                      <p class="first">After you have saved the program, you
+                      can load it in using <tt>LOAD "SHUFFLE" CODE.</tt> The
+                      saver is run at address 64648 while the loader is
+                      executed at address 64661. Note that you must really do a
+                      <tt>CLEAR 64511</tt> before loading the code as it may
+                      corrupt the machine stack. To test the program, load in a
+                      suitable screen and do a <tt>RANDOMIZE USER 64648</tt>
+                      remembering to set your cassette recorder into record
+                      beforehand. Once the data has been saved in this way,
+                      rewind the tape and do a <tt>RANDOMIZE USE 64661</tt> to
+                      load it back in — using the ‘Q’, ‘A’, ‘O’ and ‘P’ keys
+                      you can also play the shuffle game.</p>
                     </td>
                   </tr>
                 </table>
@@ -201,7 +267,6 @@ The routine <tt>SAVE</tt> uses <tt>IX</tt> as a base address pointer and <tt>DE<
     </table>
   </center><br clear="all">
 
-
   <center>
     <table cellpadding="5">
       <tr>
@@ -212,7 +277,7 @@ The routine <tt>SAVE</tt> uses <tt>IX</tt> as a base address pointer and <tt>DE<
                 <table border="0" cellpadding="10">
                   <tr>
                     <td bgcolor="#FFFFFF">
-<pre>
+                      <pre>
         EQU 0FC00H             ;THIS MUST BE ON A PAGE BOUNDARY!
 
 MATRIX: DEFB 10H,2EH,4BH,2FH,A0M,30H,F8H,31H,10H,4EH
@@ -461,7 +526,7 @@ GO20:   DJNZ GO20              ;DELAYING FOR A BIT
 
 LSTART:                        ;THIS IS WHERE THE LOADER IS MOVE
                                ;TO
-<pre>
+</pre>
                     </td>
                   </tr>
                 </table>
