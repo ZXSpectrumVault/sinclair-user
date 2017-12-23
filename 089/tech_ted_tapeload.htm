@@ -283,14 +283,15 @@
                       </center>
 
                       <pre>
-        EQU 0FC00H             ;THIS MUST BE ON A PAGE BOUNDARY!
+        ORG 0FC00H             ;THIS MUST BE ON A PAGE BOUNDARY!
 
-MATRIX: DEFB 10H,2EH,4BH,2FH,A0M,30H,F8H,31H,10H,4EH
-        DEFB C8H,4FH,A0H,50H,28H,51H,60H,6EH,78H,6FH
-        DEFB 08H,70H,20H,71H,98H,8EH,08H,8FH,BOH,90H
-        DEFB 28H,91H,68H,AEH,28H,AFH,38H,BOH,08H,B1H
+MATRIX: DEFB 10H,2EH,48H,2FH,$A0,30H
+        DEFB $F8,31H,10H,4EH
+        DEFB $C8,4FH,$A0,50H,28H,51H,60H,6EH,78H,6FH
+        DEFB 08H,70H,20H,71H,98H,8EH,08H,8FH,$B0,90H
+        DEFB 28H,91H,68H,$AE,28H,$AF,38H,$B0,08H,$B1
 
-OFFTB:  DEFB 17H,26H,2DH,3CH,46H,75H,80H,8EH,FFH
+OFFTB:  DEFB 17H,26H,2DH,3CH,46H,75H,80H,8EH,$FF
 
 RLIST:  DEFB 32H,36H,00H,02H,04H,06H,08H,0AH,0CH
         DEFB 0EH,10H,12H,14H,16H,18H,1AH,1CH,1EH
@@ -300,11 +301,11 @@ RL:     DEFB 30H,30H
 
 JPTAB:  DEFW PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT
         DEFW PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT
-        DEFW MVLT,MVRT,MVOP,MVDN,GTO,KEYS,VECT,DEBN
+        DEFW MVLT,MVRT,MVUP,MVDN,GOTO,KEYS,VECT,DEBN
 
 JVAR:   DEFW 0
 
-EXPOS:  DEFB 3
+XPOS:   DEFB 3
 
 YPOS:   DEFB 0
 
@@ -312,7 +313,7 @@ PNTR:   DEFW MATRIX+6
 
 SAVE:   LD IX,4000H            ;THIS IS THE SAVE ROUTINE
         LD DE,1B00H            ;IX=BASE ADDRESS, DE=LENGTH
-        LD A,OFFH
+        LD A,$FF
         SCF                    ;FINALLY JUMP TO THE SAVE ROUTINE IN THE
         JP 04C2H               ;ROM TO SAVE THE DATA IN HEADERLESS
                                ;FORMAT
@@ -324,7 +325,7 @@ LOAD:   EXX                    ;FIRST SAVE THE AUXILIARY HL REGISTERS
         CALL RELOC             ;NOW RELOCATE THE ROM LOAD ROUTINE
         LD IX,4000H            ;LIKE THE SAVE ROUTINE ABOVE, IX=BASE
         LD DE,1B00H            ;AND DE=LENGTH FOR THE LOAD ROUTINE
-        LD A,OFFH
+        LD A,0FFH
         SCF                    ;NOW CALL OUR MODIFIED ROM LOAD ROUTINE
         CALL LSTART            ;WHICH HAS BEEN RELOCATED
         EXX
@@ -343,7 +344,7 @@ RELOC:  LD HL,0556H            ;THIS CODE SIMPLY MOVES THE ROM
         LD BC,27
         LDIR
         LD HL,LSTART+145       ;A FEW MODIFICATIONS ARE NECESSARY
-        LD (HL),OCDH           ;BECAUSE THERE ARE A FEW LINES OF
+        LD (HL),0CDH           ;BECAUSE THERE ARE A FEW LINES OF
         LD HL,GAME             ;CODE IN THE LOADER THAT REFER TO
         LD (LSTART+146),HL     ;ABSOLUTE ADDRESSES WITH THE ROM
         LD HL,EIRET            ;SO THE CODE FROM RELOOP BELOW IS
@@ -356,7 +357,7 @@ RELOOP: LD A,(DE)              ;USES THE OFFSET TABLE 'OFFTB'
         CP 0FFH                ;FF IS THE STOP BYTE
         RET Z                  ;IF EQUAL TO FF THEN RETURN
         PUSH DE                ;SAVE DE TEMPORARILY
-        ADD A,LSTART AND 255   ;ADD IN THE OFFSET TO LSTART AND
+        ADD A,LSTART & 255     ;ADD IN THE OFFSET TO LSTART AND
         LD L,A                 ;STORE RESULT IN HL
         ADC A,LSTART/256
         SUB L
@@ -379,11 +380,11 @@ GAME:   EXX                    ;THE SHUFFLE GAME IS COMPLETELY
         LD C,A                 ;A AND C BOTH = ROUTINE NUMBER*2
         INC HL                 ;STEP ROUTINE POINTER ON FOR NEXT
         PUSH HL                ;VALUE AND SAVE IT FOR LATER
-        ADD A,JPTAB AND 255    ;VECTOR IN TO THE JUMP TABLE FOR
+        ADD A,JPTAB & 255      ;VECTOR IN TO THE JUMP TABLE FOR
         LD L,A                 ;THE REQUIRED ROUTINE WITH THE
         ADC A,JPTAB/256        ;ADDITION OF A AND HL
         SUB L
-LD H,A  ;
+        LD H,A
         LD A,(HL)              ;USING THE ACCUMULATOR AND HL
         INC HL                 ;WE NOW GET THE JUMP TABLE VALUE
         LD H,(HL)              ;FOR THE REQUIRED ROUTINE AND
@@ -413,8 +414,9 @@ MVLT:   LD A,(XPOS)            ;AFTER PRESSING 'O', WE ENTER HERE
         LD (XPOS),A            ;MV20 OR ELSE WE UPDATE THE XPOS
         LD A,2                 ;VARIABLE AND JUMP TO MV10
         JR MV10
+
 MVRT:   LD A,(XPOS)            ;THIS IS AN IDENTICAL PIECE OF CODE
-        CP O                   ;AS FOR 'MVLT' EXCEPT IT ACTS UPON
+        CP 0                   ;AS FOR 'MVLT' EXCEPT IT ACTS UPON
         JR Z,MV20              ;THE PRESSING OF THE 'p' KEY AND IS
         DEC A                  ;FOR TESTING WHETHER WE CAN MOVE A
         LD (XPOS),A            ;A LETTER TO THE RIGHT.
@@ -430,7 +432,7 @@ MVUP:   LD A,(YPOS)            ;TEST FOR MOVING A LETTER UP WITH
         JR MV10
 
 MVDN:   LD A,(YPOS)            ;TEST FOR MOVING LETTER DOWN WITH
-        CP O                   ;THE 'a' KEY.
+        CP 0                   ;THE 'a' KEY.
         JR Z,MV20
         DEC A
         LD (YPOS),A
@@ -445,31 +447,33 @@ MV10:   LD HL,(PNTR)           ;IF A LETTER WAS ABLE TO BE MOVED,
         LD (PNTR),HL
         LD A,(HL)
         LD (DE),A
-        LD (HL),OF8H           ;STORE AN UNDERLINE CHARACTER IN
+        LD (HL),0F8H           ;STORE AN UNDERLINE CHARACTER IN
         LD B,2                 ;THE BLANK SPACE AND PRESET 'B' FOR
         JR MV30                ;THE DELAY ROUTINE AT MV30
+
+MV20:
 
 MV30:   DJNZ MV30              ;WAIT 'B'*13-5 T STATES
         JP PRET                ;RETURN
 
-KEYS:   LD A,OFDH              ;FIRST WE TEST THE 'a' KEY FOR THE
-        IN A,(OFEH)            ;MOVE LETTER DOWN ROUTINE
+KEYS:   LD A,0FDH              ;FIRST WE TEST THE 'a' KEY FOR THE
+        IN A,(0FEH)            ;MOVE LETTER DOWN ROUTINE
         AND 1
         JR NZ,KY10             ;JUMP IF NOT PRESSED
         LD A,1                 ;THE DOWN ROUTINE IS NUMBER 1
         LD B,12                ;B IS A DELAY
         JR KY50
 
-KY10:   LD A,OFBH              ;NOW TEST THE 'q' KEY FOR THE MOVE
-        IN A,(OFEH)            ;LETTER UP ROUTINE
+KY10:   LD A,0FBH              ;NOW TEST THE 'q' KEY FOR THE MOVE
+        IN A,(0FEH)            ;LETTER UP ROUTINE
         AND 1
-        JR N2,KY20             ;JUMP IF NOT PRESSED
+        JR NZ,KY20             ;JUMP IF NOT PRESSED
         LD A,2                 ;THE UP ROUTINE IS NUMBER 2
         LD B,9                 ;B IS A DELAY
         JR KY50
 
-KY20:   LD A,ODFH              ;NOW TEST THE 'p' KEY FOR THE MOVE
-        IN A,(OFEH)            ;LETTER RIGHT ROUTINE
+KY20:   LD A,0DFH              ;NOW TEST THE 'p' KEY FOR THE MOVE
+        IN A,(0FEH)            ;LETTER RIGHT ROUTINE
         LD C,A                 ;SAVE BIT 1 IN C
         AND 1
         JR NZ,KY30             ;JUMP IF NOT PRESSED
@@ -490,8 +494,8 @@ KY40:   XOR A                  ;IF NO KEYS WERE PRESSED, MAKE 'A'
 KY50:   DJNZ KY50              ;WAIT FOR THE RELEVANT DELAY
         LD (JVAR),A            ;STORE THE ROUTINE NUMBER IN JVAR
         JP PRET                ;RETURN
-                               ;THIS ROUTINE PRINTS ONE CHARACTER
 
+        ;THIS ROUTINE PRINTS ONE CHARACTER
 PRT:    LD A,(BC)              ;FETCH THE CHARACTER CODE*8 FROM
         INC BC                 ;MATRIX AND PUT IT INTO 'L'
         LD L,A
@@ -508,8 +512,8 @@ PRT:    LD A,(BC)              ;FETCH THE CHARACTER CODE*8 FROM
         DEFB 7EH,12H,2CH,14H   ;FOR SPEED, THE INSTRUCTIONS ARE
         DEFB 7EH,12H           ;REPEATED 8 TIMES
         JP PRET                ;RETURN
-                               ;DEBOUNCE THE KEY PRESSES
 
+        ;DEBOUNCE THE KEY PRESSES
 DEBN:   LD A,(JVAR)            ;IF A KEY WAS PRESSED ON THE LAST
         LD B,14                ;LOOP, (JVAR) WILL BE NON-ZERO
         AND A                  ;IF NON-ZERO, JUMP TO GO10 TO RESET
