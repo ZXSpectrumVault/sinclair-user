@@ -303,7 +303,7 @@ JPTAB:  DEFW PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT
         DEFW PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT,PRT
         DEFW MVLT,MVRT,MVUP,MVDN,GOTO,KEYS,VECT,DEBN
 
-JVAR:   DEFW 0
+JVAR:   DEFB 0    ; Should be defW?
 
 XPOS:   DEFB 3
 
@@ -328,11 +328,11 @@ LOAD:   EXX                    ;FIRST SAVE THE AUXILIARY HL REGISTERS
         LD A,0FFH
         SCF                    ;NOW CALL OUR MODIFIED ROM LOAD ROUTINE
         CALL LSTART            ;WHICH HAS BEEN RELOCATED
+
+EIRET:  EI                     ;ENSURE INTERRUPTS ARE ON
         EXX
         POP HL                 ;RESTORE THE AUXILIARY  HL' REGISTERS
         EXX
-
-EIRET:  EI                     ;ENSURE INTERRUPTS ARE ON
         RET                    ;BEFORE RETURNING
 
 RELOC:  LD HL,0556H            ;THIS CODE SIMPLY MOVES THE ROM
@@ -365,6 +365,7 @@ RELOOP: LD A,(DE)              ;USES THE OFFSET TABLE 'OFFTB'
         LD E,(HL)              ;MAKE DE=ABSOLUTE VALUE FROM THE
         INC HL                 ;OLD INSTRUCTION FROM 0556+
         LD D,(HL)
+        DEC HL
         EX DE,HL
         ADD HL,BC              ;PUT DE INTO HL FOR THE ADDITION TO
         EX DE,HL               ;BC AND PUT THE NEWLY CALCULATED
@@ -400,7 +401,7 @@ VECT:   LD HL,JVAR             ;HL POINTS TO THE SHUFFLE DIRECTION
         LD A,4                 ;NUMBER
         SUB (HL)               ;USING THE ACCUMULATOR, WE NOW DO A
         ADD A,A                ;SIMPLE CALCULATION TO ARRIVE AT A
-        ADD A,28               ;ROUTINE NUMBER AND 'POKE' IT INTO
+        ADD A,28H              ;ROUTINE NUMBER AND 'POKE' IT INTO
         LD (RL),A              ;THE ROUTINE LIST AT 'RL'
         LD B,13                ;NOW WE SIT AROUND FOR A WHILE
 
@@ -451,7 +452,7 @@ MV10:   LD HL,(PNTR)           ;IF A LETTER WAS ABLE TO BE MOVED,
         LD B,2                 ;THE BLANK SPACE AND PRESET 'B' FOR
         JR MV30                ;THE DELAY ROUTINE AT MV30
 
-MV20:
+MV20:   LD B,12
 
 MV30:   DJNZ MV30              ;WAIT 'B'*13-5 T STATES
         JP PRET                ;RETURN
