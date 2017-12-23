@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>Sinclair User 89 - How The Hell ... Did the Technician Ted tape loader work?</title>
-  <link rel="stylesheet" type="text/css" href="./shared/general.css">
+  <link rel="stylesheet" type="text/css" href="../shared/general.css">
   <meta name="keywords" content="Sinclair, Spectrum, machine code, tape, loaders, game">
   <meta name="description" content=
   "Use the delays in the Spectrum's standard tape loading routines to run a game. Andrew Hewson's column from Sinclair User, August 1989">
@@ -12,6 +12,17 @@
 
 <body bgcolor="#CCCCCC" text="#000000" link="#0000FF" alink="#FF0000" vlink=
 "#660099">
+
+  <p align="center" class="first">
+    <a href="../088/index.htm">
+      <img src="../shared/images/tlbutton.gif" width="15" height="19" border="0" alt="Issue 88">
+    </a>
+    <a href="index.htm">
+      <img src="../shared/images/thbutton.gif" width="15" height="19" border="0" alt="Issue 89 Contents">
+    </a>
+    <a href="../090/index.htm">
+      <img src="../shared/images/trbutton.gif" width="15" height="19" border="0" alt="Issue 90"></a>
+  </p>
 
   <center>
     <h1><i>HOW the HELL ... Did the Technician Ted tape loader work?</i></h1>
@@ -23,10 +34,10 @@
     Connector”</i></b></p>
   </center>
 
-<p class="first"><b>Last</b> <a href="../088/unknown_article.htm">month</a>, we discussed the workings of the special tape loader used in <b>Technician Ted</b>. This game set a precedent for multi-tasking loaders among many other pioneering technical bits and bobs. Basically I explained how short delays are built into loaders for the purpose of timing the electrical signal from the ear socket. These delays are very short—typically 100 microseconds in the standard Spectrum loader. It is this short period which we make use of with our specialist routines.</p>
+<p class="first"><b>Last <a href="../088/how_the_hell.htm">month</a></b>, we discussed the workings of the special tape loader used in <b>Technician Ted</b>. This game set a precedent for multi-tasking loaders among many other pioneering technical bits and bobs. Basically I explained how short delays are built into loaders for the purpose of timing the electrical signal from the ear socket. These delays are very short—typically 100 microseconds in the standard Spectrum loader. It is this short period which we make use of with our specialist routines.</p>
 
 
-</p>I proposed last month to make use of this delay to run a ‘game’ while the loader was loading data. Obviously a complicated shoot-em-up is out of the question, but a simple ‘patience’ type of game is practically possible. So the program listed here functions exactly the same as the ROM louder routine but with the added ingredient of the old ‘letter shuffle’ game (a simple matrix of letters with one letter missing—you slide the letters around shuffling them and then returning them to their original position.)</p>
+<p>I proposed last month to make use of this delay to run a ‘game’ while the loader was loading data. Obviously a complicated shoot-em-up is out of the question, but a simple ‘patience’ type of game is practically possible. So the program listed here functions exactly the same as the ROM louder routine but with the added ingredient of the old ‘letter shuffle’ game (a simple matrix of letters with one letter missing—you slide the letters around shuffling them and then returning them to their original position.)</p>
 
 <p>Without further ado, type in the machine code using an assembler or the decimal listing alongside it. Note that the decimal listing version of the loader will only work at address <tt>0FC00H</tt> so it is virtually essential that you type it in with an assembler if you want to relocate the loader to be more versatile.<p>
 
@@ -177,7 +188,7 @@ The routine <tt>SAVE</tt> uses <tt>IX</tt> as a base address pointer and <tt>DE<
 130 SAVE "SHUFFLE" CODE M,505
 </pre>
 
-<p class="first">After you have saved the program, you can load it in using </tt>LOAD "SHUFFLE" CODE.</tt> The saver is run at address 64648 while the loader is executed at address 64661. Note that you must really do a <tt>CLEAR 64511</tt> before loading the code as it may corrupt the machine stack. To test the program, load in a suitable screen and do a <tt>RANDOMIZE USER 64648</tt> remembering to set your cassette recorder into record beforehand. Once the data has been saved in this way, rewind the tape and do a <tt>RANDOMIZE USE 64661</tt> to load it back in — using the ‘Q’, ‘A’, ‘O’ and ‘P’ keys you can also play the shuffle game.
+<p class="first">After you have saved the program, you can load it in using <tt>LOAD "SHUFFLE" CODE.</tt> The saver is run at address 64648 while the loader is executed at address 64661. Note that you must really do a <tt>CLEAR 64511</tt> before loading the code as it may corrupt the machine stack. To test the program, load in a suitable screen and do a <tt>RANDOMIZE USER 64648</tt> remembering to set your cassette recorder into record beforehand. Once the data has been saved in this way, rewind the tape and do a <tt>RANDOMIZE USE 64661</tt> to load it back in — using the ‘Q’, ‘A’, ‘O’ and ‘P’ keys you can also play the shuffle game.
 </p>
                     </td>
                   </tr>
@@ -464,8 +475,8 @@ LSTART:                        ;THIS IS WHERE THE LOADER IS MOVE
 
   <center>
     <p class="first">
-      <!-- <a href="../089/how_the_hell.htm"><b>Previous article in series (issue 89)</b></a> <br> -->
-      <a href="../090/sprite_routine1.htm"><b>Next article in series (issue 90)</b></a>
+      <!-- <a href="../088/how_the_hell.htm"><b>Previous article in series (issue 88)</b></a> <br> -->
+      <a href="../090/floating_point.htm"><b>Next article in series (issue 90)</b></a>
     </p>
   </center><br clear="all">
 
