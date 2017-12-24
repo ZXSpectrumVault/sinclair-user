@@ -1,44 +1,134 @@
-ust rezently, Hewsan 
-have re-releused thelr 
-old clasle tut Technitlan Ted on the Racial: budget label. That was originally written in the good ald days at clrca 1984 Dunng the writing of tne game, time was no peblem as nO-One even knew at its existence apart from the two authors This meant that it was possible ta give it the ﬁnal polish that a lot of games don’t have avan toduya A case in point was the loading routine. wnen tninklng up new ideas lar a prolect, l' is virtually lmpossible to stand palsed Ilka the statue at ’The mnw (or any length at tune and hope lo come up with anything. 
-Far these who have never seen the leader, I will describe I. The screen slams and prints 0 couplu at banners — one at the tap and one at the bottom. In tne bottom banner there is a sauntdawn clock [in seconds) which decrements during the load. In the middle blank section of the screen there are 10 ’Tethnictan Yeds' running left and right at venous speeds, alsa while the game .5 loading. Remember this was done ﬁve years ago when the besl loaders of the era consisted of nothing more than a pvetty picture to look at far 4 mll’llﬂes (mare interesting to bail on egg ehl) Right, how is it done? 
-Glanzing inraugt. tne
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
-Spedmm disassembly of «he laps loadlng (ouhne {from 0556Hex to OéoAHex), them are quile a few bils of code dedlcclled la delays. Spetiﬁcall al 05E7Hexihareixo elayol 355 T slules every lime Illa? pumwlur sub-rouline l5 tolled. The Imm‘ne is named 'EDGEl’ .n Ihe Spedrum ROM disassemny book as lIs lunction ls la counl rbe 'edges’ of the square wave signal from lhe casseloe signal. Considering Ohm Z80 lnslruuions in normal use can range from AT stale; lo say 191 slules than we could simply replace lhls delay rouline wllh a more useful rouline whlch did clever Ihings like ceunldown clocks or Teds running round Iha screen, Sounds simple, doesn’t 1?. 
-HOW THE NORMAL TAPE LOADERS WORK 
-Thus How vhe Hell wilhin a How lhe Hell explains lha normal lupe signal for u bener andsmanaing of lhe delays lulked aboal in me previous paragraph. Relerring lo Flg 1 , lhe diagram shows me eledncal s‘lgnal as rl I; saved to lha lupe, Bil A of lhe ampu! pan OFE Hex is plped lhmugh lo the sockal on «a side or your Speclrum. Ya send a signal lhrough lo lh‘ls sockel, we
+<html>
+<head>
+  <title>Sinclair User 88 - How The Hell ... Did the Technician Ted tape loader work?</title>
+  <link rel="stylesheet" type="text/css" href="../shared/general.css">
+  <meta name="keywords" content="Sinclair, Spectrum, machine code, tape, loaders, leader, sync, data, baud, T-states, game">
+  <meta name="description" content=
+  "An explanation of the timings of the various Spectrum tape signals. Andrew Hewson's column from Sinclair User, July 1989">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
 
-send precise ’sarial' :ode as in ﬁg 2 for Saving 10 mm m pan 'on' we would do 
-LD AD OUT (OFE),A To mm m: pm ’06? we would do this: LD A,16 our [OFE),A Not "In! Ihe harms 'an’
+<body bgcolor="#CCCCCC" text="#000000" link="#0000FF" alink="#FF0000" vlink=
+"#660099">
 
-and ’OW are seemingly conlradidory as 'on' has [in 4 : Uand 'off’ bus bivA : 1, Yhe Germs on and 0K don'l recuy mean anytHng more chew the km mm the eladnccl signal at me ear socket can uhemuVe between 5 v0": and Dvolvs when we send ":2 mpg swgnnl. 
-The ﬁrst secﬁion of We laps signal is leaned Ihe ’Ieuder’ and n comprises 0'
+  <p align="center" class="first">
+    <a href="../087/index.htm">
+      <img src="../shared/images/tlbutton.gif" width="15" height="19" border="0" alt="Issue 87">
+    </a>
+    <a href="index.htm">
+      <img src="../shared/images/thbutton.gif" width="15" height="19" border="0" alt="Issue 88 Contents">
+    </a>
+    <a href="../089/index.htm">
+      <img src="../shared/images/trbutton.gif" width="15" height="19" border="0" alt="Issue 89"></a>
+  </p>
 
-several hundred ulvemaﬁons bemoan ’on’ and w. This is on: may Vane you can hear when landing a program m m. shad. Fig 1 whose only a few pulses buy more imponano 45 mg hmmg for Ohese pulses. Each period of m. poﬂ being on or off luv for 2168 T slum: and 50 iv
+  <center>
+    <h1><i>HOW the HELL ... Did the Technician Ted tape loader work?</i></h1>
 
-produces a steady ten: 00 about 1600 Hertz, Following me leader pulse! is a synchronisuﬁon pulse. Thisisa period of‘oW which lasls 667 v “was followed by an 'on' period of 735 T sVuias. Novice Ihu‘ Fig \ is no: dmwn yo scale, The syn: pulse is renewed by «so duk: In bi! form, Suppose you had typed .n 5sz “DNA” CODE aoooono than oh» routine would Oaks
+    <p><b><i>ASCII code nightmares? Disillusioned with disassemblers? Baffled
+    by bytes? If you’re having problems with programming, whether they
+    alliterate or not, Andrew Hewson is your man. Drop him a line and he’ll be
+    investigating the problem before you can say “Ram Dos Buffer Interface Edge
+    Connector”</i></b></p>
+  </center>
 
-we by’e shared a! 30000 and shiﬂ each bii leftward: mi all a biis had been saved. The romai (or me saved his lakes one of iwo buns — 1 A are bi! is a period as w fol|owed by a period of 'on' wiiii mi. penod lusﬁng 355 1 mm. 2 A sel bi! is exacﬂy twice me periods for as: zero bii i.e. 1710 T sis-ire; an and 1710 T slates on. 
-10 summarise «ms, the signal is a few seconds oi is iecdei tone followed by one syn: pulse oi
+<p class="first">Just recently, Hewson have re-released their old classic hit <b>Technician Ted</b> on the Rack-it budget label. That was originally written in the good old days of circa 1984. During the writing of the game, time was no problem as no-one even knew of its existence apart from the two authors. This meant that it was possible to give it the final polish that a lot of games don’t have even today. A case in point was the loading routine. When thinking up new ideas for a project, it is virtually impossible to stand poised like the statue of ‘The Thinker’ for any length of time and hope lo come up with anything. 
 
-(onsidewbly shoder duraﬁon than the «coder Ions puke; The sync pu‘se is char. {allowed by the dam pulses in ohe respective com“. Inddenmlly, the Oeml 'buud mie' which refers to the speed of load operation (Le, lhe slower the mm the more bored you gen) -; vanuble depending on he dam. If you me all zeros than in MN also lead back qmcker ohm savnng an
+<p>For these who have never seen the loader, I will describe it. The screen clears and prints a couple of banners — one at the top and one at the bottom. In the bottom banner there is a countdown clock (in seconds) which decrements during the load. In the middle blank section of the screen there are 10 ‘Technician Teds’ running left and right at various speeds, also while the game is loading. Remember this was done five years ago when the best loaders of the era consisted of nothing more than a pretty picture to look at for 4 minutes (more interesting to boil an egg, eh!) Right, how is it done? 
 
-255’s, This is due lo the '1' bits lasling twice as long as lha D’s, So he baud rate 
-quoted ls only an average 
-of saving an equal number of 1's and 0's. 
-BACK TO THE PLOT 
-Nowlhe Inpo Signal is clear .n your mmd, remember me EDGEl muline I spake cl aarlien ln «he loading rouline It becomes necessary lo perform lals of high speed reading of "w
+<p>Glancing through the Spectrum disassembly of the tape loading routine (from <tt>0556H</tt> to <tt>0604H</tt>), there are quite a few bits of code dedicated to delays. Specifically at <tt>05E7H</tt> there is a delay of 358 T-states every time that particular sub-routine is called. The routine is named ‘<tt>EDGE1</tt>’ in the Spectrum ROM disassembly book as its function is to count the ‘edges’ of the square wave signal from the cassette signal. Considering that Z80 instructions in normal use can range from 4 T-states to say 19 T-states then we could simply replace this delay routine with a more useful routine which did clever things like countdown clocks or Teds running round the screen. Sounds simple, doesn’t it?
+ 
+<h2>HOW THE NORMAL TAPE LOADERS WORK</h2>
 
-inqu pan and ducking whemer Oha signai has chongad from one state in ihe other wilhin certain :riiical iime (onslrainfs‘ I my :riiicul bm ihare has k: be a cane umauni of leeway in me ﬁning because no. all Vupe recorders play back a. precisely me some speed. There is aka the elfad of wow and 61qu on ihe signal which basically mm, mm ihe lengm of
+<p>This How the Hell within a How the Hell explains the normal tape signal for a better understanding of the delays talked about in the previous paragraph. Referring to <a href="#fig1">figure 1</a>, the diagram shows the electrical signal as it is saved to tape. Bit 4 of the output port <tt>0FEH</tt> is piped through to the socket on the side of your Spectrum. To send a signal through to this socket, we send a precise ‘serial’ code as in <a href="#fig2">figure 2</a> for saving. To turn the port ‘on’ we would do this:
 
-each pulse —laader,1yn( or date will vary quite :onsiderably tram that that was saved Fortunately the EDGE] routine has an overhead 0‘ 358 T states betore it starts timing the received pulses 7 it is this valuable time that we use in our loader, Incidentally 358 1 states is approximately 100 mtcroseconds in duration — not exactly ttme to watch an epic! 
-TOO SIMPLE! 
-Obviously it is not simple to run another routine in 100 microsecond chunks and we also have to worry about contended! uncentended RAM. Yhs Spectrum like most other home computers has e problem when the screen .5 stored in the same memory me as the RAM used tar rogmms and data etc. This because the video :trcuitry has to access the memory without (all every 50th at a second. lfthe Z80 wants to read orwrite to the screen at the same instant as the video circutlry, the ZBO has to wait fat 0 while until the video has done its stuff. It the 230 had pnertty over the video cirtum'y, our picture would suffer from incredible interference so poor old 280 setters instead the net result is that the processor true speed is reduced by some 25% m the video qr contended memory, As the tape routines are so prezise 7 especially during the save, they need to be replaced u. ROM or in unconlended RAM, 
-The placement at the routtne is easy 7 we will put our louder lrl uncontended
+  <pre>
+LD  A,0
+OUT (0FE),A
+</pre>
+ 
+<p>To turn the port ‘off’ we would do this:
 
-RAM in a canven‘ﬁm Ieeehon. The other ettheutty is that dunng our 100 mtcmsecond of actmty we Mn be eeeessmg the screen 7 for our countdown clock tor example This makes to dtfiicuh to atmrate‘y work out the exad timmg so we have to resort to some ﬁeld testmg by Varying the hmlng unli| we gel the most reliable msutts 
-A GAME DURING THE LOADER PERHAPS? 
-Now you shouid understand how m all works but what else can we do with the 100 mtcroseconds of ’frae’ time, A law thoughts sprang to mmd 7 but I did think It wou‘d 
-be qutte a eheuenge to have a Stmple gamete play while the main ume was loading Asutta Ie candidate for this type at game e the old letter shufﬂe thing, they are made cm of plush: and have an army at letters with one position vacant Atter serembtmg the letters up, the oblect 
-et the game 1s to 
-shufﬂe the \eners buck mm the en‘gmel Iayeut. v em presently working on the task and should have the ﬁnished (ode in lime tor lhe next How "we He“ It wt“ function as a normal byte tending routine but wtth "Us ’LeNer Shame game workth whtle the Icader e workmg. The BASIC program below ts the latter shufﬂe se w you type m and m. it you Mu have an Idea of what to expect next month.
+  <pre>
+LD  A,16
+OUT (0FE),A
+</pre>
+
+<p>Note that the terms ‘on’ and ‘off’ are seemingly contradictory as ‘on’ has bit 4 = 0 and ‘off’ has bit 4 = 1. The terms on and off don't really mean anything more than the fact that the electrical signal at the ear socket can alternate between 5 volts and 0 volts when we send the tape signal. 
+
+<p>The first section of the tape signal is termed the ‘leader’ and it comprises of several hundred alternations between ‘on’ and ‘off’. This is the steady tone you can hear when loading a program at the start. <a href="#fig1">Figure 1</a> shows only a few pulses but more importantly is the timing for these pulses. Each period of the port being on or off last for 2168 T-states and so it produces a steady tone of about 1600 Hertz.
+
+<p>Following the leader pulses is a synchronisation pulse. This is a period of ‘off’ which lasts 667 T-states followed by an ‘on’ period of 735 T-states. Notice that <a href="#fig1">figure 1</a> is not drawn to scale. The sync pulse is followed by the data in bit form. Suppose you had typed in <tt>SAVE "DATA" CODE 30000,10</tt> then the routine would take the byte stored at 30000 and shift each bit leftwards until all 8 bits had been saved. The format for the saved bits takes one of two forms — 
+
+<ol>
+<li>A zero bit is a period of ‘off’ followed by a period of ‘on’ with each period lasting 855 T-states.
+<li>A set bit is exactly twice the periods for the zero bit i.e. 1710 T-states off and 1710 T-slates on. 
+</ol>
+
+<p>To summarise then, the signal is a few seconds of a leader tone followed by one sync pulse of considerably shorter duration than the leader tone pulses. The sync pulse is then followed by the data pulses in the respective forms. Incidentally, the term ‘baud rate’ which refers to the speed of load operation (i.e. the slower the speed the more bored you get!) is variable depending on the data. If you save all zeros then it will also load back quicker than saving all 255's. This is due to the 1 bits lasting twice as long as the 0's. So he baud rate quoted is only an average of saving an equal number of 1's and 0's.
+
+<h2>BACK TO THE PLOT</h2>
+
+<p>Now the input signal is clear in your mind, remember the <tt>EDGE1</tt> routine I spoke of earlier. In the loading routine it becomes necessary to perform lots of high speed reading of the input port and checking whether the signal has changed from one state to the other within certain critical time constraints. I say critical but there has to be a certain amount of leeway in the timing because not  all tape recorders play back at precisely the same speed. There is also the effect of waw and flutter on the signal which basically means that the length of each pulse — leader, sync or data will vary quite considerably from that that was saved. Fortunately the <tt>EDGE1</tt> routine has an overhead of 358 T-states before it starts timing the received pulses — it is this valuable time that we use in our loader. Incidentally 358 T-states is approximately 100 microseconds in duration — not exactly time to watch an epic! 
+
+<h2>TOO SIMPLE!</h2>
+
+<p>Obviously it is not simple to run another routine in 100 microsecond chunks and we also have to worry about contended/uncontended RAM. The Spectrum, like most other home computers, has a problem when the screen is stored in the same memory map as the RAM used for programs and data etc. This is because the video circuitry has to access the memory without fail every 50th of a second. If the Z80 wants to read or write to the screen at the same instant as the video circuitry, the Z80 has to wait for a while until the video has done its stuff. If the Z80 had priority over the video circuitry, our picture would suffer from incredible interference so poor old Z80 suffers instead. The net result is that the processor true speed is reduced by some 25% in the video or contended memory. As the tape routines are so precise — especially during the save, they need to be replaced in ROM or in uncontended RAM.
+
+<p>The placement of the routine is easy — we will put our loader in uncontended RAM in a convenient location. The other difficulty is that during our 100 microsecond of activity we will be accessing the screen — for our countdown clock for example. This makes it difficult to accurately work out the exact timing so we have to resort to some field testing by varying the timing until we get the most reliable results.
+
+<h2>A GAME DURING THE LOADER PERHAPS?</h2>
+
+<p>Now you should understand how it all works but what else can we do with the 100 microseconds of ‘free’ time? A few thoughts sprang to mind — but I did think it would be quite a challenge to have a simple game to play while the main one was loading. A suitable candidate for this type of game is the old letter shuffle thing. They are made out of plastic and have an array of letters with one position vacant. After scrambling the letters up, the object of the game is to shuffle the letters back into the original layout. I am presently working on this task and should have the finished code in time for the next How the Hell. It will function as a normal byte loading routine but with this ‘Letter Shuffle’ game working while the loader is working. The BASIC program below is the letter shuffle so if you type it in and run it you will have an idea of what to expect next month.
+
+  <h2><i>Figures</i></h2>
+
+  <a name="fig1" id="fig1"></a>
+
+  <center>
+    <table border="0" cellpadding="0">
+      <tr>
+        <td bgcolor="#000000">
+          <table border="0" cellpadding="10">
+            <tr>
+              <td bgcolor="#FFFFFF">
+                <p class="first"><b>Figure 1.</b></p><img src="tape_signal.jpg"
+                width="939" height="411" hspace="10" vspace="10" border="0"
+                alt="">
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </center><br clear="all">
+
+  <center>
+    <p class="first">
+      <!-- <a href="../087/how_the_hell.htm"><b>Previous article in series (issue 88)</b></a> <br> -->
+      <a href="../089/tech_ted_tapeload.htm"><b>Next article in series (issue 89)</b></a>
+    </p>
+  </center><br clear="all">
+
+  <center>
+    <hr width="50%" noshade>
+  </center>
+
+  <p align="center" class="first">
+    <a href="../087/index.htm">
+      <img src="../shared/images/tlbutton.gif" width="15" height="19" border="0" alt="Issue 87">
+    </a>
+    <a href="index.htm">
+      <img src="../shared/images/thbutton.gif" width="15" height="19" border="0" alt="Issue 88 Contents">
+    </a>
+    <a href="../089/index.htm">
+      <img src="../shared/images/trbutton.gif" width="15" height="19" border="0" alt="Issue 89"></a>
+  </p>
+
+  <h6 align="center">Sinclair User<br>July 1989</h6>
+
+  <h6 align="center">Transcribed by Richard Milne</h6>
+</body>
+</html>
