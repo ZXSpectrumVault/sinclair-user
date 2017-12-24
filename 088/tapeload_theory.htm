@@ -1,0 +1,44 @@
+ust rezently, Hewsan 
+have re-releused thelr 
+old clasle tut Technitlan Ted on the Racial: budget label. That was originally written in the good ald days at clrca 1984 Dunng the writing of tne game, time was no peblem as nO-One even knew at its existence apart from the two authors This meant that it was possible ta give it the ﬁnal polish that a lot of games don’t have avan toduya A case in point was the loading routine. wnen tninklng up new ideas lar a prolect, l' is virtually lmpossible to stand palsed Ilka the statue at ’The mnw (or any length at tune and hope lo come up with anything. 
+Far these who have never seen the leader, I will describe I. The screen slams and prints 0 couplu at banners — one at the tap and one at the bottom. In tne bottom banner there is a sauntdawn clock [in seconds) which decrements during the load. In the middle blank section of the screen there are 10 ’Tethnictan Yeds' running left and right at venous speeds, alsa while the game .5 loading. Remember this was done ﬁve years ago when the besl loaders of the era consisted of nothing more than a pvetty picture to look at far 4 mll’llﬂes (mare interesting to bail on egg ehl) Right, how is it done? 
+Glanzing inraugt. tne
+
+Spedmm disassembly of «he laps loadlng (ouhne {from 0556Hex to OéoAHex), them are quile a few bils of code dedlcclled la delays. Spetiﬁcall al 05E7Hexihareixo elayol 355 T slules every lime Illa? pumwlur sub-rouline l5 tolled. The Imm‘ne is named 'EDGEl’ .n Ihe Spedrum ROM disassemny book as lIs lunction ls la counl rbe 'edges’ of the square wave signal from lhe casseloe signal. Considering Ohm Z80 lnslruuions in normal use can range from AT stale; lo say 191 slules than we could simply replace lhls delay rouline wllh a more useful rouline whlch did clever Ihings like ceunldown clocks or Teds running round Iha screen, Sounds simple, doesn’t 1?. 
+HOW THE NORMAL TAPE LOADERS WORK 
+Thus How vhe Hell wilhin a How lhe Hell explains lha normal lupe signal for u bener andsmanaing of lhe delays lulked aboal in me previous paragraph. Relerring lo Flg 1 , lhe diagram shows me eledncal s‘lgnal as rl I; saved to lha lupe, Bil A of lhe ampu! pan OFE Hex is plped lhmugh lo the sockal on «a side or your Speclrum. Ya send a signal lhrough lo lh‘ls sockel, we
+
+send precise ’sarial' :ode as in ﬁg 2 for Saving 10 mm m pan 'on' we would do 
+LD AD OUT (OFE),A To mm m: pm ’06? we would do this: LD A,16 our [OFE),A Not "In! Ihe harms 'an’
+
+and ’OW are seemingly conlradidory as 'on' has [in 4 : Uand 'off’ bus bivA : 1, Yhe Germs on and 0K don'l recuy mean anytHng more chew the km mm the eladnccl signal at me ear socket can uhemuVe between 5 v0": and Dvolvs when we send ":2 mpg swgnnl. 
+The ﬁrst secﬁion of We laps signal is leaned Ihe ’Ieuder’ and n comprises 0'
+
+several hundred ulvemaﬁons bemoan ’on’ and w. This is on: may Vane you can hear when landing a program m m. shad. Fig 1 whose only a few pulses buy more imponano 45 mg hmmg for Ohese pulses. Each period of m. poﬂ being on or off luv for 2168 T slum: and 50 iv
+
+produces a steady ten: 00 about 1600 Hertz, Following me leader pulse! is a synchronisuﬁon pulse. Thisisa period of‘oW which lasls 667 v “was followed by an 'on' period of 735 T sVuias. Novice Ihu‘ Fig \ is no: dmwn yo scale, The syn: pulse is renewed by «so duk: In bi! form, Suppose you had typed .n 5sz “DNA” CODE aoooono than oh» routine would Oaks
+
+we by’e shared a! 30000 and shiﬂ each bii leftward: mi all a biis had been saved. The romai (or me saved his lakes one of iwo buns — 1 A are bi! is a period as w fol|owed by a period of 'on' wiiii mi. penod lusﬁng 355 1 mm. 2 A sel bi! is exacﬂy twice me periods for as: zero bii i.e. 1710 T sis-ire; an and 1710 T slates on. 
+10 summarise «ms, the signal is a few seconds oi is iecdei tone followed by one syn: pulse oi
+
+(onsidewbly shoder duraﬁon than the «coder Ions puke; The sync pu‘se is char. {allowed by the dam pulses in ohe respective com“. Inddenmlly, the Oeml 'buud mie' which refers to the speed of load operation (Le, lhe slower the mm the more bored you gen) -; vanuble depending on he dam. If you me all zeros than in MN also lead back qmcker ohm savnng an
+
+255’s, This is due lo the '1' bits lasling twice as long as lha D’s, So he baud rate 
+quoted ls only an average 
+of saving an equal number of 1's and 0's. 
+BACK TO THE PLOT 
+Nowlhe Inpo Signal is clear .n your mmd, remember me EDGEl muline I spake cl aarlien ln «he loading rouline It becomes necessary lo perform lals of high speed reading of "w
+
+inqu pan and ducking whemer Oha signai has chongad from one state in ihe other wilhin certain :riiical iime (onslrainfs‘ I my :riiicul bm ihare has k: be a cane umauni of leeway in me ﬁning because no. all Vupe recorders play back a. precisely me some speed. There is aka the elfad of wow and 61qu on ihe signal which basically mm, mm ihe lengm of
+
+each pulse —laader,1yn( or date will vary quite :onsiderably tram that that was saved Fortunately the EDGE] routine has an overhead 0‘ 358 T states betore it starts timing the received pulses 7 it is this valuable time that we use in our loader, Incidentally 358 1 states is approximately 100 mtcroseconds in duration — not exactly ttme to watch an epic! 
+TOO SIMPLE! 
+Obviously it is not simple to run another routine in 100 microsecond chunks and we also have to worry about contended! uncentended RAM. Yhs Spectrum like most other home computers has e problem when the screen .5 stored in the same memory me as the RAM used tar rogmms and data etc. This because the video :trcuitry has to access the memory without (all every 50th at a second. lfthe Z80 wants to read orwrite to the screen at the same instant as the video circutlry, the ZBO has to wait fat 0 while until the video has done its stuff. It the 230 had pnertty over the video cirtum'y, our picture would suffer from incredible interference so poor old 280 setters instead the net result is that the processor true speed is reduced by some 25% m the video qr contended memory, As the tape routines are so prezise 7 especially during the save, they need to be replaced u. ROM or in unconlended RAM, 
+The placement at the routtne is easy 7 we will put our louder lrl uncontended
+
+RAM in a canven‘ﬁm Ieeehon. The other ettheutty is that dunng our 100 mtcmsecond of actmty we Mn be eeeessmg the screen 7 for our countdown clock tor example This makes to dtfiicuh to atmrate‘y work out the exad timmg so we have to resort to some ﬁeld testmg by Varying the hmlng unli| we gel the most reliable msutts 
+A GAME DURING THE LOADER PERHAPS? 
+Now you shouid understand how m all works but what else can we do with the 100 mtcroseconds of ’frae’ time, A law thoughts sprang to mmd 7 but I did think It wou‘d 
+be qutte a eheuenge to have a Stmple gamete play while the main ume was loading Asutta Ie candidate for this type at game e the old letter shufﬂe thing, they are made cm of plush: and have an army at letters with one position vacant Atter serembtmg the letters up, the oblect 
+et the game 1s to 
+shufﬂe the \eners buck mm the en‘gmel Iayeut. v em presently working on the task and should have the ﬁnished (ode in lime tor lhe next How "we He“ It wt“ function as a normal byte tending routine but wtth "Us ’LeNer Shame game workth whtle the Icader e workmg. The BASIC program below ts the latter shufﬂe se w you type m and m. it you Mu have an Idea of what to expect next month.
