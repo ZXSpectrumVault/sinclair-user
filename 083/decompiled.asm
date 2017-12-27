@@ -3,8 +3,7 @@
 
         ORG     08000H
 
-NO_SHAPES:
-	EQU 6
+NO_SHAPES:	EQU 6
 
 DETECT_DEMO:
         LD A,001H                ; set the border to blue
@@ -14,7 +13,7 @@ DETECT_DEMO:
         LD BC,017FFH
         LD (HL),L
         LDIR
-        CALL DRAW STARS          ; draw in the background and borders
+        CALL DRAW_STARS          ; draw in the background and borders
         LD IX,BLOB_VARS          ; set up IX to point to the first set
         LD B,006H                ; of shape variables and make B equal
                                  ; to the number of shapes we want
@@ -75,7 +74,7 @@ DIR20:  CP 0A0H
         RET                      ;
 DIR30:  XOR A                    ; if 96<=A<160 then make A=0
         RET
-DRAW STARS:
+DRAW_STARS:
         LD BC,0FFBFH             ; make BC = counter values
         LD DE,00000H             ; DE = screen top left coordinates
 ST10:   CALL PLOT                ; plot at DE
@@ -100,7 +99,7 @@ ST50:   PUSH BC                  ; save it
         CALL RAND_NUM            ; now get one from 0-255
         LD E,A                   ; and put it in E
         CALL PLOT_ADDR           ; now plot at this random coordinate
-        OR (HL)                    by OR'ing with the screen
+        OR (HL)                  ; by OR'ing with the screen
         LD (HL),A                ; point at by HL
         POP BC                   ; restore the counter
         DEC BC                   ; decrement it and loop back for 448
@@ -167,7 +166,7 @@ BLOB20: SRL D                    ; rotate DE as required to bring the
 BLOB30: INC HL                   ; step on the screen point across
         LD A,E                   ; the screen and now treat the right
         XOR (HL)                 ; most byte of shape data in the same
-        LD (HL),A                  way - XORing to the screen, masking
+        LD (HL),A                ; way - XORing to the screen, masking
         AND E                    ; the bits we are interested in and
         CP E                     ; comparing to check that they are
         JR Z,BLOB40              ; the same - jumping if they are
@@ -238,7 +237,7 @@ PLOT10: RRCA                     ; rotate it so that the set bit is
 Y_RAND_NUM:
         CALL RAND_NUM            ; get an 8-bit random number and
         CP 0C5H                  ; check to see that it is less than
-        JR NC,Y_RAND             ; 192. Jump back if it isn't until
+        JR NC,Y_RAND_NUM         ; 192. Jump back if it isn't until
         RET                      ; we get a valid number less than 192
 RAND_NUM:
         LD HL,(SEED_POINTER)     ; the random number is obtained by
